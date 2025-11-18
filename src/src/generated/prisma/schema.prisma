@@ -1,0 +1,158 @@
+generator client {
+  provider = "prisma-client-js"
+  output   = "../src/generated/prisma"
+}
+
+datasource db {
+  provider  = "postgresql"
+  url       = env("DATABASE_URL")
+  directUrl = env("DIRECT_URL")
+}
+
+/// This table contains check constraints and requires additional setup for migrations. Visit https://pris.ly/d/check-constraints for more info.
+model cart_items {
+  id         BigInt   @id @default(autoincrement())
+  cart_id    BigInt
+  product_id BigInt
+  quantity   Int
+  carts      carts    @relation(fields: [cart_id], references: [id], onDelete: Cascade, onUpdate: NoAction)
+  products   products @relation(fields: [product_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+
+  @@unique([cart_id, product_id])
+  @@index([cart_id], map: "idx_cart_items_cart")
+}
+
+model carts {
+  id         BigInt       @id @default(autoincrement())
+  user_id    BigInt?
+  created_at DateTime     @default(now()) @db.Timestamptz(6)
+  cart_items cart_items[]
+  users      users?       @relation(fields: [user_id], references: [id], onUpdate: NoAction)
+}
+
+model categories {
+  id               BigInt       @id @default(autoincrement())
+  name             String
+  parent_id        BigInt?
+  categories       categories?  @relation("categoriesTocategories", fields: [parent_id], references: [id], onUpdate: NoAction)
+  other_categories categories[] @relation("categoriesTocategories")
+  products         products[]
+}
+
+/// This table contains check constraints and requires additional setup for migrations. Visit https://pris.ly/d/check-constraints for more info.
+model order_items {
+  id               BigInt  @id @default(autoincrement())
+  order_id         BigInt
+  product_id       BigInt?
+  quantity         Int
+  unit_price_cents Int
+  orders           orders  @relation(fields: [order_id], references: [id], onDelete: Cascade, onUpdate: NoAction)
+
+  @@index([order_id], map: "idx_order_items_order")
+}
+
+/// This table contains check constraints and requires additional setup for migrations. Visit https://pris.ly/d/check-constraints for more info.
+model orders {
+  id          BigInt        @id @default(autoincrement())
+  user_id     BigInt?
+  status      order_status  @default(created)
+  total_cents Int
+  created_at  DateTime      @default(now()) @db.Timestamptz(6)
+  order_items order_items[]
+  users       users?        @relation(fields: [user_id], references: [id], onUpdate: NoAction)
+
+  @@index([user_id], map: "idx_orders_user")
+}
+
+model product_images {
+  id               BigInt            @id @default(autoincrement())
+  product_id       BigInt?
+  url              String
+  variant_id       BigInt?
+  position         Int?              @db.SmallInt
+  products         products?         @relation(fields: [product_id], references: [id], onDelete: Cascade, onUpdate: NoAction)
+  product_variants product_variants? @relation(fields: [variant_id], references: [id], onDelete: NoAction)
+}
+
+model product_specs {
+  id         BigInt   @id @default(autoincrement())
+  product_id BigInt
+  key        String
+  value      String?
+  products   products @relation(fields: [product_id], references: [id], onDelete: Cascade, onUpdate: NoAction)
+}
+
+model product_variants {
+  id              BigInt            @id @default(autoincrement())
+  product_id      BigInt
+  variant_name    String?
+  price_cents     Int
+  stock_quantity  Int               @default(0)
+  product_images  product_images[]
+  products        products          @relation(fields: [product_id], references: [id], onDelete: Cascade, onUpdate: NoAction)
+  variant_options variant_options[]
+}
+
+model products {
+  id               BigInt             @id @default(autoincrement())
+  name             String
+  description      String?
+  category_id      BigInt?
+  created_at       DateTime           @default(now()) @db.Timestamptz(6)
+  cart_items       cart_items[]
+  product_images   product_images[]
+  product_specs    product_specs[]
+  product_variants product_variants[]
+  categories       categories?        @relation(fields: [category_id], references: [id], onUpdate: NoAction)
+  reviews          reviews[]
+
+  @@index([category_id], map: "idx_products_category")
+}
+
+/// This table contains check constraints and requires additional setup for migrations. Visit https://pris.ly/d/check-constraints for more info.
+model reviews {
+  id         BigInt   @id @default(autoincrement())
+  user_id    BigInt
+  product_id BigInt
+  rating     Int      @db.SmallInt
+  comment    String?
+  created_at DateTime @default(now()) @db.Timestamptz(6)
+  products   products @relation(fields: [product_id], references: [id], onDelete: Cascade, onUpdate: NoAction)
+  users      users    @relation(fields: [user_id], references: [id], onDelete: Cascade, onUpdate: NoAction)
+
+  @@unique([user_id, product_id])
+  @@index([product_id], map: "idx_reviews_product")
+}
+
+model users {
+  id            BigInt    @id @default(autoincrement())
+  name          String?
+  email         String    @unique
+  password_hash String
+  role          user_role @default(user)
+  created_at    DateTime  @default(now()) @db.Timestamptz(6)
+  carts         carts[]
+  orders        orders[]
+  reviews       reviews[]
+}
+
+model variant_options {
+  id               BigInt           @id @default(autoincrement())
+  variant_id       BigInt
+  key              String
+  value            String
+  product_variants product_variants @relation(fields: [variant_id], references: [id], onDelete: Cascade, onUpdate: NoAction)
+}
+
+enum order_status {
+  created
+  paid
+  shipped
+  delivered
+  cancelled
+}
+
+enum user_role {
+  user
+  admin
+}
