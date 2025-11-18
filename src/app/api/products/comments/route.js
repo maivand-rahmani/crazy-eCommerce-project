@@ -47,7 +47,7 @@ export async function PUT(req) {
   try {
     const data = await req.json();
 
-    const comment = await prisma.reviews.update({
+    const Comment = await prisma.reviews.update({
       where: {
         id: Number(data?.id),
       },
