@@ -8,7 +8,13 @@ export async function GET(req) {
 
     const comments = await prisma.reviews.findMany({
       where: { product_id: searchParams.get("id") },
+      include: {
+        reviews_reactions: true
+      }
     });
+
+     
+
 
     return NextResponse.json(toSafeJson(comments));
   } catch (error) {
@@ -52,14 +58,12 @@ export async function PUT(req) {
         id: Number(data?.id),
       },
       data: {
-        user_id: data?.user_id,
-        product_id: Number(data?.productId),
         rating: Number(data?.rating),
         comment: String(data?.comment),
       },
     });
 
-    return NextResponse.json({ data: "comment edited", status: 201 });
+    return NextResponse.json({ comment: toSafeJson(Comment), status: 201 });
   } catch (error) {
     console.error("API error:", error);
     return NextResponse.json(
@@ -70,7 +74,7 @@ export async function PUT(req) {
 }
 
 export async function DELETE(req) {
-  const data = await req.json;
+  const data = await req.json();
   try {
     const comment = await prisma.reviews.delete({
       where: {

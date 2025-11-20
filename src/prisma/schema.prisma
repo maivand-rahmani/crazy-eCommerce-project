@@ -116,18 +116,26 @@ model products {
 /// This table contains check constraints and requires additional setup for migrations. Visit https://pris.ly/d/check-constraints for more info.
 /// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
 model reviews {
-  id         BigInt   @id @default(autoincrement())
-  user_id    String
-  product_id BigInt
-  rating     Int      @db.SmallInt
-  comment    String?
-  created_at DateTime @default(now()) @db.Timestamptz(6)
-  likes      Int?     @default(0) @db.SmallInt
-  dislikes   Int?     @default(0) @db.SmallInt
-  products   products @relation(fields: [product_id], references: [id], onDelete: Cascade, onUpdate: NoAction)
+  id                Int                 @id @default(autoincrement())
+  user_id           String
+  product_id        BigInt
+  rating            Int                 @db.SmallInt
+  comment           String?
+  created_at        DateTime            @default(now()) @db.Timestamptz(6)
+  products          products            @relation(fields: [product_id], references: [id], onDelete: Cascade, onUpdate: NoAction)
+  reviews_reactions reviews_reactions[]
 
   @@unique([user_id, product_id])
   @@index([product_id], map: "idx_reviews_product")
+}
+
+model reviews_reactions {
+  id         BigInt    @id(map: "reviews_rections_pkey") @default(autoincrement())
+  user_id    String?
+  comment_id Int?
+  type       liketype?
+  created_at DateTime? @default(now()) @db.Timestamptz(6)
+  reviews    reviews?  @relation(fields: [comment_id], references: [id], onDelete: Cascade, onUpdate: NoAction)
 }
 
 model variant_options {
@@ -161,6 +169,11 @@ model wishlist_items {
   @@unique([wishlist_id, product_id, variant_id])
   @@index([product_id], map: "idx_wishlist_items_product_id")
   @@index([wishlist_id], map: "idx_wishlist_items_wishlist_id")
+}
+
+enum liketype {
+  like
+  dislike
 }
 
 enum order_status {

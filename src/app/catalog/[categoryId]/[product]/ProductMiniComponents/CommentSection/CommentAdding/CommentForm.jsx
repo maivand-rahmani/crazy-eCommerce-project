@@ -3,6 +3,7 @@ import React, { useState } from "react";
 import { CommentAction } from "./FormAction";
 import styled from "styled-components";
 import Rating from '../client/Rating';
+import { toast } from 'react-hot-toast';
 
 export const CommentForm = ({ product_id , onAddComment }) => {
   const [rating, setRating] = useState(0); // здесь хранится выбранная звезда
@@ -17,11 +18,14 @@ export const CommentForm = ({ product_id , onAddComment }) => {
     const res = await CommentAction(formData);
 
     if (res?.newComment) {
-      onAddComment(res.newComment); // 👈 мгновенно показываем новый коммент
+      onAddComment(res.newComment); 
+      toast.success("comment successfully added") 
+      setComment("");     // очистка
+      setRating(0);
+    } else {
+      toast.error("Something gone wrong")
     }
 
-    setComment("");     // очистка
-    setRating(0);
   };
 
   return (
@@ -61,5 +65,4 @@ export const CommentForm = ({ product_id , onAddComment }) => {
 
 export default CommentForm;
 
-// Стили для рейтинга
  

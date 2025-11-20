@@ -25,7 +25,9 @@ const page = async ({ params }) => {
     token ? token : null
   );
 
-  const data = MainData[0];
+
+ 
+  const data = token ? MainData[0] : MainData
 
   const specs = data?.products?.product_specs || [];
 
@@ -50,7 +52,7 @@ const page = async ({ params }) => {
             <div className="w-full h-64 bg-gray-200 animate-pulse"></div>
           }
         >
-          <MainInfo product={data} isFavorite={MainData[1].isFavorite} />
+          <MainInfo product={data} isFavorite={ token ? MainData[1]?.isFavorite : null} />
         </Suspense>
       </div>
       <Suspense fallback={<Miniloader />}>
