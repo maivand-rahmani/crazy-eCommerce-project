@@ -79,6 +79,17 @@ export async function addToCart(variantId, method, cartId) {
     });
 
     return result ?? { success: true };
+  } else if (method === "delete") {
+    await prisma.cart_items.delete({
+      where: { 
+        cart_id_variant_id: {
+              cart_id: cartId,
+              variant_id: variantId,
+          },
+      },
+    });
+
+    return { success: true };
   }
 
   revalidatePath("/cart");

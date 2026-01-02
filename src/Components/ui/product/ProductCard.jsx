@@ -18,6 +18,7 @@ const ProductCard = ({ data , otherInfo }) => {
     );
   }
 
+  
  
   
 
@@ -25,16 +26,17 @@ const ProductCard = ({ data , otherInfo }) => {
     <div className="group relative flex flex-col items-center justify-between rounded-2xl bg-white p-6 shadow-md transition-all duration-300 hover:-translate-y-1 hover:shadow-2xl">
       {/* Like button */}
       <div className="absolute z-20 top-4 right-4">
-        <AddToWishListCom wishlistInfo={otherInfo} productId={data.product_id} variantId={data.variant_id} />
+        <AddToWishListCom
+          wishlistInfo={otherInfo}
+          productId={data.product_id}
+          variantId={data.variant_id}
+        />
       </div>
 
       {/* Image */}
       <div className="flex items-center justify-center w-full max-h-[220px] overflow-clip">
         <img
-          src={
-            data.image_url ||
-            "/placeholder.png"
-          }
+          src={data.image_url || "/placeholder.png"}
           alt={data.variant_name}
           width={220}
           height={220}
