@@ -3,45 +3,34 @@ export const dynamicParams = false;
 import React from "react";
 import ProductsContainer from './ProductsContainer/ProductsContainer'
 import { Url } from "@/Components/ui/urlWay/url.jsx"
+import Fetch from "@/funcs/fetch";
 
 
 export async function generateStaticParams() {
   return [
-    { categoryId: "Smartphones" },
-    { categoryId: "Computers" },
-    { categoryId: "Tablets" },
-    { categoryId: "Accessories" },
-    { categoryId: "Cables" },
-    { categoryId: "Headphones" },
-    { categoryId: "Chargers" },
-    { categoryId: "Cases & Covers" },
-    { categoryId: "Watches" },
-    { categoryId: "Monitors" },
+    { categoryId: "1" },
+    { categoryId: "2" },
+    { categoryId: "3" },
+    { categoryId: "4" },
+    { categoryId: "5" },
+    { categoryId: "6" },
+    { categoryId: "7" },
+    { categoryId: "8" },
+    { categoryId: "9" },
+    { categoryId: "10" },
   ];
 }
 
 const page = async ({ params }) => {
   const categoryId  = await params?.categoryId;
+  
+  let data = await Fetch(`/api/products?category=${categoryId}`);
    
-
-  let data;
-  try {
-    const res = await fetch(
-      `${process.env.API_URL}/api/products?category=${categoryId}`,
-      {
-        cache: "no-store",
-      }
-    );
-    data = await res.json();
-  } catch (error) {
-    console.log("Something gone wrong!", error);
-  }
 
   if (!data) return <div>Something gone wrong</div>;
 
   return (
     <div className="">
-      <Url />
       <ProductsContainer category={categoryId} data={data}/>
     </div>
   );

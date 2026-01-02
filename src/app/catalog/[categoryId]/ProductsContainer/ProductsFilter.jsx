@@ -1,5 +1,5 @@
 "use client";
-import { useState } from "react";
+import { useState , useEffect } from "react";
 
 export default function ProductFilters({ setProducts, products }) {
   const [originalProducts] = useState(products);
@@ -14,33 +14,13 @@ export default function ProductFilters({ setProducts, products }) {
 
   const filterOptions = {
     Brand: Array.from(
-      new Set(
-        products
-          .map((p) => p.product_specs.find((s) => s.key === "Brand")?.value)
-          .filter(Boolean)
-      )
+      new Set(products.map((p) => p.specs?.Brand).filter(Boolean))
     ),
     Storage: Array.from(
-      new Set(
-        products.flatMap((p) =>
-          p.product_variants.flatMap((v) =>
-            v.variant_options
-              .filter((o) => o.key === "Storage")
-              .map((o) => o.value)
-          )
-        )
-      )
+      new Set(products.map((p) => p.variant_options?.Storage).filter(Boolean))
     ),
     Color: Array.from(
-      new Set(
-        products.flatMap((p) =>
-          p.product_variants.flatMap((v) =>
-            v.variant_options
-              .filter((o) => o.key === "Color")
-              .map((o) => o.value)
-          )
-        )
-      )
+      new Set(products.map((p) => p.variant_options?.Color).filter(Boolean))
     ),
   };
 
@@ -75,59 +55,42 @@ export default function ProductFilters({ setProducts, products }) {
   };
 
   const applyFilters = () => {
-    const filtered = originalProducts
-      .map((product) => {
-        // Фильтр по бренду
-        const brandMatch =
-          selectedFilters.Brand.length === 0 ||
-          product.product_specs.some(
-            (spec) =>
-              spec.key === "Brand" &&
-              selectedFilters.Brand.includes(spec.value)
-          );
+    const min = selectedFilters.minPrice ? Number(selectedFilters.minPrice) : 0;
 
-        // Фильтруем варианты по памяти, цвету и цене
-        const filteredVariants = product.product_variants.filter((variant) => {
-          const memoryMatch =
-            selectedFilters.Storage.length === 0 ||
-            variant.variant_options.some((option) =>
-              option.key === "Storage"
-                ? selectedFilters.Storage.includes(option.value)
-                : false
-            );
+    const max = selectedFilters.maxPrice
+      ? Number(selectedFilters.maxPrice)
+      : Infinity;
 
-          const colorMatch =
-            selectedFilters.Color.length === 0 ||
-            variant.variant_options.some((option) =>
-              option.key === "Color"
-                ? selectedFilters.Color.includes(option.value)
-                : false
-            );
+    const filtered = originalProducts.filter((card) => {
+      /* ---------- BRAND (product specs) ---------- */
+      const brandMatch =
+        selectedFilters.Brand.length === 0 ||
+        selectedFilters.Brand.includes(card.specs?.Brand);
 
-          const min = selectedFilters.minPrice
-            ? Number(selectedFilters.minPrice)
-            : 0;
-          const max = selectedFilters.maxPrice
-            ? Number(selectedFilters.maxPrice)
-            : Infinity;
+      /* ---------- STORAGE (variant options) ---------- */
+      const storageMatch =
+        selectedFilters.Storage.length === 0 ||
+        selectedFilters.Storage.includes(card.variant_options?.Storage);
 
-          const priceMatch =
-            variant.price_cents / 100 >= min &&
-            variant.price_cents / 100 <= max;
+      /* ---------- COLOR (variant options) ---------- */
+      const colorMatch =
+        selectedFilters.Color.length === 0 ||
+        selectedFilters.Color.includes(card.variant_options?.Color);
 
-          return memoryMatch && colorMatch && priceMatch;
-        });
+      /* ---------- PRICE ---------- */
+      const price = card.price_cents / 100;
+      const priceMatch = price >= min && price <= max;
 
-        if (brandMatch && filteredVariants.length > 0) {
-          return { ...product, product_variants: filteredVariants };
-        }
-
-        return null;
-      })
-      .filter(Boolean);
+      return brandMatch && storageMatch && colorMatch && priceMatch;
+    });
 
     setProducts(filtered);
   };
+
+  useEffect(() => {
+    applyFilters();
+  }, [selectedFilters]);
+
 
   return (
     <div className="p-6 rounded-xl space-y-6 border bg-bg border-card-bg text-text">
@@ -176,12 +139,12 @@ export default function ProductFilters({ setProducts, products }) {
         </div>
       ))}
       <div className="flex gap-2">
-        <button
+        {/* <button
           onClick={applyFilters}
           className="w-full bg-product-button-bg text-product-button-text mt-6 px-5 py-3 rounded-lg font-semibold shadow transition-all duration-200"
         >
           Apply Filters
-        </button>
+        </button> */}
         <button
           onClick={resetFilters}
           className="w-full bg-gray-300 text-black mt-6 px-5 py-3 rounded-lg font-semibold shadow"

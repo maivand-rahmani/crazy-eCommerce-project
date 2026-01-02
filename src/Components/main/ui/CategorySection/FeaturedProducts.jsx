@@ -7,20 +7,22 @@ import { auth } from "@clerk/nextjs/server";
 const FeaturedProducts = async () => {
   const { getToken } = await auth();
   const token = await getToken();
+
+
    
-   const data = await Fetch("/api/products?limit=8&vlimit=1", "GET", token ? {
-    "Authorization": `Bearer ${token}`
-   } : null);
-   if (!data) {
+   const res = await Fetch("/api/products?limit=8", "GET", token)
+
+   if (!res) {
      return <div>Failed to fetch product</div>;
   }
+
+ 
+
   return (
     <div className="grid grid-cols-2    md:grid-cols-3 lg:grid-cols-4 gap-6">
-      {data &&
-        data.flatMap((pro) =>
-          pro?.product_variants?.map((variant) => (
-            <ProductCard key={variant.id} variant={variant} product={pro} />
-          ))
+      {res &&
+        res.data.flatMap((pro) =>
+            <ProductCard key={pro.variant_id} otherInfo={{ ...res.otherInfo , isFavorite: pro?.isFavorite }}  data={pro} />
         )}
     </div>
   );

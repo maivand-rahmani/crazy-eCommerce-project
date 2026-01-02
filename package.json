@@ -26,6 +26,7 @@
     "react-dom": "19.1.0",
     "react-hot-toast": "^2.6.0",
     "react-indiana-drag-scroll": "^2.2.1",
+    "react-loading-skeleton": "^3.5.0",
     "react-range": "^1.10.0",
     "styled-components": "^6.1.19",
     "superjson": "^2.2.2",

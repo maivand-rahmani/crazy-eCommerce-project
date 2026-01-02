@@ -21,8 +21,7 @@ const MainCommentComponent = async ({ productID }) => {
     ...c,
     likes: c.reviews_reactions.filter((r) => r.type === "like").length,
     dislikes: c.reviews_reactions.filter((r) => r.type === "dislike").length,
-    userReaction:
-      c.reviews_reactions.find((r) => r.user_id === user.id)?.type || null,
+    userReaction: user ? c.reviews_reactions.find((r) => r.user_id === user.id)?.type : null,
   }));
 
   const ids = [...new Set(data.map((c) => c.user_id))];

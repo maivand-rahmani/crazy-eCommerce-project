@@ -24,7 +24,7 @@ const CategoryCard =  ({ Category , kidsList , Scroll = true }) => {
 
   function Click() {
     setclick(!clicked)
-    router.push(`/catalog/${Category.name}`)
+    router.push(`/catalog/${Category.id}`)
   }
   
   return (

@@ -5,6 +5,7 @@ import Main from "@/Components/main/banners/main";
 import CategorySection from "@/Components/main/ui/categorySection/Main";
 import DragScrollContainer from "@/Components/main/ScrollContainer/ScrollContainer";
 import FeaturedProducts from "@/Components/main/ui/CategorySection/FeaturedProducts";
+import ProductsRenderSkeleton from '@/Components/ui/skeleton/ProductsRenderSkeleton';
 
 
 
@@ -20,8 +21,8 @@ const Page = async () => {
       </Suspense>
       <div className="md:my-14 md:mx-40">
         <h1 className="text-2xl font-bold my-6">Featured Products</h1>
-        <Suspense fallback={<MiniLoader />}>
-          <FeaturedProducts />
+        <Suspense fallback={<ProductsRenderSkeleton productsCount={8}/>}>
+          <FeaturedProducts/>
         </Suspense>
       </div>
       <DragScrollContainer />

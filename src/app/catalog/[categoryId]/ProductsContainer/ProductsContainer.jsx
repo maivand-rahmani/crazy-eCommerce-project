@@ -6,8 +6,8 @@ import ProductsLists from './ProductsLists'
 import ProductCard from "@/Components/ui/product/ProductCard";
 
 
-const ProductsContainer = ({data , category}) => {
-  let [products , setProducts] = useState(data)
+const ProductsContainer = ({ data }) => {
+  let [products , setProducts] = useState(data.data)
   
 
   return (
