@@ -10,7 +10,8 @@
   },
   "dependencies": {
     "@clerk/nextjs": "^6.34.1",
-    "@prisma/client": "^6.16.2",
+    "@prisma/client": "^6.19.0",
+    "@prisma/extension-accelerate": "^2.0.2",
     "@tiptap/extension-underline": "^3.10.7",
     "@tiptap/react": "^3.10.7",
     "@tiptap/starter-kit": "^3.10.7",
@@ -23,7 +24,9 @@
     "react": "19.1.0",
     "react-aria-components": "^1.13.0",
     "react-dom": "19.1.0",
+    "react-hot-toast": "^2.6.0",
     "react-indiana-drag-scroll": "^2.2.1",
+    "react-loading-skeleton": "^3.5.0",
     "react-range": "^1.10.0",
     "styled-components": "^6.1.19",
     "superjson": "^2.2.2",
@@ -37,7 +40,7 @@
     "@types/react-dom": "^19",
     "eslint": "^9",
     "eslint-config-next": "15.5.3",
-    "prisma": "^6.16.2",
+    "prisma": "^6.19.0",
     "tailwindcss": "^4",
     "typescript": "^5"
   }

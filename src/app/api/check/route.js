@@ -3,17 +3,10 @@ import prisma from '../../../prisma/client';
 import { toSafeJson } from '../../../prisma/funcs';
 
 export async function GET() {
-    // const { searchParams } = new URL(request.url);
-  
-
-  // Perform your logic here
- 
+   
 
   const product = await prisma.product_variants.findMany({
-     include: {
-        variant_options: true,
-         
-      },
+     
   });
 
   if (!product) {

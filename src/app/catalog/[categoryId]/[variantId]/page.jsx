@@ -15,46 +15,42 @@ export const metadata = {
 };
 
 const page = async ({ params }) => {
-  const { product } = await params;
-  const { getToken } = await auth();
+  const { variantId } = await params;
+  const { getToken , userId } = await auth();
   const token = await getToken();
 
   let MainData = await Fetch(
-    `/api/products/${product}`,
+    `/api/products/${variantId}`,
     "GET",
-    token ? token : null
+    token
   );
 
-  const data = MainData[0];
+ 
 
-  const specs = data?.products?.product_specs || [];
+ 
+  const data = userId ? MainData.variant : MainData
+  const metaData = userId ? MainData.meta : null
 
-  const images =
-    Array.isArray(data?.product_images) && data.product_images.length > 0
-      ? data.product_images
-      : Array.isArray(data?.products?.product_images)
-      ? data.products.product_images
-      : [];
+   
 
-  if (!Array.isArray(data?.product_images))
-    return <div>Something gone wrong {JSON.stringify(data)}</div>;
+ 
 
   return (
     <main className="md:px-4 h-full p-5 md:p-20 flex flex-col">
       <div className="w-full flex-col flex center pb-28 md:px-20 md:flex-row md:gap-10 gap-5">
         <Suspense fallback={<Miniloader />}>
-          <Slider images={images} />
+          <Slider productId={data.products.id} variantId={variantId} />
         </Suspense>
         <Suspense
           fallback={
             <div className="w-full h-64 bg-gray-200 animate-pulse"></div>
           }
         >
-          <MainInfo product={data} isFavorite={MainData[1].isFavorite} />
+          <MainInfo product={data} otherInfo={ userId ? metaData : null}  />
         </Suspense>
       </div>
       <Suspense fallback={<Miniloader />}>
-        <ProductSpecs specs={specs} />
+        <ProductSpecs productId={data.products.id} />
       </Suspense>
       {/* <Suspense fallback={<Miniloader />}>
         <div className="py-10 px-5 md:py-20 md:px-40">

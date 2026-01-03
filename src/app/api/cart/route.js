@@ -7,13 +7,13 @@ export async function GET() {
   const user = await currentUser();
   if (!user) return new Response("Unauthorized", { status: 401 });
 
-  const wishlist = await prisma.$queryRaw`
-    SELECT pc.*
-    FROM wishlist w
-    JOIN wishlist_items wi ON wi.wishlist_id = w.id
+  const cart = await prisma.$queryRaw`
+    SELECT pc.* , wi.quantity , w.id as cart_id
+    FROM carts w
+    JOIN cart_items wi ON wi.cart_id = w.id
     JOIN product_cards pc ON pc.variant_id = wi.variant_id
     WHERE w.user_id = ${user.id}
   `;
 
-  return NextResponse.json(toSafeJson(wishlist));
+  return NextResponse.json(toSafeJson(cart));
 }

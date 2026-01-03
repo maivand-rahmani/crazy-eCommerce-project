@@ -1,12 +1,16 @@
 "use client";
 import React, { useState } from "react";
 import Link from "next/link";
-import { Truck , Store , BadgeCheck } from 'lucide-react';
+import {useParams } from "next/navigation"
+import { Truck , Store , BadgeCheck , ShoppingCart } from 'lucide-react';
 import { AddToWishListCom } from '@/Components/ui/product/addtowish/AddToWishListCom';
+import { AddToCartButton } from '@/Components/ui/product/addtocart/AddToCartButton';
 
-const MainInfo = ({ product , isFavorite }) => {
+const  MainInfo = ({ product , otherInfo }) => {
   const variants = product.products?.product_variants || [];
   const currentVariant = product;
+
+   const { categoryId } = useParams()
 
  
 
@@ -107,7 +111,7 @@ const MainInfo = ({ product , isFavorite }) => {
                           onClick={() => setSelectedStorage(option.storage)}
                         >
                           <Link
-                            href={`/catalog/${product.products.categories.name}/${option.id}?variant=${option.variant_name}&product=${product.products.name}`}
+                            href={`/catalog/${categoryId}/${option.id}?variant=${option.variant_name}&product=${product.products.name}`}
                           >
                             {option.storage}
                           </Link>
@@ -125,7 +129,7 @@ const MainInfo = ({ product , isFavorite }) => {
                                     }`}
                                   >
                                     <Link
-                                      href={`/catalog/${product.products.categories.name}/${r.id}?variant=${r.variant_name}&product=${product.products.name}`}
+                                      href={`/catalog/${categoryId}/${r.id}?variant=${r.variant_name}&product=${product.products.name}`}
                                     >
                                       {r.ram}
                                     </Link>
@@ -166,18 +170,16 @@ const MainInfo = ({ product , isFavorite }) => {
         <p className="text-xl text-gray-700">{product.products.description}</p>
       </div>
 
-      {/* add to cart button */}
+      {/* add to favorite , cart button */}
       <div className="grid grid-cols-2 gap-4 mt-6">
-        <div className={`border flex center hover:border-red-600 hover  :text-white transition ${isFavorite ? "border-red-600" : null}`}>
-          <AddToWishListCom isFavorite={isFavorite} variantId={currentVariant.id} productId={product.products.id}> 
-          {isFavorite ? "Added to wishlist" : "Add to Wishlist"}
+        <div className={`border flex center hover:border-red-600 hover  :text-white transition ${otherInfo?.isFavorite ? "border-red-600" : null}`}>
+          <AddToWishListCom wishlistInfo={otherInfo} variantId={currentVariant.id} productId={product.products.id}> 
+          {otherInfo?.isFavorite ? "Added to wishlist" : "Add to Wishlist"}
         </AddToWishListCom>
         </div>
         
         
-        <button className="bg-black text-white py-2 px-4 rounded">
-          Add to Cart
-        </button>
+        <AddToCartButton variantId={currentVariant.id} cart_id={otherInfo?.cart_id}/>
       </div>
 
       {/* {guarantee , stock , free delivery} */}

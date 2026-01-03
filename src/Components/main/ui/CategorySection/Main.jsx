@@ -23,7 +23,7 @@ const CategorySection = async () => {
         <h1 className="font-bold text-xl/8 "><Link href={"/catalog"}>{t("title")}</Link></h1>
       </div>
       <div className="grid grid-cols-2 gap-4 md:flex">
-        {!categories.error && categories.map((Category) => (
+        {!categories?.error && categories.map((Category) => (
           Category.parent_id === null && (
             <CategoryCard Category={Category} kidsList={categories.filter(element => element.parent_id === Category.id)} key={Category.id} />
           )
