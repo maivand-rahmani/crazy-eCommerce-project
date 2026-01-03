@@ -1,10 +1,11 @@
 "use client";
 import React, { useEffect, useState } from "react";
 import { useAuth } from "@clerk/nextjs";
-import { addToCart } from "./addToCart";
-import { ShoppingCart, PlusSquare, MinusSquare , Trash2 } from "lucide-react";
+import { addToCart } from "./funcs/addToCart";
+import { ShoppingCart, PlusSquare, MinusSquare, Trash2 } from "lucide-react";
 import { toast } from "react-hot-toast";
 import Fetch from "@/funcs/fetch";
+import Counter from "./components/counter";
 
 export const AddToCartButton = ({ variantId, cart_id }) => {
   const { getToken, isSignedIn } = useAuth();
@@ -52,7 +53,7 @@ export const AddToCartButton = ({ variantId, cart_id }) => {
     }, [variantId, cart_id]);
   }
 
-  async function handleClick(method) {
+  async function handleCartQuantityChange(method) {
     if (!isSignedIn) return toast("Authorization required.", { icon: "🔐" });
 
     if (method === "add") {
@@ -99,7 +100,7 @@ export const AddToCartButton = ({ variantId, cart_id }) => {
       try {
         let res = await addToCart(variantId, method, cart_id);
         if (res?.success) {
-          setAdded(false)
+          setAdded(false);
           toast.success("Item removed from cart");
         }
         if (!res?.success)
@@ -109,7 +110,8 @@ export const AddToCartButton = ({ variantId, cart_id }) => {
       } finally {
         setLoading(false);
       }
-  }}
+    }
+  }
 
   return (
     <div
@@ -123,7 +125,7 @@ export const AddToCartButton = ({ variantId, cart_id }) => {
         <button
           disabled={loading}
           className="flex center w-full h-full"
-          onClick={() => handleClick("add")}
+          onClick={() => handleCartQuantityChange("add")}
         >
           <div className=" absolute flex center group-hover:invisible ">
             {loading ? "Loading..." : null}
@@ -140,26 +142,10 @@ export const AddToCartButton = ({ variantId, cart_id }) => {
       )}
 
       {added && counter >= 1 && (
-        <div className="flex justify-between items-center gap-10">
-          <div className="flex gap-20 justify-between">
-            <button disabled={loading} onClick={() => handleClick("remove")}>
-              <MinusSquare className={`${loading ? "opacity-50" : null}`} />
-            </button>
-            <div className=" font-bold">
-              {
-                <div className={`${loading ? "animate-pulse" : null}`}>
-                  {counter}
-                </div>
-              }
-            </div>
-            <button disabled={loading} onClick={() => handleClick("add")}>
-              <PlusSquare className={`${loading ? "opacity-50" : null}`} />
-            </button>
-          </div>
-          <div>
-            <button onClick={() => handleClick("delete")} className="flex center "><Trash2 color="red" className={`${loading ? "opacity-50" : null}`} /></button>
-          </div>
-        </div>
+        <Counter
+          handleClick={handleCartQuantityChange}
+          state={{ loading: loading , quantity: counter }}
+        />
       )}
     </div>
   );

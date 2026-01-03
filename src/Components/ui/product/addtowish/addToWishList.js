@@ -1,10 +1,8 @@
-"use server";
-
- 
+"use server"
 import prisma from "@/prisma/client";
 import { revalidatePath } from "next/cache";
 
-export async function addToWishlist(productId, variantId , wishlistId) {
+export default async function addToWishlist(productId, variantId , wishlistId) {
   const existing = await prisma.wishlist_items.findFirst({
     where: {
       wishlist_id: wishlistId,
@@ -28,7 +26,9 @@ export async function addToWishlist(productId, variantId , wishlistId) {
       product_id: productId,
       variant_id: variantId,
     },
+    
    });
+   revalidatePath("/Wishlist")
    return { status: "added" };
   }
 }

@@ -1,8 +1,11 @@
 import React from 'react'
+import CartProductsList from './ui/CartProductsList';
 
 const page = () => {
   return (
-    <div>page</div>
+    <div className=' py-10 px-2 md:p-40'>
+      <CartProductsList />
+    </div>
   )
 }
 

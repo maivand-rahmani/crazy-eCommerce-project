@@ -1,7 +1,7 @@
 "use client";
 import React, { useTransition, useState } from "react";
 import { useAuth , isSignedIn } from "@clerk/nextjs"
-import { addToWishlist } from "./addToWishlist";
+import addToWishlist  from "./addToWishList";
 import { Heart } from "lucide-react";
 import { toast } from "react-hot-toast"
 
