@@ -44,7 +44,7 @@ export const AddToCartButton = ({ variantId, cart_id }) => {
             });
             console.log(error);
           }
-        } finally {d
+        } finally {
           setLoading(false);
         }
       };

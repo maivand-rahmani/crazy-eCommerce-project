@@ -8,7 +8,7 @@ import { SignedIn , SignedOut , SignInButton , SignUpButton } from "@clerk/nextj
 const CommentSection = ({ productID , initialComments , users }) => {
   const [comments, setComments] = useState(initialComments);
 
-   
+   console.log(comments)
 
   const handleAddComment = (newComment) => {
     const user = users.find(u => u.id === newComment.user_id);

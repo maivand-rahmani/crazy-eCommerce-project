@@ -12,6 +12,9 @@ export const CommentForm = ({ product_id , onAddComment }) => {
  const handleSubmit = async (e) => {
     e.preventDefault();
 
+    if (!rating) return toast.error("Please add a rating")
+    if (!comment) return toast.error("Please add a comment")
+
     const formData = new FormData(e.target);
     formData.set("rating", rating);
 

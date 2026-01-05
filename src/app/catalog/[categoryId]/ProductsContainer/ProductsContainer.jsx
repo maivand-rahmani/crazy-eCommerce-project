@@ -3,7 +3,7 @@
 import React, { useState } from 'react'
 import ProductsFilter from './ProductsFilter'
 import ProductsLists from './ProductsLists'
-import ProductCard from "@/Components/ui/product/ProductCard";
+import ProductCard from "@/Components/ui/product/ProductCard/ProductCard.jsx";
 
 
 const ProductsContainer = ({ data }) => {

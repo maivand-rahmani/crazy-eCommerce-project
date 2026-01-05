@@ -1,4 +1,4 @@
-import ProductCard from '@/Components/ui/product/ProductCard'
+import ProductCard from '@/Components/ui/product/ProductCard/ProductCard'
 import React from 'react'
 
 
