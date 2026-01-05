@@ -1,5 +1,5 @@
 import React from 'react'
-import CartProductsList from './ui/CartProductsList';
+import CartProductsList from './pages/CartProductsList';
 
 const page = () => {
   return (

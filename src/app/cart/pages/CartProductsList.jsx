@@ -2,7 +2,7 @@
 import Fetch from "@/funcs/fetch";
 import React, { useState, useEffect } from "react";
 import { useAuth } from "@clerk/nextjs";
-import SmallProductCard from "@/Components/ui/product/SmallProductCard";
+import SmallProductCard from "@/Components/ui/product/SmallProductCard/SmallProductCard.jsx";
 
 const CartProductsList = () => {
   const [products, setProducts] = useState();

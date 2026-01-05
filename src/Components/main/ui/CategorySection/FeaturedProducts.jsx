@@ -1,6 +1,6 @@
  
 import React from "react";
-import ProductCard from "@/Components/ui/product/ProductCard";
+import ProductCard from "@/Components/ui/product/ProductCard/ProductCard";
 import Fetch from "../../../../funcs/fetch";
 import { auth } from "@clerk/nextjs/server";
 

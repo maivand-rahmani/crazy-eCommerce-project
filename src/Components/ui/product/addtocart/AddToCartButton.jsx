@@ -1,7 +1,7 @@
 "use client";
 import React, { useEffect, useState } from "react";
 import { useAuth } from "@clerk/nextjs";
-import { addToCart } from "./funcs/addToCart";
+import { addToCart } from "./handlers/addToCart";
 import { ShoppingCart, PlusSquare, MinusSquare, Trash2 } from "lucide-react";
 import { toast } from "react-hot-toast";
 import Fetch from "@/funcs/fetch";
@@ -44,7 +44,7 @@ export const AddToCartButton = ({ variantId, cart_id }) => {
             });
             console.log(error);
           }
-        } finally {
+        } finally {d
           setLoading(false);
         }
       };

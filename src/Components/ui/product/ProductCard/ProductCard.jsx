@@ -2,7 +2,7 @@
 import React, { useState } from "react";
 import { Heart } from "lucide-react";
 import Image from "next/image";
-import { AddToWishListCom } from "./addtowish/AddToWishListCom.jsx";
+import { AddToWishListCom } from "../addtowish/AddToWishListCom";
 import { useRouter  } from "next/navigation";
 
 const ProductCard = ({ data , otherInfo }) => {

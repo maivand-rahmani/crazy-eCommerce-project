@@ -1,7 +1,7 @@
 import React from "react";
 import Fetch from "@/funcs/fetch";
 import { auth } from "@clerk/nextjs/server";
-import ProductCard from "@/Components/ui/product/ProductCard";
+import ProductCard from "@/Components/ui/product/ProductCard/ProductCard.jsx";
 import Link from "next/link";
 
 const page = async () => {

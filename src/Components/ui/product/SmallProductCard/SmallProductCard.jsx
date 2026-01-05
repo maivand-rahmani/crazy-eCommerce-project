@@ -1,5 +1,5 @@
 import React from "react";
-import AddToCartButton from "./addtocart/AddToCartButton";
+import AddToCartButton from "../addtocart/AddToCartButton";
 
 const SmallProductCard = ({ productData, accessibility }) => {
     console.log(accessibility , productData)
