@@ -21,18 +21,19 @@ const Slider = ({ productId, variantId }) => {
           productId ? productId : undefined
         }&variantId=${variantId ? variantId : undefined}`
       );
-      setImages(
-        data.data.filter(
-          (img) => img.variant_id === variantId || !img.variant_id
-        )
-      );
-      setLength(data.data.length);
 
-      console.log(data);
+      const filteredImages = data.data.filter((img) => img.variant_id == variantId)
+      
+      setImages(filteredImages);
+      setLength(filteredImages.length);
+
+      console.log(images , data , filteredImages);
     }
 
     getImages();
   }, [productId, variantId]);
+
+  
 
   return (
     images && (
