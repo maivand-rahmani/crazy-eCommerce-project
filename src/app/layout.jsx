@@ -1,7 +1,7 @@
 import { NextIntlClientProvider } from "next-intl";
-import Header from "@/Components/header/Header";
-import FooterCyber from "@/Components/footer/Footer";
-import "./../style/globals.css";
+import Header from "@/components/header/Header";
+import FooterCyber from "@/components/footer/Footer";
+import "./../styles/globals.css";
 import { ClerkProvider } from "@clerk/nextjs";
 import { ensureUserInDB } from "../funcs/ensureUserInDB";
 import { Toaster } from "react-hot-toast";

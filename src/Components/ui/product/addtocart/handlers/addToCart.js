@@ -9,8 +9,8 @@
 "use server";
 
 
-import prisma from "@/prisma/client";
-import { toSafeJson } from "@/prisma/funcs";
+import prisma from "../../../../../../prisma/client";
+import { toSafeJson } from "../../../../../../prisma/funcs";
 import { revalidatePath } from "next/cache";
 
 export async function addToCart(variantId, method, cartId) {

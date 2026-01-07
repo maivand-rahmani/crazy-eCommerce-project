@@ -1,6 +1,6 @@
-"use client"
-import React , { useRef } from "react";
-import ResponsibleBanner from '@/Components/main/banners/ResponsibleBanner' 
+"use client";
+import React, { useRef } from "react";
+import ResponsibleBanner from "@/components/main/banners/ResponsibleBanner";
 
 const bannersInfo = [
   {
@@ -33,11 +33,10 @@ const bannersInfo = [
   },
 ];
 
-
 export default function DragScrollContainer({ children }) {
   const ref = useRef(null);
 
-  const handleMouseDown = (e ) => {
+  const handleMouseDown = (e) => {
     const el = ref.current;
     if (!el) return;
 
@@ -67,20 +66,17 @@ export default function DragScrollContainer({ children }) {
       // onMouseDown={handleMouseDown}
       className="overflow-auto whitespace-nowrap md:whitespace-normal md:cursor-default cursor-grab select-none flex snap-x scroll-smoot"
     >
-        {bannersInfo.map((banner) => (
-          <ResponsibleBanner
-            className={""}
-            bgColor={banner.bg}
-            img={banner.img}
-            key={banner.link}
-            name={banner.name}
-            des={banner.des}
-            link={banner.link}
-          />
-        ))}
-       
+      {bannersInfo.map((banner) => (
+        <ResponsibleBanner
+          className={""}
+          bgColor={banner.bg}
+          img={banner.img}
+          key={banner.link}
+          name={banner.name}
+          des={banner.des}
+          link={banner.link}
+        />
+      ))}
     </div>
   );
 }
-
- 

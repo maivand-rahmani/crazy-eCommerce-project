@@ -1,5 +1,5 @@
 "use server"
-import prisma from "@/prisma/client";
+import prisma from "../../../../../prisma/client";
 import { revalidatePath } from "next/cache";
 
 export default async function addToWishlist(productId, variantId , wishlistId) {

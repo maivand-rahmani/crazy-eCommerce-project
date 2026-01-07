@@ -1,14 +1,11 @@
 export const dynamic = "force-dynamic";
 import React, { Suspense } from "react";
-import MiniLoader from "@/Components/Loading/ComponentLoader/miniloader";
-import Main from "@/Components/main/banners/main";
-import CategorySection from "@/Components/main/ui/categorySection/Main";
-import DragScrollContainer from "@/Components/main/ScrollContainer/ScrollContainer";
-import FeaturedProducts from "@/Components/main/ui/CategorySection/FeaturedProducts";
-import ProductsRenderSkeleton from '@/Components/ui/skeleton/ProductsRenderSkeleton';
-
-
-
+import MiniLoader from "@/components/Loading/ComponentLoader/miniloader";
+import Main from "@/components/main/banners/main";
+import CategorySection from "@/components/main/ui/categorySection/Main";
+import DragScrollContainer from "@/components/main/ScrollContainer/ScrollContainer";
+import FeaturedProducts from "@/components/main/ui/CategorySection/FeaturedProducts";
+import ProductsRenderSkeleton from "@/components/ui/skeleton/ProductsRenderSkeleton";
 
 const Page = async () => {
   return (
@@ -21,8 +18,8 @@ const Page = async () => {
       </Suspense>
       <div className="md:my-14 md:mx-40">
         <h1 className="text-2xl font-bold my-6">Featured Products</h1>
-        <Suspense fallback={<ProductsRenderSkeleton productsCount={8}/>}>
-          <FeaturedProducts/>
+        <Suspense fallback={<ProductsRenderSkeleton productsCount={8} />}>
+          <FeaturedProducts />
         </Suspense>
       </div>
       <DragScrollContainer />
