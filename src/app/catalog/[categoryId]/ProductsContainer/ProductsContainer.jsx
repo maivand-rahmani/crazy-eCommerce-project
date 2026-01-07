@@ -1,30 +1,71 @@
 "use client";
 
-import { Settings2Icon } from "lucide-react"
+import { Settings2Icon, X } from "lucide-react";
 import React, { useState } from "react";
 import ProductsFilter from "./ProductsFilter";
 import ProductsLists from "./ProductsLists";
-import ProductCard from "@/Components/ui/product/ProductCard/ProductCard.jsx";
 
 const ProductsContainer = ({ data }) => {
-  let [products, setProducts] = useState(data.data);
-  let [open, setOpen] = useState(false);
-  
+  const [products, setProducts] = useState(data.data);
+  const [open, setOpen] = useState(false);
+
   return (
-    <div className="flex flex-col md:flex-row p-5 md:p-20 gap-10">
-      {/* //кнопка для фильтров */}
-      <div className="md:hidden">
-        <button className=" rounded-2xl flex gap-5 p-3 border shadow-2xl transition-all active:bg-gray-200" onClick={() => setOpen(!open)}>{<Settings2Icon/>} Filters</button>
+    <div className="flex flex-col md:flex-row p-5 md:p-20 gap-10 relative">
+      
+      {/* Mobile filter button */}
+      <div className="md:hidden top-20 z-20">
+        <button
+          onClick={() => setOpen(true)}
+          className="w-full flex items-center justify-center gap-3 p-4 rounded-2xl border bg-white shadow-md active:scale-[0.98] transition"
+        >
+          <Settings2Icon size={20} />
+          <span className="font-medium">Filters</span>
+        </button>
       </div>
 
-      {/* Левая панель фильтров */}
-      
-      <div className={`${open ? "static" : "hidden"} md:sticky static top-25 self-start transition-all`} >
+      {/* Desktop filters */}
+      <div className="hidden md:block md:sticky top-25 self-start">
         <ProductsFilter setProducts={setProducts} products={products} />
       </div>
-      
 
-      {/* Список товаров */}
+      {/* Mobile filters overlay */}
+      {open && (
+        <>
+          {/* Backdrop */}
+          <div
+            onClick={() => setOpen(false)}
+            className="fixed inset-0 bg-black/40 z-40 transition-opacity"
+          />
+
+          {/* Bottom sheet */}
+          <div className="fixed bottom-0 left-0 right-0 bg-white z-50 rounded-t-3xl p-5 max-h-[85vh] overflow-y-auto animate-slide-up">
+            
+            {/* Header */}
+            <div className="flex justify-between items-center mb-4">
+              <h3 className="text-lg font-semibold">Filters</h3>
+              <button
+                onClick={() => setOpen(false)}
+                className="p-2 rounded-full hover:bg-gray-100 transition"
+              >
+                <X />
+              </button>
+            </div>
+
+            {/* Filters */}
+           <ProductsFilter setProducts={setProducts} products={products} />
+
+            {/* Apply button */}
+            <button
+              onClick={() => setOpen(false)}
+              className="mt-6 mb-20 w-full bg-black text-white py-3 rounded-xl font-medium hover:opacity-90 transition"
+            >
+              Apply filters
+            </button>
+          </div>
+        </>
+      )}
+
+      {/* Products list */}
       <div className="flex-1">
         <ProductsLists data={products} />
       </div>

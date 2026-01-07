@@ -15,7 +15,7 @@ export default async function LocaleLayout({ children }) {
         <body className="mx-auto overflow-auto max-w-[1440px]">
           <ClerkProvider>
             <Header />
-            <div className="pt-22">{children}</div>
+            <div className="md:pt-22">{children}</div>
             <Toaster position="top-center" reverseOrder={true} />
             <FooterCyber />
           </ClerkProvider>
