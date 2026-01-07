@@ -1,12 +1,13 @@
 import { NextResponse } from "next/server";
 import prisma from "../../../prisma/client";
 import { toSafeJson } from "../../../prisma/funcs";
-import { currentUser, auth } from "@clerk/nextjs/server";
+import { auth } from "@clerk/nextjs/server";
 
 export async function GET(req) {
-  const user = await currentUser();
+  const { userId } = await auth();
   const searchParams = req.nextUrl.searchParams;
 
+  
   const Params = {
     id: searchParams.get("id"),
     category: searchParams.get("category"),
@@ -30,11 +31,11 @@ export async function GET(req) {
       take: Params.limit ? Number(Params.limit) : undefined,
     });
 
-    if (user) {
+    if (userId) {
       let wishlistVariantIds = [];
 
       const wishlist = await prisma.wishlist.findUnique({
-        where: { user_id: user.id },
+        where: { user_id: userId },
         include: { wishlist_items: true },
       });
 

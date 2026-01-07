@@ -22,7 +22,7 @@ const Slider = ({ productId, variantId }) => {
         }&variantId=${variantId ? variantId : undefined}`
       );
 
-      const filteredImages = data.data.filter((img) => img.variant_id == variantId)
+      const filteredImages = data.data.filter((img) => img.variant_id == variantId || !img.variant_id)
       
       setImages(filteredImages);
       setLength(filteredImages.length);

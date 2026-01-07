@@ -67,7 +67,7 @@ const ProductsContainer = ({ data }) => {
 
       {/* Products list */}
       <div className="flex-1">
-        <ProductsLists data={products} />
+        <ProductsLists data={products} info={data?.otherInfo}/>
       </div>
     </div>
   );

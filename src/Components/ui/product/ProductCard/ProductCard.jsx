@@ -10,7 +10,6 @@ const ProductCard = ({ data , otherInfo }) => {
   if (!data) return <div>Product not found</div>;
 
   
-  
 
   function handleClick() {
     router.push(

@@ -4,6 +4,7 @@ import React from "react";
 import ProductsContainer from './ProductsContainer/ProductsContainer'
 import { Url } from "@/Components/ui/urlWay/url.jsx"
 import Fetch from "@/funcs/fetch";
+import { auth } from "@clerk/nextjs/server"
 
 
 export async function generateStaticParams() {
@@ -23,8 +24,10 @@ export async function generateStaticParams() {
 
 const page = async ({ params }) => {
   const categoryId  = await params?.categoryId;
+  const { getToken } = await auth()
+  const token = await getToken()
   
-  let data = await Fetch(`/api/products?category=${categoryId}`);
+  let data = await Fetch(`/api/products?category=${categoryId}`, "GET" , token);
    
 
   if (!data) return <div>Something gone wrong</div>;
