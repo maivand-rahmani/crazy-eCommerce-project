@@ -3,7 +3,7 @@ import React from 'react'
 
 const Loader = () => {
   return (
-    <div className="loading-screen top-0 left-0 w-full z-[9999] overflow-hidden">
+    <div className="loading-screen top-0 left-0 w-full z-[999] overflow-hidden">
         <div className="loader">
           <span><span /><span /><span /><span /></span>
           <div className="base">

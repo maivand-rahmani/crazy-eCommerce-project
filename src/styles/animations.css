@@ -1,0 +1,12 @@
+@import "tailwindcss";
+
+@theme {
+@keyframes get-out {
+    0%, 100% {
+      transform: scale(1);
+    }
+    50% {
+      transform: scale(2);
+    }
+}
+}

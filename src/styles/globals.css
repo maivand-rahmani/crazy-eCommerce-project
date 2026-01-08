@@ -1,5 +1,6 @@
 @import "tailwindcss";
 @import "./components.css";
+@import "./animations.css";
 
  /* базовая тема (light) */
 @theme inline {
@@ -19,12 +20,12 @@
   --color-iphone-bg: var(--iphone-bg);
   --color-white: var(--white);
   --color-black: var(--black);
-}
 
-@theme {
+  --animate-get-out: get-out 0.4s ease-in-out;
   --breakpoint-md: 850px;
 }
- 
+
+
  
 :root {
   --white: #ffffff;

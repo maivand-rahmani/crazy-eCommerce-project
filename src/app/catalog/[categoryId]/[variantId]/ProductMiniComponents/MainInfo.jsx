@@ -3,7 +3,7 @@ import React, { useState } from "react";
 import Link from "next/link";
 import {useParams } from "next/navigation"
 import { Truck , Store , BadgeCheck , ShoppingCart } from 'lucide-react';
-import { AddToWishListCom } from '@/Components/ui/product/addtowish/AddToWishListCom';
+import { AddToWishListCom } from '@/components/ui/product/addtowish/AddToWishListCom';
 import { AddToCartButton } from '@/Components/ui/product/addtocart/AddToCartButton';
 
 const  MainInfo = ({ product , otherInfo }) => {

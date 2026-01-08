@@ -1,8 +1,8 @@
 import { auth } from "@clerk/nextjs/server";
 import { Url } from "@/Components/ui/urlWay/url";
-import Slider from "@/Components/ui/slider/Slider";
+import Slider from "@/components/ui/slider/Slider";
 import React, { Suspense } from "react";
-import Miniloader from "@/Components/Loading/ComponentLoader/miniloader";
+import Miniloader from "@/components/Loading/ComponentLoader/miniloader";
 import MainInfo from "./ProductMiniComponents/MainInfo";
 import ProductSpecs from "./ProductMiniComponents/ProductSpecs";
 import RelatedProducts from "./ProductMiniComponents/RelatedProducts";
@@ -36,7 +36,7 @@ const page = async ({ params }) => {
  
 
   return (
-    <main className="md:px-4 h-full p-5 md:p-20 flex flex-col">
+    <main className="md:px-4 h-full w-full overflow-hidden p-5 md:p-20 flex flex-col">
       <div className="w-full flex-col flex center pb-28 md:px-20 md:flex-row md:gap-10 gap-5">
         <Suspense fallback={<Miniloader />}>
           <Slider productId={data.products.id} variantId={variantId} />

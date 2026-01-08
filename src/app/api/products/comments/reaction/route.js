@@ -1,5 +1,5 @@
 import { currentUser } from "@clerk/nextjs/server";
-import prisma from "../../../../../prisma/client";
+import prisma from "../../../../../../prisma/client";
 
 export async function POST(req) {
   const { commentId, type } = await req.json();

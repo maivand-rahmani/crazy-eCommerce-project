@@ -1,6 +1,6 @@
 export const dynamic = "force-dynamic";
 import Fetch from "@/funcs/fetch"
-import CategoryCard from "@/Components/main/ui/categorySection/CategoryCard";
+import CategoryCard from "@/components/main/ui/categorySection/CategoryCard";
 import React from "react";
 
 const page = async () => {
