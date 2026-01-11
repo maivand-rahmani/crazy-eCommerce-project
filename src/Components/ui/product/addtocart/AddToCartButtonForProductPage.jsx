@@ -1,13 +1,14 @@
 "use client";
 import React, { useEffect, useState } from "react";
 import { useAuth } from "@clerk/nextjs";
-import { addToCart } from "./handlers/addToCart";
+import { handleCartQuantityChange } from './handlers/handleCartQuantityChangeOnClient'
 import { ShoppingCart, PlusSquare, MinusSquare, Trash2 } from "lucide-react";
 import { toast } from "react-hot-toast";
 import Fetch from "@/funcs/fetch";
 import Counter from "./components/counter";
 
-export const AddToCartButton = ({ variantId, cart_id }) => {
+
+export const AddToCartButtonForProductPage = ({ variantId, cart_id }) => {
   const { getToken, isSignedIn } = useAuth();
 
   // current item states
@@ -53,79 +54,24 @@ export const AddToCartButton = ({ variantId, cart_id }) => {
     }, [variantId, cart_id]);
   }
 
-  async function handleCartQuantityChange(method) {
-    if (!isSignedIn) return toast("Authorization required.", { icon: "🔐" });
-
-    if (method === "add") {
-      setLoading(true);
-      setCounter((s) => s + 1);
-      try {
-        let res = await addToCart(variantId, method, cart_id);
-
-        setCounter(res.item.quantity);
-        setAdded(res.item);
-        if (!res.item)
-          throw new Error("Something gone wrong while sending request");
-      } catch {
-        setCounter((s) => s - 1);
-        toast.error("Something gone wrong while sending request");
-      } finally {
-        setLoading(false);
-      }
-    }
-
-    if (method === "remove") {
-      setLoading(true);
-      setCounter((s) => s - 1);
-      try {
-        let res = await addToCart(variantId, method, cart_id);
-
-        setCounter(res?.item?.quantity);
-        if (res?.item) setAdded(res?.item);
-        else setAdded(false);
-
-        if (res?.success)
-          throw new Error("Something gone wrong while sending request");
-      } catch {
-        setCounter((s) => s + 1);
-        toast.error("Something gone wrong while sending request");
-      } finally {
-        setLoading(false);
-      }
-    }
-
-    if (method === "delete") {
-      setLoading(true);
-      setCounter(0);
-      try {
-        let res = await addToCart(variantId, method, cart_id);
-        if (res?.success) {
-          setAdded(false);
-          toast.success("Item removed from cart");
-        }
-        if (!res?.success)
-          throw new Error("Something gone wrong while sending request");
-      } catch {
-        toast.error("Something gone wrong while sending request");
-      } finally {
-        setLoading(false);
-      }
-    }
+  function callCartHandler(method){
+    handleCartQuantityChange({setLoading , setCounter , cart_id , variantId , method , setAdded})
   }
 
+  
   return (
     <div
       className={`${
         counter >= 1
           ? " bg-transparent border-2 text-black  "
           : "text-white bg-gray-700 hover:bg-green-700"
-      } group relative flex center gap-2 p-1 rounded duration-300 transition-all`}
+      } group relative flex gap-2 p-1 rounded duration-300 transition-all`}
     >
       {!counter && (
         <button
           disabled={loading}
           className="flex center w-full h-full"
-          onClick={() => handleCartQuantityChange("add")}
+          onClick={() => callCartHandler("add")}
         >
           <div className=" absolute flex center group-hover:invisible ">
             {loading ? "Loading..." : null}
@@ -143,12 +89,12 @@ export const AddToCartButton = ({ variantId, cart_id }) => {
 
       {added && counter >= 1 && (
         <Counter
-          handleClick={handleCartQuantityChange}
+          handleClick={callCartHandler}
           state={{ loading: loading , quantity: counter }}
         />
       )}
     </div>
   );
-};
+}
 
-export default AddToCartButton;
+export default AddToCartButtonForProductPage;

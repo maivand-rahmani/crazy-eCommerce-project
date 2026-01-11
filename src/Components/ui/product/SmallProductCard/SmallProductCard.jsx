@@ -1,10 +1,39 @@
-import React from "react";
-import AddToCartButton from "../addtocart/AddToCartButton";
+import React, { useState } from "react";
+import Counter from "../addtocart/components/counter";
+import { handleCartQuantityChange } from "../addtocart/handlers/handleCartQuantityChangeOnClient";
 
-const SmallProductCard = ({ productData, accessibility }) => {
-    console.log(accessibility , productData)
+const SmallProductCard = ({
+  productData,
+  accessibility,
+  setProducts,
+  initialProducts,
+}) => {
+  let [quantity, setQuantity] = useState(productData?.quantity);
+  let [loading, setLoading] = useState(false);
+
+  let deleteProductFromCartOnClient = () => {
+    setProducts(initialProducts.filter((p) => p?.id !== productData?.id));
+  };
+
+  let callCartHandler = async (method) => {
+    let res = await handleCartQuantityChange({
+      variantId: productData?.variant_id,
+      cart_id: productData?.cart_id,
+      method,
+      setCounter: setQuantity,
+      setLoading: setLoading,
+    });
+  
+    if (
+      res &&
+      (method === "delete" || (method === "remove" && quantity === 1))
+    ) {
+      deleteProductFromCartOnClient();
+    }
+  };
+
   return (
-    <div className="flex center">
+    <div className="">
       {accessibility?.image && (
         <div>
           <img
@@ -30,8 +59,11 @@ const SmallProductCard = ({ productData, accessibility }) => {
           )}
           <div>{`#${productData?.variant_id}`}</div>
         </div>
-        <div>
-             
+        <div className="flex center">
+          <Counter
+            handleClick={callCartHandler}
+            state={{ loading: loading, quantity: quantity }}
+          />
         </div>
       </div>
     </div>

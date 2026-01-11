@@ -1,7 +1,7 @@
 import React from "react";
 import Fetch from "@/funcs/fetch";
 import { auth } from "@clerk/nextjs/server";
-import ProductCard from "@/Components/ui/product/ProductCard/ProductCard.jsx";
+import ProductCard from "@/components/ui/product/ProductCard/ProductCard.jsx";
 import Link from "next/link";
 
 const page = async () => {
@@ -9,7 +9,6 @@ const page = async () => {
   const token = await getToken();
 
   const wishlist = await Fetch("/api/wishlist", "GET", token);
-  console.log(wishlist)
   return (
     <div className="p-5 md:p-20">
       {wishlist.length > 0 && (

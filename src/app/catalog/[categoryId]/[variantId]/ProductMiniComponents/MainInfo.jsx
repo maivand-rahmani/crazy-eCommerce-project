@@ -4,7 +4,7 @@ import Link from "next/link";
 import {useParams } from "next/navigation"
 import { Truck , Store , BadgeCheck , ShoppingCart } from 'lucide-react';
 import { AddToWishListCom } from '@/components/ui/product/addtowish/AddToWishListCom';
-import { AddToCartButton } from '@/Components/ui/product/addtocart/AddToCartButton';
+import { AddToCartButtonForProductPage } from '@/components/ui/product/addtocart/AddToCartButtonForProductPage.jsx';
 
 const  MainInfo = ({ product , otherInfo }) => {
   const variants = product.products?.product_variants || [];
@@ -179,7 +179,7 @@ const  MainInfo = ({ product , otherInfo }) => {
         </div>
         
         
-        <AddToCartButton variantId={currentVariant.id} cart_id={otherInfo?.cart_id}/>
+        <AddToCartButtonForProductPage variantId={currentVariant.id} cart_id={otherInfo?.cart_id}/>
       </div>
 
       {/* {guarantee , stock , free delivery} */}

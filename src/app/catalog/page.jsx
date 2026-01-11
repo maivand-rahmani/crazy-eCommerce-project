@@ -10,7 +10,7 @@ const page = async () => {
   if (!data) return <div>Something gone wrong</div>;
 
   return (
-    <div className="h-300 grid grid-cols-2 md:grid-cols-5 gap-10 p-20 md:p-50">
+    <div className="h-full grid grid-cols-2 md:grid-cols-5 gap-10 p-20 md:p-20">
       {Array.isArray(data) ? (
         data.map((category) => (
           <CategoryCard

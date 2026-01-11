@@ -32,9 +32,7 @@ const routes = [
   { name: "Home", path: "/" },
   { name: "Catalog", path: "/catalog" },
   { name: "About", path: "/about" },
-  { name: "Contact us", path: "/contact" },
-  { name: "Wishlist", path: "/wishlist" , onlyPhone: true },
-  { name: "Cart", path: "/cart" , onlyPhone: true },
+  { name: "Contact us", path: "/contact" }
 ];
 
 const DesktopHeader = () => {
@@ -73,7 +71,7 @@ const DesktopHeader = () => {
         {/* Icons */}
         <div className="hidden md:flex gap-6">
           {/* <LangSwitcher /> */}
-          <Link href="/Wishlist">
+          <Link href="/wishlist">
             <Heart />
           </Link>
           <Link href="/cart">

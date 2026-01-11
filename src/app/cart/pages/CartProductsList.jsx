@@ -32,10 +32,12 @@ const CartProductsList = () => {
             <h1>Shopping Cart</h1>
             <div>
               {products.map((product) => (
-                <div className="flex">
+                <div className="flex" key={product?.id}>
                   <SmallProductCard
                     accessibility={accessibility}
                     productData={product}
+                    setProducts={setProducts}
+                    initialProducts={products}
                     key={product?.id}
                   />
                 </div>
