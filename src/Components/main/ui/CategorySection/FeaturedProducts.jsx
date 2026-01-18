@@ -7,7 +7,7 @@ const FeaturedProducts = async () => {
   const { getToken } = await auth();
   const token = await getToken();
 
-  const res = await Fetch("/api/products?limit=8", "GET", token);
+  const res = await Fetch("/api/products?limit=8&distinctProducts=true", "GET", token);
 
   if (!res) {
     return <div>Failed to fetch product</div>;

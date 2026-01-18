@@ -4,7 +4,7 @@ import React, { useState , useEffect } from "react";
 import {   Star } from "lucide-react";
 import { LikeDisLike } from "./likeComponent";
 import {  Edit01, Delete } from "@untitledui/icons";
-import { Dropdown } from "@/Components/base/dropdown/dropdown";
+import { Dropdown } from "@/components/base/dropdown/dropdown";
 import Fetch from "@/funcs/fetch";
 import Rating from "./Rating";
 import { toast } from 'react-hot-toast';

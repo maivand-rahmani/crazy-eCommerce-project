@@ -1,5 +1,5 @@
 "use client";
-import Miniloader from "@/Components/Loading/ComponentLoader/miniloader";
+import Miniloader from "@/components/Loading/ComponentLoader/miniloader";
 import Image from "next/image";
 import React, { Suspense, useRef, useState, useEffect } from "react";
 import { ArrowBigLeft, ArrowBigRight } from "lucide-react";
@@ -22,18 +22,18 @@ const Slider = ({ productId, variantId }) => {
         }&variantId=${variantId ? variantId : undefined}`
       );
 
-      const filteredImages = data.data.filter((img) => img.variant_id == variantId || !img.variant_id)
-      
+      const filteredImages = data.data.filter(
+        (img) => img.variant_id == variantId || !img.variant_id
+      );
+
       setImages(filteredImages);
       setLength(filteredImages.length);
 
-      console.log(images , data , filteredImages);
+      console.log(images, data, filteredImages);
     }
 
     getImages();
   }, [productId, variantId]);
-
-  
 
   return (
     images && (

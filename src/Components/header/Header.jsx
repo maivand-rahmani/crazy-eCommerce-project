@@ -1,8 +1,18 @@
-import React from 'react'
+"use client"
+import React , {useRef , useEffect} from 'react'
 import DesktopHeader from './desktop/DesktopHeader'
 import MobileHeader from './mobile/MobileHeader'
+import { initUser } from '@/funcs/actions/initUser';
 
 const Header = () => {
+  // const initialized = useRef(false);
+  // useEffect(() => {
+  //   if (initialized.current) return;
+  //   initialized.current = true;
+
+  //   initUser();
+  // }, []);
+
   return (
     <>
         <DesktopHeader/>
@@ -12,3 +22,5 @@ const Header = () => {
 }
 
 export default Header
+
+ 

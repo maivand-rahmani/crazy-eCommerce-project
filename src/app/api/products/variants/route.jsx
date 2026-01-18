@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server"
-import prisma from "../../../../prisma/client"
-import { toSafeJson } from "../../../../prisma/funcs"
+import prisma from "../../../../../prisma/client"
+import { toSafeJson } from "../../../../../prisma/funcs"
 
 export let GET = async (req , { params }) => {
     const searchParams = req.nextUrl.searchParams;

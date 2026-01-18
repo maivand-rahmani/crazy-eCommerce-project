@@ -1,5 +1,5 @@
 import { auth } from "@clerk/nextjs/server";
-import { Url } from "@/Components/ui/urlWay/url";
+import { Url } from "@/components/ui/urlWay/url";
 import Slider from "@/components/ui/slider/Slider";
 import React, { Suspense } from "react";
 import Miniloader from "@/components/Loading/ComponentLoader/miniloader";
@@ -16,24 +16,13 @@ export const metadata = {
 
 const page = async ({ params }) => {
   const { variantId } = await params;
-  const { getToken , userId } = await auth();
+  const { getToken, userId } = await auth();
   const token = await getToken();
 
-  let MainData = await Fetch(
-    `/api/products/${variantId}`,
-    "GET",
-    token
-  );
+  let MainData = await Fetch(`/api/products/${variantId}`, "GET", token);
 
- 
-
- 
-  const data = userId ? MainData.variant : MainData
-  const metaData = userId ? MainData.meta : null
-
-   
-
- 
+  const data = userId ? MainData.variant : MainData;
+  const metaData = userId ? MainData.meta : null;
 
   return (
     <main className="md:px-4 h-full w-full overflow-hidden p-5 md:p-20 flex flex-col">
@@ -46,7 +35,7 @@ const page = async ({ params }) => {
             <div className="w-full h-64 bg-gray-200 animate-pulse"></div>
           }
         >
-          <MainInfo product={data} otherInfo={ userId ? metaData : null}  />
+          <MainInfo product={data} otherInfo={userId ? metaData : null} />
         </Suspense>
       </div>
       <Suspense fallback={<Miniloader />}>

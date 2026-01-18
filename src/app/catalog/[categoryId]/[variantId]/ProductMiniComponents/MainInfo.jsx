@@ -172,7 +172,7 @@ const  MainInfo = ({ product , otherInfo }) => {
 
       {/* add to favorite , cart button */}
       <div className="grid grid-cols-2 gap-4 mt-6">
-        <div className={`border flex center hover:border-red-600 hover  :text-white transition ${otherInfo?.isFavorite ? "border-red-600" : null}`}>
+        <div className={`border-2 rounded flex center hover:border-red-600 hover  :text-white transition ${otherInfo?.isFavorite ? "border-red-600" : null}`}>
           <AddToWishListCom wishlistInfo={otherInfo} variantId={currentVariant.id} productId={product.products.id}> 
           {otherInfo?.isFavorite ? "Added to wishlist" : "Add to Wishlist"}
         </AddToWishListCom>

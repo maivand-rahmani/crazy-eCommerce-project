@@ -5,7 +5,7 @@ import { handleCartQuantityChange } from './handlers/handleCartQuantityChangeOnC
 import { ShoppingCart, PlusSquare, MinusSquare, Trash2 } from "lucide-react";
 import { toast } from "react-hot-toast";
 import Fetch from "@/funcs/fetch";
-import Counter from "./components/counter";
+import Counter from "./components/counter.jsx";
 
 
 export const AddToCartButtonForProductPage = ({ variantId, cart_id }) => {

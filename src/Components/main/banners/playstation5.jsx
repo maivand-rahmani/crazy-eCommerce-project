@@ -12,7 +12,7 @@ const Playstation5 = async () => {
         alt="playstation5"
         priority
         src={
-          "https://dothqlonkpealipywtrp.supabase.co/storage/v1/object/public/crazy/ProjectPics/image.webp"
+          "https://vdtwjwohhdejjaweukxw.supabase.co/storage/v1/object/public/crazy/ProjectPics/image.webp"
         }
       />
       <div className="text-center md:text-left">

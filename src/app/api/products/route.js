@@ -14,6 +14,7 @@ export async function GET(req) {
     product: searchParams.get("product"),
     limit: searchParams.get("limit"),
     variantsLimit: searchParams.get("vlimit"),
+    distinctProducts: searchParams.get("distinctProducts")
   };
 
   const where = { AND: [] };
@@ -23,10 +24,12 @@ export async function GET(req) {
   }
   if (Params.id) where.AND.push({ product_id: Number(Params.id) });
   if (Params.product) where.AND.push({ product_name: Params.product });
+  let distinct = Params.distinctProducts ? ["product_id"]  : undefined 
 
   try {
      const products = await prisma.product_cards.findMany({
       where,
+      distinct, 
       orderBy: { created_at: "desc" },
       take: Params.limit ? Number(Params.limit) : undefined,
     });

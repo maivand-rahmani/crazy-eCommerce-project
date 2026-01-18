@@ -7,8 +7,6 @@ import { ensureUserInDB } from "../funcs/ensureUserInDB";
 import { Toaster } from "react-hot-toast";
 
 export default async function LocaleLayout({ children }) {
-  // Добавляем ползователя в бд если он не существует
-  ensureUserInDB();
   return (
     <html>
       <NextIntlClientProvider>

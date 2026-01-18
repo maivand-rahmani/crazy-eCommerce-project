@@ -1,7 +1,7 @@
 export default async function Fetch(url, method = "GET", token, body) {
   try {
     const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}${url}`, {
-      cache: "no-store",
+      cache: "force-cache",
       method,
       headers: {
         "Authorization": `Bearer ${token}`,

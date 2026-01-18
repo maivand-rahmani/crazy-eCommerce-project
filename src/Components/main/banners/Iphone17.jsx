@@ -31,7 +31,7 @@ const Iphone = async () => {
           height={500}
           priority
           src={
-            "https://dothqlonkpealipywtrp.supabase.co/storage/v1/object/public/crazy/ProjectPics/iPhone_17_Pro_Max_Cosmic_Orange_Position_1%201.png"
+            "https://vdtwjwohhdejjaweukxw.supabase.co/storage/v1/object/public/crazy/ProjectPics/iPhone_17_Pro_Max_Cosmic_Orange_Position_1%201.png"
           }
         ></Image>
       </div>
