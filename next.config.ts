@@ -1,5 +1,4 @@
- 
-import type { NextConfig } from "next";
+ import type { NextConfig } from "next";
 import createNextIntlPlugin from "next-intl/plugin";
 
 const nextConfig: NextConfig = {
@@ -8,11 +7,11 @@ const nextConfig: NextConfig = {
   },
    
   images: {
+    unoptimized: true,
     remotePatterns: [
       {
         protocol: "https",
         hostname: "vdtwjwohhdejjaweukxw.supabase.co",
-        port: "",
         pathname: "/storage/v1/object/public/**",
       },
     ],

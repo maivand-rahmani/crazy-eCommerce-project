@@ -16,43 +16,43 @@ export const AddToCartButtonForProductPage = ({ variantId, cart_id }) => {
   const [added, setAdded] = useState(false);
   const [counter, setCounter] = useState(0);
 
-  if (isSignedIn) {
-    useEffect(() => {
-      // Функция проверяет находится ли продукт в корзины ползователя
-      const checkItem = async () => {
-        setLoading(true);
-        const token = await getToken();
-        try {
-          const res = await Fetch(
-            `/api/cart/check?cartId=${cart_id}&variantId=${variantId}`,
-            "GET",
-            token
-          );
+  useEffect(() => {
+  if (!isSignedIn) return; // Early return if not signed in
+  
+  const checkItem = async () => {
+    setLoading(true);
+    const token = await getToken();
+    try {
+      const res = await Fetch(
+        `/api/cart/check?cartId=${cart_id}&variantId=${variantId}`,
+        "GET",
+        token
+      );
 
-          if (!res) throw new Error("Request failed");
+      if (!res) throw new Error("Request failed");
 
-          console.log(res);
-          if (res.item) setAdded(res.item);
-          if (res.item) setCounter(res.item.quantity);
-        } catch (error) {
-          if (!navigator.onLine) {
-            toast.error("Unstable internet connection detected.", {
-              duration: 2000,
-            });
-          } else {
-            toast.error("The request is taking longer than expected.", {
-              duration: 2000,
-            });
-            console.log(error);
-          }
-        } finally {
-          setLoading(false);
-        }
-      };
+      console.log(res);
+      if (res.item) setAdded(res.item);
+      if (res.item) setCounter(res.item.quantity);
+    } catch (error) {
+      if (!navigator.onLine) {
+        toast.error("Unstable internet connection detected.", {
+          duration: 2000,
+        });
+      } else {
+        toast.error("The request is taking longer than expected.", {
+          duration: 2000,
+        });
+        console.log(error);
+      }
+    } finally {
+      setLoading(false);
+    }
+  };
 
-      checkItem();
-    }, [variantId, cart_id]);
-  }
+  checkItem();
+}, [isSignedIn, variantId, cart_id]); // Added isSignedIn to dependencies
+
 
   function callCartHandler(method){
     handleCartQuantityChange({setLoading , setCounter , cart_id , variantId , method , setAdded})
