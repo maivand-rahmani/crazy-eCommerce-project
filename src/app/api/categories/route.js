@@ -8,6 +8,6 @@ export async function GET() {
         return NextResponse.json(serializeBigInt(data))
     } catch (error) {
         console.error("API error:", error);
-        return NextResponse.json({ error: "Failed to fetch products", status: 500 });
+        return NextResponse.json({ error: "Failed to fetch categories", status: 500 });
     }
 }

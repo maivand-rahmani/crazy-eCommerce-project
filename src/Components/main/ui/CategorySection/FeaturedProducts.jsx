@@ -9,14 +9,16 @@ const FeaturedProducts = async () => {
 
   const res = await Fetch("/api/products?limit=8&distinctProducts=true", "GET", token);
 
+  // console.log("!!!!!!!!!!!!!!!!!!!!!!!!!!!" , res)
+
   if (!res) {
     return <div>Failed to fetch product</div>;
   }
 
   return (
     <div className="grid grid-cols-2    md:grid-cols-3 lg:grid-cols-4 gap-6">
-      {res &&
-        res.data.flatMap((pro) => (
+      {!res?.error &&
+        res?.data.flatMap((pro) => (
           <ProductCard
             key={pro.variant_id}
             otherInfo={{ ...res.otherInfo, isFavorite: pro?.isFavorite }}

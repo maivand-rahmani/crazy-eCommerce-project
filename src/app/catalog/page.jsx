@@ -8,7 +8,6 @@ const page = async () => {
   let data = await Fetch("/api/categories")
 
   if (!data) return <div>Something gone wrong</div>;
-  console.log(data)
 
   return (
     <div className="h-full grid grid-cols-2 md:grid-cols-5 gap-10 p-20 md:p-20">

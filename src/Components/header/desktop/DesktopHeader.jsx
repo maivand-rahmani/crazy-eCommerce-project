@@ -77,12 +77,12 @@ const DesktopHeader = () => {
           <Link href="/cart">
             <ShoppingCart />
           </Link>
-          <SignedIn>
+           <SignedIn>
             <UserButton />
           </SignedIn>
           <SignedOut>
             <SignUpButton mode="modal" children={<CircleUserRound />} />
-          </SignedOut>
+          </SignedOut>  
         </div>
       </header>
     </div>
