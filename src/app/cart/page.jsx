@@ -1,11 +1,18 @@
-import React from 'react'
+"use client"
+import React , {useState} from 'react'
 import CartProductsList from './pages/CartProductsList';
+import OrderSummary from "./pages/OrderSummary"
+
+
 
 const page = () => {
+const [total , setTotal] = useState(0)
+const [checkout , setCheckout] = useState(false)
+
   return (
-    <div className='py-10 px-2 md:p-20 grid md:grid-cols-[2fr_1fr]'>
-      <CartProductsList />
-      <div></div>
+    <div className={`py-10 transition-all md:p-10 relative grid ${!checkout && total > 0 ? "md:grid-cols-[2fr_1fr]" : "md:grid-cols-2"}`}>
+      <CartProductsList checkoutState={checkout} setTotal={setTotal} />
+      {total > 0 && <OrderSummary checkout={checkout} setCheckout={setCheckout} total={total} />}
     </div>
   )
 }

@@ -5,7 +5,7 @@ import deleteButton from './deleteButton';
 const Counter = ({ handleClick, state, withPrice, className }) => {
   return (
     <div className={`flex justify-between w-full gap-5 ${className}`}>
-      <div className="flex justify-between w-full gap-1.5 ">
+      <div className="flex justify-between w-full max-w-70 gap-1.5 ">
         <button disabled={state?.loading} onClick={() => handleClick("remove")}>
           <MinusSquare className={`${state?.loading ? "opacity-50" : null}`} />
         </button>
@@ -25,7 +25,7 @@ const Counter = ({ handleClick, state, withPrice, className }) => {
       <div className="flex gap-5">
         {
           <div className="text-2xl text-green-900 text-center">
-            ={`${(state?.price / 100) * state?.quantity}$`}
+            ={`${(state?.price) * state?.quantity}$`}
           </div>
         }
       </div>

@@ -186,6 +186,21 @@ model wishlist_items {
   @@index([wishlist_id], map: "idx_wishlist_items_wishlist_id")
 }
 
+/// This table contains check constraints and requires additional setup for migrations. Visit https://pris.ly/d/check-constraints for more info.
+model coupons {
+  id               Int       @id @default(autoincrement())
+  coupon_code      String    @unique
+  description      String?
+  discount_amount  Decimal?  @db.Decimal(10, 2)
+  discount_percent Int?
+  max_usage        Int?      @default(1)
+  times_used       Int?      @default(0)
+  valid_from       DateTime? @default(now()) @db.Timestamptz(6)
+  expires_at       DateTime? @db.Timestamptz(6)
+
+  @@index([coupon_code], map: "idx_coupon_code")
+}
+
 enum liketype {
   like
   dislike

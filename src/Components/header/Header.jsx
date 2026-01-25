@@ -5,13 +5,13 @@ import MobileHeader from './mobile/MobileHeader'
 import { initUser } from '@/funcs/actions/initUser';
 
 const Header = () => {
-  // const initialized = useRef(false);
-  // useEffect(() => {
-  //   if (initialized.current) return;
-  //   initialized.current = true;
+  const initialized = useRef(false);
+  useEffect(() => {
+    if (initialized.current) return;
+    initialized.current = true;
 
-  //   initUser();
-  // }, []);
+    initUser();
+  }, []);
 
   return (
     <>

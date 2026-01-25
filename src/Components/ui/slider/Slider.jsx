@@ -49,7 +49,7 @@ const Slider = ({ productId, variantId }) => {
                     : "opacity-40"
                 }
               >
-                <Image
+                <img
                   loading="lazy"
                   placeholder="blur"
                   blurDataURL="data:image/gif;base64,R0lGODlhAQABAIAAAP///wAAACH5BAEAAAAALAAAAAABAAEAAAICRAEAOw=="

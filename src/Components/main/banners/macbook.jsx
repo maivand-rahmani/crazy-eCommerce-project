@@ -14,7 +14,7 @@ const Macbook = async () => {
         alt="Mac book pro"
         priority
         src={
-          "https://vdtwjwohhdejjaweukxw.supabase.co/storage/v1/object/public/crazy/ProjectPics/apple-macbook-air-15in-m4.png"
+          "http://194.156.118.210/uploads/images/apple-macbook-air-15in-m4.png"
         }
       ></Image>
       <div className="p-4 relative md:right-20 flex items-center flex-col gap-6 md:items-start text-center md:text-left">
