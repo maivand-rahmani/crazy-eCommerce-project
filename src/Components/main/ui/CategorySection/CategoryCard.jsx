@@ -28,8 +28,8 @@ const CategoryCard =  ({ Category , kidsList , Scroll = true }) => {
   }
   
   return (
-    <div className="flex center transition-all rounded-2xl bg-card-bg hover:bg-card-bg/60" onClick={Click} key={Category.id}>
-      <div className="flex center gap-2 flex-col py-6 w-full px-13 md:max-w-30 ">
+    <div className="flex center transition-all max-h-60 min-h-40 max-w-60 min-w-40 rounded-2xl bg-card-bg hover:bg-card-bg/60" onClick={Click} key={Category.id}>
+      <div className="flex center gap-2 flex-col w-full md:max-w-30 ">
         <div>{CategoriesLogos[Category.name]}</div>
         <h1>{t(`categories.list.${Category.name}`)}</h1>
       </div>

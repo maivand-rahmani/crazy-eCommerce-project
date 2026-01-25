@@ -1,5 +1,4 @@
- 
-import type { NextConfig } from "next";
+ import type { NextConfig } from "next";
 import createNextIntlPlugin from "next-intl/plugin";
 
 const nextConfig: NextConfig = {
@@ -10,10 +9,9 @@ const nextConfig: NextConfig = {
   images: {
     remotePatterns: [
       {
-        protocol: "https",
-        hostname: "dothqlonkpealipywtrp.supabase.co",
-        port: "",
-        pathname: "/storage/v1/object/public/**",
+        protocol: "http",
+        hostname: "194.156.118.210",
+        pathname: "/uploads/images/**",
       },
     ],
   },

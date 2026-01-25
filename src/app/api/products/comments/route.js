@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
-import prisma from "../../../../prisma/client";
-import { toSafeJson } from "../../../../prisma/funcs";
+import prisma from "../../../../../prisma/client";
+import { toSafeJson } from "../../../../../prisma/funcs";
 
 export async function GET(req) {
   try {

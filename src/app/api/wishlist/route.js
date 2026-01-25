@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
-import prisma from "../../../prisma/client";
-import { toSafeJson } from "../../../prisma/funcs";
+import prisma from "../../../../prisma/client";
+import { toSafeJson } from "../../../../prisma/funcs";
 import { currentUser } from "@clerk/nextjs/server";
 
 export async function GET() {

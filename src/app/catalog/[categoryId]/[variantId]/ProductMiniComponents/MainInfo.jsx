@@ -3,8 +3,8 @@ import React, { useState } from "react";
 import Link from "next/link";
 import {useParams } from "next/navigation"
 import { Truck , Store , BadgeCheck , ShoppingCart } from 'lucide-react';
-import { AddToWishListCom } from '@/Components/ui/product/addtowish/AddToWishListCom';
-import { AddToCartButton } from '@/Components/ui/product/addtocart/AddToCartButton';
+import { AddToWishListCom } from '@/components/ui/product/addtowish/AddToWishListCom';
+import { AddToCartButtonForProductPage } from '@/components/ui/product/addtocart/AddToCartButtonForProductPage.jsx';
 
 const  MainInfo = ({ product , otherInfo }) => {
   const variants = product.products?.product_variants || [];
@@ -172,14 +172,14 @@ const  MainInfo = ({ product , otherInfo }) => {
 
       {/* add to favorite , cart button */}
       <div className="grid grid-cols-2 gap-4 mt-6">
-        <div className={`border flex center hover:border-red-600 hover  :text-white transition ${otherInfo?.isFavorite ? "border-red-600" : null}`}>
+        <div className={`border-2 rounded flex center hover:border-red-600 hover  :text-white transition ${otherInfo?.isFavorite ? "border-red-600" : null}`}>
           <AddToWishListCom wishlistInfo={otherInfo} variantId={currentVariant.id} productId={product.products.id}> 
           {otherInfo?.isFavorite ? "Added to wishlist" : "Add to Wishlist"}
         </AddToWishListCom>
         </div>
         
         
-        <AddToCartButton variantId={currentVariant.id} cart_id={otherInfo?.cart_id}/>
+        <AddToCartButtonForProductPage variantId={currentVariant.id} cart_id={otherInfo?.cart_id}/>
       </div>
 
       {/* {guarantee , stock , free delivery} */}

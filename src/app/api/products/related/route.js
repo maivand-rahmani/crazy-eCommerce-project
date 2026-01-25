@@ -1,5 +1,5 @@
-import prisma from "../../../../prisma/client"; // не забудь импорт
-import { toSafeJson } from "../../../../prisma/funcs";
+import prisma from "../../../../../prisma/client"; // не забудь импорт
+import { toSafeJson } from "../../../../../prisma/funcs";
 
 export async function GET(req) {
   const searchParams = req.nextUrl.searchParams;

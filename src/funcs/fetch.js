@@ -1,22 +1,16 @@
 export default async function Fetch(url, method = "GET", token, body) {
-  try {
-    const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}${url}`, {
-      cache: "no-store",
+  const res = await fetch(
+    `${process.env.NEXT_PUBLIC_API_URL}${url}`,
+    {
       method,
       headers: {
-        "Authorization": `Bearer ${token}`,
-        ...(body ? { "Content-Type": "application/json" } : {})
+        ...(token ? { Authorization: `Bearer ${token}` } : {}),
+        ...(body ? { "Content-Type": "application/json" } : {}),
       },
-      body: body ? JSON.stringify(body) : undefined
-    });
-
-    if (!res.ok) {
-      throw new Error(`Fetch error: ${res.status} - ${res.statusText}`);
+      body: body ? JSON.stringify(body) : undefined,
     }
+  );
+ 
 
-    return await res.json();
-  } catch (error) {
-    console.error("Something went wrong!", error);
-    return null;
-  }
+  return res && res.json();
 }

@@ -1,5 +1,5 @@
 import React from 'react'
-import ProductCard from "@/Components/ui/product/ProductCard";
+import ProductCard from "@/components/ui/product/ProductCard/ProductCard";
 
 const RelatedProducts = async ({ id , category }) => {
     let data;

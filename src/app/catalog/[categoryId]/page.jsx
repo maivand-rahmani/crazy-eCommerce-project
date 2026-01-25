@@ -1,10 +1,10 @@
 export const dynamic = "force-dynamic";
 export const dynamicParams = false;
 import React from "react";
-import ProductsContainer from './ProductsContainer/ProductsContainer'
-import { Url } from "@/Components/ui/urlWay/url.jsx"
+import ProductsContainer from "./ProductsContainer/ProductsContainer";
+import { Url } from "@/components/ui/urlWay/url.jsx";
 import Fetch from "@/funcs/fetch";
-
+import { auth } from "@clerk/nextjs/server";
 
 export async function generateStaticParams() {
   return [
@@ -22,16 +22,17 @@ export async function generateStaticParams() {
 }
 
 const page = async ({ params }) => {
-  const categoryId  = await params?.categoryId;
-  
-  let data = await Fetch(`/api/products?category=${categoryId}`);
-   
+  const categoryId = await params?.categoryId;
+  const { getToken } = await auth();
+  const token = await getToken();
+
+  let data = await Fetch(`/api/products?category=${categoryId}`, "GET", token);
 
   if (!data) return <div>Something gone wrong</div>;
 
   return (
     <div className="">
-      <ProductsContainer category={categoryId} data={data}/>
+      <ProductsContainer category={categoryId} data={data} />
     </div>
   );
 };

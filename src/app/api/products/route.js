@@ -1,18 +1,20 @@
 import { NextResponse } from "next/server";
-import prisma from "../../../prisma/client";
-import { toSafeJson } from "../../../prisma/funcs";
-import { currentUser, auth } from "@clerk/nextjs/server";
+import prisma from "../../../../prisma/client";
+import { toSafeJson } from "../../../../prisma/funcs";
+import { auth } from "@clerk/nextjs/server";
 
 export async function GET(req) {
-  const user = await currentUser();
+  const { userId } = await auth();
   const searchParams = req.nextUrl.searchParams;
 
+  
   const Params = {
     id: searchParams.get("id"),
     category: searchParams.get("category"),
     product: searchParams.get("product"),
     limit: searchParams.get("limit"),
     variantsLimit: searchParams.get("vlimit"),
+    distinctProducts: searchParams.get("distinctProducts")
   };
 
   const where = { AND: [] };
@@ -22,19 +24,21 @@ export async function GET(req) {
   }
   if (Params.id) where.AND.push({ product_id: Number(Params.id) });
   if (Params.product) where.AND.push({ product_name: Params.product });
+  let distinct = Params.distinctProducts ? ["product_id"]  : undefined 
 
   try {
      const products = await prisma.product_cards.findMany({
       where,
+      distinct, 
       orderBy: { created_at: "desc" },
       take: Params.limit ? Number(Params.limit) : undefined,
     });
 
-    if (user) {
+    if (userId) {
       let wishlistVariantIds = [];
 
       const wishlist = await prisma.wishlist.findUnique({
-        where: { user_id: user.id },
+        where: { user_id: userId },
         include: { wishlist_items: true },
       });
 
