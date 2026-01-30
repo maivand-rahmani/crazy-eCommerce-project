@@ -91,7 +91,7 @@ const CommentComponent = ({ comment, user, handleDelete, handleEdit }) => {
   }
 
   return (
-    <div className="w-full h-full shadow-xl grid grid-cols-[40px_1fr] border-b-1 border-b-unactive-text rounded-2xl p-4">
+    <div className="w-full h-full shadow-xl grid grid-cols-[40px_1fr]   border-b-unactive-text rounded-3xl p-4">
       <img
         className="rounded-full"
         width={40}
@@ -126,7 +126,7 @@ const CommentComponent = ({ comment, user, handleDelete, handleEdit }) => {
               disabled={!editing}
               autoFocus={editing}
               value={commentText}
-              className="resize-none h-full"
+              className="resize-none h-full w-full"
               aria-label="comment for product"
               onChange={(e) => editCommentText(e.target.value)}
             ></textarea>

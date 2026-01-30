@@ -40,7 +40,7 @@ model categories {
 /// This table contains check constraints and requires additional setup for migrations. Visit https://pris.ly/d/check-constraints for more info.
 model order_items {
   id               BigInt  @id @default(autoincrement())
-  order_id         BigInt
+  order_id         String
   product_id       BigInt?
   quantity         Int
   unit_price_cents Int
@@ -51,7 +51,7 @@ model order_items {
 
 /// This table contains check constraints and requires additional setup for migrations. Visit https://pris.ly/d/check-constraints for more info.
 model orders {
-  id          BigInt        @id @default(autoincrement())
+  id          String        @id @default(uuid())
   user_id     Int?
   status      order_status  @default(created)
   total_cents Int

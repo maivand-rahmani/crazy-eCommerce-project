@@ -5,6 +5,7 @@ const nextConfig: NextConfig = {
   compiler: {
     styledComponents: true,
   },
+  
    
   images: {
     remotePatterns: [

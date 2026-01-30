@@ -34,7 +34,7 @@ export const CommentForm = ({ product_id , onAddComment }) => {
   return (
     <div>
       <form
-        className="rounded-3xl   shadow-2xl p-4 flex flex-col gap-4"
+        className="rounded-3xl shadow-xl p-4 flex flex-col gap-4"
         onSubmit={handleSubmit}
       >
         <div className="flex items-center gap-3">

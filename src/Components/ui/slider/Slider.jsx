@@ -9,7 +9,7 @@ const Slider = ({ productId, variantId }) => {
   let [clicked, setClicked] = useState(false);
   let [images, setImages] = useState();
   let [length, setLength] = useState(0);
-  let [activeIndex, setActiveIndex] = useState(0);
+  let [activeIndex, setActiveIndex] = useState(0);  
 
   useEffect(() => {
     if (!productId || !variantId) return;
