@@ -1,8 +1,14 @@
+@tailwind base;
+@tailwind components;
 @tailwind utilities;
+
+
 
 @import "tailwindcss";
 @import "./components.css";
 @import "./animations.css";
+
+
 
 
 html, body, div, span, applet, object, iframe,

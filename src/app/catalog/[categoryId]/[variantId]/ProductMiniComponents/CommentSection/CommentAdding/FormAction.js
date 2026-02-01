@@ -1,6 +1,6 @@
 "use server";
 import { auth } from "@clerk/nextjs/server";
-import Fetch from "../../../../../../../funcs/fetch";
+import Fetch from "../../../../../../../../funcs/fetch";
 
 export async function CommentAction(formData) {
   const { getToken, userId } = await auth();

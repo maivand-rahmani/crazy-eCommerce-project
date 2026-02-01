@@ -9,7 +9,7 @@ import ProductsRenderSkeleton from "@/components/ui/skeleton/ProductsRenderSkele
 
 const Page = async () => {
   return (
-    <div className="dark mx-auto max-w-[1440px]">
+    <div className="mx-auto max-w-[1440px]">
       <Suspense fallback={<MiniLoader />}>
         <Main />
       </Suspense>

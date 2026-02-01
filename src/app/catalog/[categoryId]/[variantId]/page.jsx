@@ -7,7 +7,7 @@ import MainInfo from "./ProductMiniComponents/MainInfo";
 import ProductSpecs from "./ProductMiniComponents/ProductSpecs";
 import RelatedProducts from "./ProductMiniComponents/RelatedProducts";
 import MainCommentComponent from "./ProductMiniComponents/CommentSection/MainComponent";
-import Fetch from "../../../../funcs/fetch";
+import Fetch from "../../../../../funcs/fetch";
 import { ProductRatingStats } from "./ProductMiniComponents/ProductRatingStats/ProductRatingStats.jsx";
 
 export const metadata = {
@@ -24,7 +24,7 @@ const page = async ({ params }) => {
 
   const data = userId ? MainData.variant : MainData;
   const metaData = userId ? MainData.meta : null;
-   
+
   return (
     <main className="md:px-4 h-full w-full overflow-hidden p-5 md:p-20 flex flex-col">
       <div className="w-full flex-col flex center pb-28 md:px-20 md:flex-row md:gap-10 gap-5">
@@ -54,13 +54,12 @@ const page = async ({ params }) => {
       <Suspense fallback={<Miniloader />}>
         <div className="rounded-3xl bg-gray-200 shadow-2xl p-4 my-5">
           <div>
-          <ProductRatingStats productId={data.products.id} />
+            <ProductRatingStats productId={data.products.id} />
+          </div>
+          <div>
+            <MainCommentComponent productID={data?.products?.id} />
+          </div>
         </div>
-        <div>
-          <MainCommentComponent productID={data?.products?.id} />
-        </div>
-        </div>
-        
       </Suspense>
     </main>
   );

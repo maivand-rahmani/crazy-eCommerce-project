@@ -1,11 +1,9 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import Fetch from '../../../../../../funcs/fetch';
+import Fetch from "../../../../../../../funcs/fetch";
 
-
-
-export function ProductRatingStats({ productId }){
+export function ProductRatingStats({ productId }) {
   const [data, setData] = useState(null);
   const [loading, setLoading] = useState(true);
 
@@ -83,7 +81,7 @@ export function ProductRatingStats({ productId }){
 
       {/* Right side: distribution bars */}
       <div className="space-y-2">
-        {stars.map(star => {
+        {stars.map((star) => {
           const count = counts[star] || 0;
           const width =
             maxCount === 0 ? 0 : Math.round((count / maxCount) * 100);
