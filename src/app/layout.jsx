@@ -1,9 +1,8 @@
 import { NextIntlClientProvider } from "next-intl";
-import Header from "@/components/header/Header";
-import FooterCyber from "@/components/footer/Footer";
-import "@/styles/globals.css";
+import Header from "@/shared/ui/layout/header/Header";
+import FooterCyber from "@/shared/ui/layout/footer/Footer";
+import "@/shared/styles/globals.css";
 import { ClerkProvider } from "@clerk/nextjs";
-import { ensureUserInDB } from "@/funcs/ensureUserInDB";
 import { Toaster } from "react-hot-toast";
 
 export default async function LocaleLayout({ children }) {

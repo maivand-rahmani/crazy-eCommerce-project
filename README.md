@@ -441,3 +441,213 @@ crazy-eCommerce-project
 └─ tsconfig.json
 
 ```
+```
+crazy-eCommerce-project
+├─ LICENSE
+├─ README.md
+├─ assets
+├─ eslint.config.mjs
+├─ jsconfig.json
+├─ next-intl.config.mjs
+├─ next.config.ts
+├─ package-lock.json
+├─ package.json
+├─ postcss.config.mjs
+├─ prisma
+│  ├─ client.js
+│  ├─ funcs.js
+│  └─ schema.prisma
+├─ prisma.config.ts
+├─ public
+│  └─ icons
+│     ├─ github.png
+│     └─ google-color.png
+├─ src
+│  ├─ app
+│  │  ├─ about
+│  │  │  └─ page.jsx
+│  │  ├─ admin
+│  │  │  └─ page.jsx
+│  │  ├─ api
+│  │  │  ├─ cart
+│  │  │  │  ├─ check
+│  │  │  │  │  └─ route.js
+│  │  │  │  ├─ coupon
+│  │  │  │  │  └─ route.js
+│  │  │  │  └─ route.js
+│  │  │  ├─ categories
+│  │  │  │  └─ route.js
+│  │  │  ├─ products
+│  │  │  │  ├─ [variantId]
+│  │  │  │  │  ├─ rating
+│  │  │  │  │  │  └─ route.js
+│  │  │  │  │  └─ route.js
+│  │  │  │  ├─ comments
+│  │  │  │  │  ├─ reaction
+│  │  │  │  │  │  └─ route.js
+│  │  │  │  │  └─ route.js
+│  │  │  │  ├─ images
+│  │  │  │  │  └─ route.js
+│  │  │  │  ├─ related
+│  │  │  │  │  └─ route.js
+│  │  │  │  ├─ route.js
+│  │  │  │  ├─ specs
+│  │  │  │  │  └─ route.js
+│  │  │  │  └─ variants
+│  │  │  │     └─ route.jsx
+│  │  │  └─ wishlist
+│  │  │     └─ route.js
+│  │  ├─ auth
+│  │  │  └─ page.jsx
+│  │  ├─ cart
+│  │  │  └─ page.jsx
+│  │  ├─ catalog
+│  │  │  ├─ [categoryId]
+│  │  │  │  ├─ [variantId]
+│  │  │  │  │  └─ page.jsx
+│  │  │  │  └─ page.jsx
+│  │  │  └─ page.jsx
+│  │  ├─ contact
+│  │  │  └─ page.jsx
+│  │  ├─ layout.jsx
+│  │  ├─ loading.jsx
+│  │  ├─ not-found.jsx
+│  │  ├─ page.jsx
+│  │  └─ wishlist
+│  │     └─ page.jsx
+│  ├─ entities
+│  │  ├─ cart
+│  │  │  └─ ui
+│  │  │     ├─ CartProductsList.jsx
+│  │  │     └─ OrderSummary.jsx
+│  │  ├─ comment
+│  │  │  └─ ui
+│  │  │     └─ CommentSection
+│  │  │        ├─ CommentSection
+│  │  │        │  └─ CommentSection.jsx
+│  │  │        ├─ MainComponent.jsx
+│  │  │        └─ client
+│  │  │           └─ CommentComponent.jsx
+│  │  ├─ main
+│  │  │  ├─ banners
+│  │  │  │  ├─ Iphone17.jsx
+│  │  │  │  ├─ ResponsibleBanner.jsx
+│  │  │  │  ├─ airpodspro.jsx
+│  │  │  │  ├─ applevisionpro.jsx
+│  │  │  │  ├─ macbook.jsx
+│  │  │  │  ├─ main.jsx
+│  │  │  │  └─ playstation5.jsx
+│  │  │  └─ ui
+│  │  │     └─ CategorySection
+│  │  │        ├─ CategoryCard.jsx
+│  │  │        ├─ FeaturedProducts.jsx
+│  │  │        └─ Main.jsx
+│  │  ├─ product
+│  │  │  ├─ ProductCard
+│  │  │  │  └─ ProductCard.jsx
+│  │  │  ├─ SmallProductCard
+│  │  │  │  └─ SmallProductCard.jsx
+│  │  │  └─ ui
+│  │  │     ├─ MainInfo.jsx
+│  │  │     ├─ ProductSpecs.jsx
+│  │  │     └─ RelatedProducts.jsx
+│  │  ├─ rating
+│  │  │  └─ ui
+│  │  │     ├─ ProductRatingStats.jsx
+│  │  │     └─ Rating.jsx
+│  │  └─ user
+│  │     └─ model
+│  │        └─ ensureUserInDB.js
+│  ├─ features
+│  │  ├─ add-to-cart
+│  │  │  ├─ model
+│  │  │  │  ├─ addToCart.js
+│  │  │  │  └─ handleCartQuantityChangeOnClient.js
+│  │  │  └─ ui
+│  │  │     ├─ AddToCartButtonForProductPage.jsx
+│  │  │     ├─ counter.jsx
+│  │  │     └─ deleteButton.jsx
+│  │  ├─ add-to-wishlist
+│  │  │  ├─ model
+│  │  │  │  └─ addToWishList.js
+│  │  │  └─ ui
+│  │  │     └─ AddToWishListCom.jsx
+│  │  ├─ apply-cupon
+│  │  │  └─ ui
+│  │  │     └─ CouponForm.jsx
+│  │  ├─ auth
+│  │  │  ├─ model
+│  │  │  │  └─ initUser.js
+│  │  │  └─ ui
+│  │  │     ├─ AuthFormLayout.jsx
+│  │  │     ├─ OAuthForm
+│  │  │     │  └─ OAuthForm.jsx
+│  │  │     └─ forms
+│  │  │        ├─ LoginForm.jsx
+│  │  │        └─ RegisterForm.jsx
+│  │  ├─ catalog
+│  │  │  └─ ui
+│  │  │     └─ ProductsContainer
+│  │  │        ├─ ProductsContainer.jsx
+│  │  │        ├─ ProductsFilter.jsx
+│  │  │        └─ ProductsLists.jsx
+│  │  ├─ leave-comment
+│  │  │  ├─ model
+│  │  │  │  └─ FormAction.js
+│  │  │  └─ ui
+│  │  │     └─ CommentForm.jsx
+│  │  └─ raact-to-comment
+│  │     └─ ui
+│  │        └─ likeComponent.jsx
+│  ├─ infrastructure
+│  │  └─ i18n
+│  │     ├─ Switcher.jsx
+│  │     ├─ en.json
+│  │     ├─ request.ts
+│  │     └─ ru.json
+│  ├─ middleware.js
+│  └─ shared
+│     ├─ lib
+│     │  └─ fetch.js
+│     ├─ styles
+│     │  ├─ animations.css
+│     │  ├─ components.css
+│     │  ├─ globals.css
+│     │  └─ utilis.css
+│     ├─ ui
+│     │  ├─ Loading
+│     │  │  ├─ ComponentLoader
+│     │  │  │  ├─ miniloader.css
+│     │  │  │  └─ miniloader.jsx
+│     │  │  └─ PageLoader
+│     │  │     ├─ loader.jsx
+│     │  │     └─ loading.css
+│     │  ├─ ScrollContainer
+│     │  │  └─ ScrollContainer.jsx
+│     │  ├─ dropdown
+│     │  │  └─ dropdown.tsx
+│     │  ├─ layout
+│     │  │  ├─ footer
+│     │  │  │  └─ Footer.jsx
+│     │  │  └─ header
+│     │  │     ├─ Header.jsx
+│     │  │     ├─ desktop
+│     │  │     │  └─ DesktopHeader.jsx
+│     │  │     ├─ mobile
+│     │  │     │  └─ MobileHeader.jsx
+│     │  │     └─ ui
+│     │  │        ├─ CustomUserButton.jsx
+│     │  │        ├─ NavLink.jsx
+│     │  │        └─ cyberIcon.jsx
+│     │  ├─ skeleton
+│     │  │  └─ ProductsRenderSkeleton.jsx
+│     │  ├─ slider
+│     │  │  └─ Slider.jsx
+│     │  └─ urlWay
+│     │     └─ url.jsx
+│     └─ utils
+│        └─ cx.ts
+├─ tailwind.config.mjs
+└─ tsconfig.json
+
+```

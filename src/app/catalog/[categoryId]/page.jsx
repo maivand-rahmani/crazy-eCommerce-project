@@ -1,9 +1,9 @@
 export const dynamic = "force-dynamic";
 export const dynamicParams = false;
 import React from "react";
-import ProductsContainer from "./ProductsContainer/ProductsContainer";
-import { Url } from "@/components/ui/urlWay/url.jsx";
-import Fetch from "@/funcs/fetch";
+import ProductsContainer from "../../../features/catalog/ui/ProductsContainer/ProductsContainer";
+import { Url } from "@/shared/ui/urlWay/url.jsx";
+import Fetch from "@/shared/lib/fetch";
 import { auth } from "@clerk/nextjs/server";
 
 export async function generateStaticParams() {

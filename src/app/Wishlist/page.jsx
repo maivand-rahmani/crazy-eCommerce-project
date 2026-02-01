@@ -1,7 +1,7 @@
 import React from "react";
-import Fetch from "@/funcs/fetch";
+import Fetch from "@/shared/lib/fetch";
 import { auth } from "@clerk/nextjs/server";
-import ProductCard from "@/components/ui/product/ProductCard/ProductCard.jsx";
+import ProductCard from "@/entities/product/ProductCard/ProductCard";
 import Link from "next/link";
 
 const page = async () => {
@@ -34,7 +34,12 @@ const page = async () => {
             You haven’t added any products to your wishlist yet. Start exploring
             and save your favorites for later.
           </p>
-          <Link href={"/catalog"} className="rounded bg-blue-500 p-2 m-2 text-white">To catalog</Link>
+          <Link
+            href={"/catalog"}
+            className="rounded bg-blue-500 p-2 m-2 text-white"
+          >
+            To catalog
+          </Link>
         </div>
       )}
     </div>

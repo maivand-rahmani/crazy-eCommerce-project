@@ -1,14 +1,14 @@
 import { auth } from "@clerk/nextjs/server";
-import { Url } from "@/components/ui/urlWay/url";
-import Slider from "@/components/ui/slider/Slider";
+import { Url } from "@/shared/ui/urlWay/url";
+import Slider from "@/shared/ui/slider/Slider";
 import React, { Suspense } from "react";
-import Miniloader from "@/components/Loading/ComponentLoader/miniloader";
-import MainInfo from "./ProductMiniComponents/MainInfo";
-import ProductSpecs from "./ProductMiniComponents/ProductSpecs";
-import RelatedProducts from "./ProductMiniComponents/RelatedProducts";
-import MainCommentComponent from "./ProductMiniComponents/CommentSection/MainComponent";
-import Fetch from "../../../../../funcs/fetch";
-import { ProductRatingStats } from "./ProductMiniComponents/ProductRatingStats/ProductRatingStats.jsx";
+import Miniloader from "@/shared/ui/Loading/ComponentLoader/miniloader";
+import MainInfo from "@/entities/product/ui/MainInfo.jsx";
+import ProductSpecs from "@/entities/product/ui/ProductSpecs.jsx";
+import RelatedProducts from "@/entities/product/ui/RelatedProducts.jsx";
+import MainCommentComponent from "@/entities/comment/ui/CommentSection/MainComponent.jsx";
+import Fetch from "@/shared/lib/fetch";
+import { ProductRatingStats } from "@/entities/rating/ui/ProductRatingStats.jsx";
 
 export const metadata = {
   title: "Product Details",
