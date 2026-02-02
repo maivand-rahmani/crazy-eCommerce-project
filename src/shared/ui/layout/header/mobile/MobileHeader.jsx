@@ -21,12 +21,7 @@ const MobileHeader = () => {
       <NavLink href={"/catalog"} className={``}>
         <PackageSearchIcon />
       </NavLink>
-      <SignedIn>
-        <CustomUserButton/>
-      </SignedIn>
-      <SignedOut>
-        <SignUpButton mode="modal" children={<CircleUserRound />} />
-      </SignedOut>
+      
       <NavLink href={"/wishlist"} className={``}>
         <Heart />
       </NavLink>

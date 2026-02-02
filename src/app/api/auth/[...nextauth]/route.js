@@ -7,7 +7,7 @@ import prisma from "../../../../../prisma/client";
 import { authorizeUser } from '@/shared/lib/auth/authorizeUser'
 
 const authParams = NextAuth({
-    session: { strategy: "database" },
+    session: { strategy: "jwt" },
   adapter: PrismaAdapter(prisma),
   providers: [
     GoogleProvider({
@@ -33,6 +33,26 @@ const authParams = NextAuth({
       authorize: authorizeUser,
     }),
   ],
+  callbacks: {
+  async jwt({ token, user }) {
+    // user есть ТОЛЬКО при логине
+    if (user) {
+      token.id = user.id;
+      token.role = user.role;
+    }
+    return token;
+  },
+
+  async session({ session, token }) {
+    // здесь переносим данные из JWT в session
+    if (session.user) {
+      session.user.id = token.id;
+      session.user.role = token.role;
+    }
+    return session;
+  }
+}
+
 });
 
 export { authParams as GET, authParams as POST  };

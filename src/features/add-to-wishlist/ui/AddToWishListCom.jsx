@@ -1,6 +1,6 @@
 "use client";
 import React, { useTransition, useState } from "react";
-import { useAuth, isSignedIn } from "@clerk/nextjs";
+import { useSession as useAuth } from 'next-auth/react'
 import addToWishlist from "../model/addToWishList";
 import { Heart } from "lucide-react";
 import { toast } from "react-hot-toast";
@@ -13,10 +13,11 @@ export function AddToWishListCom({
 }) {
   const [pending, startTransition] = useTransition();
   const [added, setAdded] = useState(wishlistInfo?.isFavorite);
-  const { userId } = useAuth();
+  const { data } = useAuth();
+  const user = data?.user
 
   const handleClick = async () => {
-    if (!userId) return toast("Authorization required.", { icon: "🔐" });
+    if (!user?.id) return toast("Authorization required.", { icon: "🔐" });
 
     if (userId) {
       setAdded((s) => !s);
