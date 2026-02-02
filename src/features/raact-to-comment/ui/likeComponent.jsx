@@ -73,7 +73,7 @@ export function LikeDisLike({ commentId, likes, dislikes, userReaction }) {
 
   return (
     <div className="flex gap-4 p-4">
-      <div className="flex gap-2">
+      <div className="flex gap-2 center">
         <ThumbsUp
           className="transition cursor-pointer"
           onClick={() => sendReaction("like")}
@@ -82,7 +82,7 @@ export function LikeDisLike({ commentId, likes, dislikes, userReaction }) {
         {likesCount}
       </div>
 
-      <div className="flex gap-2">
+      <div className="flex gap-2 center">
         <ThumbsDown
           className="transition cursor-pointer"
           onClick={() => sendReaction("dislike")}
