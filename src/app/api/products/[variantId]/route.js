@@ -1,11 +1,11 @@
 import { NextResponse } from "next/server";
 import prisma from "../../../../../prisma/client";
 import { toSafeJson } from "../../../../../prisma/funcs";
-import { currentUser } from "@clerk/nextjs/server";
+import { getToken } from "next-auth/jwt";
 
 export async function GET(req, { params }) {
-  const { variantId } = params;
-  const user = await currentUser();
+  const { variantId } = await params;
+  const user = await getToken({ req, secret: process.env.NEXTAUTH_SECRET });
 
   if (!variantId) {
     return NextResponse.json({ error: "Variant ID required", status: 400 });

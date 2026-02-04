@@ -2,16 +2,16 @@
 import React, { useState } from "react";
 import CommentComponent from "../client/CommentComponent";
 import { CommentForm } from "../../../../../features/leave-comment/ui/CommentForm";
-import { SignedIn, SignedOut, SignInButton, SignUpButton } from "@clerk/nextjs";
+import { useSession } from "next-auth/react";
+import Link from "next/link";
 
-const CommentSection = ({ productID, initialComments, users }) => {
+const CommentSection = ({ productID, initialComments }) => {
   const [comments, setComments] = useState(initialComments);
   const [openComments, setOpenComments] = useState(true);
-
-  console.log(comments);
+  const { data } = useSession();
+  const user = data?.user;
 
   const handleAddComment = (newComment) => {
-    const user = users.find((u) => u.id === newComment.user_id);
     setComments((prev) => [{ ...newComment, user }, ...prev]);
   };
 
@@ -45,23 +45,24 @@ const CommentSection = ({ productID, initialComments, users }) => {
 
   return (
     <div className="flex flex-col gap-5">
-      <SignedIn>
+      {user ? (
         <CommentForm product_id={productID} onAddComment={handleAddComment} />
-      </SignedIn>
-      <SignedOut>
+      ) : (
         <div className="flex center flex-col">
           <div className="text-2xl font-extrabold">
             To leave a comment please sign in
           </div>
           <div className="flex gap-5">
-            <SignInButton
+            <Link
+              href="/auth" 
               className="btn rounded-2xl bg-white text-black"
               mode="modal"
             />
-            <SignUpButton className="btn rounded-2xl bg-black" mode="modal" />
+            <Link href="/auth" className="btn rounded-2xl bg-black" mode="modal" />
           </div>
         </div>
-      </SignedOut>
+      )}
+
       <div className="flex flex-col gap-5">
         <div
           onClick={() => setOpenComments((s) => !s)}

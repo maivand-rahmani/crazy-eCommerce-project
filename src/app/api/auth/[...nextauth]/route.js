@@ -6,7 +6,7 @@ import { PrismaAdapter } from "@next-auth/prisma-adapter";
 import prisma from "../../../../../prisma/client";
 import { authorizeUser } from '@/shared/lib/auth/authorizeUser'
 
-const authParams = NextAuth({
+export const authParams = {
     session: { strategy: "jwt" },
   adapter: PrismaAdapter(prisma),
   providers: [
@@ -24,6 +24,13 @@ const authParams = NextAuth({
     GitHubProvider({
       clientId: process.env.GITHUB_CLIENT_ID,
       clientSecret: process.env.GITHUB_CLIENT_SECRET,
+      authorization: {
+        params: {
+          prompt: "consent",
+          access_type: "offline",
+          response_type: "code",
+        },
+      },
     }),
     CredentialsProvider({
       credentials: {
@@ -35,16 +42,24 @@ const authParams = NextAuth({
   ],
   callbacks: {
   async jwt({ token, user }) {
-    // user есть ТОЛЬКО при логине
+
     if (user) {
       token.id = user.id;
-      token.role = user.role;
     }
+
+    if (token.id) {
+      const dbUser = await prisma.user.findUnique({
+        where: { id: token.id },
+        select: { role: true }
+      });
+
+      token.role = dbUser?.role;
+    }
+
     return token;
   },
 
   async session({ session, token }) {
-    // здесь переносим данные из JWT в session
     if (session.user) {
       session.user.id = token.id;
       session.user.role = token.role;
@@ -53,6 +68,7 @@ const authParams = NextAuth({
   }
 }
 
-});
+};
 
-export { authParams as GET, authParams as POST  };
+const handler = NextAuth(authParams);
+export { handler as GET, handler as POST };

@@ -1,13 +1,15 @@
 import { NextResponse } from "next/server";
 import prisma from "../../../../prisma/client";
 import { toSafeJson } from "../../../../prisma/funcs";
-import { auth } from "@clerk/nextjs/server";
+import { getToken } from "next-auth/jwt";
+ 
+
 
 export async function GET(req) {
-  const { userId } = await auth();
   const searchParams = req.nextUrl.searchParams;
+  const user = await getToken({ req, secret: process.env.NEXTAUTH_SECRET });
+  const userId = user?.sub
 
-  
   const Params = {
     id: searchParams.get("id"),
     category: searchParams.get("category"),
@@ -33,8 +35,7 @@ export async function GET(req) {
       orderBy: { created_at: "desc" },
       take: Params.limit ? Number(Params.limit) : undefined,
     });
-
-    if (userId) {
+    if(userId){
       let wishlistVariantIds = [];
 
       const wishlist = await prisma.wishlist.findUnique({
@@ -55,6 +56,8 @@ export async function GET(req) {
         otherInfo: { wishlist_id: wishlist.id },
       });
     }
+
+
 
     return NextResponse.json({ data: toSafeJson(products) });
   } catch (error) {

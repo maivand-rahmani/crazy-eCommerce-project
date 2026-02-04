@@ -1,4 +1,10 @@
-export default async function Fetch(url, method = "GET", token, body) {
+"use server";
+import { cookies } from "next/headers";
+
+export default async function Fetch(url, method = "GET", userToken = null, body) {
+  const cookiesStore = await cookies();
+  const token = userToken || cookiesStore.get("next-auth.session-token")?.value;
+
   const res = await fetch(
     `${process.env.NEXT_PUBLIC_API_URL}${url}`,
     {

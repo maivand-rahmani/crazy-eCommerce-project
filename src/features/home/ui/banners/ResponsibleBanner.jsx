@@ -9,7 +9,7 @@ const ResponsibleBanner = ({ img , name , des , link = undefined , bgColor , cla
         <div className='flex flex-col gap-4' >
             <div className='text-3xl font-extralight'>{name}</div>
             <div className='text-unactive-text line-clamp-3'>{des}</div>
-            <Link href={link} className='btn flex center text-black font-bold border-black'>Shop now</Link>
+            <Link href={link} className='btn flex center text-black font-bold border'>Shop now</Link>
         </div>
     </div>
   )

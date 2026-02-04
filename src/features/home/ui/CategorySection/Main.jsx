@@ -4,15 +4,15 @@ import React from "react";
 import CategoryCard from "./CategoryCard";
 import {getTranslations} from "next-intl/server"
 import Link from "next/link";
+import Fetch from "@/shared/lib/fetch";
 
  
 const CategorySection = async () => {
     const t = await getTranslations('categories')
-   let data , categories;
+   let categories;
 
   try {
-    data = await fetch(`${process.env.API_URL}/api/categories`);
-    categories = await data.json();
+    categories = await Fetch(`/api/categories`);
   } catch (error) {
     console.log(error)
   }

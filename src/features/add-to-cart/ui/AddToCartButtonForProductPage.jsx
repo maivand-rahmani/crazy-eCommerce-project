@@ -1,6 +1,6 @@
 "use client";
 import React, { useEffect, useState } from "react";
-import { useAuth } from "@clerk/nextjs";
+import { useSession } from "next-auth/react";
 import { handleCartQuantityChange } from "../model/handleCartQuantityChangeOnClient";
 import { ShoppingCart, PlusSquare, MinusSquare, Trash2 } from "lucide-react";
 import { toast } from "react-hot-toast";
@@ -8,7 +8,8 @@ import Fetch from "@/shared/lib/fetch";
 import Counter from "./counter.jsx";
 
 export const AddToCartButtonForProductPage = ({ variantId, cart_id }) => {
-  const { getToken, isSignedIn } = useAuth();
+  const { data: session } = useSession();
+  const isSignedIn = !!session?.user?.id;
 
   // current item states
   const [loading, setLoading] = useState(false);
@@ -20,12 +21,9 @@ export const AddToCartButtonForProductPage = ({ variantId, cart_id }) => {
 
     const checkItem = async () => {
       setLoading(true);
-      const token = await getToken();
       try {
         const res = await Fetch(
           `/api/cart/check?cartId=${cart_id}&variantId=${variantId}`,
-          "GET",
-          token,
         );
 
         if (!res) throw new Error("Request failed");

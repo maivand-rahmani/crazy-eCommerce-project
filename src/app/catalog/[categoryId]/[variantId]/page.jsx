@@ -9,6 +9,8 @@ import RelatedProducts from "@/entities/product/ui/RelatedProducts.jsx";
 import MainCommentComponent from "@/entities/comment/ui/CommentSection/MainComponent.jsx";
 import Fetch from "@/shared/lib/fetch";
 import { ProductRatingStats } from "@/entities/rating/ui/ProductRatingStats.jsx";
+import { getServerSession } from "next-auth";
+import { authParams } from "@/app/api/auth/[...nextauth]/route";
 
 export const metadata = {
   title: "Product Details",
@@ -16,11 +18,11 @@ export const metadata = {
 };
 
 const page = async ({ params }) => {
-  const { variantId } = await params;
-  const { getToken, userId } = await auth();
-  const token = await getToken();
+  const { variantId } = params;
+  const user = await getServerSession(authParams).then((res) => res?.user);
+  const userId = user ? user.id : null;
 
-  let MainData = await Fetch(`/api/products/${variantId}`, "GET", token);
+  let MainData = await Fetch(`/api/products/${variantId}`);
 
   const data = userId ? MainData.variant : MainData;
   const metaData = userId ? MainData.meta : null;
@@ -29,7 +31,7 @@ const page = async ({ params }) => {
     <main className="md:px-4 h-full w-full overflow-hidden p-5 md:p-20 flex flex-col">
       <div className="w-full flex-col flex center pb-28 md:px-20 md:flex-row md:gap-10 gap-5">
         <Suspense fallback={<Miniloader />}>
-          <Slider productId={data.products.id} variantId={variantId} />
+          <Slider productId={data?.products?.id} variantId={variantId} />
         </Suspense>
         <Suspense
           fallback={
@@ -40,7 +42,7 @@ const page = async ({ params }) => {
         </Suspense>
       </div>
       <Suspense fallback={<Miniloader />}>
-        <ProductSpecs productId={data.products.id} />
+        <ProductSpecs productId={data?.products.id} />
       </Suspense>
       {/* <Suspense fallback={<Miniloader />}>
         <div className="py-10 px-5 md:py-20 md:px-40">

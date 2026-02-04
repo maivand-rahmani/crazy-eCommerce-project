@@ -1,5 +1,5 @@
 "use client";
-import { useAuth } from "@clerk/nextjs";
+import { useSession } from 'next-auth/react'
 import React, { useState, useEffect } from "react";
 import { Star } from "lucide-react";
 import { LikeDisLike } from "@/features/raact-to-comment/ui/likeComponent";
@@ -37,11 +37,14 @@ const CommentComponent = ({ comment, user, handleDelete, handleEdit }) => {
 
   const [editing, setEditing] = useState(false);
   const [rating, setRating] = useState(comment?.rating); //
-  const { getToken, userId } = useAuth();
+
+  const { data: session } = useSession();
+  const currentUser = session?.user;
+   
+  
 
   const deleteComment = async (commentId) => {
-    const token = await getToken();
-    const data = await Fetch(`/api/products/comments`, "DELETE", token, {
+    const data = await Fetch(`/api/products/comments`, "DELETE", null, {
       id: commentId,
     });
     if (data?.status === 201) {
@@ -54,8 +57,7 @@ const CommentComponent = ({ comment, user, handleDelete, handleEdit }) => {
   };
 
   const editComment = async (commentId) => {
-    const token = await getToken();
-    const data = await Fetch(`/api/products/comments`, "PUT", token, {
+    const data = await Fetch(`/api/products/comments`, "PUT", null, {
       id: commentId,
       comment: commentText,
       rating: rating,
@@ -85,18 +87,18 @@ const CommentComponent = ({ comment, user, handleDelete, handleEdit }) => {
         className="rounded-full"
         width={40}
         height={40}
-        src={user?.imageUrl}
+        src={user?.image ? user.image : "/icons/profile-circle-svgrepo-com.svg"}
         alt="image"
       />
       <div>
         <div className="flex w-full h-10 pl-4 justify-between items-center">
           <div className="flex gap-2 h-full center">
-            <h1>{user?.fullName}</h1>
+            <h1>{user?.name}</h1>
             <span className="text-unactive-text">
               {new Date(comment.created_at).toLocaleDateString()}
             </span>
           </div>
-          {user?.id === userId && (
+          {user?.id === currentUser?.id && (
             <DropdownIcon
               setEditing={setEditing}
               comment={comment}

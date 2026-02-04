@@ -1,9 +1,10 @@
-import { currentUser } from "@clerk/nextjs/server";
+import { getServerSession } from 'next-auth'
 import prisma from "../../../../../../prisma/client";
+import { authParams } from '@/app/api/auth/[...nextauth]/route';
 
 export async function POST(req) {
   const { commentId, type } = await req.json();
-  const user = await currentUser();
+  const user = await getServerSession(authParams).then((res) => res?.user);
 
   if (!user) return Response.json({ error: "Not authorized" }, { status: 401 });
 
@@ -24,7 +25,6 @@ export async function POST(req) {
     });
   } 
   else if (existing.type === type) {
-    // 2. Нажал тот же → удалить
     await prisma.reviews_reactions.delete({
       where: { id: existing.id }
     });

@@ -5,10 +5,7 @@ import ProductCard from "@/entities/product/ProductCard/ProductCard";
 import Link from "next/link";
 
 const page = async () => {
-  const { getToken } = await auth();
-  const token = await getToken();
-
-  const wishlist = await Fetch("/api/wishlist", "GET", token);
+  const wishlist = await Fetch("/api/wishlist");
   return (
     <div className="p-5 md:p-20">
       {wishlist.length > 0 && (

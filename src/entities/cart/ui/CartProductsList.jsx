@@ -8,15 +8,12 @@ import SmallProductCard from "@/entities/product/SmallProductCard/SmallProductCa
 const CartProductsList = ({ checkoutState, setTotal = () => {} }) => {
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
-  const { getToken } = useAuth();
 
   useEffect(() => {
     setLoading(true);
     try {
       const cartProducts = async () => {
-        const token = await getToken();
-
-        const data = await Fetch("/api/cart", "GET", token);
+        const data = await Fetch("/api/cart");
 
         setProducts(data);
         setLoading(false);

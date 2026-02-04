@@ -1,8 +1,9 @@
-import { currentUser } from "@clerk/nextjs/server";
+import { getServerSession } from "next-auth";
 import prisma from "../../../../prisma/client";
+import { authParams } from "@/app/api/auth/[...nextauth]/route";
 
 export async function ensureUserInDB() {
-  const user = await currentUser();
+  const user = await getServerSession(authParams).then((res) => res?.user);
   if (!user) return null;
   await prisma.wishlist.upsert({
       where: { user_id: user.id },

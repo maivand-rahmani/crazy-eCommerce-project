@@ -1,9 +1,10 @@
 "use client";
 import React, { useTransition, useState } from "react";
-import { useSession as useAuth } from 'next-auth/react'
 import addToWishlist from "../model/addToWishList";
 import { Heart } from "lucide-react";
 import { toast } from "react-hot-toast";
+import { useSession } from "next-auth/react";
+
 
 export function AddToWishListCom({
   productId,
@@ -13,13 +14,13 @@ export function AddToWishListCom({
 }) {
   const [pending, startTransition] = useTransition();
   const [added, setAdded] = useState(wishlistInfo?.isFavorite);
-  const { data } = useAuth();
-  const user = data?.user
+  const session = useSession();
+  const user = session?.data?.user;
 
   const handleClick = async () => {
     if (!user?.id) return toast("Authorization required.", { icon: "🔐" });
 
-    if (userId) {
+    if (user?.id) {
       setAdded((s) => !s);
       startTransition(async () => {
         const res = await addToWishlist(

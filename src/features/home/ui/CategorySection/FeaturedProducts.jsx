@@ -4,16 +4,12 @@ import Fetch from "@/shared/lib/fetch";
 import { auth } from "@clerk/nextjs/server";
 
 const FeaturedProducts = async () => {
-  const { getToken } = await auth();
-  const token = await getToken();
+  
 
   const res = await Fetch(
     "/api/products?limit=8&distinctProducts=true",
-    "GET",
-    token,
   );
 
-  // console.log("!!!!!!!!!!!!!!!!!!!!!!!!!!!" , res)
 
   if (!res) {
     return <div>Failed to fetch product</div>;

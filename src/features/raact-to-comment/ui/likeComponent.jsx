@@ -13,7 +13,6 @@ export function LikeDisLike({ commentId, likes, dislikes, userReaction }) {
   const [isPending, startTransition] = useTransition(); 
 
   async function sendReaction(type) {
-     
     const prev = {
       liked,
       disLiked,
@@ -53,7 +52,6 @@ export function LikeDisLike({ commentId, likes, dislikes, userReaction }) {
       });
 
       if (!res.ok) {
-         
         setLiked(prev.liked);
         setDisLiked(prev.disLiked);
         setLikesCount(prev.likesCount);
