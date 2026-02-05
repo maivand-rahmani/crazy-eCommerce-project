@@ -2,6 +2,8 @@ import { addToCart } from './addToCart.js'
 import { toast } from 'react-hot-toast'
 
 export async function handleCartQuantityChange({ setLoading = () => {} , setCounter = () => {} , setAdded = () => {}, cart_id , variantId , method }){
+    
+
     if (method === "add") {
       setLoading(true);
       setCounter((s) => s + 1);

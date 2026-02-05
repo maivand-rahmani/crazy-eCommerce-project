@@ -16,10 +16,7 @@ import {
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useTranslations } from "next-intl";
-import { UserInfoModal } from "@/entities/user/ui/UserProfileModal"
-
-
-
+import { UserInfoModal } from "@/entities/user/ui/AccountModal";
 
 // import LangSwitcher from "@/i18n/Switcher"
 
@@ -27,15 +24,13 @@ const routes = [
   { name: "Home", path: "/" },
   { name: "Catalog", path: "/catalog" },
   { name: "About", path: "/about" },
-  { name: "Contact us", path: "/contact" }
+  { name: "Contact us", path: "/contact" },
 ];
 
 const DesktopHeader = () => {
   const t = useTranslations();
   const [open, setOpen] = useState(false);
   const pathname = usePathname();
-
-
 
   return (
     <div className="hidden fixed md:block md:left-0 h-fit w-full z-[9999] bg-white shadow-sm md:top-0">
@@ -55,14 +50,17 @@ const DesktopHeader = () => {
 
         {/* Desktop nav */}
         <ul className="hidden md:flex gap-13">
-          {routes.map((route) => ( !route.onlyPhone &&
-            <li
-              className={pathname === route.path ? "font-bold" : ""}
-              key={route.name}
-            >
-              <Link href={route.path}>{t(`header.nav.${route.name}`)}</Link>
-            </li>
-          ))}
+          {routes.map(
+            (route) =>
+              !route.onlyPhone && (
+                <li
+                  className={pathname === route.path ? "font-bold" : ""}
+                  key={route.name}
+                >
+                  <Link href={route.path}>{t(`header.nav.${route.name}`)}</Link>
+                </li>
+              )
+          )}
         </ul>
 
         {/* Icons */}

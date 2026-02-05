@@ -47,7 +47,7 @@ export function AddToWishListCom({
   return (
     <button
       onClick={handleClick}
-      className={`flex gap-1 text-black z-20 top-4 right-4 transition-all duration-300 ${colorClass}`}
+      className={`flex center gap-1 text-black z-20 top-4 right-4 transition-all duration-300 ${colorClass}`}
       disabled={pending}
     >
       <Heart className="transition-colors duration-300" fill={fillColor} />

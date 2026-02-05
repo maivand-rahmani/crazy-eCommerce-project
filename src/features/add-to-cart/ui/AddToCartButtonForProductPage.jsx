@@ -17,7 +17,7 @@ export const AddToCartButtonForProductPage = ({ variantId, cart_id }) => {
   const [counter, setCounter] = useState(0);
 
   useEffect(() => {
-    if (!isSignedIn) return; // Early return if not signed in
+    if (!isSignedIn) return; 
 
     const checkItem = async () => {
       setLoading(true);
@@ -51,6 +51,7 @@ export const AddToCartButtonForProductPage = ({ variantId, cart_id }) => {
   }, [isSignedIn, variantId, cart_id]); // Added isSignedIn to dependencies
 
   function callCartHandler(method) {
+    if (!isSignedIn) return toast("Authorization required.", { icon: "🔐" });
     handleCartQuantityChange({
       setLoading,
       setCounter,

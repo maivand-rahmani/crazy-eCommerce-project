@@ -128,24 +128,24 @@ const DropdownSeparator = (props: AriaSeparatorProps) => {
     return <AriaSeparator {...props} className={cx("my-1 h-px w-full bg-border-secondary", props.className)} />;
 };
 
-const DropdownDotsButton = (props: AriaButtonProps & RefAttributes<HTMLButtonElement>) => {
+const DropdownDotsButton = ({ children, ...props }: AriaButtonProps & RefAttributes<HTMLButtonElement>) => {
     return (
         <AriaButton
             {...props}
             aria-label="Open menu"
             className={(state) =>
                 cx(
-                    "cursor-pointer rounded-md text-fg-quaternary outline-focus-ring transition duration-100 ease-linear",
+                    "cursor-pointer rounded-full text-fg-quaternary  transition",
                     (state.isPressed || state.isHovered) && "text-fg-quaternary_hover",
-                    (state.isPressed || state.isFocusVisible) && "outline-2 outline-offset-2",
-                    typeof props.className === "function" ? props.className(state) : props.className,
+                    (state.isPressed || state.isFocusVisible) && "outline-2 outline-offset-2"
                 )
             }
         >
-            <DotsVertical className="size-5 transition-inherit-all" />
+            {children}
         </AriaButton>
     );
 };
+
 
 export const Dropdown = {
     Root: AriaMenuTrigger,
