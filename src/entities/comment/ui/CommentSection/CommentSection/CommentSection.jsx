@@ -48,19 +48,22 @@ const CommentSection = ({ productID, initialComments }) => {
       {user ? (
         <CommentForm product_id={productID} onAddComment={handleAddComment} />
       ) : (
-        <div className="flex center flex-col">
-          <div className="text-2xl font-extrabold">
-            To leave a comment please sign in
-          </div>
-          <div className="flex gap-5">
-            <Link
-              href="/auth" 
-              className="btn rounded-2xl bg-white text-black"
-              mode="modal"
-            />
-            <Link href="/auth" className="btn rounded-2xl bg-black" mode="modal" />
-          </div>
-        </div>
+        <Link href="/auth">
+      <button
+        type="button"
+        className="
+          w-full px-6 py-3 my-3
+          bg-white text-gray-900
+          border border-gray-300 rounded-lg
+          shadow-sm
+          hover:shadow-md hover:translate-y-0,5
+          transition-all duration-200
+          text-center font-extrabold 
+        "
+      >
+        You must be logged in to post a comment.
+      </button>
+    </Link>
       )}
 
       <div className="flex flex-col gap-5">
