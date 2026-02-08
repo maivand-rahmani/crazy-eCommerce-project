@@ -10,9 +10,14 @@ import {
 } from "lucide-react";
 import { SignUpButton, SignedOut, SignedIn, UserButton } from "@clerk/nextjs";
 import NavLink from "../ui/NavLink";
-import CustomUserButton from '../ui/CustomUserButton'
+import CustomUserButton from "../ui/CustomUserButton";
+import { useSession } from "next-auth/react";
+import { UserInfoModal } from "@/entities/user/ui/AccountModal";
 
 const MobileHeader = () => {
+  const session = useSession();
+  const user = session.data;
+
   return (
     <header className="fixed w-[-webkit-fill-available] border border-gray-500 bg-white m-5 rounded-full px-7 py-3 flex z-9999 justify-between bottom-0  shadow-3xl-black md:hidden">
       <NavLink href={"/"} className={``}>
@@ -21,7 +26,8 @@ const MobileHeader = () => {
       <NavLink href={"/catalog"} className={``}>
         <PackageSearchIcon />
       </NavLink>
-      
+      {user && <UserInfoModal />}
+
       <NavLink href={"/wishlist"} className={``}>
         <Heart />
       </NavLink>

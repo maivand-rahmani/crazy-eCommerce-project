@@ -11,9 +11,7 @@ const LoginForm = () => {
     handleSubmit,
     formState: { errors },
     reset,
-    setFocus,
-    watch,
-    getValues,
+    setError
   } = useForm();
 
   const onSubmit = async (data) => {
@@ -22,6 +20,12 @@ const LoginForm = () => {
       email: data.email,
       password: data.password,
     });
+    console.log(res)
+
+    if (res?.status === 401) {
+       setError("root" , { message: "Email or password is invalid please check!" })
+    }
+
     if (!res?.error) {
       reset();
       router.replace("/");
@@ -36,6 +40,7 @@ const LoginForm = () => {
         <h2 className="text-lg text-unactive-text font-extralight">
           Enter your email below to login to your account
         </h2>
+        {errors.root && (<div className="text-red-500 text-2xl">{errors.root.message}</div>)}
       </div>
       <label className="flex flex-col gap-2">
         <span className="text-text">Email</span>

@@ -9,7 +9,7 @@ export default function Modal({ isOpen, onClose, children }) {
     setMounted(true);
   }, []);
 
-  // ESC + блок скролла
+  
   useEffect(() => {
     if (!isOpen) return;
 
@@ -34,12 +34,12 @@ export default function Modal({ isOpen, onClose, children }) {
       onClick={onClose}
     >
       <div
-        className="relative w-[90%] max-w-md rounded-2xl bg-zinc-900 p-6 text-white shadow-2xl animate-scaleIn"
+        className="relative w-[90%] max-w-md rounded-2xl bg-bg p-6 text-text  shadow-2xl animate-scaleIn"
         onClick={(e) => e.stopPropagation()}
       >
         <button
           onClick={onClose}
-          className="absolute right-4 top-3 text-lg text-zinc-400 hover:text-white transition"
+          className="absolute right-4 top-3 text-lg text-text hover:text-black transition"
         >
           ✕
         </button>
