@@ -12,7 +12,7 @@ export async function ensureUserInDB() {
   });
 
   await prisma.carts.upsert({
-      where: { user_id: user.id },
+      where: { user_id: user.id , status: "OPEN" },
       update: {},
       create: { user_id: user.id }
   });

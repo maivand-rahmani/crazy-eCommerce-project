@@ -3,7 +3,7 @@ import { useSession } from 'next-auth/react'
 import React, { useState, useEffect } from "react";
 import { Star } from "lucide-react";
 import { LikeDisLike } from "@/features/raact-to-comment/ui/likeComponent";
-import { Edit01, Delete } from "@untitledui/icons";
+import { Edit01, Delete, DotsVertical } from "@untitledui/icons";
 import { Dropdown } from "@/shared/ui/dropdown/dropdown";
 import Fetch from "@/shared/lib/fetch";
 import Rating from "@/entities/rating/ui/Rating";
@@ -11,7 +11,9 @@ import { toast } from "react-hot-toast";
 
 const DropdownIcon = ({ setEditing, editing, comment, handleDelete }) => (
   <Dropdown.Root>
-    <Dropdown.DotsButton />
+    <Dropdown.DotsButton>
+      <DotsVertical />
+    </Dropdown.DotsButton>
     <Dropdown.Popover className={"bg-white"}>
       <Dropdown.Menu>
         <Dropdown.Section>

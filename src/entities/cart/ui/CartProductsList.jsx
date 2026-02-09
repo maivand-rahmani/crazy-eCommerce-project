@@ -5,7 +5,7 @@ import Link from "next/link";
 import { useAuth } from "@clerk/nextjs";
 import SmallProductCard from "@/entities/product/SmallProductCard/SmallProductCard";
 
-const CartProductsList = ({ checkoutState, setTotal = () => {} }) => {
+const CartProductsList = ({ checkoutState , setItems , setTotal = () => {} }) => {
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
 
@@ -30,6 +30,10 @@ const CartProductsList = ({ checkoutState, setTotal = () => {} }) => {
       setLoading(false);
     }
   }, []);
+
+  useEffect(() => {
+    setItems(products);
+  }, [products]);
 
   let accessibility = {
     image: true,

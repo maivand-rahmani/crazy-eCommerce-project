@@ -8,11 +8,12 @@ import OrderSummary from "../../entities/cart/ui/OrderSummary"
 const page = () => {
 const [total , setTotal] = useState(0)
 const [checkout , setCheckout] = useState(false)
+const [items , setItems] = useState([])
 
   return (
     <div className={`py-10 transition-all md:p-10 relative grid ${!checkout ? "md:grid-cols-[2fr_1fr]" : checkout ? "md:grid-cols-[1fr_2fr]" : ""}`}>
-      <CartProductsList checkoutState={checkout} setTotal={setTotal} />
-      {total > 0 && <OrderSummary checkout={checkout} setCheckout={setCheckout} total={total} />}
+      <CartProductsList setItems={setItems} checkoutState={checkout} setTotal={setTotal} />
+      {total > 0 && <OrderSummary checkout={checkout} items={items} setCheckout={setCheckout} total={total} />}
     </div>
   )
 }

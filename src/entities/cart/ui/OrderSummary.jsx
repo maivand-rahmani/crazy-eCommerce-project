@@ -1,20 +1,36 @@
 "use client";
 import React, { useState } from "react";
-import CouponForm from '../../../features/apply-cupon/ui/CouponForm'
-import { X } from "lucide-react";
+import CouponForm from '../../../features/cart/apply-cupon/ui/CouponForm'
+import { Link, X } from "lucide-react";
+import OrderModal from '@/entities/order/ui/modal/OrderModal'
+import { useSession } from "next-auth/react";
 
 
 
 
-const OrderSummary = ({ total , setCheckout , checkout }) => {
+const OrderSummary = ({ total , setCheckout , checkout , items }) => {
+  const session = useSession()
+  const user = session?.data?.user
+  
   const [coupon, setCoupon] = useState(false);
   const [discountAmount, setDiscountAmount] = useState(0);
-  const [userForm , setUserForm] = useState({})
+
+
+  const [orderModal , setOrderModal] = useState(false)
 
   let discardChecout = () => {
     setCheckout(false)
     setCoupon(false)
     setDiscountAmount(0)
+  }
+
+  let handleOrderSummary = () => {
+    setOrderModal(true)
+    try {
+      
+    } catch (error) {
+      return new Error(error)
+    }
   }
 
   return (
@@ -25,7 +41,7 @@ const OrderSummary = ({ total , setCheckout , checkout }) => {
           {checkout && <X onClick={discardChecout}/>} 
         </div>
 
-        {checkout && <CouponForm total={total} setAmount={setDiscountAmount} setCoupon={setCoupon}/>}
+        {<CouponForm total={total} setAmount={setDiscountAmount} setCoupon={setCoupon}/>}
 
         {/* totals */}
         <div className="flex flex-col text-xl gap-5 my-5">
@@ -45,9 +61,11 @@ const OrderSummary = ({ total , setCheckout , checkout }) => {
           </div>
         </div>
 
-        <button onClick={() => setCheckout(true)} className="bg-black  text-white w-full p-5 text-center font-extrabold font-mono rounded">
+        <button onClick={handleOrderSummary} className="bg-black  text-white w-full p-5 text-center font-extrabold font-mono rounded">
           {checkout ? "Order" : "Checkout"}
         </button>
+
+        {orderModal && <OrderModal items={items} isOpen={orderModal} setOrderModal={setOrderModal} total={total} discountAmount={discountAmount} user={user} />}
       </div>
     </div>
   );

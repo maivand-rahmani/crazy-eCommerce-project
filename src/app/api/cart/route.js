@@ -12,7 +12,7 @@ export async function GET(req) {
     FROM carts w
     JOIN cart_items wi ON wi.cart_id = w.id
     JOIN product_cards pc ON pc.variant_id = wi.variant_id
-    WHERE w.user_id = ${user.id}
+    WHERE w.user_id = ${user.id} and w.status = 'OPEN'
   `;
 
   return NextResponse.json(toSafeJson(cart));
