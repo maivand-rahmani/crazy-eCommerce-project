@@ -7,6 +7,65 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+model Account {
+  userId            String
+  type              String
+  provider          String
+  providerAccountId String
+  refresh_token     String?
+  access_token      String?
+  expires_at        Int?
+  token_type        String?
+  scope             String?
+  id_token          String?
+  session_state     String?
+  createdAt         DateTime @default(now())
+  updatedAt         DateTime
+  user              User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@id([provider, providerAccountId])
+}
+
+model Session {
+  sessionToken String    @unique
+  userId       String
+  expires      DateTime
+  role         user_role
+  createdAt    DateTime  @default(now())
+  updatedAt    DateTime
+  user         User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model User {
+  id                String              @id @default(cuid())
+  name              String?
+  email             String              @unique
+  emailVerified     DateTime?
+  image             String?
+  createdAt         DateTime            @default(now())
+  updatedAt         DateTime            @default(now()) @db.Timestamptz(6)
+  password          String?
+  role              user_role           @default(user)
+  addresses         Json[]
+
+
+  Account           Account[]
+  Session           Session[]
+  carts             carts?
+  orders            orders[]
+  reviews           reviews[]
+  reviews_reactions reviews_reactions[]
+  wishlist          wishlist?
+}
+
+model VerificationToken {
+  identifier String
+  token      String
+  expires    DateTime
+
+  @@id([identifier, token])
+}
+
 /// This table contains check constraints and requires additional setup for migrations. Visit https://pris.ly/d/check-constraints for more info.
 model cart_items {
   id               BigInt           @id @default(autoincrement())
@@ -25,7 +84,11 @@ model carts {
   id         BigInt       @id @default(autoincrement())
   user_id    String       @unique
   created_at DateTime     @default(now()) @db.Timestamptz(6)
+  status     cart_status  @default(OPEN)
+
+
   cart_items cart_items[]
+  user       User         @relation(fields: [user_id], references: [id], onDelete: Cascade, onUpdate: NoAction)
 }
 
 model categories {
@@ -38,25 +101,46 @@ model categories {
 }
 
 /// This table contains check constraints and requires additional setup for migrations. Visit https://pris.ly/d/check-constraints for more info.
+model coupons {
+  id               Int       @id @default(autoincrement())
+  coupon_code      String    @unique
+  description      String?
+  discount_amount  Decimal?  @db.Decimal(10, 2)
+  discount_percent Int?
+  max_usage        Int?      @default(1)
+  times_used       Int?      @default(0)
+  valid_from       DateTime? @default(now()) @db.Timestamptz(6)
+  expires_at       DateTime? @db.Timestamptz(6)
+  orders           orders[]
+
+  @@index([coupon_code], map: "idx_coupon_code")
+}
+
+/// This table contains check constraints and requires additional setup for migrations. Visit https://pris.ly/d/check-constraints for more info.
 model order_items {
-  id               BigInt  @id @default(autoincrement())
-  order_id         BigInt
-  product_id       BigInt?
+  order_id         String
   quantity         Int
   unit_price_cents Int
-  orders           orders  @relation(fields: [order_id], references: [id], onDelete: Cascade, onUpdate: NoAction)
+  id               BigInt           @id @default(autoincrement())
+  variant_id       BigInt
+  orders           orders           @relation(fields: [order_id], references: [id], onDelete: Cascade, onUpdate: NoAction)
+  product_variants product_variants @relation(fields: [variant_id], references: [id], onDelete: NoAction)
 
   @@index([order_id], map: "idx_order_items_order")
 }
 
 /// This table contains check constraints and requires additional setup for migrations. Visit https://pris.ly/d/check-constraints for more info.
 model orders {
-  id          BigInt        @id @default(autoincrement())
-  user_id     Int?
+  id          String        @id @default(uuid())
+  user_id     String
   status      order_status  @default(created)
   total_cents Int
   created_at  DateTime      @default(now()) @db.Timestamptz(6)
+  coupon_id   Int?
+  address     Json?
   order_items order_items[]
+  coupons     coupons?      @relation(fields: [coupon_id], references: [id])
+  user        User          @relation(fields: [user_id], references: [id], onDelete: Cascade)
 
   @@index([user_id], map: "idx_orders_user")
 }
@@ -71,10 +155,10 @@ model product_cards {
   price_cents     Int
   stock_quantity  Int
   image_url       String
-  specs           Json?
   created_at      DateTime @default(now()) @db.Timestamptz(6)
   updated_at      DateTime @default(now()) @db.Timestamptz(6)
   variant_options Json?
+  specs           Json?
 }
 
 model product_images {
@@ -102,6 +186,7 @@ model product_variants {
   price_cents     Int
   stock_quantity  Int               @default(0)
   cart_items      cart_items[]
+  order_items     order_items[]
   product_images  product_images[]
   products        products          @relation(fields: [product_id], references: [id], onDelete: Cascade, onUpdate: NoAction)
   variant_options variant_options[]
@@ -121,7 +206,6 @@ model products {
   product_specs    product_specs[]
   product_variants product_variants[]
   categories       categories?        @relation(fields: [category_id], references: [id], onUpdate: NoAction)
-  reviews          reviews[]
   wishlist_items   wishlist_items[]
 
   @@index([category_id], map: "idx_products_category")
@@ -137,7 +221,7 @@ model reviews {
   rating            Int                 @db.SmallInt
   comment           String?
   created_at        DateTime            @default(now()) @db.Timestamptz(6)
-  products          products            @relation(fields: [product_id], references: [id], onDelete: Cascade, onUpdate: NoAction)
+  user              User                @relation(fields: [user_id], references: [id], onDelete: Cascade, onUpdate: NoAction)
   reviews_reactions reviews_reactions[]
 
   @@unique([user_id, product_id])
@@ -145,12 +229,13 @@ model reviews {
 }
 
 model reviews_reactions {
-  id         BigInt    @id(map: "reviews_rections_pkey") @default(autoincrement())
+  id         BigInt    @id @default(autoincrement())
   user_id    String?
   comment_id Int?
   type       liketype?
   created_at DateTime? @default(now()) @db.Timestamptz(6)
   reviews    reviews?  @relation(fields: [comment_id], references: [id], onDelete: Cascade, onUpdate: NoAction)
+  user       User?     @relation(fields: [user_id], references: [id], onDelete: Cascade, onUpdate: NoAction)
 }
 
 model variant_options {
@@ -166,6 +251,7 @@ model wishlist {
   id             Int              @id @default(autoincrement())
   user_id        String           @unique
   created_at     DateTime?        @default(now()) @db.Timestamp(6)
+  user           User             @relation(fields: [user_id], references: [id], onDelete: Cascade, onUpdate: NoAction)
   wishlist_items wishlist_items[]
 
   @@index([user_id], map: "idx_wishlist_user_id")
@@ -186,19 +272,9 @@ model wishlist_items {
   @@index([wishlist_id], map: "idx_wishlist_items_wishlist_id")
 }
 
-/// This table contains check constraints and requires additional setup for migrations. Visit https://pris.ly/d/check-constraints for more info.
-model coupons {
-  id               Int       @id @default(autoincrement())
-  coupon_code      String    @unique
-  description      String?
-  discount_amount  Decimal?  @db.Decimal(10, 2)
-  discount_percent Int?
-  max_usage        Int?      @default(1)
-  times_used       Int?      @default(0)
-  valid_from       DateTime? @default(now()) @db.Timestamptz(6)
-  expires_at       DateTime? @db.Timestamptz(6)
-
-  @@index([coupon_code], map: "idx_coupon_code")
+enum cart_status {
+  OPEN
+  CLOSED
 }
 
 enum liketype {

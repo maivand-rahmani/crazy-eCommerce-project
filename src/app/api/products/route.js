@@ -1,20 +1,20 @@
 import { NextResponse } from "next/server";
 import prisma from "../../../../prisma/client";
 import { toSafeJson } from "../../../../prisma/funcs";
-import { auth } from "@clerk/nextjs/server";
+import { getToken } from "next-auth/jwt";
 
 export async function GET(req) {
-  const { userId } = await auth();
   const searchParams = req.nextUrl.searchParams;
+  const user = await getToken({ req, secret: process.env.NEXTAUTH_SECRET });
+  const userId = user?.sub;
 
-  
   const Params = {
     id: searchParams.get("id"),
     category: searchParams.get("category"),
     product: searchParams.get("product"),
     limit: searchParams.get("limit"),
     variantsLimit: searchParams.get("vlimit"),
-    distinctProducts: searchParams.get("distinctProducts")
+    distinctProducts: searchParams.get("distinctProducts"),
   };
 
   const where = { AND: [] };
@@ -24,16 +24,15 @@ export async function GET(req) {
   }
   if (Params.id) where.AND.push({ product_id: Number(Params.id) });
   if (Params.product) where.AND.push({ product_name: Params.product });
-  let distinct = Params.distinctProducts ? ["product_id"]  : undefined 
+  let distinct = Params.distinctProducts ? ["product_id"] : undefined;
 
   try {
-     const products = await prisma.product_cards.findMany({
+    const products = await prisma.product_cards.findMany({
       where,
-      distinct, 
+      distinct,
       orderBy: { created_at: "desc" },
       take: Params.limit ? Number(Params.limit) : undefined,
     });
-
     if (userId) {
       let wishlistVariantIds = [];
 
@@ -61,7 +60,7 @@ export async function GET(req) {
     console.error("API error:", error);
     return NextResponse.json(
       { error: "Failed to fetch products" },
-      { status: 500 }
+      { status: 500 },
     );
   }
 }

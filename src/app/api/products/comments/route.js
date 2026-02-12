@@ -7,14 +7,20 @@ export async function GET(req) {
     const searchParams = req.nextUrl.searchParams;
 
     const comments = await prisma.reviews.findMany({
-      where: { product_id: searchParams.get("id") },
+      where: { product_id: Number(searchParams.get("id")) },
       include: {
-        reviews_reactions: true
-      }
+        reviews_reactions: true,
+        user: {
+          select: {
+            id: true,
+            name: true,
+            email: true,
+            image: true,
+            role: true
+          },
+        },
+      },
     });
-
-     
-
 
     return NextResponse.json(toSafeJson(comments));
   } catch (error) {

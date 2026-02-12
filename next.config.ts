@@ -5,6 +5,7 @@ const nextConfig: NextConfig = {
   compiler: {
     styledComponents: true,
   },
+  
    
   images: {
     remotePatterns: [
@@ -20,10 +21,6 @@ const nextConfig: NextConfig = {
   },
 };
 
-const withNextIntl = createNextIntlPlugin({
-  // Опционально: можно указать путь к JSON с переводами
-  // locales: ['en', 'ru'],
-  // defaultLocale: 'en',
-});
+const withNextIntl = createNextIntlPlugin("./src/shared/i18n/request.ts");
 
 export default withNextIntl(nextConfig);
