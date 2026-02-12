@@ -49,8 +49,8 @@ export async function GET(req, { params }) {
           include: { wishlist_items: true },
         });
 
-        const cart = await prisma.carts.findUnique({
-          where: { user_id: user.id },
+        const cart = await prisma.carts.findFirst({
+          where: { user_id: user.id, status: "OPEN" },
         });
 
         let wishlisted = wishlist?.wishlist_items.some(

@@ -8,13 +8,12 @@ import { useSession } from "next-auth/react";
 
 
 
-const OrderSummary = ({ total , setCheckout , checkout , items }) => {
+const OrderSummary = ({ total , setCheckout ,  checkout , items }) => {
   const session = useSession()
   const user = session?.data?.user
-  
+
   const [coupon, setCoupon] = useState(false);
   const [discountAmount, setDiscountAmount] = useState(0);
-
 
   const [orderModal , setOrderModal] = useState(false)
 
@@ -65,7 +64,7 @@ const OrderSummary = ({ total , setCheckout , checkout , items }) => {
           {checkout ? "Order" : "Checkout"}
         </button>
 
-        {orderModal && <OrderModal items={items} isOpen={orderModal} setOrderModal={setOrderModal} total={total} discountAmount={discountAmount} user={user} />}
+        {orderModal && <OrderModal items={items} isOpen={orderModal} setOrderModal={setOrderModal} total={total} couponInfo={coupon} user={user} />}
       </div>
     </div>
   );

@@ -23,6 +23,7 @@ export const POST = async (req) => {
     const user = await getToken({ req, secret: process.env.NEXTAUTH_SECRET });
     const body = await req.json();
 
+
     const existingAddresses = await prisma.user.findUnique({
         where: {
             id: user.id
@@ -32,14 +33,23 @@ export const POST = async (req) => {
         }
     })
 
-    if (!existingAddresses.addresses.some(address => address.street === body.street && address.city === body.city && address.state === body.state && address.zip === body.zip)) {
+    const addresses = existingAddresses?.addresses ?? [];
+
+    const alreadyExists = addresses.some(address =>
+    address.street === body.street &&
+    address.city === body.city &&
+    address.state === body.state &&
+    address.zip === body.zip
+    );
+
+    if (!alreadyExists) {
         const response = await prisma.user.update({
             where: {
                 id: user.id
             },
             data: {
                 addresses: {
-                    push: body
+                    push: body 
                 }
             }
         })

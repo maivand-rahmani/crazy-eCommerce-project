@@ -1,15 +1,14 @@
 "use client";
-
 import React from "react";
 import { useForm } from "react-hook-form";
 
-const PaymentMockForm = ({ setStep, setOrderInfo , total , discountAmount  }) => {
+const PaymentMockForm = ({ setStep, setOrderInfo , total , couponInfo = { discountAmount: 0 , coupon_id: null }}) => {
   const {
     register,
     handleSubmit,
     formState: { errors },
     watch,
-  } = useForm();
+  } = useForm({ defaultValues: { cardNumber: "4242 4242 4242 4242", expiryDate: "1212" , cvv: "123" } });
 
   const cardNumber = watch("cardNumber", "");
   const expiryDate = watch("expiryDate", "");
@@ -29,11 +28,12 @@ const PaymentMockForm = ({ setStep, setOrderInfo , total , discountAmount  }) =>
   };
 
   const onSubmit = (data) => {
-    setOrderInfo((s) => ({ ...s, paymentMethod: "card" }));
+    setOrderInfo((s) => ({ ...s, status: "paid" }));
     setStep(3);
   };
 
-  const finalTotal = total - discountAmount;
+  const finalTotal = couponInfo ? couponInfo.type === "amount" ? total - couponInfo.value : total - (total * (couponInfo.value / 100)) : total
+  const discountAmount = total - finalTotal;
 
   return (
     <div className="w-full max-w-md mx-auto p-6 bg-white rounded-lg shadow-md">
@@ -50,7 +50,7 @@ const PaymentMockForm = ({ setStep, setOrderInfo , total , discountAmount  }) =>
           {discountAmount > 0 && (
             <div className="flex justify-between">
               <span className="text-gray-600">Discount:</span>
-              <span className="font-medium text-green-600">-${(discountAmount)}</span>
+              <span className="font-medium text-green-600">-${(discountAmount.toFixed(2))}</span>
             </div>
           )}
           <div className="flex justify-between pt-2 border-t border-gray-200">

@@ -7,9 +7,9 @@ import toast from "react-hot-toast";
 import Fetch from "@/shared/lib/fetch";
 import Miniloader from "@/shared/ui/Loading/ComponentLoader/miniloader";
 
-const AddUserAddressForm = ({ setStep = () => {} , setOrderInfo }) => {
+const AddUserAddressForm = ({ setStep = () => {} , setOrderInfo = () => {}, onAddressAdded, onCancel }) => {
   const [loading, setLoading] = useState(false);
-  const [address, setAddress] = useState({});
+  const [address, setAddress] = useState(false);
 
   const {
     register,
@@ -51,18 +51,22 @@ const AddUserAddressForm = ({ setStep = () => {} , setOrderInfo }) => {
       if (address) {
         setOrderInfo((s) => ({ ...s, address: data }));
         setStep(2);
-      } else {
-        const res = await addUserAddress(data);
-        setOrderInfo((s) => ({ ...s, address: data }));
-        if (res?.status === 200) setStep(2);
         toast.success("Address added successfully");
+      } else {
+        const res = await addUserAddress( data );
+        setOrderInfo((s) => ({ ...s, address: data }));
+        if (res?.status === 200 || res?.status === 201) {
+          toast.success("Address added successfully");
+          if (onAddressAdded) {
+            onAddressAdded();
+          }
+        }
       } 
     } catch (error) {
       toast.error("Something gone wrong while sending request");
     } finally {
       setLoading(false);
     }
-    console.log("Address data:", data);
   };
 
   return (
@@ -185,6 +189,7 @@ const AddUserAddressForm = ({ setStep = () => {} , setOrderInfo }) => {
       <div className="flex gap-3 pt-2">
         <button
           type="button"
+          onClick={onCancel}
           className="flex-1 p-3 rounded-xl text-center text-text border border-gray-300 hover:bg-gray-100 transition"
         >
           Cancel

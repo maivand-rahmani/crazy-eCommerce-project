@@ -2,7 +2,7 @@
 import { useSession } from 'next-auth/react'
 import React, { useState, useEffect } from "react";
 import { Star } from "lucide-react";
-import { LikeDisLike } from "@/features/raact-to-comment/ui/likeComponent";
+import { LikeDisLike } from "@/features/react-to-comment/ui/likeComponent";
 import { Edit01, Delete, DotsVertical } from "@untitledui/icons";
 import { Dropdown } from "@/shared/ui/dropdown/dropdown";
 import Fetch from "@/shared/lib/fetch";

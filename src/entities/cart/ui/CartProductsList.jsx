@@ -32,6 +32,7 @@ const CartProductsList = ({ checkoutState , setItems , setTotal = () => {} }) =>
   }, []);
 
   useEffect(() => {
+    console.log(products)
     setItems(products);
   }, [products]);
 

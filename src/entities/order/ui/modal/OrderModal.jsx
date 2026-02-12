@@ -4,8 +4,8 @@ import React , { useState , useEffect } from 'react'
 import AddUserAddressForm from '@/features/add-user-address/ui/addUserAddressModal'
 import PaymentMockForm from '@/features/payment-mock/ui/PaymentMockForm'
 import Fetch from '@/shared/lib/fetch'
-import { set } from 'react-hook-form'
 import OrderingLoader from '@/entities/order/ui/ordering'
+import { useRouter } from 'next/navigation'
 
 export function OrderStepper({ currentStep = 1 }) {
   const [activeStep, setActiveStep] = useState(currentStep);
@@ -73,43 +73,42 @@ export function OrderStepper({ currentStep = 1 }) {
   );
 }
 
-const OrderModal = ({ isOpen , items , total , discountAmount , setOrderModal }) => {
+const OrderModal = ({ isOpen , items , total , couponInfo , setOrderModal }) => {
     const [step , setStep] = useState(1)
+    const router = useRouter()
     const [orderInfo , setOrderInfo] = useState({
         order_id: null,
-        order_items: [],
-        coupon_id: null,
+        order_items: items.map((item) => ({ variant_id: item.variant_id, quantity: item.quantity , unit_price_cents: item.price_cents })),
+        coupon_id: couponInfo.id,
         address: null ,
-        total_cents: null
+        status: "created",
+        total_cents: items.reduce((total, item) => total + item.price_cents * item.quantity, 0),
+        cart_id: items[0].cart_id
   })
 
-  useEffect(() => {
-    items.map((item) => {
-      setOrderInfo((s) => ({
-        ...s,
-        order_items: [...s.order_items, { variant_id: item.id, quantity: item.quantity , total_cents: item.total_cents }],
-      }))
-  })
-
-    console.log(orderInfo)
-  }, [items])
 
   useEffect(() => {
-    if (!orderInfo.order_id && step === 3) {
-        // (async () => {
-        //   const response = await Fetch("/api/orders" , "POST" , null , orderInfo);
-        //   const data = await response.json();
-        //   setOrderInfo(data);
-        // })();
-    }        
+    try {
+      if (!orderInfo.order_id && step === 3) {
+        (async () => {
+          const data = await Fetch("/api/cart/order" , "POST" , null , orderInfo);
+          if (data.status === 200) {
+            setOrderInfo({ ...orderInfo, order_id: data.order.id });
+            router.replace(`/orders/${data.order.id}`);
+          }
+        })();
+    }    
+    } catch (error) {
+      return new Error(error)
+    }
   }, [step])
 
   return (
     <Modal isOpen={isOpen} onClose={() => {setOrderModal(false)}}>
         <OrderStepper currentStep={step} />
         {step === 1 && <AddUserAddressForm setOrderInfo={setOrderInfo} setStep={setStep}/>}
-        {step === 2 && <PaymentMockForm setOrderInfo={setOrderInfo} setStep={setStep} total={total} discountAmount={discountAmount} />}
-        {step === 3 && <OrderingLoader success={true} />}
+        {step === 2 && <PaymentMockForm setOrderInfo={setOrderInfo} setStep={setStep} total={total} couponInfo={couponInfo} />}
+        {step === 3 && <OrderingLoader success={orderInfo.order_id} />}
     </Modal>
   )
 }

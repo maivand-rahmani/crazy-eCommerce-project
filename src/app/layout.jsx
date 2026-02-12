@@ -2,7 +2,6 @@ import { NextIntlClientProvider } from "next-intl";
 import Header from "@/shared/ui/layout/header/Header";
 import FooterCyber from "@/shared/ui/layout/footer/Footer";
 import "@/shared/styles/globals.css";
-import { ClerkProvider } from "@clerk/nextjs";
 import { Toaster } from "react-hot-toast";
 import AuthProvider from "@/shared/ui/layout/Provider/AuthProvider";
 

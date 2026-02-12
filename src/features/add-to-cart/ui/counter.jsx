@@ -1,6 +1,6 @@
 import React from "react";
-import { PlusSquare, MinusSquare  } from "lucide-react";
-import deleteButton from './deleteButton';
+import { PlusSquare, MinusSquare } from "lucide-react";
+import deleteButton from "./deleteButton";
 
 const Counter = ({ handleClick, state, withPrice, className }) => {
   return (
@@ -10,11 +10,7 @@ const Counter = ({ handleClick, state, withPrice, className }) => {
           <MinusSquare className={`${state?.loading ? "opacity-50" : null}`} />
         </button>
 
-        <div
-          className={`${
-            state?.loading ? "animate-pulse" : ""
-          } text-2xl`}
-        >
+        <div className={`${state?.loading ? "animate-pulse" : ""} text-2xl`}>
           {state?.quantity}
         </div>
 
@@ -22,13 +18,13 @@ const Counter = ({ handleClick, state, withPrice, className }) => {
           <PlusSquare className={`${state?.loading ? "opacity-50" : null}`} />
         </button>
       </div>
-      <div className="flex gap-5">
-        {
+      {state?.price && (
+        <div className="flex gap-5">
           <div className="text-2xl text-green-900 text-center">
-            ={`${(state?.price) * state?.quantity}$`}
+            ={`${state?.price * state?.quantity}$`}
           </div>
-        }
-      </div>
+        </div>
+      )}
     </div>
   );
 };

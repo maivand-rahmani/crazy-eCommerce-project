@@ -1,17 +1,19 @@
-import { getServerSession } from "next-auth";
-import prisma from "../../../../prisma/client";
+import { NextResponse } from "next/server";
+import prisma from "../../../../../prisma/client";
 import { getToken } from "next-auth/jwt";
+
 
 export async function POST(req, { res }) {
   const user = await getToken({ req, secret: process.env.NEXTAUTH_SECRET });
-  const { product_variants, address, status, coupon_id, total_cents , cart_id } =
+  let orderInfo = {};
+  const { order_items, address, status, coupon_id, total_cents , cart_id , order_id } =
     await req.json();
 
   if (!user) return Response.json({ error: "Not authorized" }, { status: 401 });
 
   await prisma.$transaction(async (tx) => {
     const order = await tx.orders.upsert({
-      where: { id: id },
+      where: { id: order_id || "0"},
       update: {
         status: status,
       },
@@ -20,23 +22,19 @@ export async function POST(req, { res }) {
         user_id: user.id,
         total_cents: total_cents,
         coupon_id: coupon_id,
+        status: status,
       },
     });
-
+    
     const items = await tx.order_items.createMany({
-      where: {
-        order_id: order.id,
-      },
-      data: product_variants,
+      data: order_items.map((item) => ({ ...item , order_id: order.id })),
+      skipDuplicates: true
     });
 
-    const cart = await tx.carts.update({
-      where: {
-        id: cart_id,
-      },
-      data: {
-        status: "CLOSED",
-      },
-    });
+    const cartItems = await tx.cart_items.deleteMany({ where: { cart_id: cart_id }});
+
+    orderInfo = order
   });
+
+  return NextResponse.json({ message: "Order created" , order: orderInfo , status: 200 }, { status: 200 });
 }
