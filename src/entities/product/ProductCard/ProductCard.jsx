@@ -1,18 +1,21 @@
 "use client";
+import { useLocalizedPath } from "@/shared/hooks/useLocalizedPath"
 import React, { useState } from "react";
 import { Heart } from "lucide-react";
 import Image from "next/image";
 import { AddToWishListCom } from "../../../features/add-to-wishlist/ui/AddToWishListCom";
 import { useRouter } from "next/navigation";
+import { useLocale } from "next-intl";
+import { useTranslations } from "next-intl";
 
 const ProductCard = ({ data, otherInfo }) => {
+  const t = useTranslations("product");
   const router = useRouter();
-  if (!data) return <div>Product not found</div>;
+  const buildPath = useLocalizedPath();
+  if (!data) return <div>{t("notFound")}</div>;
 
   function handleClick() {
-    router.push(
-      `/catalog/${data.category_id}/${data.variant_id}?product=${data.product_name}&variant=${data.variant_name}`,
-    );
+    router.push(buildPath(`/catalog/${data.category_id}/${data.variant_id}?product=${data.product_name}&variant=${data.variant_name}`));
   }
 
   return (
@@ -55,7 +58,7 @@ const ProductCard = ({ data, otherInfo }) => {
         onClick={handleClick}
         className="mt-4 w-[140px] rounded-xl bg-black px-4 py-2 text-white transition-all duration-300 hover:bg-neutral-800"
       >
-        Buy Now
+        {t("buyNow")}
       </button>
     </div>
   );

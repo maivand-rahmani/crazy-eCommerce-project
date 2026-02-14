@@ -1,7 +1,9 @@
 "use client";
 import { useState , useEffect } from "react";
+import { useTranslations } from "next-intl";
 
 export default function ProductFilters({ setProducts, products }) {
+  const t = useTranslations("filter");
   const [originalProducts] = useState(products);
 
   const [selectedFilters, setSelectedFilters] = useState({
@@ -95,18 +97,18 @@ export default function ProductFilters({ setProducts, products }) {
   return (
     <div className="p-6 rounded-xl space-y-6 border bg-bg border-card-bg text-text">
       <div>
-        <h4 className="text-lg font-semibold mb-3">Price Range</h4>
+        <h4 className="text-lg font-semibold mb-3">{t("priceRange")}</h4>
         <div className="flex gap-3">
           <input
             type="number"
-            placeholder="Min"
+            placeholder={t("min")}
             value={selectedFilters.minPrice}
             onChange={(e) => handleChange("minPrice", e.target.value)}
             className="border rounded-md px-3 py-2 w-full"
           />
           <input
             type="number"
-            placeholder="Max"
+            placeholder={t("max")}
             value={selectedFilters.maxPrice}
             onChange={(e) => handleChange("maxPrice", e.target.value)}
             className="border rounded-md px-3 py-2 w-full"
@@ -149,7 +151,7 @@ export default function ProductFilters({ setProducts, products }) {
           onClick={resetFilters}
           className="w-full bg-gray-300 text-black mt-6 px-5 py-3 rounded-lg font-semibold shadow"
         >
-          Reset
+          {t("reset")}
         </button>
       </div>
     </div>

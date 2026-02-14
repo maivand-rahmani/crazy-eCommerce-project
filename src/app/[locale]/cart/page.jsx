@@ -1,7 +1,7 @@
 "use client"
 import React , {useState} from 'react'
-import CartProductsList from '../../entities/cart/ui/CartProductsList';
-import OrderSummary from "../../entities/cart/ui/OrderSummary"
+import CartProductsList from '@/entities/cart/ui/CartProductsList';
+import OrderSummary from "@/entities/cart/ui/OrderSummary"
 
 
 

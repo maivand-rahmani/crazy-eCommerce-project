@@ -4,8 +4,10 @@ import CommentComponent from "../client/CommentComponent";
 import { CommentForm } from "../../../../../features/leave-comment/ui/CommentForm";
 import { useSession } from "next-auth/react";
 import Link from "next/link";
+import { useTranslations } from "next-intl";
 
 const CommentSection = ({ productID, initialComments }) => {
+  const t = useTranslations("comments");
   const [comments, setComments] = useState(initialComments);
   const [openComments, setOpenComments] = useState(true);
   const { data } = useSession();
@@ -61,7 +63,7 @@ const CommentSection = ({ productID, initialComments }) => {
           text-center font-extrabold 
         "
       >
-        You must be logged in to post a comment.
+        {t("loginRequired")}
       </button>
     </Link>
       )}
@@ -78,11 +80,11 @@ const CommentSection = ({ productID, initialComments }) => {
           >
             <path
               fillRule="evenodd"
-              d="M2.94 6.412A2 2 0 002 8.108V16a2 2 0 002 2h12a2 2 0 002-2V8.108a2 2 0 00-.94-1.696l-6-3.75a2 2 0 00-1.12 0l-6 3.75zm2.615 2.423a1 1 0 10-1.23 1.542l5.3 6.2a1 1 0 001.23 0l5.3-6.2a1 1 0 10-1.23-1.542L10 14.172l-4.445-5.337z"
+              d="M2.94 6.412A2 2 002 8.108V16a2 2 0 002 2h12a2 2 0 002-2V8.108a2 2 0 00-.94-1.696l-6-3.75a2 2 0 00-1.12 0l-6 3.75zm2.615 2.423a1 1 0 10-1.23 1.542l5.3 6.2a1 1 0 001.23 0l5.3-6.2a1 1 0 10-1.23-1.542L10 14.172l-4.445-5.337z"
               clipRule="evenodd"
             />
           </svg>
-          <div>{comments.length} comments</div>
+          <div>{comments.length} {t("count")}</div>
         </div>
 
         {comments && openComments && <CommentsComponents />}

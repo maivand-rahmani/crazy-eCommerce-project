@@ -3,8 +3,12 @@ import React, { useState } from "react";
 import LoginForm from "./forms/LoginForm";
 import RegisterForm from "./forms/RegisterForm";
 import OAuthForm from "./OAuthForm/OAuthForm";
+import { useTranslations } from "next-intl";
 
 const AuthFormLayout = () => {
+  const t = useTranslations("auth");
+  const tLogin = useTranslations("auth.login");
+  const tRegister = useTranslations("auth.register");
   let [form, setForm] = useState("login");
   return (
     <main className={`bg-bg h-full grid grid-cols-[1fr_1fr] transition-all`}>
@@ -18,21 +22,21 @@ const AuthFormLayout = () => {
           {form === "login" ? <LoginForm /> : <RegisterForm />}
         </div>
 
-        <span className="text-unactive-text">Or continue with</span>
+        <span className="text-unactive-text">{t("orContinueWith")}</span>
         <div>
           <OAuthForm />
         </div>
         <div className="text-unactive-text">
           <span>
             {form === "login"
-              ? "Don't have an account?"
-              : "You have an account?"}
+              ? tLogin("noAccount")
+              : tRegister("hasAccount")}
           </span>
           <button
             onClick={() => setForm(form === "login" ? "register" : "login")}
             className="underline hover:text-text"
           >
-            {form === "login" ? "Register" : "Login"}
+            {form === "login" ? tLogin("register") : tRegister("login")}
           </button>
         </div>
       </div>

@@ -1,15 +1,19 @@
 "use client";
 import { signIn, signOut, useSession } from "next-auth/react";
 import Image from "next/image";
+import { useLocalizedPath } from "@/shared/hooks/useLocalizedPath";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { UserProfileModal } from "@/entities/user/ui/modals/UserProfileModal";
 import { Dropdown } from "@/shared/ui/dropdown/dropdown";
 import { CreditCard, LogOut, Settings, User } from "lucide-react";
-import Switcher from "@/shared/i18n/ui/Switcher"
+import LangSwitcher from "@/shared/i18n/ui/Switcher";
+import { useTranslations } from "next-intl";
 
 export const UserInfoModal = () => {
+  const t = useTranslations("account");
   const router = useRouter();
+  const buildPath = useLocalizedPath();
   const { data } = useSession();
   const user = data?.user;
   const [modal , setModal] = useState(false)
@@ -20,10 +24,10 @@ export const UserInfoModal = () => {
         setModal("profile")
         break;
       case "orders":
-        router.push("/orders");
+        router.push(buildPath("/orders"));
         break;
       case "settings":
-        router.push("/settings");
+        router.push(buildPath("/settings"));
         break;
       case "logout":
         signOut();
@@ -64,18 +68,18 @@ export const UserInfoModal = () => {
         <Dropdown.Popover className="bg-bg text-text"> 
           <Dropdown.Menu onAction={handleMenuAction}>
             <Dropdown.Section>
-              <Dropdown.Item id="profile" label="profile" icon={User} />
-              <Dropdown.Item id="orders" label="orders" icon={CreditCard} />
-              <Dropdown.Item id="settings" label="settings" icon={Settings} />
+              <Dropdown.Item id="profile" label={t("profile")} icon={User} />
+              <Dropdown.Item id="orders" label={t("orders")} icon={CreditCard} />
+              <Dropdown.Item id="settings" label={t("settings")} icon={Settings} />
 
 
               <Dropdown.Separator />
-                <Dropdown.Item>{<Switcher />}</Dropdown.Item>
+                <Dropdown.Item>{<LangSwitcher />}</Dropdown.Item>
               <Dropdown.Separator />
 
               <Dropdown.Item
                 id="logout"
-                label="logout"
+                label={t("logout")}
                 icon={LogOut}
                 className="text-red-700"
               />

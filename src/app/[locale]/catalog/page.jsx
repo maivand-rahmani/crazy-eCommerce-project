@@ -27,11 +27,13 @@ export const metadata = {
 import Fetch from "@/shared/lib/fetch";
 import CategoryCard from "@/features/home/ui/CategorySection/CategoryCard";
 import React from "react";
+import { getTranslations } from "next-intl/server";
 
 const page = async () => {
+  const t = await getTranslations("common");
   let data = await Fetch("/api/categories");
 
-  if (!data) return <div>Something gone wrong</div>;
+  if (!data) return <div>{t("error")}</div>;
 
   return (
     <div className="h-full grid grid-cols-2 md:grid-cols-5 gap-10 p-5 md:p-20">

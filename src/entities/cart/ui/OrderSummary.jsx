@@ -4,11 +4,13 @@ import CouponForm from '../../../features/cart/apply-cupon/ui/CouponForm'
 import { Link, X } from "lucide-react";
 import OrderModal from '@/entities/order/ui/modal/OrderModal'
 import { useSession } from "next-auth/react";
+import { useTranslations } from "next-intl";
 
 
 
 
 const OrderSummary = ({ total , setCheckout ,  checkout , items }) => {
+  const t = useTranslations("orderSummary");
   const session = useSession()
   const user = session?.data?.user
 
@@ -36,7 +38,7 @@ const OrderSummary = ({ total , setCheckout ,  checkout , items }) => {
     <div className="md:pt-25 p-4 transition-all duration-500 ease-in-out">
       <div className="rounded-2xl block sticky p-5 top-25 border shadow-xl">
         <div className="font-extrabold text-2xl uppercase flex justify-between">
-          <h1>Order summary: </h1>
+          <h1>{t("title")}: </h1>
           {checkout && <X onClick={discardChecout}/>} 
         </div>
 
@@ -45,23 +47,23 @@ const OrderSummary = ({ total , setCheckout ,  checkout , items }) => {
         {/* totals */}
         <div className="flex flex-col text-xl gap-5 my-5">
           <div className="font-bold flex justify-between">
-            <h1>Subtotal: </h1>
+            <h1>{t("subtotal")}: </h1>
             <h1>{total.toFixed(2)}$</h1>
           </div>
           {coupon && (
             <div className="flex justify-between text-unactive-text">
-              <h1>Discount: </h1>
+              <h1>{t("discount")}: </h1>
               <h1 className="text-green-700">-{discountAmount}$</h1>
             </div>
           )}
           <div className="font-bold flex justify-between">
-            <h2>total: </h2>
+            <h2>{t("total")}: </h2>
             <h2>{(total - discountAmount).toFixed(2)}$</h2>
           </div>
         </div>
 
         <button onClick={handleOrderSummary} className="bg-black  text-white w-full p-5 text-center font-extrabold font-mono rounded">
-          {checkout ? "Order" : "Checkout"}
+          {checkout ? t("order") : t("checkout")}
         </button>
 
         {orderModal && <OrderModal items={items} isOpen={orderModal} setOrderModal={setOrderModal} total={total} couponInfo={coupon} user={user} />}

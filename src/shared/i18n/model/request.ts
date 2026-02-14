@@ -1,10 +1,10 @@
-import { getRequestConfig } from 'next-intl/server';
+export default async function getRequestConfig( params ) {
+  const locale = params?.locale || "en";
 
-export default getRequestConfig(async () => {
-  const locale = 'en'; // или определить через cookie, заголовок, user prefs
+  const messages = await import(`../json/${locale}.json`);
 
   return {
     locale,
-    messages: (await import(`../json/${locale}.json`)).default
+    messages: messages.default
   };
-});
+}

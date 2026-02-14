@@ -4,8 +4,11 @@ import { useParams, useRouter } from "next/navigation";
 import Link from "next/link";
 import Fetch from "@/shared/lib/fetch";
 import Image from "next/image";
+import { useTranslations } from "next-intl";
 
 const OrderDetailPage = () => {
+  const t = useTranslations("orders.detail");
+  const tCommon = useTranslations("common");
   const params = useParams();
   const router = useRouter();
   const [order, setOrder] = useState(null);
@@ -71,7 +74,7 @@ const OrderDetailPage = () => {
     return (
       <div className="container mx-auto px-4 py-8">
         <div className="text-center py-12">
-          <p className="text-gray-500 text-lg">Loading order details...</p>
+          <p className="text-gray-500 text-lg">{t("loadingDetails")}</p>
         </div>
       </div>
     );
@@ -82,13 +85,13 @@ const OrderDetailPage = () => {
       <div className="container mx-auto px-4 py-8">
         <div className="text-center py-12">
           <p className="text-red-500 text-lg mb-4">
-            {error || "Order not found"}
+            {error || t("notFound")}
           </p>
           <button
             onClick={() => router.push("/orders")}
             className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600 transition-colors"
           >
-            Back to Orders
+            {t("backToOrders")}
           </button>
         </div>
       </div>
@@ -102,9 +105,9 @@ const OrderDetailPage = () => {
           onClick={() => router.push("/orders")}
           className="text-blue-500 hover:text-blue-700 transition-colors mb-4"
         >
-          ← Back to Orders
+          ← {t("backToOrders")}
         </button>
-        <h1 className="text-3xl font-bold">Order Details</h1>
+        <h1 className="text-3xl font-bold">{t("title")}</h1>
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
@@ -115,10 +118,10 @@ const OrderDetailPage = () => {
             <div className="flex justify-between items-start mb-4">
               <div>
                 <h2 className="text-xl font-semibold mb-2">
-                  Order #{order.id}
+                  {tCommon("order")} #{order.id}
                 </h2>
                 <p className="text-gray-600">
-                  Placed on {formatDate(order.created_at)}
+                  {t("placedOn")} {formatDate(order.created_at)}
                 </p>
               </div>
               <span
@@ -131,11 +134,11 @@ const OrderDetailPage = () => {
             {order.coupons && (
               <div className="mt-4 p-3 bg-green-50 rounded-md">
                 <p className="text-sm text-green-800">
-                  Coupon Applied: {order.coupons.coupon_code}
+                  {t("couponApplied")}: {order.coupons.coupon_code}
                   {order.coupons.discount_percent &&
-                    ` (${order.coupons.discount_percent}% off)`}
+                    ` (${order.coupons.discount_percent}% ${t("discountPercent")}`}
                   {order.coupons.discount_amount &&
-                    ` ($${formatPrice(order.coupons.discount_amount)} off)`}
+                    ` ($${formatPrice(order.coupons.discount_amount)} ${t("discountAmount")}`}
                 </p>
               </div>
             )}
@@ -143,7 +146,7 @@ const OrderDetailPage = () => {
 
           {/* Order Items */}
           <div className="bg-white rounded-lg shadow-md p-6">
-            <h3 className="text-lg font-semibold mb-4">Order Items</h3>
+            <h3 className="text-lg font-semibold mb-4">{t("items")}</h3>
             <div className="space-y-4">
               {order.order_items.map((item, index) => (
                 <div
@@ -168,7 +171,7 @@ const OrderDetailPage = () => {
                       />
                     ) : (
                       <div className="w-full h-full bg-gray-300 flex items-center justify-center">
-                        <span className="text-gray-500 text-xs">No Image</span>
+                        <span className="text-gray-500 text-xs">{tCommon("noImage")}</span>
                       </div>
                     )}
                   </Link>
@@ -179,30 +182,30 @@ const OrderDetailPage = () => {
                       href={`/catalog/${item.product_variants.products?.categories?.id}/${item.product_variants.id}`}
                       className="font-medium text-gray-900 hover:text-blue-600 transition-colors"
                     >
-                      {item.product_variants.products?.name || "Product Name"}
+                      {item.product_variants.products?.name || tCommon("notAvailable")}
                     </Link>
                     {item.product_variants.variant_name && (
                       <p className="text-sm text-gray-600">
-                        Variant: {item.product_variants.variant_name}
+                        {t("variant")}: {item.product_variants.variant_name}
                       </p>
                     )}
                     <p className="text-sm text-gray-600">
-                      Category:{" "}
+                      {t("category")}:{" "}
                       {item.product_variants.products?.categories?.name ||
-                        "N/A"}
+                        tCommon("notAvailable")}
                     </p>
                   </div>
 
                   {/* Quantity and Price */}
                   <div className="text-right">
                     <p className="text-sm text-gray-600">
-                      Qty: {item.quantity}
+                      {t("quantity")}: {item.quantity}
                     </p>
                     <p className="font-medium">
                       ${formatPrice(item.unit_price_cents)}
                     </p>
                     <p className="text-sm text-gray-600">
-                      Total: $
+                      {t("total")}: $
                       {formatPrice(item.unit_price_cents * item.quantity)}
                     </p>
                   </div>
@@ -216,15 +219,15 @@ const OrderDetailPage = () => {
         <div className="space-y-6">
           {/* Order Summary */}
           <div className="bg-white rounded-lg shadow-md p-6">
-            <h3 className="text-lg font-semibold mb-4">Order Summary</h3>
+            <h3 className="text-lg font-semibold mb-4">{t("summary")}</h3>
             <div className="space-y-2">
               <div className="flex justify-between">
-                <span className="text-gray-600">Subtotal:</span>
+                <span className="text-gray-600">{t("subtotal")}:</span>
                 <span>${formatPrice(order.total_cents)}</span>
               </div>
               {order.coupons && (
                 <div className="flex justify-between text-green-600">
-                  <span>Discount:</span>
+                  <span>{t("discount")}:</span>
                   <span>
                     -$
                     {formatPrice(discount)}
@@ -232,7 +235,7 @@ const OrderDetailPage = () => {
                 </div>
               )}
               <div className="flex justify-between font-semibold text-lg pt-2 border-t">
-                <span>Total:</span>
+                <span>{t("total")}:</span>
                 <span>
                   ${formatPrice(finalPrice)}
                 </span>
@@ -243,7 +246,7 @@ const OrderDetailPage = () => {
           {/* Shipping Address */}
           {order.address && (
             <div className="bg-white rounded-lg shadow-md p-6">
-              <h3 className="text-lg font-semibold mb-4">Shipping Address</h3>
+              <h3 className="text-lg font-semibold mb-4">{t("shippingAddress")}</h3>
               <div className="text-gray-600">
                 {typeof order.address === "object" ? (
                   <div>
@@ -263,10 +266,10 @@ const OrderDetailPage = () => {
 
           {/* Customer Info */}
           <div className="bg-white rounded-lg shadow-md p-6">
-            <h3 className="text-lg font-semibold mb-4">Customer Information</h3>
+            <h3 className="text-lg font-semibold mb-4">{t("customerInfo")}</h3>
             <div className="text-gray-600">
-              <p>Name: {order.user?.name || "N/A"}</p>
-              <p>Email: {order.user?.email || "N/A"}</p>
+              <p>{t("name")}: {order.user?.name || tCommon("notAvailable")}</p>
+              <p>{t("email")}: {order.user?.email || tCommon("notAvailable")}</p>
             </div>
           </div>
         </div>

@@ -8,33 +8,38 @@ import { Dropdown } from "@/shared/ui/dropdown/dropdown";
 import Fetch from "@/shared/lib/fetch";
 import Rating from "@/entities/rating/ui/Rating";
 import { toast } from "react-hot-toast";
+import { useTranslations } from "next-intl";
 
-const DropdownIcon = ({ setEditing, editing, comment, handleDelete }) => (
-  <Dropdown.Root>
-    <Dropdown.DotsButton>
-      <DotsVertical />
-    </Dropdown.DotsButton>
-    <Dropdown.Popover className={"bg-white"}>
-      <Dropdown.Menu>
-        <Dropdown.Section>
-          <Dropdown.Item
-            icon={Edit01}
-            onClick={() => {
-              setEditing(!editing);
-            }}
-          >
-            Edit
-          </Dropdown.Item>
-          <Dropdown.Item icon={Delete} onClick={() => handleDelete(comment.id)}>
-            Delete
-          </Dropdown.Item>
-        </Dropdown.Section>
-      </Dropdown.Menu>
-    </Dropdown.Popover>
-  </Dropdown.Root>
-);
+const DropdownIcon = ({ setEditing, editing, comment, handleDelete }) => {
+  const t = useTranslations("comments");
+  return (
+    <Dropdown.Root>
+      <Dropdown.DotsButton>
+        <DotsVertical />
+      </Dropdown.DotsButton>
+      <Dropdown.Popover className={"bg-white"}>
+        <Dropdown.Menu>
+          <Dropdown.Section>
+            <Dropdown.Item
+              icon={Edit01}
+              onClick={() => {
+                setEditing(!editing);
+              }}
+            >
+              {t("edit")}
+            </Dropdown.Item>
+            <Dropdown.Item icon={Delete} onClick={() => handleDelete(comment.id)}>
+              {t("delete")}
+            </Dropdown.Item>
+          </Dropdown.Section>
+        </Dropdown.Menu>
+      </Dropdown.Popover>
+    </Dropdown.Root>
+  );
+};
 
 const CommentComponent = ({ comment, user, handleDelete, handleEdit }) => {
+  const t = useTranslations("comments");
   const [commentText, editCommentText] = useState(comment?.comment);
 
   const [editing, setEditing] = useState(false);
@@ -51,7 +56,7 @@ const CommentComponent = ({ comment, user, handleDelete, handleEdit }) => {
     });
     if (data?.status === 201) {
       handleDelete(commentId);
-      toast.success("comment succsesfully deleted");
+      toast.success(t("success.deleted"));
       return true;
     } else {
       return false;
@@ -76,10 +81,10 @@ const CommentComponent = ({ comment, user, handleDelete, handleEdit }) => {
     e.preventDefault();
     const res = await editComment(comment.id);
     if (res) {
-      toast.success("comment succsesfully edited");
+      toast.success(t("success.edited"));
       setEditing((i) => !i);
     } else {
-      toast.error("something gone wrong");
+      toast.error(t("errors.somethingWrong"));
     }
   };
 
@@ -129,7 +134,7 @@ const CommentComponent = ({ comment, user, handleDelete, handleEdit }) => {
                 className="p-2 self-start bg-blue-500 rounded text-white"
                 aria-label="edited comment submitting"
               >
-                Submit
+                {t("submit")}
               </button>
             )}
           </div>

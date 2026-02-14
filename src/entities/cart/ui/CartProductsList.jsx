@@ -4,8 +4,10 @@ import React, { useState, useEffect } from "react";
 import Link from "next/link";
 import { useAuth } from "@clerk/nextjs";
 import SmallProductCard from "@/entities/product/SmallProductCard/SmallProductCard";
+import { useTranslations } from "next-intl";
 
 const CartProductsList = ({ checkoutState , setItems , setTotal = () => {} }) => {
+  const t = useTranslations("cart");
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
 
@@ -51,7 +53,7 @@ const CartProductsList = ({ checkoutState , setItems , setTotal = () => {} }) =>
         <>
           <div>
             <div className="font-extrabold uppercase flex gap-10 p-5 text-2xl center">
-              <div>Your shopping cart: </div>
+              <div>{t("title")}: </div>
               <div className="rounded-full bg-gray-300 p-2">
                 {products.length}
               </div>
@@ -74,21 +76,21 @@ const CartProductsList = ({ checkoutState , setItems , setTotal = () => {} }) =>
         </>
       )}
 
-      {loading ? "loading" : null}
+      {loading ? t("common.loading") : null}
 
       {!loading && products.length < 1 && (
         <div className="flex flex-col w-full items-center justify-center min-h-[60vh] text-center">
           <h2 className="text-2xl font-semibold text-gray-900 mb-3">
-            Your cart is empty
+            {t("empty.title")}
           </h2>
           <p className="text-gray-500 max-w-md">
-            You haven’t added any products to your cart yet. Start exploring.
+            {t("empty.description")}
           </p>
           <Link
             href={"/catalog"}
             className="rounded bg-blue-500 p-2 m-2 text-white"
           >
-            To catalog
+            {t("empty.cta")}
           </Link>
         </div>
       )}

@@ -1,6 +1,7 @@
 "use client"
 import { useRouter } from 'next/navigation';
-import {useTranslations} from "next-intl"
+import { useTranslations} from "next-intl"
+import { useLocalizedPath } from '@/shared/hooks/useLocalizedPath'
 import React, { useState } from "react";
 import { Smartphone, Laptop, Tablet, Headphones , Cable , Headset , PlugZap , TabletSmartphone , Watch, MonitorIcon } from "lucide-react";
 
@@ -20,11 +21,12 @@ const CategoriesLogos = {
 const CategoryCard =  ({ Category , kidsList , Scroll = true }) => {
    const router = useRouter();
   const t = useTranslations()
+  const buildPath = useLocalizedPath()
   const [clicked , setclick] = useState(false)
 
   function Click() {
     setclick(!clicked)
-    router.push(`/catalog/${Category.id}`)
+    router.push(buildPath(`/catalog/${Category.id}`))
   }
   
   return (

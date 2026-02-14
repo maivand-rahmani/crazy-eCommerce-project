@@ -16,7 +16,7 @@ export const metadata = {
   openGraph: {
     title: "Shop Premium Products Online | Fast Shipping & Best Deals",
     description:
-      "Discover top-quality products with fast shipping. Browse categories, find exclusive deals, and shop safely.",
+      "Discover top-quality products with fast shipping. Browse categories, find exclusive deals and shop safely.",
     type: "website",
     locale: "en_US",
   },
@@ -29,6 +29,7 @@ export const metadata = {
 };
 
 import React, { Suspense } from "react";
+import { getTranslations } from "next-intl/server";
 import MiniLoader from "@/shared/ui/Loading/ComponentLoader/miniloader";
 import Main from "@/features/home/ui/banners/main";
 import CategorySection from "@/features/home/ui/CategorySection/Main";
@@ -37,6 +38,8 @@ import FeaturedProducts from "@/features/home/ui/CategorySection/FeaturedProduct
 import ProductsRenderSkeleton from "@/shared/ui/skeleton/ProductsRenderSkeleton";
 
 const Page = async () => {
+  const t = await getTranslations("home");
+
   return (
     <div className="mx-auto max-w-[1440px]">
       <Suspense fallback={<MiniLoader />}>
@@ -46,7 +49,7 @@ const Page = async () => {
         <CategorySection />
       </Suspense>
       <div className="md:my-14 md:mx-40">
-        <h1 className="text-2xl font-bold my-6">Featured Products</h1>
+        <h1 className="text-2xl font-bold my-6">{t("featuredProducts")}</h1>
         <Suspense fallback={<ProductsRenderSkeleton productsCount={8} />}>
           <FeaturedProducts />
         </Suspense>

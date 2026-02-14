@@ -4,16 +4,18 @@ import React, { useEffect, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Check, CreditCard, Package, Truck } from "lucide-react";
 import { useRouter } from "next/navigation";
+import { useTranslations } from "next-intl";
 
 const OrderingLoader = ({ success }) => {
+  const t = useTranslations("orderModal");
   const router = useRouter();
   const [currentStep, setCurrentStep] = useState(0);
   const [finished, setFinished] = useState(false);
 
   const steps = [
-    { icon: CreditCard, label: "Processing Payment" },
-    { icon: Package, label: "Preparing Order" },
-    { icon: Truck, label: "Ready to Ship" },
+    { icon: CreditCard, label: t("processing") },
+    { icon: Package, label: t("preparing") },
+    { icon: Truck, label: t("readyToShip") },
   ];
 
   // Step progression
@@ -64,12 +66,12 @@ const OrderingLoader = ({ success }) => {
         {/* TITLE */}
         <div className="text-center mb-8">
           <h2 className="text-2xl font-bold text-gray-800 mb-2">
-            {finished ? "Order Successful 🎉" : "Creating Your Order"}
+            {finished ? `${t("success")} 🎉` : t("creating")}
           </h2>
           <p className="text-gray-600 text-sm">
             {finished
-              ? "Redirecting to your orders..."
-              : "Please wait while we process your order"}
+              ? t("redirecting")
+              : t("pleaseWait")}
           </p>
         </div>
 

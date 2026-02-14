@@ -2,8 +2,10 @@ import React from "react";
 import ProductCard from "@/entities/product/ProductCard/ProductCard";
 import Fetch from "@/shared/lib/fetch";
 import { auth } from "@clerk/nextjs/server";
+import { getTranslations } from "next-intl/server";
 
 const FeaturedProducts = async () => {
+  const t = await getTranslations("common");
   
 
   const res = await Fetch(
@@ -12,7 +14,7 @@ const FeaturedProducts = async () => {
 
 
   if (!res) {
-    return <div>Failed to fetch product</div>;
+    return <div>{t("error")}</div>;
   }
 
   return (

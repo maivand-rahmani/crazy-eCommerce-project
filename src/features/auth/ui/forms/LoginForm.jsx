@@ -3,8 +3,11 @@ import React from "react";
 import { useForm } from "react-hook-form";
 import { signIn } from "next-auth/react";
 import { useRouter } from "next/navigation";
+import { useTranslations } from "next-intl";
 
 const LoginForm = () => {
+  const t = useTranslations("auth.login");
+  const tCommon = useTranslations("common");
   let router = useRouter()
   let {
     register,
@@ -23,8 +26,8 @@ const LoginForm = () => {
     console.log(res)
 
     if (res?.status === 401) {
-       setError("root" , { message: "Email or password is invalid please check!" })
-    }
+       setError("root" , { message: t("errors.invalid") })
+     }
 
     if (!res?.error) {
       reset();
@@ -36,9 +39,9 @@ const LoginForm = () => {
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-10">
       <div className="flex flex-col center gap-2 text-text">
-        <h1 className="text-2xl font-extrabold">Login to your account</h1>
+        <h1 className="text-2xl font-extrabold">{t("title")}</h1>
         <h2 className="text-lg text-unactive-text font-extralight">
-          Enter your email below to login to your account
+          {t("subtitle")}
         </h2>
         {errors.root && (<div className="text-red-500 text-2xl">{errors.root.message}</div>)}
       </div>
@@ -79,7 +82,7 @@ const LoginForm = () => {
         className="p-3 rounded-xl w-full text-center text-white dark:text-shadow-zinc-950 bg-black dark:bg-white-500"
         type="submit"
       >
-        Login
+        {t("button")}
       </button>
     </form>
   );

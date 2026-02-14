@@ -6,14 +6,16 @@ import PaymentMockForm from '@/features/payment-mock/ui/PaymentMockForm'
 import Fetch from '@/shared/lib/fetch'
 import OrderingLoader from '@/entities/order/ui/ordering'
 import { useRouter } from 'next/navigation'
+import { useTranslations } from "next-intl";
 
 export function OrderStepper({ currentStep = 1 }) {
+  const t = useTranslations("orderModal");
   const [activeStep, setActiveStep] = useState(currentStep);
 
   const steps = [
-  { id: 1, label: "Addresses" },
-  { id: 2, label: "Paying" },
-  { id: 3, label: "Confirming" },
+  { id: 1, label: t("steps.addresses") },
+  { id: 2, label: t("steps.paying") },
+  { id: 3, label: t("steps.confirming") },
     ];
 
   useEffect(() => {

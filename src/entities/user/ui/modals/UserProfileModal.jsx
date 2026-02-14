@@ -6,8 +6,11 @@ import Image from "next/image";
 import { Mail, Calendar, Clock, Fingerprint, MapPin, Plus, Trash2, Edit } from "lucide-react";
 import AddUserAddressForm from "@/features/add-user-address/ui/addUserAddressModal";
 import Fetch from "@/shared/lib/fetch";
+import { useTranslations } from "next-intl";
 
 export const UserProfileModal = ({ isOpen, onClose, user }) => {
+  const t = useTranslations("account");
+  const tAddress = useTranslations("address");
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [addresses, setAddresses] = useState([]);
   const [isAddressModalOpen, setIsAddressModalOpen] = useState(false);
@@ -90,9 +93,9 @@ export const UserProfileModal = ({ isOpen, onClose, user }) => {
           {/* Header */}
           <div className="text-center">
             <h2 className="text-2xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
-              My Profile
+              {t("myProfile")}
             </h2>
-            <p className="text-sm text-gray-500 mt-1">Manage your account information</p>
+            <p className="text-sm text-gray-500 mt-1">{t("manageAccount")}</p>
           </div>
           
           {/* Profile Card */}
@@ -124,7 +127,7 @@ export const UserProfileModal = ({ isOpen, onClose, user }) => {
             {/* Editable Field */}
             <div className="bg-white rounded-lg border border-gray-200 p-4 hover:border-blue-300 transition-colors">
               <label className="block text-sm font-semibold text-gray-700 mb-2">
-                Display Name
+                {t("displayName")}
               </label>
               <input
                 type="text"
@@ -151,7 +154,7 @@ export const UserProfileModal = ({ isOpen, onClose, user }) => {
                 <div className="flex items-start space-x-3">
                   <Mail className="w-4 h-4 text-gray-400 mt-0.5" />
                   <div className="flex-1">
-                    <p className="text-xs font-medium text-gray-500 uppercase tracking-wider">Email Address</p>
+                    <p className="text-xs font-medium text-gray-500 uppercase tracking-wider">{t("emailAddress")}</p>
                     <p className="text-sm text-gray-700 font-mono mt-1">{user.email}</p>
                   </div>
                 </div>
@@ -161,7 +164,7 @@ export const UserProfileModal = ({ isOpen, onClose, user }) => {
                 <div className="flex items-start space-x-3">
                   <Fingerprint className="w-4 h-4 text-gray-400 mt-0.5" />
                   <div className="flex-1">
-                    <p className="text-xs font-medium text-gray-500 uppercase tracking-wider">User ID</p>
+                    <p className="text-xs font-medium text-gray-500 uppercase tracking-wider">{t("userId")}</p>
                     <p className="text-sm text-gray-700 font-mono mt-1">{user.id}</p>
                   </div>
                 </div>
@@ -172,7 +175,7 @@ export const UserProfileModal = ({ isOpen, onClose, user }) => {
                   <div className="flex items-start space-x-3">
                     <Calendar className="w-4 h-4 text-gray-400 mt-0.5" />
                     <div className="flex-1">
-                      <p className="text-xs font-medium text-gray-500 uppercase tracking-wider">Member Since</p>
+                      <p className="text-xs font-medium text-gray-500 uppercase tracking-wider">{t("memberSince")}</p>
                       <p className="text-sm text-gray-700 mt-1">{formatDate(user.createdAt)}</p>
                     </div>
                   </div>
@@ -184,7 +187,7 @@ export const UserProfileModal = ({ isOpen, onClose, user }) => {
                   <div className="flex items-start space-x-3">
                     <Clock className="w-4 h-4 text-gray-400 mt-0.5" />
                     <div className="flex-1">
-                      <p className="text-xs font-medium text-gray-500 uppercase tracking-wider">Last Updated</p>
+                      <p className="text-xs font-medium text-gray-500 uppercase tracking-wider">{t("lastUpdated")}</p>
                       <p className="text-sm text-gray-700 mt-1">{formatDate(user.updatedAt)}</p>
                     </div>
                   </div>
@@ -197,7 +200,7 @@ export const UserProfileModal = ({ isOpen, onClose, user }) => {
               <div className="flex items-center justify-between">
                 <p className="text-sm font-semibold text-gray-700 flex items-center">
                   <MapPin className="w-4 h-4 mr-2" />
-                  My Addresses
+                  {t("myAddresses")}
                 </p>
                 <button
                   type="button"
@@ -205,7 +208,7 @@ export const UserProfileModal = ({ isOpen, onClose, user }) => {
                   className="text-sm text-blue-600 hover:text-blue-700 flex items-center font-medium transition-colors"
                 >
                   <Plus className="w-4 h-4 mr-1" />
-                  Add New
+                  {t("addNew")}
                 </button>
               </div>
 
@@ -226,11 +229,11 @@ export const UserProfileModal = ({ isOpen, onClose, user }) => {
                             <p className="text-sm font-medium text-gray-800">
                               {address.street}
                             </p>
-                            {address.isDefault && (
-                              <span className="px-2 py-0.5 text-xs bg-blue-100 text-blue-700 rounded-full font-medium">
-                                Default
-                              </span>
-                            )}
+                              {address.isDefault && (
+                                <span className="px-2 py-0.5 text-xs bg-blue-100 text-blue-700 rounded-full font-medium">
+                                  {tAddress("default")}
+                                </span>
+                              )}
                           </div>
                           <p className="text-sm text-gray-600 mt-1">
                             {address.city}, {address.state} {address.zip}
@@ -247,13 +250,13 @@ export const UserProfileModal = ({ isOpen, onClose, user }) => {
               ) : (
                 <div className="text-center py-6 bg-gray-50 rounded-lg border border-dashed border-gray-200">
                   <MapPin className="w-8 h-8 text-gray-400 mx-auto mb-2" />
-                  <p className="text-sm text-gray-500">No addresses added yet</p>
+                  <p className="text-sm text-gray-500">{t("noAddresses")}</p>
                   <button
                     type="button"
                     onClick={() => setIsAddressModalOpen(true)}
                     className="mt-2 text-sm text-blue-600 hover:text-blue-700 font-medium"
                   >
-                    Add your first address
+                    {t("addFirst")}
                   </button>
                 </div>
               )}
@@ -268,7 +271,7 @@ export const UserProfileModal = ({ isOpen, onClose, user }) => {
                   disabled={isSubmitting}
                   className="flex-1 px-4 py-2.5 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 transition-all duration-200 font-medium disabled:opacity-50 disabled:cursor-not-allowed"
                 >
-                  Cancel
+                  {tAddress("cancel")}
                 </button>
                 <button
                   type="submit"
@@ -281,10 +284,10 @@ export const UserProfileModal = ({ isOpen, onClose, user }) => {
                         <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
                         <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
                       </svg>
-                      Saving...
+                      {t("saving")}
                     </span>
                   ) : (
-                    "Save Changes"
+                    t("saveChanges")
                   )}
                 </button>
               </div>

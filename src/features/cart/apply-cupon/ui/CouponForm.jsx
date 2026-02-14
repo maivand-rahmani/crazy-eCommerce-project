@@ -3,8 +3,10 @@ import Fetch from "@/shared/lib/fetch";
 import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 import toast from "react-hot-toast";
+import { useTranslations } from "next-intl";
 
 const CouponForm = ({ total, setAmount = () => {}, setCoupon = () => {} }) => {
+  const t = useTranslations("coupon");
   const [submited, setSubmited] = useState(false);
   const {
     register,
@@ -26,12 +28,12 @@ const CouponForm = ({ total, setAmount = () => {}, setCoupon = () => {} }) => {
             ? data?.value
             : ((total / 100) * data?.value).toFixed(2);
         setAmount(discount);
-        toast.success(`Promo code applied you save ${discount}`, {
+        toast.success(`${t("applied")} ${discount}$`, {
           duration: 2000,
           icon: "🎉",
         });
       } else {
-        setError("coupon", { message: "the coupon is invalid!" });
+        setError("coupon", { message: t("invalid") });
         setSubmited(false);
       }
     } catch (error) {
@@ -43,7 +45,7 @@ const CouponForm = ({ total, setAmount = () => {}, setCoupon = () => {} }) => {
   return (
     <div>
       <label className="block text-unactive-text mt-5" htmlFor="cupon">
-        Discount code / Promo code
+        {t("label")}
       </label>
       <form
         className={`flex border rounded focus-visible:outline-none ${submited ? " bg-green-700" : ""}`}
@@ -52,7 +54,7 @@ const CouponForm = ({ total, setAmount = () => {}, setCoupon = () => {} }) => {
         <input
           className="w-full p-3"
           disabled={submited}
-          placeholder="Code"
+          placeholder={t("placeholder")}
           name="coupon"
           {...register("coupon", {
             minLength: { value: 5, message: "Minimum 5 letters" },
@@ -62,7 +64,7 @@ const CouponForm = ({ total, setAmount = () => {}, setCoupon = () => {} }) => {
           disabled={submited}
           className="p-2 bg-black text-white text-center font-extrabold font-mono rounded-r"
         >
-          check
+          {t("button")}
         </button>
       </form>
       {errors.coupon && <p className="text-red-500">{errors.coupon.message}</p>}

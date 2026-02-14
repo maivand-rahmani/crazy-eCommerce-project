@@ -13,9 +13,8 @@ import {
   CircleUserRound,
   Menu,
 } from "lucide-react";
-import Link from "next/link";
-import { usePathname } from "next/navigation";
-import { useTranslations } from "next-intl";
+import { Link , usePathname  } from "@/shared/i18n/model/routing";
+import { useTranslations , useLocale } from "next-intl";
 import { UserInfoModal } from "@/entities/user/ui/AccountModal";
 
 // import LangSwitcher from "@/i18n/Switcher"
@@ -29,14 +28,15 @@ const routes = [
 
 const DesktopHeader = () => {
   const t = useTranslations();
-  const [open, setOpen] = useState(false);
   const pathname = usePathname();
+
+  
 
   return (
     <div className="hidden fixed md:block md:left-0 h-fit w-full z-[9999] bg-white shadow-sm md:top-0">
       <header className="flex items-center justify-between gap-14 p-4 md:justify-center h-22 text-black relative">
         {/* Company logo */}
-        <div className="hidden md:block">{<Cyber />}</div>
+        <Link href={`/`}><Cyber /></Link>
 
         {/* Search input */}
         <div className="hidden p-4 gap-8 rounded-2xl bg-search-bg w-full md:flex md:max-w-93">
@@ -57,7 +57,7 @@ const DesktopHeader = () => {
                   className={pathname === route.path ? "font-bold" : ""}
                   key={route.name}
                 >
-                  <Link href={route.path}>{t(`header.nav.${route.name}`)}</Link>
+                  <Link href={`${route.path}`}>{t(`header.nav.${route.name}`)}</Link>
                 </li>
               )
           )}
@@ -66,10 +66,10 @@ const DesktopHeader = () => {
         {/* Icons */}
         <div className="hidden md:flex gap-6">
           {/* <LangSwitcher /> */}
-          <Link href="/wishlist">
+          <Link href={`/wishlist`}>
             <Heart />
           </Link>
-          <Link href="/cart">
+          <Link href={`/cart`}>
             <ShoppingCart />
           </Link>
           <UserInfoModal />

@@ -5,8 +5,10 @@ import {useParams } from "next/navigation"
 import { Truck , Store , BadgeCheck , ShoppingCart } from 'lucide-react';
 import { AddToWishListCom } from '@/features/add-to-wishlist/ui/AddToWishListCom.jsx';
 import { AddToCartButtonForProductPage } from '@/features/add-to-cart/ui/AddToCartButtonForProductPage.jsx';
+import { useTranslations } from "next-intl";
 
 const  MainInfo = ({ product , otherInfo }) => {
+  const t = useTranslations("product");
   const variants = product.products?.product_variants || [];
   const currentVariant = product;
 
@@ -20,9 +22,9 @@ const  MainInfo = ({ product , otherInfo }) => {
 
   // gurantee , stock , free delivery можно добавить ниже
   const info = [
-    { icon: <BadgeCheck />, key: "Guaranteed", text: "1 Year" },
-    { icon: <Store />, key: "In Stock", text: product.stock_quantity > 0 ? "today" : "Out of Stock" },
-    { icon: <Truck />, key: "Free Delivery" , text: "1-2 days" },
+    { icon: <BadgeCheck />, key: t("guarantee.title"), text: t("guarantee.value") },
+    { icon: <Store />, key: t("stock.title"), text: product.stock_quantity > 0 ? t("stock.available") : t("stock.outOfStock") },
+    { icon: <Truck />, key: t("delivery.title") , text: t("delivery.value") },
   ]
 
   const [selectedColor, setSelectedColor] = useState(
@@ -79,7 +81,7 @@ const  MainInfo = ({ product , otherInfo }) => {
 
       {/* COLOR */}
       <div className="mb-6">
-        <h2 className="text-2xl font-bold mb-2">Select color:</h2>
+        <h2 className="text-2xl font-bold mb-2">{t("selectColor")}</h2>
         <ul className="flex flex-wrap gap-4">
           {colorOptions.map((v, i) => {
             const color = v.variant_options.find(o => o.key === "Color")?.value || "N/A";
@@ -152,7 +154,7 @@ const  MainInfo = ({ product , otherInfo }) => {
       {/* Product Specs */}
       {productSpecs.length > 0 && (
         <div className="mb-6">
-          <h2 className="text-2xl font-bold mb-2">Product Specifications:</h2>
+          <h2 className="text-2xl font-bold mb-2">{t("specifications")}:</h2>
           <ul className="grid grid-cols-3 gap-4">
             {specs.map((spec, index) => (
               productSpecs.some(s => s.key === spec) && (
@@ -174,7 +176,7 @@ const  MainInfo = ({ product , otherInfo }) => {
       <div className="grid grid-cols-2 gap-4 mt-6">
         <div className={`border-2 rounded flex center hover:border-red-600 hover  :text-white transition ${otherInfo?.isFavorite ? "border-red-600" : null}`}>
           <AddToWishListCom wishlistInfo={otherInfo} variantId={currentVariant.id} productId={product.products.id}> 
-          {otherInfo?.isFavorite ? "Added to wishlist" : "Add to Wishlist"}
+          {otherInfo?.isFavorite ? t("addedToWishlist") : t("addToWishlist")}
         </AddToWishListCom>
         </div>
         

@@ -65,7 +65,7 @@
     },
     "whyChooseUs": {
       "title": "Why Choose Us",
-      "subtitle": "We don’t just sell gadgets — we deliver trust, quality, and a futuristic experience.",
+      "subtitle": "We don't just sell gadgets — we deliver trust, quality, and a futuristic experience.",
       "cards": {
         "authentic": {
           "title": "Authentic Products",
@@ -84,7 +84,7 @@
   },
   "contact": {
     "title": "Contact Us",
-    "subtitle": "Get in touch with Cyber. We’re here to help with product info, orders, or support.",
+    "subtitle": "Get in touch with Cyber. We're here to help with product info, orders, or support.",
     "form": {
       "title": "Send us a message",
       "name": "Name",
@@ -104,5 +104,317 @@
       "phone": "+1 (555) 123-4567"
     },
     "mapPlaceholder": "[ Google Map Placeholder ]"
+  },
+
+  "footer": {
+    "logo": "Cyber",
+    "tagline": "Dive into the future. Explore, innovate, connect.",
+    "nav": {
+      "title": "Navigation",
+      "home": "Home",
+      "products": "Products",
+      "contacts": "Contacts",
+      "about": "About us"
+    },
+    "social": {
+      "title": "Follow us"
+    },
+    "copyright": "© 2025 Cyber. All rights reserved."
+  },
+
+  "home": {
+    "featuredProducts": "Featured Products"
+  },
+
+  "cart": {
+    "title": "Your shopping cart",
+    "addToCart": "Add to cart",
+    "empty": {
+      "title": "Your cart is empty",
+      "description": "You haven't added any products to your cart yet. Start exploring.",
+      "cta": "To catalog"
+    },
+    "items": "items"
+  },
+
+  "orderSummary": {
+    "title": "Order summary",
+    "subtotal": "Subtotal",
+    "discount": "Discount",
+    "total": "Total",
+    "checkout": "Checkout",
+    "order": "Order"
+  },
+
+  "coupon": {
+    "label": "Discount code / Promo code",
+    "placeholder": "Code",
+    "button": "check",
+    "applied": "Promo code applied you save",
+    "invalid": "the coupon is invalid!"
+  },
+
+  "auth": {
+    "login": {
+      "title": "Login to your account",
+      "subtitle": "Enter your email below to login to your account",
+      "button": "Login",
+      "noAccount": "Don't have an account?",
+      "register": "Register",
+      "errors": {
+        "invalid": "Email or password is invalid please check!"
+      }
+    },
+    "register": {
+      "title": "Create an account",
+      "subtitle": "Please enter your details below to create an account",
+      "button": "Register",
+      "hasAccount": "You have an account?",
+      "login": "Login",
+      "firstName": "First Name",
+      "lastName": "Last Name",
+      "password": "Password",
+      "confirmPassword": "Confirm Password",
+      "errors": {
+        "firstNameRequired": "First name must be more than 2 characters",
+        "firstNameLetters": "First name must be only letters",
+        "lastNameRequired": "Last name must be more than 2 characters",
+        "lastNameLetters": "Last name must be only letters",
+        "passwordLength": "Password must be more than 8 characters",
+        "passwordMatch": "Passwords do not match"
+      }
+    },
+    "orContinueWith": "Or continue with"
+  },
+
+  "wishlist": {
+    "title": "WishList",
+    "empty": {
+      "title": "Your wishlist is empty",
+      "description": "You haven't added any products to your wishlist yet. Start exploring and save your favorites for later.",
+      "cta": "To catalog"
+    }
+  },
+
+  "orders": {
+    "title": "My Orders",
+    "status": {
+      "label": "Status",
+      "all": "All Status",
+      "created": "Created",
+      "paid": "Paid",
+      "shipped": "Shipped",
+      "delivered": "Delivered",
+      "cancelled": "Cancelled"
+    },
+    "sort": {
+      "label": "Sort by",
+      "date": "Date",
+      "price": "Price",
+      "status": "Status",
+      "asc": "Asc",
+      "desc": "Desc"
+    },
+    "table": {
+      "orderId": "Order ID",
+      "status": "Status",
+      "price": "Price",
+      "date": "Date",
+      "itemsQuantity": "Items Quantity"
+    },
+    "loading": "Loading orders...",
+    "empty": "No orders found",
+    "detail": {
+      "title": "Order Details",
+      "placedOn": "Placed on",
+      "items": "Order Items",
+      "summary": "Order Summary",
+      "shippingAddress": "Shipping Address",
+      "customerInfo": "Customer Information",
+      "backToOrders": "Back to Orders",
+      "couponApplied": "Coupon Applied",
+      "discountPercent": "off",
+      "discountAmount": "off",
+      "variant": "Variant",
+      "category": "Category",
+      "quantity": "Qty",
+      "unitPrice": "Unit Price",
+      "total": "Total",
+      "subtotal": "Subtotal",
+      "name": "Name",
+      "email": "Email",
+      "notFound": "Order not found",
+      "loadingDetails": "Loading order details..."
+    }
+  },
+
+  "product": {
+    "notFound": "Product not found",
+    "buyNow": "Buy Now",
+    "selectColor": "Select color",
+    "specifications": "Product Specifications",
+    "addToWishlist": "Add to Wishlist",
+    "addedToWishlist": "Added to wishlist",
+    "removeFromWishlist": "remove from wishlist",
+    "guarantee": {
+      "title": "Guaranteed",
+      "value": "1 Year"
+    },
+    "stock": {
+      "title": "In Stock",
+      "available": "today",
+      "outOfStock": "Out of Stock"
+    },
+    "delivery": {
+      "title": "Free Delivery",
+      "value": "1-2 days"
+    },
+    "details": "Details"
+  },
+
+  "comments": {
+    "loginRequired": "You must be logged in to post a comment.",
+    "count": "comments",
+    "rateProduct": "Rate the product:",
+    "placeholder": "Add a comment...",
+    "submit": "Submit",
+    "edit": "Edit",
+    "delete": "Delete",
+    "success": {
+      "added": "comment successfully added",
+      "deleted": "comment succsesfully deleted",
+      "edited": "comment succsesfully edited"
+    },
+    "errors": {
+      "rating": "Please add a rating",
+      "comment": "Please add a comment",
+      "somethingWrong": "Something gone wrong"
+    }
+  },
+
+  "rating": {
+    "noRatings": "No ratings yet.",
+    "basedOn": "Based on",
+    "reviews": "reviews",
+    "median": "median"
+  },
+
+  "payment": {
+    "title": "Payment Details",
+    "summary": "Order Summary",
+    "subtotal": "Subtotal",
+    "discount": "Discount",
+    "total": "Total",
+    "cardNumber": "Card Number",
+    "cardholderName": "Cardholder Name",
+    "expiryDate": "Expiry Date",
+    "cvv": "CVV",
+    "payNow": "Pay Now",
+    "testCards": "Test Cards:",
+    "visa": "Visa",
+    "mastercard": "Mastercard",
+    "anyExpiry": "Any future expiry date",
+    "anyCvv": "Any 3-digit CVV",
+    "placeholders": {
+      "cardNumber": "1234 5678 9012 3456",
+      "cardholderName": "John Doe",
+      "expiryDate": "MM/YY",
+      "cvv": "123"
+    },
+    "errors": {
+      "cardNumberRequired": "Card number is required",
+      "cardNumberPattern": "Card number must be 16 digits",
+      "cardholderRequired": "Cardholder name is required",
+      "cardholderPattern": "Name can only contain letters and spaces",
+      "expiryRequired": "Expiry date is required",
+      "expiryPattern": "Format: MM/YY",
+      "cvvRequired": "CVV is required",
+      "cvvPattern": "CVV must be 3 or 4 digits"
+    }
+  },
+
+  "address": {
+    "add": "Add Address",
+    "update": "Update Address",
+    "updateDescription": "Fill in the details below to update your address",
+    "addDescription": "Fill in the details below to add a new address",
+    "street": "Street Address",
+    "city": "City",
+    "state": "State",
+    "zip": "ZIP Code",
+    "country": "Country",
+    "phone": "Phone Number",
+    "setDefault": "Set as default address",
+    "cancel": "Cancel",
+    "confirm": "confirm",
+    "success": "Address added successfully",
+    "errors": {
+      "streetRequired": "Street address is required",
+      "cityRequired": "City is required",
+      "stateRequired": "State is required",
+      "zipRequired": "ZIP code is required",
+      "countryRequired": "Country is required",
+      "phoneRequired": "Phone number is required"
+    },
+    "noAddresses": "No addresses added yet",
+    "addFirst": "Add your first address",
+    "default": "Default"
+  },
+
+  "orderModal": {
+    "steps": {
+      "addresses": "Addresses",
+      "paying": "Paying",
+      "confirming": "Confirming"
+    },
+    "processing": "Processing Payment",
+    "preparing": "Preparing Order",
+    "readyToShip": "Ready to Ship",
+    "creating": "Creating Your Order",
+    "success": "Order Successful",
+    "redirecting": "Redirecting to your orders...",
+    "pleaseWait": "Please wait while we process your order"
+  },
+
+  "common": {
+    "loading": "Loading...",
+    "error": "Something gone wrong",
+    "retry": "Retry",
+    "close": "Close",
+    "save": "Save",
+    "saveChanges": "Save Changes",
+    "saving": "Saving...",
+    "cancel": "Cancel",
+    "delete": "delete",
+    "noImage": "No Image",
+    "notAvailable": "N/A"
+  },
+
+  "notFound": {
+    "title": "404 - Page Not Found"
+  },
+
+  "account": {
+    "profile": "profile",
+    "orders": "orders",
+    "settings": "settings",
+    "logout": "logout",
+    "myProfile": "My Profile",
+    "manageAccount": "Manage your account information",
+    "displayName": "Display Name",
+    "emailAddress": "Email Address",
+    "userId": "User ID",
+    "memberSince": "Member Since",
+    "lastUpdated": "Last Updated",
+    "myAddresses": "My Addresses",
+    "addNew": "Add New",
+    "noAddresses": "No addresses added yet"
+  },
+
+  "filter": {
+    "priceRange": "Price Range",
+    "min": "Min",
+    "max": "Max",
+    "reset": "Reset"
   }
 }

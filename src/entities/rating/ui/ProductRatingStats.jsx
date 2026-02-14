@@ -2,8 +2,10 @@
 
 import { useEffect, useState } from "react";
 import Fetch from "@/shared/lib/fetch";
+import { useTranslations } from "next-intl";
 
 export function ProductRatingStats({ productId }) {
+  const t = useTranslations("rating");
   const [data, setData] = useState(null);
   const [loading, setLoading] = useState(true);
 
@@ -30,7 +32,7 @@ export function ProductRatingStats({ productId }) {
   if (!data || data.total === 0) {
     return (
       <div className="mt-6 rounded-xl border border-gray-200 bg-white/70 px-6 py-5 shadow-sm">
-        <p className="text-sm text-gray-500">No ratings yet.</p>
+        <p className="text-sm text-gray-500">{t("noRatings")}</p>
       </div>
     );
   }
@@ -74,7 +76,7 @@ export function ProductRatingStats({ productId }) {
           </div>
 
           <p className="mt-2 text-xs text-gray-500">
-            Based on {total} reviews • median {median.toFixed(1)}
+            {t("basedOn")} {total} {t("reviews")} • {t("median")} {median.toFixed(1)}
           </p>
         </div>
       </div>

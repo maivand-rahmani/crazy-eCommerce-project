@@ -4,6 +4,7 @@ import addToWishlist from "../model/addToWishList";
 import { Heart } from "lucide-react";
 import { toast } from "react-hot-toast";
 import { useSession } from "next-auth/react";
+import { useTranslations } from "next-intl";
 
 
 export function AddToWishListCom({
@@ -12,13 +13,15 @@ export function AddToWishListCom({
   wishlistInfo,
   children,
 }) {
+  const t = useTranslations("product");
+  const tCommon = useTranslations("common");
   const [pending, startTransition] = useTransition();
   const [added, setAdded] = useState(wishlistInfo?.isFavorite);
   const session = useSession();
   const user = session?.data?.user;
 
   const handleClick = async () => {
-    if (!user?.id) return toast("Authorization required.", { icon: "🔐" });
+    if (!user?.id) return toast(tCommon("error") + ": Authorization required.", { icon: "🔐" });
 
     if (user?.id) {
       setAdded((s) => !s);
@@ -29,12 +32,12 @@ export function AddToWishListCom({
           wishlistInfo?.wishlist_id,
         );
         added
-          ? toast("removed from wishlist", { icon: "❎" })
-          : toast("added to wishlist", { icon: "✅" });
+          ? toast(t("removeFromWishlist"), { icon: "❎" })
+          : toast(t("addedToWishlist"), { icon: "✅" });
         setAdded(res.status === "added");
       });
     } else {
-      toast.error("Something gone wrong while sending request");
+      toast.error(tCommon("error"));
     }
   };
 

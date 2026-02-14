@@ -1,4 +1,5 @@
 import React from "react";
+import { getTranslations } from "next-intl/server";
 import Fetch from "@/shared/lib/fetch";
 import { auth } from "@clerk/nextjs/server";
 import ProductCard from "@/entities/product/ProductCard/ProductCard";
@@ -22,12 +23,13 @@ export const metadata = {
 };
 
 const page = async () => {
+  const t = await getTranslations("wishlist");
   const wishlist = await Fetch("/api/wishlist");
   return (
     <div className="p-5 md:p-20">
       {wishlist.length > 0 && (
         <>
-          <h1 className="font-bold text-2xl p-3">WishList</h1>
+          <h1 className="font-bold text-2xl p-3">{t("title")}</h1>
           <div className="grid grid-cols-2 md:grid-cols-4 gap-5">
             {wishlist.map((item) => (
               <ProductCard
@@ -42,17 +44,16 @@ const page = async () => {
       {wishlist.length <= 0 && (
         <div className="flex flex-col items-center justify-center min-h-[60vh] text-center">
           <h2 className="text-2xl font-semibold text-gray-900 mb-3">
-            Your wishlist is empty
+            {t("empty.title")}
           </h2>
           <p className="text-gray-500 max-w-md">
-            You haven’t added any products to your wishlist yet. Start exploring
-            and save your favorites for later.
+            {t("empty.description")}
           </p>
           <Link
             href={"/catalog"}
             className="rounded bg-blue-500 p-2 m-2 text-white"
           >
-            To catalog
+            {t("empty.cta")}
           </Link>
         </div>
       )}

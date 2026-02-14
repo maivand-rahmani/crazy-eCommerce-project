@@ -4,8 +4,10 @@ import { useForm } from "react-hook-form";
 import { register as registerUser } from "@/features/auth/model/register";
 import { signIn } from "next-auth/react";
 import { useRouter} from "next/navigation";
+import { useTranslations } from "next-intl";
 
 const RegisterForm = () => {
+  const t = useTranslations("auth.register");
   let router = useRouter();
   let [loading, setLoading] = useState(false);
   let {
@@ -48,27 +50,27 @@ const RegisterForm = () => {
   return (
     <form onSubmit={handleSubmit(handleRegister)} className="flex flex-col gap-10">
       <div className="flex flex-col center gap-2 text-text">
-        <h1 className="text-2xl font-extrabold">Create an account</h1>
+        <h1 className="text-2xl font-extrabold">{t("title")}</h1>
         <h2 className="text-lg text-unactive-text font-extralight">
-          Please enter your details below to create an account
+          {t("subtitle")}
         </h2>
       </div>
 
       <div className="flex flex-row gap-5">
         <label className="flex flex-col gap-2">
           <span className="text-text">
-            First Name <span className="text-red-800">*</span>
+            {t("firstName")} <span className="text-red-800">*</span>
           </span>
           <input
             {...register("firstname", {
               required: true,
               minLength: {
                 value: 2,
-                message: "First name must be more than 2 characters",
+                message: t("errors.firstNameRequired"),
               },
               pattern: {
                 value: /^[A-Za-z]+$/,
-                message: "First name must be only letters",
+                message: t("errors.firstNameLetters"),
               },
               maxLength: {
                 value: 20,
@@ -76,7 +78,7 @@ const RegisterForm = () => {
               },
               pattern: {
                 value: /^[A-Za-z]+$/,
-                message: "First name must be only letters",
+                message: t("errors.firstNameLetters"),
               },
             })}
             className="inputStyle"
@@ -91,7 +93,7 @@ const RegisterForm = () => {
         </label>
         <label className="flex flex-col gap-2">
           <span className="text-text">
-            Last Name <span className="text-red-800">*</span>
+            {t("lastName")} <span className="text-red-800">*</span>
           </span>
           <input
             {...register("lastname", {
@@ -102,11 +104,11 @@ const RegisterForm = () => {
               },
               minLength: {
                 value: 2,
-                message: "Last name must be more than 2 characters",
+                message: t("errors.lastNameRequired"),
               },
               pattern: {
                 value: /^[A-Za-z]+$/,
-                message: "Last name must be only letters",
+                message: t("errors.lastNameLetters"),
               },
             })}
             className="inputStyle"
@@ -144,14 +146,14 @@ const RegisterForm = () => {
       </label>
       <label className="flex flex-col gap-2">
         <span className="text-text">
-          Password <span className="text-red-800">*</span>
+          {t("password")} <span className="text-red-800">*</span>
         </span>
         <input
           {...register("password", {
             required: true,
             minLength: {
               value: 8,
-              message: "Password must be more than 8 characters",
+              message: t("errors.passwordLength"),
             },
             maxLength: {
               value: 20,
@@ -169,13 +171,13 @@ const RegisterForm = () => {
       </label>
       <label className="flex flex-col gap-2">
         <span className="text-text">
-          Confirm Password <span className="text-red-800">*</span>
+          {t("confirmPassword")} <span className="text-red-800">*</span>
         </span>
         <input
           {...register("password-confirm", {
             required: true,
             validate: (value) =>
-              value === getValues("password") || "Passwords do not match",
+              value === getValues("password") || t("errors.passwordMatch"),
           })}
           className="inputStyle"
           type="password"
@@ -192,7 +194,7 @@ const RegisterForm = () => {
         className="p-3 rounded-xl w-full text-center text-white dark:text-shadow-zinc-950 bg-black dark:bg-white-500"
         type="submit"
       >
-        Login
+        {t("button")}
       </button>
     </form>
   );

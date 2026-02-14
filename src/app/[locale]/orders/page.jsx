@@ -1,9 +1,13 @@
 "use client"
 import React, { useState, useMemo } from 'react'
+import { useTranslations } from "next-intl";
 import Fetch from '@/shared/lib/fetch'
-import Link from 'next/link'
+import { Link } from '@/shared/i18n/model/routing'
 
 const OrdersPage = () => {
+  const t = useTranslations("orders");
+  const tStatus = useTranslations("orders.status");
+  const tSort = useTranslations("orders.sort");
   const [orders, setOrders] = useState([])
   const [loading, setLoading] = useState(true)
   const [statusFilter, setStatusFilter] = useState('all')
@@ -87,54 +91,54 @@ const OrdersPage = () => {
 
   return (
     <div className="container mx-auto px-4 py-8">
-      <h1 className="text-3xl font-bold mb-8">My Orders</h1>
+      <h1 className="text-3xl font-bold mb-8">{t("title")}</h1>
       
       {/* Filters */}
       <div className="flex flex-col md:flex-row gap-4 mb-6">
         <div className="flex items-center gap-2">
-          <label className="text-sm font-medium text-gray-700">Status:</label>
+          <label className="text-sm font-medium text-gray-700">{tStatus("label")}:</label>
           <select
             value={statusFilter}
             onChange={(e) => setStatusFilter(e.target.value)}
             className="px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
           >
-            <option value="all">All Status</option>
-            <option value="created">Created</option>
-            <option value="paid">Paid</option>
-            <option value="shipped">Shipped</option>
-            <option value="delivered">Delivered</option>
-            <option value="cancelled">Cancelled</option>
+            <option value="all">{tStatus("all")}</option>
+            <option value="created">{tStatus("created")}</option>
+            <option value="paid">{tStatus("paid")}</option>
+            <option value="shipped">{tStatus("shipped")}</option>
+            <option value="delivered">{tStatus("delivered")}</option>
+            <option value="cancelled">{tStatus("cancelled")}</option>
           </select>
         </div>
         
         <div className="flex items-center gap-2">
-          <label className="text-sm font-medium text-gray-700">Sort by:</label>
+          <label className="text-sm font-medium text-gray-700">{tSort("label")}:</label>
           <select
             value={sortBy}
             onChange={(e) => setSortBy(e.target.value)}
             className="px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
           >
-            <option value="created_at">Date</option>
-            <option value="total_cents">Price</option>
-            <option value="status">Status</option>
+            <option value="created_at">{tSort("date")}</option>
+            <option value="total_cents">{tSort("price")}</option>
+            <option value="status">{tSort("status")}</option>
           </select>
           
           <button
             onClick={() => setSortOrder(sortOrder === 'asc' ? 'desc' : 'asc')}
             className="px-3 py-2 bg-gray-100 hover:bg-gray-200 rounded-md transition-colors"
           >
-            {sortOrder === 'asc' ? '↑ Asc' : '↓ Desc'}
+            {sortOrder === 'asc' ? `↑ ${tSort("asc")}` : `↓ ${tSort("desc")}`}
           </button>
         </div>
       </div>
 
       {loading ? (
         <div className="text-center py-12">
-          <p className="text-gray-500 text-lg">Loading orders...</p>
+          <p className="text-gray-500 text-lg">{t("loading")}</p>
         </div>
       ) : filteredAndSortedOrders.length === 0 ? (
         <div className="text-center py-12">
-          <p className="text-gray-500 text-lg">No orders found</p>
+          <p className="text-gray-500 text-lg">{t("empty")}</p>
         </div>
       ) : (
         <div className="overflow-x-auto">
@@ -142,25 +146,25 @@ const OrdersPage = () => {
             <thead className="bg-gray-50 border-b border-gray-200">
               <tr>
                 <th className="px-6 py-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                  Order ID
+                  {t("table.orderId")}
                 </th>
                 <th className="px-6 py-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                  Status
+                  {t("table.status")}
                 </th>
                 <th 
                   className="px-6 py-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider cursor-pointer hover:bg-gray-100"
                   onClick={() => handleSort('total_cents')}
                 >
-                  Price {sortBy === 'total_cents' && (sortOrder === 'asc' ? '↑' : '↓')}
+                  {t("table.price")} {sortBy === 'total_cents' && (sortOrder === 'asc' ? '↑' : '↓')}
                 </th>
                 <th 
                   className="px-6 py-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider cursor-pointer hover:bg-gray-100"
                   onClick={() => handleSort('created_at')}
                 >
-                  Date {sortBy === 'created_at' && (sortOrder === 'asc' ? '↑' : '↓')}
+                  {t("table.date")} {sortBy === 'created_at' && (sortOrder === 'asc' ? '↑' : '↓')}
                 </th>
                 <th className="px-6 py-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                  Items Quantity
+                  {t("table.itemsQuantity")}
                 </th>
               </tr>
             </thead>

@@ -6,8 +6,11 @@ import { ShoppingCart, PlusSquare, MinusSquare, Trash2 } from "lucide-react";
 import { toast } from "react-hot-toast";
 import Fetch from "@/shared/lib/fetch";
 import Counter from "./counter.jsx";
+import { useTranslations } from "next-intl";
 
 export const AddToCartButtonForProductPage = ({ variantId, cart_id }) => {
+  const t = useTranslations("cart");
+  const tCommon = useTranslations("common");
   const { data: session } = useSession();
   const isSignedIn = !!session?.user?.id;
 
@@ -51,7 +54,7 @@ export const AddToCartButtonForProductPage = ({ variantId, cart_id }) => {
   }, [isSignedIn, variantId, cart_id]); // Added isSignedIn to dependencies
 
   function callCartHandler(method) {
-    if (!isSignedIn) return toast("Authorization required.", { icon: "🔐" });
+    if (!isSignedIn) return toast(tCommon("error") + ": Authorization required.", { icon: "🔐" });
     handleCartQuantityChange({
       setLoading,
       setCounter,
@@ -77,8 +80,8 @@ export const AddToCartButtonForProductPage = ({ variantId, cart_id }) => {
           onClick={() => callCartHandler("add")}
         >
           <div className=" absolute flex center group-hover:invisible ">
-            {loading ? "Loading..." : null}
-            {!loading ? "Add to cart" : null}
+            {loading ? tCommon("loading") : null}
+            {!loading ? t("addToCart") : null}
           </div>
           <div className=" flex relative center group-hover:w-full ">
             <ShoppingCart
