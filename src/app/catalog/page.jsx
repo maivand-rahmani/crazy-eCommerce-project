@@ -1,4 +1,29 @@
 export const dynamic = "force-dynamic";
+
+export const metadata = {
+  title: "Browse All Product Categories | Shop by Department",
+  description:
+    "Explore our full catalog of products across all categories. Find exactly what you need with easy navigation and filter options.",
+  keywords: [
+    "product categories",
+    "shop by department",
+    "browse catalog",
+    "online store",
+    "all products",
+  ],
+  openGraph: {
+    title: "Browse All Product Categories | Shop by Department",
+    description:
+      "Explore our full catalog of products across all categories. Find exactly what you need.",
+    type: "website",
+  },
+  twitter: {
+    card: "summary",
+    title: "Browse All Product Categories | Shop by Department",
+    description: "Explore our full catalog of products across all categories.",
+  },
+};
+
 import Fetch from "@/shared/lib/fetch";
 import CategoryCard from "@/features/home/ui/CategorySection/CategoryCard";
 import React from "react";

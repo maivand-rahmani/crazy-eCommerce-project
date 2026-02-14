@@ -4,6 +4,23 @@ import { auth } from "@clerk/nextjs/server";
 import ProductCard from "@/entities/product/ProductCard/ProductCard";
 import Link from "next/link";
 
+export const metadata = {
+  title: "My Wishlist | Saved Products",
+  description:
+    "View your saved favorite products. Move items to cart when ready to purchase. Keep track of products you love.",
+  robots: "noindex, nofollow",
+  openGraph: {
+    title: "My Wishlist | Saved Products",
+    description: "View your saved favorite products. Move items to cart when ready.",
+    type: "website",
+  },
+  twitter: {
+    card: "summary",
+    title: "My Wishlist | Saved Products",
+    description: "View your saved favorite products.",
+  },
+};
+
 const page = async () => {
   const wishlist = await Fetch("/api/wishlist");
   return (

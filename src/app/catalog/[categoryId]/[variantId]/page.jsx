@@ -12,10 +12,37 @@ import { ProductRatingStats } from "@/entities/rating/ui/ProductRatingStats.jsx"
 import { getServerSession } from "next-auth";
 import { authParams } from "@/app/api/auth/[...nextauth]/route";
 
-export const metadata = {
-  title: "Product Details",
-  description: "Detailed view of the selected product.",
-};
+export async function generateMetadata({ params }) {
+  const { variantId } = params;
+  
+  try {
+    const MainData = await Fetch(`/api/products/${variantId}`);
+    const data = MainData?.variant;
+    const productName = data?.products?.name || "Product";
+    const productCategory = data?.products?.categories?.name || "Products";
+
+    return {
+      title: `${productName} - Reviews, Specs & Best Price`,
+      description: `Buy ${productName} online. Check ${productName} specs, read reviews, compare prices. Free shipping on orders over $50. Secure checkout.`,
+      keywords: [productName, productCategory, "buy online", "product reviews", "best price"],
+      // openGraph: {
+      //   title: `${productName} - Reviews, Specs & Best Price`,
+      //   description: `Buy ${productName} online. Free shipping on orders over $50.`,
+      //   type: "product",
+      // },
+      twitter: {
+        card: "product",
+        title: `${productName} - Reviews, Specs & Best Price`,
+        description: `Buy ${productName} online. Free shipping on orders over $50.`,
+      },
+    };
+  } catch (error) {
+    return {
+      title: "Product Details",
+      description: "Detailed view of the selected product.",
+    };
+  }
+}
 
 const page = async ({ params }) => {
   const { variantId } = params;

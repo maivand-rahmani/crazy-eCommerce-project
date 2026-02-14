@@ -1,18 +1,17 @@
 import React from 'react'
-import { useTranslation } from "react-i18next"
-import styled from './Lang.module.scss'
+import { changeLanguage , } from "i18next"
+import {  } from "next-intl"
+
 const LangSwitcher = () => {
-  const { i18n } = useTranslation()
-  const currentLang = i18n.language
 
   const changeLang = (lang) => {
-    i18n.changeLanguage(lang)
+    changeLanguage(lang)
   }
 
  
 
   return (
-    <div className={styled.SwitcherCon}> 
+    <div className="flex gap-3"> 
       <button onClick={() => {changeLang(currentLang === "en" ? "ru" : "en")}}>{currentLang}</button>
     </div>
   )

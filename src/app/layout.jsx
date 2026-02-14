@@ -8,7 +8,7 @@ import AuthProvider from "@/shared/ui/layout/Provider/AuthProvider";
 export default async function LocaleLayout({ children }) {
   return (
     <html>
-      <NextIntlClientProvider>
+      <NextIntlClientProvider locale="en" messages={null}>
         <body className="mx-auto overflow-auto max-w-[1440px]">
           <AuthProvider>
             <Header />

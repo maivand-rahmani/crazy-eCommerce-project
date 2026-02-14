@@ -6,6 +6,7 @@ import { useState } from "react";
 import { UserProfileModal } from "@/entities/user/ui/modals/UserProfileModal";
 import { Dropdown } from "@/shared/ui/dropdown/dropdown";
 import { CreditCard, LogOut, Settings, User } from "lucide-react";
+import Switcher from "@/shared/i18n/ui/Switcher"
 
 export const UserInfoModal = () => {
   const router = useRouter();
@@ -60,13 +61,16 @@ export const UserInfoModal = () => {
           />
         </Dropdown.DotsButton>
 
-        <Dropdown.Popover className="bg-white">
+        <Dropdown.Popover className="bg-bg text-text"> 
           <Dropdown.Menu onAction={handleMenuAction}>
             <Dropdown.Section>
               <Dropdown.Item id="profile" label="profile" icon={User} />
               <Dropdown.Item id="orders" label="orders" icon={CreditCard} />
               <Dropdown.Item id="settings" label="settings" icon={Settings} />
 
+
+              <Dropdown.Separator />
+                <Dropdown.Item>{<Switcher />}</Dropdown.Item>
               <Dropdown.Separator />
 
               <Dropdown.Item

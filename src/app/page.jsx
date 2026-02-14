@@ -1,4 +1,33 @@
 export const dynamic = "force-dynamic";
+
+export const metadata = {
+  title: "Shop Premium Products Online | Fast Shipping & Best Deals",
+  description:
+    "Discover top-quality products with fast shipping. Browse categories, find exclusive deals, and shop safely on our trusted e-commerce platform.",
+  keywords: [
+    "online shopping",
+    "best deals",
+    "fast shipping",
+    "premium products",
+    "electronics",
+    "fashion",
+    "home goods",
+  ],
+  openGraph: {
+    title: "Shop Premium Products Online | Fast Shipping & Best Deals",
+    description:
+      "Discover top-quality products with fast shipping. Browse categories, find exclusive deals, and shop safely.",
+    type: "website",
+    locale: "en_US",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Shop Premium Products Online | Fast Shipping & Best Deals",
+    description:
+      "Discover top-quality products with fast shipping. Browse categories, find exclusive deals.",
+  },
+};
+
 import React, { Suspense } from "react";
 import MiniLoader from "@/shared/ui/Loading/ComponentLoader/miniloader";
 import Main from "@/features/home/ui/banners/main";
