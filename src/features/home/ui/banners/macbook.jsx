@@ -23,8 +23,8 @@ const Macbook = async () => {
         </span>
 
         <div className="text-[clamp(2.5rem,6vw,4rem)] leading-[1.1] text-black font-bold text-balance">
-          MacBook Air <br />
-          <span className="font-extralight">15-inch</span>
+          {t("title")} <br />
+          <span className="font-extralight">{t("subtitle")}</span>
         </div>
 
         <p className="text-[clamp(1rem,2.5vw,1.25rem)] text-unactive-text">

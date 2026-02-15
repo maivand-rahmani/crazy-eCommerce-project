@@ -3,6 +3,7 @@ import { useTranslations } from "next-intl";
 
 export default function ContactPage() {
   const t = useTranslations("contact");
+  const tLabels = useTranslations("contactLabels");
 
   return (
     <main className="bg-white text-gray-900">
@@ -62,13 +63,13 @@ export default function ContactPage() {
             <h2 className="text-2xl font-semibold mb-4">{t("info.title")}</h2>
             <ul className="space-y-3 text-gray-700">
               <li>
-                <strong>Address:</strong> {t("info.address")}
+                <strong>{tLabels("address")}:</strong> {t("info.address")}
               </li>
               <li>
-                <strong>Email:</strong> {t("info.email")}
+                <strong>{tLabels("email")}:</strong> {t("info.email")}
               </li>
               <li>
-                <strong>Phone:</strong> {t("info.phone")}
+                <strong>{tLabels("phone")}:</strong> {t("info.phone")}
               </li>
             </ul>
           </div>

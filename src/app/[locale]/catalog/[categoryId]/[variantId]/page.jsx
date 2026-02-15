@@ -11,6 +11,7 @@ import Fetch from "@/shared/lib/fetch";
 import { ProductRatingStats } from "@/entities/rating/ui/ProductRatingStats.jsx";
 import { getServerSession } from "next-auth";
 import { authParams } from "@/app/api/auth/[...nextauth]/route";
+import { getTranslations } from "next-intl/server";
 
 export async function generateMetadata({ params }) {
   const { variantId } = params;
@@ -45,6 +46,7 @@ export async function generateMetadata({ params }) {
 }
 
 const page = async ({ params }) => {
+  const t = await getTranslations("productDetails");
   const { variantId } = params;
   const user = await getServerSession(authParams).then((res) => res?.user);
   const userId = user ? user.id : null;
@@ -73,7 +75,7 @@ const page = async ({ params }) => {
       </Suspense>
       {/* <Suspense fallback={<Miniloader />}>
         <div className="py-10 px-5 md:py-20 md:px-40">
-          <h2 className="text-2xl font-semibold mb-6">Related Products</h2>
+          <h2 className="text-2xl font-semibold mb-6">{t("productDetails.relatedProducts")}</h2>
           <RelatedProducts
             id={data?.products?.id}
             category={data?.products?.categories?.id}

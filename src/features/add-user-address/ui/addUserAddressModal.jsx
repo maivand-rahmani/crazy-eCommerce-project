@@ -50,7 +50,7 @@ const AddUserAddressForm = ({ setStep = () => {} , setOrderInfo = () => {}, onAd
   const onSubmit = async (data) => {
     setLoading(true);
     try {
-      if (address) {
+      if (address && address.street === data.street && address.city === data.city && address.state === data.state && address.zip === data.zip) {
         setOrderInfo((s) => ({ ...s, address: data }));
         setStep(2);
         toast.success(t("success"));

@@ -8,7 +8,7 @@ import { Toaster } from "react-hot-toast";
 import AuthProvider from "@/shared/ui/layout/Provider/AuthProvider";
 
 export default async function LocaleLayout({ children, params }) {
-  const { locale } = params;
+  const { locale } = await params;
   const messages = await getMessages({ locale });
 
   return (

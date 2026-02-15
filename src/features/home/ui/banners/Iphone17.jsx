@@ -13,8 +13,8 @@ const Iphone = async () => {
         </span>
 
         <div className="font-extralight text-[clamp(3rem,8vw,8rem)] leading-[1.1] text-white text-balance">
-          IPhone 17 <br />
-          <span className="font-bold">Pro Max</span>
+          {t("title")} <br />
+          <span className="font-bold">{t("title2")}</span>
         </div>
 
         <p className="text-[clamp(1rem,2vw,1.25rem)] text-unactive-text">

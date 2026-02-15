@@ -240,7 +240,7 @@ export const UserProfileModal = ({ isOpen, onClose, user }) => {
                           </p>
                           <p className="text-sm text-gray-600">{address.country}</p>
                           {address.phone && (
-                            <p className="text-sm text-gray-600 mt-1">Phone: {address.phone}</p>
+                            <p className="text-sm text-gray-600 mt-1">{tAddress("phone")}: {address.phone}</p>
                           )}
                         </div>
                       </div>

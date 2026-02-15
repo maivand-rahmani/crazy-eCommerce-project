@@ -2,7 +2,7 @@
 import { signIn, signOut, useSession } from "next-auth/react";
 import Image from "next/image";
 import { useLocalizedPath } from "@/shared/hooks/useLocalizedPath";
-import { useRouter } from "next/navigation";
+import { useRouter } from "@/shared/i18n/model/routing";
 import { useState } from "react";
 import { UserProfileModal } from "@/entities/user/ui/modals/UserProfileModal";
 import { Dropdown } from "@/shared/ui/dropdown/dropdown";
@@ -13,7 +13,6 @@ import { useTranslations } from "next-intl";
 export const UserInfoModal = () => {
   const t = useTranslations("account");
   const router = useRouter();
-  const buildPath = useLocalizedPath();
   const { data } = useSession();
   const user = data?.user;
   const [modal , setModal] = useState(false)
@@ -24,10 +23,10 @@ export const UserInfoModal = () => {
         setModal("profile")
         break;
       case "orders":
-        router.push(buildPath("/orders"));
+        router.push("/orders");
         break;
       case "settings":
-        router.push(buildPath("/settings"));
+        router.push("/settings");
         break;
       case "logout":
         signOut();
@@ -74,7 +73,7 @@ export const UserInfoModal = () => {
 
 
               <Dropdown.Separator />
-                <Dropdown.Item>{<LangSwitcher />}</Dropdown.Item>
+                <Dropdown.Item label={<LangSwitcher />} />
               <Dropdown.Separator />
 
               <Dropdown.Item

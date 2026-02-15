@@ -18,7 +18,8 @@
 
   "hero": {
     "tagline": "Профессионально. Сверх.",
-    "title": "IPhone 17 Pro Max",
+    "title": "IPhone 17",
+    "title2": "Pro Max",
     "subtitle": "Создан, чтобы изменить всё к лучшему. Для каждого.",
     "cta": "Купить сейчас"
   },
@@ -33,8 +34,9 @@
       "description": "Революционный продукт, открывающий новую эру пространственных вычислений."
     },
     "macbook": {
-      "tagline": "Лёгкий. На годы впереди.",
-      "title": "MacBook Air 15 дюймов",
+      "tagline": "Лёгкий. На годы вперёд.",
+      "title": "MacBook Air",
+      "subtitle": "15 дюймов",
       "description": "Невероятно тонкий. Невероятно мощный.",
       "cta": "Купить сейчас"
     }
@@ -125,7 +127,8 @@
   },
 
   "home": {
-    "featuredProducts": "Рекомендуемые товары"
+    "featuredProducts": "Рекомендуемые товары",
+    "BrowseByCategory": "Просмотр по категориям"
   },
 
   "cart": {
@@ -244,7 +247,7 @@
       "total": "Итого",
       "subtotal": "Подитого",
       "name": "Имя",
-      "email": "Email",
+      "email": "Почта",
       "notFound": "Заказ не найден",
       "loadingDetails": "Загрузка деталей заказа..."
     }
@@ -381,6 +384,7 @@
   "common": {
     "loading": "Загрузка...",
     "error": "Что-то пошло не так",
+    "order": "Заказ",
     "retry": "Повторить",
     "close": "Закрыть",
     "save": "Сохранить",
@@ -417,6 +421,57 @@
     "priceRange": "Ценовой диапазон",
     "min": "Мин",
     "max": "Макс",
-    "reset": "Сброс"
+    "reset": "Сброс",
+    "filters": "Фильтры"
+  },
+
+  "oauth": {
+    "continueWithGoogle": "Продолжить с Google",
+    "continueWithGithub": "Продолжить с GitHub"
+  },
+
+  "userInfo": {
+    "title": "Информация о пользователе",
+    "name": "Имя",
+    "email": "Email",
+    "logout": "Выйти"
+  },
+
+  "contactLabels": {
+    "address": "Адрес",
+    "email": "Email",
+    "phone": "Телефон"
+  },
+
+  "productDetails": {
+    "relatedProducts": "Похожие товары"
+  },
+
+  "banner": {
+    "shopNow": "Купить сейчас"
+  },
+
+  "homeBanners": {
+    "airpods": {
+      "title": "AirPods Pro",
+      "subtitle": "Max",
+      "description": "Вычислительное аудио. Слушайте, это мощно"
+    },
+    "ipad": {
+      "title": "iPad Pro",
+      "description": "iPad сочетает в себе великолепный 10,2-дюймовый дисплей Retina, невероятную производительность, многозадачность и простоту использования."
+    },
+    "samsung": {
+      "title": "Samsung Galaxy",
+      "description": "Samsung Galaxy — это линейка мобильных устройств Samsung. В основном это смартфоны и планшеты на операционной системе Android от Google. Новые модели выходят каждый год."
+    },
+    "macbookpro": {
+      "title": "MacBook Pro",
+      "description": "MacBook — это тип ноутбука Mac, разработанного и продаваемого Apple, который использует операционную систему macOS от Apple с 2006 года."
+    },
+    "applewatch": {
+      "title": "Apple Watch",
+      "description": "Apple Watch — это смарт-часы, разработанные и продаваемые Apple. Они имеют функции отслеживания фитнеса, возможности для здоровья и беспроводную связь, а также интегрируются с watchOS и другими продуктами и сервисами Apple."
+    }
   }
 }

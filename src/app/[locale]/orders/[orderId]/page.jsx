@@ -1,13 +1,14 @@
 "use client";
 import React, { useState, useEffect, use } from "react";
-import { useParams, useRouter } from "next/navigation";
-import Link from "next/link";
+import { useParams  } from "next/navigation";
+import { Link , useRouter } from "@/shared/i18n/model/routing";
 import Fetch from "@/shared/lib/fetch";
 import Image from "next/image";
 import { useTranslations } from "next-intl";
 
 const OrderDetailPage = () => {
   const t = useTranslations("orders.detail");
+  const tStatus = useTranslations("orders.status");
   const tCommon = useTranslations("common");
   const params = useParams();
   const router = useRouter();
@@ -127,7 +128,7 @@ const OrderDetailPage = () => {
               <span
                 className={`inline-flex px-3 py-1 text-sm font-semibold rounded-full ${getStatusColor(order.status)}`}
               >
-                {order.status.charAt(0).toUpperCase() + order.status.slice(1)}
+                {tStatus(`${order.status}`)}
               </span>
             </div>
 

@@ -4,19 +4,21 @@ import { signIn, signOut, useSession } from "next-auth/react";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
+import { useTranslations } from "next-intl";
 
 
 export const UserProfileModal = ({ isOpen, onClose, user }) => {
-    return (
+  const t = useTranslations("userInfo");
+  return (
   <Modal isOpen={isOpen} onClose={onClose}>
-    <h2 className="text-xl font-bold mb-3">User Info</h2>
+    <h2 className="text-xl font-bold mb-3">{t("title")}</h2>
     <p>
-      <strong>Name:</strong> {user.name}
+      <strong>{t("name")}:</strong> {user.name}
     </p>
     <p>
-      <strong>Email:</strong> {user.email}
+      <strong>{t("email")}:</strong> {user.email}
     </p>
-    <button onClick={() => signOut()}>Logout</button>
+    <button onClick={() => signOut()}>{t("logout")}</button>
   </Modal>)
 };
 

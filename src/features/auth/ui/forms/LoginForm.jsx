@@ -46,7 +46,7 @@ const LoginForm = () => {
         {errors.root && (<div className="text-red-500 text-2xl">{errors.root.message}</div>)}
       </div>
       <label className="flex flex-col gap-2">
-        <span className="text-text">Email</span>
+        <span className="text-text">{t("email")}</span>
         <input
           {...register("email", {
             required: true,
@@ -66,7 +66,7 @@ const LoginForm = () => {
         )}
       </label>
       <label className="flex flex-col gap-2">
-        <span className="text-text">Password</span>
+        <span className="text-text">{t("password")}</span>
         <input
           {...register("password", { required: true })}
           className="inputStyle"

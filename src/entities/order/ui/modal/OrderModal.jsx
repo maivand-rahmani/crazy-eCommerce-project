@@ -5,7 +5,7 @@ import AddUserAddressForm from '@/features/add-user-address/ui/addUserAddressMod
 import PaymentMockForm from '@/features/payment-mock/ui/PaymentMockForm'
 import Fetch from '@/shared/lib/fetch'
 import OrderingLoader from '@/entities/order/ui/ordering'
-import { useRouter } from 'next/navigation'
+import { useRouter } from '@/shared/i18n/model/routing'
 import { useTranslations } from "next-intl";
 
 export function OrderStepper({ currentStep = 1 }) {

@@ -17,7 +17,7 @@ const Playstation5 = async () => {
       />
       <div className="text-center md:text-left">
         <h1 className="realative text-[clamp(2rem,5vw,3.5rem)]   text-unactive-text">
-          Playstation 5 <span className="font-bold">Pro</span>
+          {t("title")} <span className="font-bold"></span>
         </h1>
         <p className="text-[clamp(0.875rem,2vw,1.125rem)] text-unactive-text leading-[clamp(1.5rem,3vw,2rem)] text-wrap">
           {t("description")}

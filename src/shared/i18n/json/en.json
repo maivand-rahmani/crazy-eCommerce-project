@@ -18,7 +18,8 @@
 
   "hero": {
     "tagline": "Pro.Beyond.",
-    "title": "IPhone 17 Pro Max",
+    "title": "IPhone 17",
+    "title2": "Pro Max",
     "subtitle": "Created to change everything for the better. For everyone.",
     "cta": "Shop Now"
   },
@@ -34,7 +35,8 @@
     },
     "macbook": {
       "tagline": "Light. Years ahead.",
-      "title": "MacBook Air 15-inch",
+      "title": "MacBook Air",
+      "subtitle": "15-inch",
       "description": "Impossibly thin. Impossibly powerful.",
       "cta": "Shop Now"
     }
@@ -123,7 +125,8 @@
   },
 
   "home": {
-    "featuredProducts": "Featured Products"
+    "featuredProducts": "Featured Products",
+    "BrowseByCategory": "Browse By Category"
   },
 
   "cart": {
@@ -378,6 +381,7 @@
 
   "common": {
     "loading": "Loading...",
+    "order": "Order",
     "error": "Something gone wrong",
     "retry": "Retry",
     "close": "Close",
@@ -415,6 +419,57 @@
     "priceRange": "Price Range",
     "min": "Min",
     "max": "Max",
-    "reset": "Reset"
+    "reset": "Reset",
+    "filters": "Filters"
+  },
+
+  "oauth": {
+    "continueWithGoogle": "Continue with Google",
+    "continueWithGithub": "Continue with GitHub"
+  },
+
+  "userInfo": {
+    "title": "User Info",
+    "name": "Name",
+    "email": "Email",
+    "logout": "Logout"
+  },
+
+  "contactLabels": {
+    "address": "Address",
+    "email": "Email",
+    "phone": "Phone"
+  },
+
+  "productDetails": {
+    "relatedProducts": "Related Products"
+  },
+
+  "banner": {
+    "shopNow": "Shop now"
+  },
+
+  "homeBanners": {
+    "airpods": {
+      "title": "AirPods Pro",
+      "subtitle": "Max",
+      "description": "Computational audio. Listen, it's powerful"
+    },
+    "ipad": {
+      "title": "iPad Pro",
+      "description": "iPad combines a magnificent 10.2-inch Retina display, incredible performance, multitasking and ease of use."
+    },
+    "samsung": {
+      "title": "Samsung Galaxy",
+      "description": "Samsung Galaxy is a series of mobile devices made by Samsung. Most of them are smartphones and tablet computers that run Android, an operating system made by Google. New models come out every year."
+    },
+    "macbookpro": {
+      "title": "MacBook Pro",
+      "description": "MacBook is a type of Mac laptop computer that is developed and marketed by Apple that use Apple's macOS operating system since 2006."
+    },
+    "applewatch": {
+      "title": "Apple Watch",
+      "description": "Apple Watch is a smartwatch developed and marketed by Apple. It has fitness tracking, health-oriented capabilities, and wireless telecommunication, and integrates with watchOS and other Apple products and services."
+    }
   }
 }
