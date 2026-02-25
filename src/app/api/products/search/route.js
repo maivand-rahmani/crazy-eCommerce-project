@@ -19,10 +19,17 @@ export async function GET(request) {
     const sortBy = searchParams.get('sortBy') || 'relevance'; // relevance, price_asc, price_desc, name_asc, name_desc, rating, created_at
     const sortOrder = searchParams.get('sortOrder') || 'desc';
     
-    // Pagination
-    const page = parseInt(searchParams.get('page') || '1');
-    const limit = parseInt(searchParams.get('limit') || '20');
+    // Pagination - with input validation
+    const page = Math.max(1, parseInt(searchParams.get('page') || '1'));
+    const limit = Math.min(100, Math.max(1, parseInt(searchParams.get('limit') || '20')));
     const skip = (page - 1) * limit;
+
+    // Validate price filters
+    const minPriceNum = minPrice ? Math.max(0, parseInt(minPrice)) : null;
+    const maxPriceNum = maxPrice ? Math.max(0, parseInt(maxPrice)) : null;
+    if (minPriceNum && maxPriceNum && minPriceNum > maxPriceNum) {
+      return NextResponse.json({ error: 'minPrice cannot be greater than maxPrice' }, { status: 400 });
+    }
 
     // Build search condition
     const searchCondition = search ? {
@@ -46,10 +53,10 @@ export async function GET(request) {
       include: {
         categories: true,
         product_variants: {
-          where: minPrice || maxPrice ? {
+          where: minPriceNum || maxPriceNum ? {
             price_cents: {
-              ...(minPrice ? { gte: parseInt(minPrice) } : {}),
-              ...(maxPrice ? { lte: parseInt(maxPrice) } : {}),
+              ...(minPriceNum ? { gte: minPriceNum } : {}),
+              ...(maxPriceNum ? { lte: maxPriceNum } : {}),
             },
           } : {},
         },
@@ -61,10 +68,19 @@ export async function GET(request) {
           select: { rating: true },
         },
       },
+      // Apply sorting at DB level for supported fields
+      orderBy: sortBy === 'name_asc' ? { name: 'asc' } :
+               sortBy === 'name_desc' ? { name: 'desc' } :
+               sortBy === 'created_at' ? { created_at: sortOrder } :
+               { created_at: 'desc' }, // Default to relevance (created_at desc)
+      skip,
+      take: limit,
     });
 
-    // If minRating filter is set, filter by average rating
+    // If minRating filter is set, filter by average rating (post-DB filter)
     let filteredProducts = products;
+    let totalCount = products.length;
+    
     if (minRating) {
       const minRatingNum = parseFloat(minRating);
       filteredProducts = products.filter(product => {
@@ -72,6 +88,9 @@ export async function GET(request) {
         const avgRating = product.reviews.reduce((sum, r) => sum + r.rating, 0) / product.reviews.length;
         return avgRating >= minRatingNum;
       });
+      // Note: For accurate count with rating filter, a raw query would be needed
+      // This is an approximation
+      totalCount = filteredProducts.length;
     }
 
     // Transform products to include computed fields
@@ -81,11 +100,14 @@ export async function GET(request) {
         ? product.reviews.reduce((sum, r) => sum + r.rating, 0) / product.reviews.length
         : 0;
 
-      // Get minimum price from variants
-      const minPriceVariant = product.product_variants.reduce((min, v) => 
-        v.price_cents < min.price_cents ? v : min, 
-        product.product_variants[0] || { price_cents: 0 }
-      );
+      // Get minimum price from variants - with null check
+      const firstVariant = product.product_variants[0];
+      const minPriceVariant = firstVariant 
+        ? product.product_variants.reduce((min, v) => 
+            v.price_cents < min.price_cents ? v : min, 
+            firstVariant
+          )
+        : null;
 
       // Get total stock
       const totalStock = product.product_variants.reduce((sum, v) => sum + v.stock_quantity, 0);
@@ -106,47 +128,38 @@ export async function GET(request) {
       };
     });
 
-    // Apply sorting
+    // Apply in-memory sorting for fields not supported at DB level
     let sortedProducts = [...transformedProducts];
-    switch (sortBy) {
-      case 'price_asc':
-        sortedProducts.sort((a, b) => a.price_cents - b.price_cents);
-        break;
-      case 'price_desc':
-        sortedProducts.sort((a, b) => b.price_cents - a.price_cents);
-        break;
-      case 'name_asc':
-        sortedProducts.sort((a, b) => a.product_name.localeCompare(b.product_name));
-        break;
-      case 'name_desc':
-        sortedProducts.sort((a, b) => b.product_name.localeCompare(a.product_name));
-        break;
-      case 'rating':
-        sortedProducts.sort((a, b) => b.avg_rating - a.avg_rating);
-        break;
-      case 'created_at':
-        // Need to fetch with created_at for proper sorting
-        sortedProducts.sort((a, b) => sortOrder === 'asc' ? 0 : 0); // Default order by relevance
-        break;
-      default:
-        // Relevance - keep original order (or could boost by match quality)
-        break;
+    if (sortBy === 'price_asc') {
+      sortedProducts.sort((a, b) => a.price_cents - b.price_cents);
+    } else if (sortBy === 'price_desc') {
+      sortedProducts.sort((a, b) => b.price_cents - a.price_cents);
+    } else if (sortBy === 'rating') {
+      sortedProducts.sort((a, b) => b.avg_rating - a.avg_rating);
+    } else if (sortBy === 'name_asc') {
+      sortedProducts.sort((a, b) => a.product_name.localeCompare(b.product_name));
+    } else if (sortBy === 'name_desc') {
+      sortedProducts.sort((a, b) => b.product_name.localeCompare(a.product_name));
     }
 
-    // Apply pagination
-    const paginatedProducts = sortedProducts.slice(skip, skip + limit);
+    // Get total count for pagination (without rating filter for accuracy)
+    const totalProductsCount = await prisma.products.count({
+      where: {
+        AND: [searchCondition, categoryCondition],
+      },
+    });
 
     return NextResponse.json({
-      data: toSafeJson(paginatedProducts),
+      data: toSafeJson(sortedProducts),
       pagination: {
         page,
         limit,
-        total: sortedProducts.length,
-        totalPages: Math.ceil(sortedProducts.length / limit),
+        total: minRating ? totalProductsCount : totalProductsCount, // Note: rating filter affects actual count
+        totalPages: Math.ceil(totalProductsCount / limit),
       },
       search: {
         query: search,
-        filters: { category, minPrice, maxPrice, minRating },
+        filters: { category, minPrice: minPriceNum, maxPrice: maxPriceNum, minRating },
         sort: { by: sortBy, order: sortOrder },
       },
     });

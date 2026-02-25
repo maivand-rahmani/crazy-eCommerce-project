@@ -14,6 +14,7 @@ export function ProductSearch({
   const [results, setResults] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
+  const [error, setError] = useState(null);
   const inputRef = useRef(null);
   const router = useRouter();
 
@@ -22,11 +23,13 @@ export function ProductSearch({
     if (!query.trim()) {
       setResults([]);
       setIsOpen(false);
+      setError(null);
       return;
     }
 
     const timeoutId = setTimeout(async () => {
       setIsLoading(true);
+      setError(null);
       try {
         const params = new URLSearchParams();
         params.set('search', query);
@@ -38,9 +41,14 @@ export function ProductSearch({
         if (res.ok) {
           setResults(data.data || []);
           setIsOpen(true);
+        } else {
+          setError(data.error || 'Search failed');
+          setResults([]);
         }
-      } catch (error) {
-        console.error('Search error:', error);
+      } catch (err) {
+        console.error('Search error:', err);
+        setError('Failed to search. Please try again.');
+        setResults([]);
       } finally {
         setIsLoading(false);
       }
@@ -120,6 +128,10 @@ export function ProductSearch({
             <div className="p-4 text-center text-gray-500">
               <div className="animate-spin inline-block w-5 h-5 border-2 border-blue-600 border-t-transparent rounded-full"></div>
               <span className="ml-2">Searching...</span>
+            </div>
+          ) : error ? (
+            <div className="p-4 text-center text-red-500">
+              {error}
             </div>
           ) : results.length > 0 ? (
             <>

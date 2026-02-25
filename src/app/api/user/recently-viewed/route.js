@@ -1,14 +1,18 @@
 import { NextResponse } from 'next/server';
 import prisma from '../../../../prisma/client';
 import { toSafeJson } from '../../../../prisma/funcs';
-import { getToken } from 'next-auth/jwt';
 
 export async function GET(request) {
   try {
-    const user = await getToken({ req: request, secret: process.env.NEXTAUTH_SECRET });
-    
-    // For now, return empty array - frontend uses localStorage
+    // Recently viewed is primarily stored in localStorage on the frontend
     // This endpoint can be extended to store in database for logged-in users
+    
+    // Example of how to extend for authenticated users:
+    // const user = await getToken({ req: request, secret: process.env.NEXTAUTH_SECRET });
+    // if (user) {
+    //   // Fetch from database
+    // }
+    
     return NextResponse.json({
       data: [],
       message: 'Recently viewed is stored in localStorage. Use the useRecentlyViewed hook.',
@@ -34,7 +38,7 @@ export async function POST(request) {
       );
     }
 
-    // This endpoint can be extended to store in database
+    // This endpoint can be extended to store in database for logged-in users
     // For now, frontend handles localStorage
     
     return NextResponse.json({
