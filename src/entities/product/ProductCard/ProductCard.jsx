@@ -3,6 +3,7 @@ import React, { useState } from "react";
 import { Heart } from "lucide-react";
 import Image from "next/image";
 import { AddToWishListCom } from "../../../features/add-to-wishlist/ui/AddToWishListCom";
+import { CompareButton } from "../../../features/compare-products/ui/CompareButton";
 import { useRouter } from "next/navigation";
 
 const ProductCard = ({ data, otherInfo }) => {
@@ -15,15 +16,24 @@ const ProductCard = ({ data, otherInfo }) => {
     );
   }
 
+  const compareProduct = {
+    variantId: data.variant_id?.toString(),
+    productId: data.product_id?.toString(),
+    name: data.product_name,
+    imageUrl: data.image_url,
+    priceCents: data.price_cents,
+  };
+
   return (
     <div className="group relative flex flex-col items-center justify-between rounded-2xl bg-white p-6 shadow-md transition-all duration-300 hover:-translate-y-1 hover:shadow-2xl">
-      {/* Like button */}
-      <div className="absolute z-20 top-4 right-4">
+      {/* Action buttons row */}
+      <div className="absolute z-20 top-4 right-4 flex flex-col gap-2">
         <AddToWishListCom
           wishlistInfo={otherInfo}
           productId={data.product_id}
           variantId={data.variant_id}
         />
+        <CompareButton product={compareProduct} />
       </div>
 
       {/* Image */}
