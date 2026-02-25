@@ -6,6 +6,8 @@ import FooterCyber from "@/shared/ui/layout/footer/Footer";
 import "@/shared/styles/globals.css";
 import { Toaster } from "react-hot-toast";
 import AuthProvider from "@/shared/ui/layout/Provider/AuthProvider";
+import { QuickViewProvider } from "@/features/quick-view/model/QuickViewContext";
+import QuickViewModal from "@/features/quick-view/ui/QuickViewModal";
 
 export default async function LocaleLayout({ children, params }) {
   const { locale } = await params;
@@ -16,10 +18,13 @@ export default async function LocaleLayout({ children, params }) {
       <body className="mx-auto overflow-auto max-w-[1440px]">
         <NextIntlClientProvider locale={locale} messages={messages}>
           <AuthProvider>
-            <Header />
-            <div className="md:pt-22">{children}</div>
-            <Toaster position="top-center" reverseOrder={true} />
-            <FooterCyber />
+            <QuickViewProvider>
+              <Header />
+              <div className="md:pt-22">{children}</div>
+              <QuickViewModal />
+              <Toaster position="top-center" reverseOrder={true} />
+              <FooterCyber />
+            </QuickViewProvider>
           </AuthProvider>
         </NextIntlClientProvider>
       </body>
