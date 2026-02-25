@@ -8,9 +8,7 @@ import {
   CircleUserRound,
   Settings,
 } from "lucide-react";
-import { SignUpButton, SignedOut, SignedIn, UserButton } from "@clerk/nextjs";
 import NavLink from "../ui/NavLink";
-import CustomUserButton from "../ui/CustomUserButton";
 import { useSession } from "next-auth/react";
 import { UserInfoModal } from "@/entities/user/ui/AccountModal";
 
@@ -19,7 +17,7 @@ const MobileHeader = () => {
   const user = session.data;
 
   return (
-    <header className="fixed w-[-webkit-fill-available] border border-gray-500 bg-white m-5 rounded-full px-7 py-3 flex z-9999 justify-between bottom-0  shadow-3xl-black md:hidden">
+    <header className="fixed w-[-webkit-fill-available] border border-border bg-surface m-5 rounded-full px-7 py-3 flex z-9999 justify-between bottom-0  shadow-3xl-black md:hidden">
       <NavLink href={"/"} className={``}>
         <Home />
       </NavLink>

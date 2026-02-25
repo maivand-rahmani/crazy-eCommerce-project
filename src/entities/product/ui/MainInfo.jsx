@@ -1,6 +1,6 @@
 "use client";
 import React, { useState } from "react";
-import Link from "next/link";
+import { Link } from "@/shared/i18n/model/routing";
 import {useParams } from "next/navigation"
 import { Truck , Store , BadgeCheck , ShoppingCart } from 'lucide-react';
 import { AddToWishListCom } from '@/features/add-to-wishlist/ui/AddToWishListCom.jsx';
@@ -72,16 +72,16 @@ const  MainInfo = ({ product , otherInfo }) => {
 
   return (
     <div className="h-full w-full">
-      <h1 className="text-4xl font-bold mb-4">
+      <h1 className="text-4xl font-bold mb-4 text-text">
         {product.products.name} | {currentVariant.variant_name}
       </h1>
-      <p className="text-2xl font-semibold text-green-700 mb-6">
+      <p className="text-2xl font-semibold text-accent mb-6">
         ${(currentVariant.price_cents / 100)}
       </p>
 
       {/* COLOR */}
       <div className="mb-6">
-        <h2 className="text-2xl font-bold mb-2">{t("selectColor")}</h2>
+        <h2 className="text-2xl font-bold mb-2 text-text">{t("selectColor")}</h2>
         <ul className="flex flex-wrap gap-4">
           {colorOptions.map((v, i) => {
             const color = v.variant_options.find(o => o.key === "Color")?.value || "N/A";
@@ -89,8 +89,8 @@ const  MainInfo = ({ product , otherInfo }) => {
             return (
               <li
                 key={i}
-                className={`px-4 py-2 border rounded-lg cursor-pointer text-center transition-colors ${
-                  isSelected ? "border-blue-300 bg-blue-100" : "hover:bg-gray-100"
+                className={`px-4 py-2 border border-border rounded-lg cursor-pointer text-center transition-colors ${
+                  isSelected ? "border-primary bg-primary/20" : "hover:bg-surface"
                 }`}
                 onClick={() => {
                   setSelectedColor(color);
@@ -107,8 +107,8 @@ const  MainInfo = ({ product , otherInfo }) => {
                       return (
                         <li
                           key={idx}
-                          className={`px-4 py-2 border rounded-lg cursor-pointer text-center transition-colors ${
-                            isCurrent ? "border-blue-600 bg-blue-100" : "hover:bg-gray-100"
+                          className={`px-4 py-2 border border-border rounded-lg cursor-pointer text-center transition-colors ${
+                            isCurrent ? "border-primary bg-primary/20" : "hover:bg-surface"
                           }`}
                           onClick={() => setSelectedStorage(option.storage)}
                         >
@@ -126,8 +126,8 @@ const  MainInfo = ({ product , otherInfo }) => {
                                 return (
                                   <li
                                     key={ridx}
-                                    className={`px-4 py-2 border rounded-lg cursor-pointer text-center transition-colors ${
-                                      isCurrentRam ? "border-blue-600 bg-blue-100" : "hover:bg-gray-100"
+                                    className={`px-4 py-2 border border-border rounded-lg cursor-pointer text-center transition-colors ${
+                                      isCurrentRam ? "border-primary bg-primary/20" : "hover:bg-surface"
                                     }`}
                                   >
                                     <Link
@@ -154,13 +154,13 @@ const  MainInfo = ({ product , otherInfo }) => {
       {/* Product Specs */}
       {productSpecs.length > 0 && (
         <div className="mb-6">
-          <h2 className="text-2xl font-bold mb-2">{t("specifications")}:</h2>
+          <h2 className="text-2xl font-bold mb-2 text-text">{t("specifications")}:</h2>
           <ul className="grid grid-cols-3 gap-4">
             {specs.map((spec, index) => (
               productSpecs.some(s => s.key === spec) && (
-              <li className="w-full rounded p-2 flex flex-col   bg-unactive-text/35" key={index}>
-                <span className="font-semibold text-unactive-text">{spec}</span>
-                <span className="">{productSpecs.find(s => s.key === spec)?.value}</span>
+              <li className="w-full rounded p-2 flex flex-col   bg-surface" key={index}>
+                <span className="font-semibold text-text">{spec}</span>
+                <span className="text-text">{productSpecs.find(s => s.key === spec)?.value}</span>
               </li>
             )))}
           </ul>
@@ -169,12 +169,12 @@ const  MainInfo = ({ product , otherInfo }) => {
 
       {/* Product Description */}
       <div>
-        <p className="text-xl text-gray-700">{product.products.description}</p>
+        <p className="text-xl text-text">{product.products.description}</p>
       </div>
 
       {/* add to favorite , cart button */}
       <div className="grid grid-cols-2 gap-4 mt-6">
-        <div className={`border-2 rounded flex center hover:border-red-600 hover  :text-white transition ${otherInfo?.isFavorite ? "border-red-600" : null}`}>
+        <div className={`border-2 border-border rounded flex center hover:border-danger transition ${otherInfo?.isFavorite ? "border-danger" : null}`}>
           <AddToWishListCom wishlistInfo={otherInfo} variantId={currentVariant.id} productId={product.products.id}> 
           {otherInfo?.isFavorite ? t("addedToWishlist") : t("addToWishlist")}
         </AddToWishListCom>
@@ -190,8 +190,8 @@ const  MainInfo = ({ product , otherInfo }) => {
           const IconComponent = item.icon;
           return (
             <div key={index} className="flex gap-2 items-center">
-              <div className="bg-unactive-text/35 p-4 rounded-2xl">{IconComponent}</div>
-              <span className="flex flex-col text-gray-700">
+              <div className="bg-surface p-4 rounded-2xl">{IconComponent}</div>
+              <span className="flex flex-col text-text">
                 <span className="font-semibold">{item.key}:</span> 
                 <span>{item.text}</span>
               </span>

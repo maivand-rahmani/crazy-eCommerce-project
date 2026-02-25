@@ -1,7 +1,6 @@
 import React from "react";
 import { getTranslations } from "next-intl/server";
 import Fetch from "@/shared/lib/fetch";
-import { auth } from "@clerk/nextjs/server";
 import ProductCard from "@/entities/product/ProductCard/ProductCard";
 import Link from "next/link";
 
@@ -43,15 +42,15 @@ const page = async () => {
       )}
       {wishlist.length <= 0 && (
         <div className="flex flex-col items-center justify-center min-h-[60vh] text-center">
-          <h2 className="text-2xl font-semibold text-gray-900 mb-3">
+          <h2 className="text-2xl font-semibold text-text mb-3">
             {t("empty.title")}
           </h2>
-          <p className="text-gray-500 max-w-md">
+          <p className="text-unactive-text max-w-md">
             {t("empty.description")}
           </p>
           <Link
             href={"/catalog"}
-            className="rounded bg-blue-500 p-2 m-2 text-white"
+            className="rounded bg-primary p-2 m-2 text-primary-text"
           >
             {t("empty.cta")}
           </Link>

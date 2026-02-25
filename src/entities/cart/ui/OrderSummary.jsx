@@ -36,7 +36,7 @@ const OrderSummary = ({ total , setCheckout ,  checkout , items }) => {
 
   return (
     <div className="md:pt-25 p-4 transition-all duration-500 ease-in-out">
-      <div className="rounded-2xl block sticky p-5 top-25 border shadow-xl">
+      <div className="rounded-2xl block sticky p-5 top-25 border-border border shadow-xl bg-surface">
         <div className="font-extrabold text-2xl uppercase flex justify-between">
           <h1>{t("title")}: </h1>
           {checkout && <X onClick={discardChecout}/>} 
@@ -53,7 +53,7 @@ const OrderSummary = ({ total , setCheckout ,  checkout , items }) => {
           {coupon && (
             <div className="flex justify-between text-unactive-text">
               <h1>{t("discount")}: </h1>
-              <h1 className="text-green-700">-{discountAmount}$</h1>
+              <h1 className="text-success">-{discountAmount}$</h1>
             </div>
           )}
           <div className="font-bold flex justify-between">
@@ -62,7 +62,7 @@ const OrderSummary = ({ total , setCheckout ,  checkout , items }) => {
           </div>
         </div>
 
-        <button onClick={handleOrderSummary} className="bg-black  text-white w-full p-5 text-center font-extrabold font-mono rounded">
+        <button onClick={handleOrderSummary} className="bg-button text-button-text w-full p-5 text-center font-extrabold font-mono rounded">
           {checkout ? t("order") : t("checkout")}
         </button>
 

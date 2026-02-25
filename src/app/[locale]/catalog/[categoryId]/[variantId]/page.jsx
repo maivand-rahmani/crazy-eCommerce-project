@@ -1,5 +1,4 @@
-import { auth } from "@clerk/nextjs/server";
-import { Url } from "@/shared/ui/urlWay/url";
+
 import Slider from "@/shared/ui/slider/Slider";
 import React, { Suspense } from "react";
 import Miniloader from "@/shared/ui/Loading/ComponentLoader/miniloader";
@@ -57,14 +56,14 @@ const page = async ({ params }) => {
   const metaData = userId ? MainData.meta : null;
 
   return (
-    <main className="md:px-4 h-full w-full overflow-hidden p-5 md:p-20 flex flex-col">
+    <main className="md:px-4 h-full text-text w-full overflow-hidden p-5 md:p-20 flex flex-col">
       <div className="w-full flex-col flex center pb-28 md:px-20 md:flex-row md:gap-10 gap-5">
         <Suspense fallback={<Miniloader />}>
           <Slider productId={data?.products?.id} variantId={variantId} />
         </Suspense>
         <Suspense
           fallback={
-            <div className="w-full h-64 bg-gray-200 animate-pulse"></div>
+            <div className="w-full h-64 bg-surface animate-pulse"></div>
           }
         >
           <MainInfo product={data} otherInfo={userId ? metaData : null} />
@@ -83,7 +82,7 @@ const page = async ({ params }) => {
         </div>
       </Suspense> */}
       <Suspense fallback={<Miniloader />}>
-        <div className="rounded-3xl bg-gray-200 shadow-2xl p-4 my-5">
+        <div className="rounded-3xl bg-surface shadow-2xl p-4 my-5 border border-border">
           <div>
             <ProductRatingStats productId={data.products.id} />
           </div>

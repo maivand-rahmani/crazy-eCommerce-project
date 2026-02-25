@@ -1,5 +1,4 @@
 import React from "react";
-import Fetch from "../../shared/lib/fetch";
 
 export const metadata = {
   title: "Admin Dashboard | Store Management",

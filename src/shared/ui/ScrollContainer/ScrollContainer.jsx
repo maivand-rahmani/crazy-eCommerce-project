@@ -5,25 +5,25 @@ import { useTranslations } from "next-intl";
 
 const bannersInfo = [
   {
-    bg: "#FFFFFF",
+    bg: "var(--banner-white)",
     key: "ipad",
     link: "ipad",
     img: "http://194.156.118.210/uploads/images/image%2064.png",
   },
   {
-    bg: "#F9F9F9",
+    bg: "var(--banner-light)",
     key: "samsung",
     link: "Galaxy",
     img: "http://194.156.118.210/uploads/images/image%2041.png",
   },
   {
-    bg: "#EAEAEA",
+    bg: "var(--banner-medium)",
     key: "macbookpro",
     link: "Macbook",
     img: "http://194.156.118.210/uploads/images/Macbook%201.png",
   },
   {
-    bg: "#2C2C2C",
+    bg: "var(--banner-dark)",
     key: "applewatch",
     link: "Apple watch",
     img: "http://194.156.118.210/uploads/images/312d013f4012ee11f7fa28b1b3c9b9ea%201.png",

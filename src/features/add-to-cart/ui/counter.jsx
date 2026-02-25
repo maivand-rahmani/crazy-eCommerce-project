@@ -7,20 +7,20 @@ const Counter = ({ handleClick, state, withPrice, className }) => {
     <div className={`flex justify-between w-full gap-5 ${className}`}>
       <div className="flex justify-between w-full max-w-70 gap-1.5 ">
         <button disabled={state?.loading} onClick={() => handleClick("remove")}>
-          <MinusSquare className={`${state?.loading ? "opacity-50" : null}`} />
+          <MinusSquare className={`${state?.loading ? "opacity-50" : null} text-text`} />
         </button>
 
-        <div className={`${state?.loading ? "animate-pulse" : ""} text-2xl`}>
+        <div className={`${state?.loading ? "animate-pulse" : ""} text-2xl text-text`}>
           {state?.quantity}
         </div>
 
         <button disabled={state?.loading} onClick={() => handleClick("add")}>
-          <PlusSquare className={`${state?.loading ? "opacity-50" : null}`} />
+          <PlusSquare className={`${state?.loading ? "opacity-50" : null} text-text`} />
         </button>
       </div>
       {state?.price && (
         <div className="flex gap-5">
-          <div className="text-2xl text-green-900 text-center">
+          <div className="text-2xl text-accent text-center">
             ={`${state?.price * state?.quantity}$`}
           </div>
         </div>

@@ -9,7 +9,6 @@
     "lint": "eslint"
   },
   "dependencies": {
-    "@clerk/nextjs": "^6.34.1",
     "@next-auth/prisma-adapter": "^1.0.7",
     "@prisma/client": "^6.19.0",
     "@prisma/extension-accelerate": "^2.0.2",

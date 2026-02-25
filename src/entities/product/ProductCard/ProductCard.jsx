@@ -19,7 +19,7 @@ const ProductCard = ({ data, otherInfo }) => {
   }
 
   return (
-    <div className="group relative flex flex-col items-center justify-between rounded-2xl bg-white p-6 shadow-md transition-all duration-300 hover:-translate-y-1 hover:shadow-2xl">
+    <div className="group relative flex flex-col items-center justify-between rounded-2xl bg-card p-6 shadow-md transition-all duration-300 hover:-translate-y-1 hover:shadow-2xl">
       {/* Like button */}
       <div className="absolute z-20 top-4 right-4">
         <AddToWishListCom
@@ -41,22 +41,22 @@ const ProductCard = ({ data, otherInfo }) => {
       </div>
 
       {/* Title */}
-      <h1 className="mt-3 z-20   drop-shadow-2xl text-[clamp(1rem,1.5vw,1.125rem)] text-center text-gray-800 leading-snug line-clamp-2">
+      <h1 className="mt-3 z-20   drop-shadow-2xl text-[clamp(1rem,1.5vw,1.125rem)] text-center text-text leading-snug line-clamp-2">
         {data.product_name} –{" "}
-        <span className="font-semibold text-gray-900 z-20">
+        <span className="font-semibold text-text z-20">
           {data.variant_name}
         </span>
       </h1>
 
       {/* Price */}
-      <h4 className="text-[clamp(1.25rem,2vw,1.5rem)] font-bold text-black mt-1">
+      <h4 className="text-[clamp(1.25rem,2vw,1.5rem)] font-bold text-text mt-1">
         {data.price_cents / 100} $
       </h4>
 
       {/* Button */}
       <button
         onClick={handleClick}
-        className="mt-4 w-[140px] rounded-xl bg-black px-4 py-2 text-white transition-all duration-300 hover:bg-neutral-800"
+        className="mt-4 w-[140px] rounded-xl bg-button px-4 py-2 text-button-text transition-all duration-300 hover:opacity-80"
       >
         {t("buyNow")}
       </button>

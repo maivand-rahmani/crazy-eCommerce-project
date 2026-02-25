@@ -26,9 +26,9 @@ export function OrderStepper({ currentStep = 1 }) {
     <div className="w-full max-w-2xl mx-auto py-8">
       <div className="flex items-center justify-between relative">
         {/* Progress Line */}
-        <div className="absolute top-5 left-0 w-full h-[2px] bg-gray-200">
+        <div className="absolute top-5 left-0 w-full h-[2px] bg-border">
           <div
-            className="h-full bg-black transition-all duration-500 ease-in-out"
+            className="h-full bg-text transition-all duration-500 ease-in-out"
             style={{ width: `${((activeStep - 1) / (steps.length - 1)) * 100}%` }}
           />
         </div>
@@ -44,9 +44,9 @@ export function OrderStepper({ currentStep = 1 }) {
                 className={`
                   w-10 h-10 flex items-center justify-center rounded-full border-2
                   transition-all duration-500
-                  ${isCompleted ? "bg-black border-black text-white" : ""}
-                  ${isCurrent ? "border-black text-black animate-pulse" : ""}
-                  ${!isCompleted && !isCurrent ? "border-gray-300 text-gray-400" : ""}
+                  ${isCompleted ? "bg-text border-text text-bg" : ""}
+                  ${isCurrent ? "border-text text-text animate-pulse" : ""}
+                  ${!isCompleted && !isCurrent ? "border-border text-unactive-text" : ""}
                 `}
               >
                 {isCompleted ? (
@@ -62,7 +62,7 @@ export function OrderStepper({ currentStep = 1 }) {
               <span
                 className={`
                   mt-3 text-sm font-medium transition-colors duration-300
-                  ${isCurrent || isCompleted ? "text-black" : "text-gray-400"}
+                  ${isCurrent || isCompleted ? "text-text" : "text-unactive-text"}
                 `}
               >
                 {step.label}

@@ -59,7 +59,7 @@ const RegisterForm = () => {
       <div className="flex flex-row gap-5">
         <label className="flex flex-col gap-2">
           <span className="text-text">
-            {t("firstName")} <span className="text-red-800">*</span>
+            {t("firstName")} <span className="text-danger">*</span>
           </span>
           <input
             {...register("firstname", {
@@ -88,12 +88,12 @@ const RegisterForm = () => {
             id="firstname"
           />
           {errors.firstname && (
-            <span className="text-red-800">{errors.firstname.message}</span>
+            <span className="text-danger">{errors.firstname.message}</span>
           )}
         </label>
         <label className="flex flex-col gap-2">
           <span className="text-text">
-            {t("lastName")} <span className="text-red-800">*</span>
+            {t("lastName")} <span className="text-danger">*</span>
           </span>
           <input
             {...register("lastname", {
@@ -118,13 +118,13 @@ const RegisterForm = () => {
             id="lastname"
           />
           {errors.lastname && (
-            <span className="text-red-800">{errors.lastname.message}</span>
+            <span className="text-danger">{errors.lastname.message}</span>
           )}
         </label>
       </div>
       <label className="flex flex-col gap-2">
         <span className="text-text">
-          Email <span className="text-red-800">*</span>
+          Email <span className="text-danger">*</span>
         </span>
         <input
           {...register("email", {
@@ -141,12 +141,12 @@ const RegisterForm = () => {
           id="email"
         />
         {errors.email && (
-          <span className="text-red-800">{errors.email.message}</span>
+          <span className="text-danger">{errors.email.message}</span>
         )}
       </label>
       <label className="flex flex-col gap-2">
         <span className="text-text">
-          {t("password")} <span className="text-red-800">*</span>
+          {t("password")} <span className="text-danger">*</span>
         </span>
         <input
           {...register("password", {
@@ -166,12 +166,12 @@ const RegisterForm = () => {
           id="password"
         />
         {errors.password && (
-          <span className="text-red-800">{errors.password.message}</span>
+          <span className="text-danger">{errors.password.message}</span>
         )}
       </label>
       <label className="flex flex-col gap-2">
         <span className="text-text">
-          {t("confirmPassword")} <span className="text-red-800">*</span>
+          {t("confirmPassword")} <span className="text-danger">*</span>
         </span>
         <input
           {...register("password-confirm", {
@@ -185,13 +185,13 @@ const RegisterForm = () => {
           id="password-confirm"
         />
         {errors["password-confirm"] && (
-          <span className="text-red-800">
+          <span className="text-danger">
             {errors["password-confirm"].message}
           </span>
         )}
       </label>
       <button
-        className="p-3 rounded-xl w-full text-center text-white dark:text-shadow-zinc-950 bg-black dark:bg-white-500"
+        className="p-3 rounded-xl w-full text-center bg-button text-button-text font-extrabold"
         type="submit"
       >
         {t("button")}

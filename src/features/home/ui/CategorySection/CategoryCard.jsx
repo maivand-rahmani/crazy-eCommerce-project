@@ -30,14 +30,14 @@ const CategoryCard =  ({ Category , kidsList , Scroll = true }) => {
   }
   
   return (
-    <div className="flex center transition-all max-h-60 min-h-40 max-w-60 min-w-40 rounded-2xl bg-card-bg hover:bg-card-bg/60" onClick={Click} key={Category.id}>
+    <div className="flex center transition-all text-text max-h-60 min-h-40 max-w-60 min-w-40 rounded-2xl bg-surface hover:bg-surface/80" onClick={Click} key={Category.id}>
       <div className="flex center gap-2 flex-col w-full md:max-w-30 ">
         <div>{CategoriesLogos[Category.name]}</div>
         <h1>{t(`categories.list.${Category.name}`)}</h1>
       </div>
       <div className="flex gap-5 overflow-x-auto">
         {Scroll && clicked && kidsList.map(SubCategory => (
-          <div className={`flex hover:bg-card-bg/60 center flex-col ${clicked ? 'py-6 px-10' : ''}`} key={SubCategory.id}>
+          <div className={`flex hover:bg-surface/80 center flex-col ${clicked ? 'py-6 px-10' : ''}`} key={SubCategory.id}>
             <div>{CategoriesLogos[SubCategory.name]}</div>
             <h1 className="text-sm/5 py-2">{t(`categories.list.${SubCategory.name}`)}</h1>
           </div>

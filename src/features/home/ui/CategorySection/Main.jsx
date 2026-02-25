@@ -18,7 +18,7 @@ const CategorySection = async () => {
   }
   
   return (
-    <div className="py-16 bg-[#FAFAFA] flex flex-col gap-12 px-4 md:px-40">
+    <div className="py-16 bg-banner-light flex text-text flex-col gap-12 px-4 md:px-40">
       <div>
         <h1 className="font-bold text-xl/8 "><Link href={"/catalog"}>{t("title")}</Link></h1>
       </div>

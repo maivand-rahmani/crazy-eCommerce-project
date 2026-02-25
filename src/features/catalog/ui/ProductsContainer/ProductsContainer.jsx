@@ -18,7 +18,7 @@ const ProductsContainer = ({ data }) => {
       <div className="md:hidden top-20 z-20">
         <button
           onClick={() => setOpen(true)}
-          className="w-full flex items-center justify-center gap-3 p-4 rounded-2xl border bg-white shadow-md active:scale-[0.98] transition"
+          className="w-full flex items-center justify-center gap-3 p-4 rounded-2xl border border-border bg-surface shadow-md active:scale-[0.98] transition"
         >
           <Settings2Icon size={20} />
           <span className="font-medium">{t("filters")}</span>
@@ -40,14 +40,14 @@ const ProductsContainer = ({ data }) => {
           />
 
           {/* Bottom sheet */}
-          <div className="fixed bottom-0 left-0 right-0 bg-white z-50 rounded-t-3xl p-5 max-h-[85vh] overflow-y-auto animate-slide-up">
+          <div className="fixed bottom-0 left-0 right-0 bg-surface z-50 rounded-t-3xl p-5 max-h-[85vh] overflow-y-auto animate-slide-up border-t border-border">
             
             {/* Header */}
             <div className="flex justify-between items-center mb-4">
-              <h3 className="text-lg font-semibold">{t("filters")}</h3>
+              <h3 className="text-lg font-semibold text-text">{t("filters")}</h3>
               <button
                 onClick={() => setOpen(false)}
-                className="p-2 rounded-full hover:bg-gray-100 transition"
+                className="p-2 rounded-full hover:bg-surface transition"
               >
                 <X />
               </button>
@@ -59,7 +59,7 @@ const ProductsContainer = ({ data }) => {
             {/* Apply button */}
             <button
               onClick={() => setOpen(false)}
-              className="mt-6 mb-20 w-full bg-black text-white py-3 rounded-xl font-medium hover:opacity-90 transition"
+              className="mt-6 mb-20 w-full bg-button text-button-text py-3 rounded-xl font-medium hover:opacity-90 transition"
             >
               {t("filters")}
             </button>

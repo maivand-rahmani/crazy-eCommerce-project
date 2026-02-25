@@ -80,7 +80,7 @@ export const UserInfoModal = () => {
                 id="logout"
                 label={t("logout")}
                 icon={LogOut}
-                className="text-red-700"
+                className="text-danger"
               />
             </Dropdown.Section>
           </Dropdown.Menu>

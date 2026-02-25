@@ -1,6 +1,5 @@
 import { NextIntlClientProvider } from "next-intl";
 import { getMessages } from "next-intl/server";
-
 import Header from "@/shared/ui/layout/header/Header";
 import FooterCyber from "@/shared/ui/layout/footer/Footer";
 import "@/shared/styles/globals.css";
@@ -12,7 +11,7 @@ export default async function LocaleLayout({ children, params }) {
   const messages = await getMessages({ locale });
 
   return (
-    <html lang={locale}>
+    <html lang={locale} data-theme="vintage">
       <body className="mx-auto overflow-auto max-w-[1440px]">
         <NextIntlClientProvider locale={locale} messages={messages}>
           <AuthProvider>

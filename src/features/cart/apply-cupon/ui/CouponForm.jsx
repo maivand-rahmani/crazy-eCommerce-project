@@ -48,11 +48,11 @@ const CouponForm = ({ total, setAmount = () => {}, setCoupon = () => {} }) => {
         {t("label")}
       </label>
       <form
-        className={`flex border rounded focus-visible:outline-none ${submited ? " bg-green-700" : ""}`}
+        className={`flex border border-border rounded focus-visible:outline-none ${submited ? " bg-accent" : ""}`}
         onSubmit={handleSubmit(onSubmitingCuponForm)}
       >
         <input
-          className="w-full p-3"
+          className="w-full inputStyle p-3 bg-input text-input-text"
           disabled={submited}
           placeholder={t("placeholder")}
           name="coupon"
@@ -62,12 +62,12 @@ const CouponForm = ({ total, setAmount = () => {}, setCoupon = () => {} }) => {
         />
         <button
           disabled={submited}
-          className="p-2 bg-black text-white text-center font-extrabold font-mono rounded-r"
+          className="p-2 bg-button text-button-text text-center font-extrabold font-mono rounded-r"
         >
           {t("button")}
         </button>
       </form>
-      {errors.coupon && <p className="text-red-500">{errors.coupon.message}</p>}
+      {errors.coupon && <p className="text-danger">{errors.coupon.message}</p>}
     </div>
   );
 };

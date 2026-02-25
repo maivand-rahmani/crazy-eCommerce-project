@@ -48,7 +48,7 @@ const Page = async () => {
       <Suspense fallback={<MiniLoader />}>
         <CategorySection />
       </Suspense>
-      <div className="md:my-14 md:mx-40">
+      <div className="md:my-14 md:mx-40 text-text">
         <h1 className="text-2xl font-bold my-6">{t("featuredProducts")}</h1>
         <Suspense fallback={<ProductsRenderSkeleton productsCount={8} />}>
           <FeaturedProducts />

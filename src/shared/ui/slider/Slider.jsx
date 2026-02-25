@@ -53,7 +53,7 @@ const Slider = ({ productId, variantId }) => {
                   loading="lazy"
                   placeholder="blur"
                   blurDataURL="data:image/gif;base64,R0lGODlhAQABAIAAAP///wAAACH5BAEAAAAALAAAAAABAAEAAAICRAEAOw=="
-                  className="select-none snap-center max-w-35 max-h-35 object-contain p-2"
+                  className="select-none snap-center object-contain p-2"
                   alt={image.url}
                   onClick={() => setActiveIndex(index)}
                   src={image.url}
@@ -71,7 +71,7 @@ const Slider = ({ productId, variantId }) => {
               : " md:max-h-125 md:max-w-125 "
           }   transition-all duration-500 rounded-2xl md:w-full md:h-full md:full`}
         >
-          <div className="max-h-[inherit]  flex center bg-white relative rounded-2xl shadow-2xl p-10">
+          <div className="max-h-[inherit] flex center bg-surface relative rounded-2xl shadow-2xl p-10 border border-border">
             <div
               onClick={() => {
                 setActiveIndex((prev) => prev - 1 + length);

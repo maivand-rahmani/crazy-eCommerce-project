@@ -69,8 +69,8 @@ export const AddToCartButtonForProductPage = ({ variantId, cart_id }) => {
     <div
       className={`${
         counter >= 1
-          ? " bg-transparent border-2 text-black  "
-          : "text-white bg-gray-700 hover:bg-green-700"
+          ? " bg-transparent border-2 text-text  "
+          : "text-button-text bg-primary hover:bg-success"
       } group relative flex gap-2 p-1 rounded duration-300 transition-all`}
     >
       {!counter && (

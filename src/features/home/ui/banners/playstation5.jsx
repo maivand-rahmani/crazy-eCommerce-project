@@ -5,7 +5,7 @@ import {getTranslations} from "next-intl/server"
 const Playstation5 = async () => {
   const t = await getTranslations("promotions.playstation")
   return (
-    <div className="p-3 w-full h-full bg-bg-color flex center flex-col md:flex-row">
+    <div className="p-3 w-full h-full bg-banner-3 flex center flex-col md:flex-row">
       <Image
         width={200}
         height={200}

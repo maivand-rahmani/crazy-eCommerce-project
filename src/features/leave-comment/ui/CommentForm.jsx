@@ -35,7 +35,7 @@ export const CommentForm = ({ product_id, onAddComment }) => {
   return (
     <div>
       <form
-        className="rounded-3xl shadow-xl p-4 flex flex-col gap-4"
+        className="rounded-3xl shadow-lg p-4 flex flex-col gap-4"
         onSubmit={handleSubmit}
       >
         <div className="flex items-center gap-3">
@@ -47,7 +47,7 @@ export const CommentForm = ({ product_id, onAddComment }) => {
           onChange={(e) => setComment(e.target.value)}
           placeholder={t("placeholder")}
           value={comment}
-          className="p-3 w-full min-h-[100px] rounded border border-gray-300 focus:outline-none"
+          className="p-3 w-full min-h-[100px] rounded border border-border focus:outline-none"
           required
         />
 
@@ -57,7 +57,7 @@ export const CommentForm = ({ product_id, onAddComment }) => {
         <input type="hidden" name="productId" value={product_id} />
 
         <button
-          className="bg-blue-500 text-white px-10 py-2 w-full btn rounded-3xl shadow-xl"
+          className="bg-primary text-primary-text px-10 py-2 w-full btn rounded-3xl shadow-xl"
           type="submit"
         >
           {t("submit")}

@@ -95,7 +95,7 @@ export default function ProductFilters({ setProducts, products }) {
 
 
   return (
-    <div className="p-6 rounded-xl space-y-6 border bg-bg border-card-bg text-text">
+    <div className="p-6 rounded-xl space-y-6 border border-border bg-surface text-text">
       <div>
         <h4 className="text-lg font-semibold mb-3">{t("priceRange")}</h4>
         <div className="flex gap-3">
@@ -104,14 +104,14 @@ export default function ProductFilters({ setProducts, products }) {
             placeholder={t("min")}
             value={selectedFilters.minPrice}
             onChange={(e) => handleChange("minPrice", e.target.value)}
-            className="border rounded-md px-3 py-2 w-full"
+            className="border border-border rounded-md px-3 py-2 w-full bg-input text-input-text"
           />
           <input
             type="number"
             placeholder={t("max")}
             value={selectedFilters.maxPrice}
             onChange={(e) => handleChange("maxPrice", e.target.value)}
-            className="border rounded-md px-3 py-2 w-full"
+            className="border border-border rounded-md px-3 py-2 w-full bg-input text-input-text"
           />
         </div>
       </div>
@@ -125,13 +125,13 @@ export default function ProductFilters({ setProducts, products }) {
                 onClick={() => handleChange(key, opt)}
                 className="px-4 py-2 rounded-full border transition-all duration-200 text-sm"
                 style={{
-                  borderColor: "var(--card-bg)",
+                  borderColor: "var(--border)",
                   backgroundColor: selectedFilters[key].includes(opt)
-                    ? "var(--color-text)"
-                    : "var(--color-bg)",
+                    ? "var(--text)"
+                    : "var(--bg)",
                   color: selectedFilters[key].includes(opt)
-                    ? "var(--color-bg)"
-                    : "var(--color-text)",
+                    ? "var(--bg)"
+                    : "var(--text)",
                 }}
               >
                 {opt}
@@ -141,15 +141,9 @@ export default function ProductFilters({ setProducts, products }) {
         </div>
       ))}
       <div className="flex gap-2">
-        {/* <button
-          onClick={applyFilters}
-          className="w-full bg-product-button-bg text-product-button-text mt-6 px-5 py-3 rounded-lg font-semibold shadow transition-all duration-200"
-        >
-          Apply Filters
-        </button> */}
         <button
           onClick={resetFilters}
-          className="w-full bg-gray-300 text-black mt-6 px-5 py-3 rounded-lg font-semibold shadow"
+          className="w-full bg-muted text-text mt-6 px-5 py-3 rounded-lg font-semibold shadow"
         >
           {t("reset")}
         </button>

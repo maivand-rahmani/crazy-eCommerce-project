@@ -34,12 +34,12 @@ export default function Modal({ isOpen, onClose, children }) {
       onClick={onClose}
     >
       <div
-        className="relative w-[90%] max-w-md rounded-2xl bg-bg p-6 text-text  shadow-2xl animate-scaleIn"
+        className="relative w-[90%] max-w-md rounded-2xl bg-surface p-6 text-text  shadow-2xl animate-scaleIn border border-border"
         onClick={(e) => e.stopPropagation()}
       >
         <button
           onClick={onClose}
-          className="absolute right-4 top-3 text-lg text-text hover:text-black transition"
+          className="absolute right-4 top-3 text-lg text-text hover:opacity-70 transition"
         >
           ✕
         </button>

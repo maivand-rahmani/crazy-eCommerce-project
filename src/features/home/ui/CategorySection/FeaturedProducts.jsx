@@ -1,7 +1,6 @@
 import React from "react";
 import ProductCard from "@/entities/product/ProductCard/ProductCard";
 import Fetch from "@/shared/lib/fetch";
-import { auth } from "@clerk/nextjs/server";
 import { getTranslations } from "next-intl/server";
 
 const FeaturedProducts = async () => {

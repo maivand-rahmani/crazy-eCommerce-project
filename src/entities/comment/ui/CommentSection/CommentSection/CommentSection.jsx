@@ -55,8 +55,8 @@ const CommentSection = ({ productID, initialComments }) => {
         type="button"
         className="
           w-full px-6 py-3 my-3
-          bg-white text-gray-900
-          border border-gray-300 rounded-lg
+          bg-surface text-text
+          border border-border rounded-lg
           shadow-sm
           hover:shadow-md hover:translate-y-0,5
           transition-all duration-200
@@ -71,7 +71,7 @@ const CommentSection = ({ productID, initialComments }) => {
       <div className="flex flex-col gap-5">
         <div
           onClick={() => setOpenComments((s) => !s)}
-          className="inline-flex items-center gap-2 rounded-full bg-blue-50 px-4 py-2 text-sm font-medium text-blue-700 ring-1 ring-inset ring-blue-200 hover:bg-blue-100 focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all duration-200 shadow-sm"
+          className="inline-flex items-center gap-2 rounded-full bg-primary/10 px-4 py-2 text-sm font-medium text-primary ring-1 ring-inset ring-primary/20 hover:bg-primary/20 focus:outline-none focus:ring-2 focus:ring-primary transition-all duration-200 shadow-sm"
         >
           <svg
             className="h-4 w-4 text-blue-500"

@@ -6,13 +6,13 @@ const Iphone = async () => {
   const t = await getTranslations('hero')
 
   return (
-    <div className="p-2 flex flex-col center bg-iphone-bg md:flex-row  ">
+    <div className="p-2 flex flex-col center bg-banner-1 md:flex-row  ">
       <div className="flex items-center md:items-baseline flex-col gap-6">
         <span className="text-[clamp(2rem,4vw,3rem)] text-text opacity-25">
           {t("tagline")}
         </span>
 
-        <div className="font-extralight text-[clamp(3rem,8vw,8rem)] leading-[1.1] text-white text-balance">
+        <div className="font-extralight text-[clamp(3rem,8vw,8rem)] leading-[1.1] text-banner-white text-balance">
           {t("title")} <br />
           <span className="font-bold">{t("title2")}</span>
         </div>

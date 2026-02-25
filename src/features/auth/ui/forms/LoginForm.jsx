@@ -43,7 +43,7 @@ const LoginForm = () => {
         <h2 className="text-lg text-unactive-text font-extralight">
           {t("subtitle")}
         </h2>
-        {errors.root && (<div className="text-red-500 text-2xl">{errors.root.message}</div>)}
+        {errors.root && (<div className="text-danger text-2xl">{errors.root.message}</div>)}
       </div>
       <label className="flex flex-col gap-2">
         <span className="text-text">{t("email")}</span>
@@ -62,7 +62,7 @@ const LoginForm = () => {
           id="email"
         />
         {errors.email && (
-          <span className="text-red-500">{errors.email.message}</span>
+          <span className="text-danger">{errors.email.message}</span>
         )}
       </label>
       <label className="flex flex-col gap-2">
@@ -75,11 +75,11 @@ const LoginForm = () => {
           id="password"
         />
         {errors.password && (
-          <span className="text-red-500">{errors.password.message}</span>
+          <span className="text-danger">{errors.password.message}</span>
         )}
       </label>
       <button
-        className="p-3 rounded-xl w-full text-center text-white dark:text-shadow-zinc-950 bg-black dark:bg-white-500"
+        className="p-3 rounded-xl w-full text-center bg-button text-button-text font-extrabold"
         type="submit"
       >
         {t("button")}

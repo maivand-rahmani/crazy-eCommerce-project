@@ -54,13 +54,13 @@ const OrderDetailPage = () => {
 
   const getStatusColor = (status) => {
     const colors = {
-      created: "bg-yellow-100 text-yellow-800",
-      paid: "bg-blue-100 text-blue-800",
-      shipped: "bg-purple-100 text-purple-800",
-      delivered: "bg-green-100 text-green-800",
-      cancelled: "bg-red-100 text-red-800",
+      created: "bg-status-created-bg text-status-created-text",
+      paid: "bg-status-paid-bg text-status-paid-text",
+      shipped: "bg-status-shipped-bg text-status-shipped-text",
+      delivered: "bg-status-delivered-bg text-status-delivered-text",
+      cancelled: "bg-status-cancelled-bg text-status-cancelled-text",
     };
-    return colors[status] || "bg-gray-100 text-gray-800";
+    return colors[status] || "bg-surface text-text";
   };
 
   const discount =
@@ -75,7 +75,7 @@ const OrderDetailPage = () => {
     return (
       <div className="container mx-auto px-4 py-8">
         <div className="text-center py-12">
-          <p className="text-gray-500 text-lg">{t("loadingDetails")}</p>
+          <p className="text-unactive-text text-lg">{t("loadingDetails")}</p>
         </div>
       </div>
     );
@@ -85,12 +85,12 @@ const OrderDetailPage = () => {
     return (
       <div className="container mx-auto px-4 py-8">
         <div className="text-center py-12">
-          <p className="text-red-500 text-lg mb-4">
+          <p className="text-danger text-lg mb-4">
             {error || t("notFound")}
           </p>
           <button
             onClick={() => router.push("/orders")}
-            className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600 transition-colors"
+            className="px-4 py-2 bg-primary text-primary-text rounded hover:opacity-80 transition-colors"
           >
             {t("backToOrders")}
           </button>

@@ -97,7 +97,7 @@ const AddUserAddressForm = ({ setStep = () => {} , setOrderInfo = () => {}, onAd
             type="text"
           />
           {errors.street && (
-            <span className="text-red-500 text-sm">
+            <span className="text-danger text-sm">
               {errors.street.message}
             </span>
           )}
@@ -113,7 +113,7 @@ const AddUserAddressForm = ({ setStep = () => {} , setOrderInfo = () => {}, onAd
               type="text"
             />
             {errors.city && (
-              <span className="text-red-500 text-sm">
+              <span className="text-danger text-sm">
                 {errors.city.message}
               </span>
             )}
@@ -128,7 +128,7 @@ const AddUserAddressForm = ({ setStep = () => {} , setOrderInfo = () => {}, onAd
               type="text"
             />
             {errors.state && (
-              <span className="text-red-500 text-sm">
+              <span className="text-danger text-sm">
                 {errors.state.message}
               </span>
             )}
@@ -145,7 +145,7 @@ const AddUserAddressForm = ({ setStep = () => {} , setOrderInfo = () => {}, onAd
               type="text"
             />
             {errors.zip && (
-              <span className="text-red-500 text-sm">{errors.zip.message}</span>
+              <span className="text-danger text-sm">{errors.zip.message}</span>
             )}
           </label>
 
@@ -158,7 +158,7 @@ const AddUserAddressForm = ({ setStep = () => {} , setOrderInfo = () => {}, onAd
               type="text"
             />
             {errors.country && (
-              <span className="text-red-500 text-sm">
+              <span className="text-danger text-sm">
                 {errors.country.message}
               </span>
             )}
@@ -174,7 +174,7 @@ const AddUserAddressForm = ({ setStep = () => {} , setOrderInfo = () => {}, onAd
             type="tel"
           />
           {errors.phone && (
-            <span className="text-red-500 text-sm">{errors.phone.message}</span>
+            <span className="text-danger text-sm">{errors.phone.message}</span>
           )}
         </label>
 
@@ -182,7 +182,7 @@ const AddUserAddressForm = ({ setStep = () => {} , setOrderInfo = () => {}, onAd
           <input
             {...register("isDefault")}
             type="checkbox"
-            className="w-4 h-4 rounded border-gray-300 text-black focus:ring-black"
+            className="w-4 h-4 rounded border-border text-primary focus:ring-primary"
           />
           <span className="text-text text-sm">{t("setDefault")}</span>
         </label>
@@ -192,13 +192,13 @@ const AddUserAddressForm = ({ setStep = () => {} , setOrderInfo = () => {}, onAd
         <button
           type="button"
           onClick={onCancel}
-          className="flex-1 p-3 rounded-xl text-center text-text border border-gray-300 hover:bg-gray-100 transition"
+          className="flex-1 p-3 rounded-xl text-center text-text border border-border hover:bg-surface transition"
         >
           {t("cancel")}
         </button>
         <button
           type="submit"
-          className="flex-1 p-3 rounded-xl text-center text-white bg-black hover:bg-gray-800 transition"
+          className="flex-1 p-3 rounded-xl text-center text-primary-text bg-primary hover:opacity-80 transition"
         >
           {address ? t("confirm") : t("add")}
         </button>

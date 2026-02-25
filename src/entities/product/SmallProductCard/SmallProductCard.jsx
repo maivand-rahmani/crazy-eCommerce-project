@@ -45,7 +45,7 @@ const SmallProductCard = ({
   };
 
   return (
-    <div className="flex gap-5 shadow-xl center border rounded-2xl p-5 w-full">
+    <div className="flex gap-5 shadow-xl center border border-border rounded-2xl p-5 w-full bg-surface">
       {accessibility?.image && (
         <div className="flex center w-[90px] flex-shrink-0">
           <img
@@ -61,9 +61,9 @@ const SmallProductCard = ({
         <div className="min-w-0">
           {accessibility?.fullname && (
             <div>
-              <h1 className="z-20 drop-shadow-2xl text-xl text-gray-800 leading-snug line-clamp-2">
+              <h1 className="z-20 drop-shadow-2xl text-xl text-text leading-snug line-clamp-2">
                 {productData?.product_name} –{" "}
-                <span className="font-semibold text-gray-900 z-20">
+                <span className="font-semibold text-text z-20">
                   {productData?.variant_name}
                 </span>
               </h1>

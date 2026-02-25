@@ -2,12 +2,12 @@
 import Fetch from "@/shared/lib/fetch";
 import React, { useState, useEffect } from "react";
 import Link from "next/link";
-import { useAuth } from "@clerk/nextjs";
 import SmallProductCard from "@/entities/product/SmallProductCard/SmallProductCard";
 import { useTranslations } from "next-intl";
 
 const CartProductsList = ({ checkoutState , setItems , setTotal = () => {} }) => {
   const t = useTranslations("cart");
+  const tCommon = useTranslations("common");
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
 
@@ -54,7 +54,7 @@ const CartProductsList = ({ checkoutState , setItems , setTotal = () => {} }) =>
           <div>
             <div className="font-extrabold uppercase flex gap-10 p-5 text-2xl center">
               <div>{t("title")}: </div>
-              <div className="rounded-full bg-gray-300 p-2">
+              <div className="rounded-full bg-muted p-2">
                 {products.length}
               </div>
             </div>
@@ -76,19 +76,19 @@ const CartProductsList = ({ checkoutState , setItems , setTotal = () => {} }) =>
         </>
       )}
 
-      {loading ? t("common.loading") : null}
+      {loading ? tCommon("common.loading") : null}
 
       {!loading && products.length < 1 && (
         <div className="flex flex-col w-full items-center justify-center min-h-[60vh] text-center">
-          <h2 className="text-2xl font-semibold text-gray-900 mb-3">
+          <h2 className="text-2xl font-semibold text-text mb-3">
             {t("empty.title")}
           </h2>
-          <p className="text-gray-500 max-w-md">
+          <p className="text-unactive-text max-w-md">
             {t("empty.description")}
           </p>
           <Link
             href={"/catalog"}
-            className="rounded bg-blue-500 p-2 m-2 text-white"
+            className="rounded bg-primary p-2 m-2 text-primary-text"
           >
             {t("empty.cta")}
           </Link>

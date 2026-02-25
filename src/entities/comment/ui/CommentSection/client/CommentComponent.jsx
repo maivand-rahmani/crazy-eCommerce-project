@@ -116,7 +116,7 @@ const CommentComponent = ({ comment, user, handleDelete, handleEdit }) => {
         </div>
         <form className="pl-4" onSubmit={handleSubmit}>
           <div className="w-full gap-5 grid grid-cols-[50px_1fr_100px]">
-            <span className="p-1 self-start rounded center flex bg-blue-500 text-white">
+            <span className="p-1 self-start rounded center flex bg-primary text-primary-text">
               {rating}
               <Star width={15} height={15} />
             </span>
@@ -131,7 +131,7 @@ const CommentComponent = ({ comment, user, handleDelete, handleEdit }) => {
 
             {editing && (
               <button
-                className="p-2 self-start bg-blue-500 rounded text-white"
+                className="p-2 self-start bg-primary rounded text-primary-text"
                 aria-label="edited comment submitting"
               >
                 {t("submit")}

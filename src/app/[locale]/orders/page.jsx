@@ -71,13 +71,13 @@ const OrdersPage = () => {
 
   const getStatusColor = (status) => {
     const colors = {
-      created: 'bg-yellow-100 text-yellow-800',
-      paid: 'bg-blue-100 text-blue-800',
-      shipped: 'bg-purple-100 text-purple-800',
-      delivered: 'bg-green-100 text-green-800',
-      cancelled: 'bg-red-100 text-red-800'
+      created: 'bg-status-created text-status-created',
+      paid: 'bg-status-paid text-status-paid',
+      shipped: 'bg-status-shipped text-status-shipped',
+      delivered: 'bg-status-delivered text-status-delivered',
+      cancelled: 'bg-status-cancelled text-status-cancelled'
     }
-    return colors[status] || 'bg-gray-100 text-gray-800'
+    return colors[status] || 'bg-surface text-text'
   }
 
   const handleSort = (field) => {
@@ -90,17 +90,17 @@ const OrdersPage = () => {
   }
 
   return (
-    <div className="container mx-auto px-4 py-8">
-      <h1 className="text-3xl font-bold mb-8">{t("title")}</h1>
+    <div className="container mx-auto px-4 py-8 bg-bg">
+      <h1 className="text-3xl font-bold mb-8 text-text">{t("title")}</h1>
       
       {/* Filters */}
       <div className="flex flex-col md:flex-row gap-4 mb-6">
         <div className="flex items-center gap-2">
-          <label className="text-sm font-medium text-gray-700">{tStatus("label")}:</label>
+          <label className="text-sm font-medium text-text">{tStatus("label")}:</label>
           <select
             value={statusFilter}
             onChange={(e) => setStatusFilter(e.target.value)}
-            className="px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+            className="px-3 py-2 border border-border rounded-md focus:outline-none focus:ring-2 focus:ring-primary bg-input text-input-text"
           >
             <option value="all">{tStatus("all")}</option>
             <option value="created">{tStatus("created")}</option>
@@ -112,11 +112,11 @@ const OrdersPage = () => {
         </div>
         
         <div className="flex items-center gap-2">
-          <label className="text-sm font-medium text-gray-700">{tSort("label")}:</label>
+          <label className="text-sm font-medium text-text">{tSort("label")}:</label>
           <select
             value={sortBy}
             onChange={(e) => setSortBy(e.target.value)}
-            className="px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+            className="px-3 py-2 border border-border rounded-md focus:outline-none focus:ring-2 focus:ring-primary bg-input text-input-text"
           >
             <option value="created_at">{tSort("date")}</option>
             <option value="total_cents">{tSort("price")}</option>
@@ -125,7 +125,7 @@ const OrdersPage = () => {
           
           <button
             onClick={() => setSortOrder(sortOrder === 'asc' ? 'desc' : 'asc')}
-            className="px-3 py-2 bg-gray-100 hover:bg-gray-200 rounded-md transition-colors"
+            className="px-3 py-2 bg-surface hover:opacity-80 rounded-md transition-colors text-text"
           >
             {sortOrder === 'asc' ? `↑ ${tSort("asc")}` : `↓ ${tSort("desc")}`}
           </button>
@@ -134,45 +134,45 @@ const OrdersPage = () => {
 
       {loading ? (
         <div className="text-center py-12">
-          <p className="text-gray-500 text-lg">{t("loading")}</p>
+          <p className="text-unactive-text text-lg">{t("loading")}</p>
         </div>
       ) : filteredAndSortedOrders.length === 0 ? (
         <div className="text-center py-12">
-          <p className="text-gray-500 text-lg">{t("empty")}</p>
+          <p className="text-unactive-text text-lg">{t("empty")}</p>
         </div>
       ) : (
         <div className="overflow-x-auto">
-          <table className="w-full border-collapse bg-white shadow-md rounded-lg overflow-hidden">
-            <thead className="bg-gray-50 border-b border-gray-200">
+          <table className="w-full border-collapse bg-surface shadow-md rounded-lg overflow-hidden">
+            <thead className="bg-surface border-b border-border">
               <tr>
-                <th className="px-6 py-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                <th className="px-6 py-4 text-left text-xs font-medium text-text uppercase tracking-wider">
                   {t("table.orderId")}
                 </th>
-                <th className="px-6 py-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                <th className="px-6 py-4 text-left text-xs font-medium text-text uppercase tracking-wider">
                   {t("table.status")}
                 </th>
                 <th 
-                  className="px-6 py-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider cursor-pointer hover:bg-gray-100"
+                  className="px-6 py-4 text-left text-xs font-medium text-text uppercase tracking-wider cursor-pointer hover:opacity-80"
                   onClick={() => handleSort('total_cents')}
                 >
                   {t("table.price")} {sortBy === 'total_cents' && (sortOrder === 'asc' ? '↑' : '↓')}
                 </th>
                 <th 
-                  className="px-6 py-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider cursor-pointer hover:bg-gray-100"
+                  className="px-6 py-4 text-left text-xs font-medium text-text uppercase tracking-wider cursor-pointer hover:opacity-80"
                   onClick={() => handleSort('created_at')}
                 >
                   {t("table.date")} {sortBy === 'created_at' && (sortOrder === 'asc' ? '↑' : '↓')}
                 </th>
-                <th className="px-6 py-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                <th className="px-6 py-4 text-left text-xs font-medium text-text uppercase tracking-wider">
                   {t("table.itemsQuantity")}
                 </th>
               </tr>
             </thead>
-            <tbody className="bg-white divide-y divide-gray-200">
+            <tbody className="bg-surface divide-y divide-border">
               {filteredAndSortedOrders.map((order) => (
-                <tr key={order.id} className="hover:bg-gray-50 transition-colors">
+                <tr key={order.id} className="hover:opacity-80 transition-colors">
                   <td className="px-6 py-4 whitespace-nowrap">
-                    <Link href={`/orders/${order.id}`} className="text-sm text-blue-400 underline font-mono">
+                    <Link href={`/orders/${order.id}`} className="text-sm text-primary underline font-mono">
                       {order.id.slice(0, 8)}...
                     </Link>
                   </td>
@@ -182,17 +182,17 @@ const OrdersPage = () => {
                     </span>
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap">
-                    <span className="text-sm text-gray-900 font-medium">
+                    <span className="text-sm text-text font-medium">
                       ${formatPrice(order.total_cents)}
                     </span>
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap">
-                    <span className="text-sm text-gray-600">
+                    <span className="text-sm text-unactive-text">
                       {formatDate(order.created_at)}
                     </span>
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap">
-                    <span className="text-sm text-gray-900">
+                    <span className="text-sm text-text">
                       {calculateItemsQuantity(order)}
                     </span>
                   </td>

@@ -42,15 +42,15 @@ export function AddToWishListCom({
   };
 
   const colorClass = added
-    ? "text-red-500 hover:text-red-400"
-    : "text-gray-500 ";
+    ? "text-danger hover:text-danger/80"
+    : "text-unactive-text ";
 
   const fillColor = added ? "red" : "transparent";
 
   return (
     <button
       onClick={handleClick}
-      className={`flex center gap-1 text-black z-20 top-4 right-4 transition-all duration-300 ${colorClass}`}
+      className={`flex center gap-1 text-text z-20 top-4 right-4 transition-all duration-300 ${colorClass}`}
       disabled={pending}
     >
       <Heart className="transition-colors duration-300" fill={fillColor} />
