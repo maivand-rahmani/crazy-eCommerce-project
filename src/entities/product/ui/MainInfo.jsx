@@ -5,10 +5,12 @@ import {useParams } from "next/navigation"
 import { Truck , Store , BadgeCheck , ShoppingCart } from 'lucide-react';
 import { AddToWishListCom } from '@/features/add-to-wishlist/ui/AddToWishListCom.jsx';
 import { AddToCartButtonForProductPage } from '@/features/add-to-cart/ui/AddToCartButtonForProductPage.jsx';
+import { StockAlertButton } from '@/features/stock-alert/ui/StockAlertButton.jsx';
 
 const  MainInfo = ({ product , otherInfo }) => {
   const variants = product.products?.product_variants || [];
   const currentVariant = product;
+  const isOutOfStock = currentVariant.stock_quantity <= 0;
 
    const { categoryId } = useParams()
 
@@ -179,7 +181,15 @@ const  MainInfo = ({ product , otherInfo }) => {
         </div>
         
         
-        <AddToCartButtonForProductPage variantId={currentVariant.id} cart_id={otherInfo?.cart_id}/>
+        {isOutOfStock ? (
+          <StockAlertButton 
+            variantId={currentVariant.id} 
+            productName={product.products.name}
+            variantName={currentVariant.variant_name}
+          />
+        ) : (
+          <AddToCartButtonForProductPage variantId={currentVariant.id} cart_id={otherInfo?.cart_id}/>
+        )}
       </div>
 
       {/* {guarantee , stock , free delivery} */}

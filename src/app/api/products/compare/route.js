@@ -35,7 +35,6 @@ export async function GET(request) {
       }
     });
 
-    // Sort by the order of requested IDs
     const sortedProducts = variantIds.map(id => 
       products.find(p => p.id === id)
     ).filter(Boolean);

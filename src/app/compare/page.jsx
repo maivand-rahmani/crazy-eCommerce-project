@@ -1,32 +1,7 @@
 import React from 'react';
-import { CompareProvider, useCompare } from '../model/CompareContext';
+import { CompareProvider, useCompare } from '../features/compare-products/model/CompareContext';
 import { X, ShoppingCart } from 'lucide-react';
 import Link from 'next/link';
-
-async function getProductDetails(variantIds) {
-  const variantIdNums = variantIds.map(id => parseInt(id));
-  
-  const products = await prisma.product_variants.findMany({
-    where: {
-      id: { in: variantIdNums }
-    },
-    include: {
-      products: {
-        include: {
-          categories: true,
-          product_specs: true,
-        }
-      },
-      product_images: {
-        orderBy: { position: 'asc' },
-        take: 1
-      },
-      variant_options: true
-    }
-  });
-
-  return products;
-}
 
 function CompareContent() {
   const { items, removeItem, clearAll, count } = useCompare();
@@ -75,17 +50,16 @@ function CompareContent() {
     );
   }
 
-  // Collect all unique specs from all products
   const allSpecs = new Set();
   products.forEach(product => {
-    product.products?.product_specs?.forEach(spec => {
+    product?.products?.product_specs?.forEach(spec => {
       allSpecs.add(spec.key);
     });
   });
   const specsArray = Array.from(allSpecs);
 
   return (
-    <div className="min-h-screen bg-gray-50 py-8">
+    <div className="min-h-screen bg-gray-50 py-8 pb-24">
       <div className="max-w-7xl mx-auto px-4">
         <div className="flex items-center justify-between mb-8">
           <h1 className="text-3xl font-bold text-gray-800">Compare Products</h1>
@@ -108,7 +82,7 @@ function CompareContent() {
               <thead>
                 <tr>
                   <th className="p-4 text-left bg-gray-50 w-48"></th>
-                  {products.map(product => (
+                  {products.map(product => product && (
                     <th key={product.id} className="p-4 text-left bg-gray-50 min-w-[250px]">
                       <div className="relative">
                         <button
@@ -142,10 +116,9 @@ function CompareContent() {
                 </tr>
               </thead>
               <tbody>
-                {/* Price Row */}
                 <tr className="border-t">
                   <td className="p-4 font-medium text-gray-700 bg-gray-50">Price</td>
-                  {products.map(product => (
+                  {products.map(product => product && (
                     <td key={product.id} className="p-4">
                       <span className="text-xl font-bold text-blue-600">
                         ${(product.price_cents / 100).toFixed(2)}
@@ -154,10 +127,9 @@ function CompareContent() {
                   ))}
                 </tr>
 
-                {/* Stock Row */}
                 <tr className="border-t">
                   <td className="p-4 font-medium text-gray-700 bg-gray-50">Availability</td>
-                  {products.map(product => (
+                  {products.map(product => product && (
                     <td key={product.id} className="p-4">
                       {product.stock_quantity > 0 ? (
                         <span className="text-green-600 font-medium">In Stock ({product.stock_quantity})</span>
@@ -168,24 +140,22 @@ function CompareContent() {
                   ))}
                 </tr>
 
-                {/* Category Row */}
                 <tr className="border-t">
                   <td className="p-4 font-medium text-gray-700 bg-gray-50">Category</td>
-                  {products.map(product => (
+                  {products.map(product => product && (
                     <td key={product.id} className="p-4 text-gray-600">
                       {product.products?.categories?.name || 'N/A'}
                     </td>
                   ))}
                 </tr>
 
-                {/* Specs Rows */}
                 {specsArray.map(specKey => (
                   <tr key={specKey} className="border-t">
                     <td className="p-4 font-medium text-gray-700 bg-gray-50">{specKey}</td>
                     {products.map(product => {
-                      const spec = product.products?.product_specs?.find(s => s.key === specKey);
+                      const spec = product?.products?.product_specs?.find(s => s.key === specKey);
                       return (
-                        <td key={product.id} className="p-4 text-gray-600">
+                        <td key={product?.id} className="p-4 text-gray-600">
                           {spec?.value || '-'}
                         </td>
                       );
@@ -193,10 +163,9 @@ function CompareContent() {
                   </tr>
                 ))}
 
-                {/* Actions Row */}
                 <tr className="border-t">
                   <td className="p-4 bg-gray-50"></td>
-                  {products.map(product => (
+                  {products.map(product => product && (
                     <td key={product.id} className="p-4">
                       {product.stock_quantity > 0 ? (
                         <Link
