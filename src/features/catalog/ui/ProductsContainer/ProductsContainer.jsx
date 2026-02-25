@@ -4,10 +4,9 @@ import { Settings2Icon, X } from "lucide-react";
 import React, { useState } from "react";
 import ProductsFilter from "./ProductsFilter";
 import ProductsLists from "./ProductsLists";
-import { useTranslations } from "next-intl";
+import SortDropdown from "./SortDropdown";
 
 const ProductsContainer = ({ data }) => {
-  const t = useTranslations("filter");
   const [products, setProducts] = useState(data.data);
   const [open, setOpen] = useState(false);
 
@@ -21,7 +20,7 @@ const ProductsContainer = ({ data }) => {
           className="w-full flex items-center justify-center gap-3 p-4 rounded-2xl border bg-white shadow-md active:scale-[0.98] transition"
         >
           <Settings2Icon size={20} />
-          <span className="font-medium">{t("filters")}</span>
+          <span className="font-medium">Filters</span>
         </button>
       </div>
 
@@ -44,7 +43,7 @@ const ProductsContainer = ({ data }) => {
             
             {/* Header */}
             <div className="flex justify-between items-center mb-4">
-              <h3 className="text-lg font-semibold">{t("filters")}</h3>
+              <h3 className="text-lg font-semibold">Filters</h3>
               <button
                 onClick={() => setOpen(false)}
                 className="p-2 rounded-full hover:bg-gray-100 transition"
@@ -61,7 +60,7 @@ const ProductsContainer = ({ data }) => {
               onClick={() => setOpen(false)}
               className="mt-6 mb-20 w-full bg-black text-white py-3 rounded-xl font-medium hover:opacity-90 transition"
             >
-              {t("filters")}
+              Apply filters
             </button>
           </div>
         </>
@@ -69,6 +68,10 @@ const ProductsContainer = ({ data }) => {
 
       {/* Products list */}
       <div className="flex-1">
+        {/* Sort dropdown */}
+        <div className="flex justify-end mb-4">
+          <SortDropdown products={products} setProducts={setProducts} />
+        </div>
         <ProductsLists data={products} info={data?.otherInfo}/>
       </div>
     </div>
