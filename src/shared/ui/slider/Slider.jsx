@@ -28,8 +28,6 @@ const Slider = ({ productId, variantId }) => {
 
       setImages(filteredImages);
       setLength(filteredImages.length);
-
-      console.log(images, data, filteredImages);
     }
 
     getImages();

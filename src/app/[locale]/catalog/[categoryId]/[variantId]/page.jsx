@@ -46,7 +46,7 @@ export async function generateMetadata({ params }) {
 
 const page = async ({ params }) => {
   const t = await getTranslations("productDetails");
-  const { variantId } = params;
+  const { variantId, categoryId } = params;
   const user = await getServerSession(authParams).then((res) => res?.user);
   const userId = user ? user.id : null;
 
@@ -55,11 +55,15 @@ const page = async ({ params }) => {
   const data = userId ? MainData.variant : MainData;
   const metaData = userId ? MainData.meta : null;
 
+  const productId = data?.products?.id;
+  const categoryIdFromProduct = data?.products?.categories?.id;
+  const fallbackCategoryId = categoryIdFromProduct || Number(categoryId);
+
   return (
     <main className="md:px-4 h-full text-text w-full overflow-hidden p-5 md:p-20 flex flex-col">
       <div className="w-full flex-col flex center pb-28 md:px-20 md:flex-row md:gap-10 gap-5">
         <Suspense fallback={<Miniloader />}>
-          <Slider productId={data?.products?.id} variantId={variantId} />
+          <Slider productId={productId} variantId={variantId} />
         </Suspense>
         <Suspense
           fallback={
@@ -70,24 +74,24 @@ const page = async ({ params }) => {
         </Suspense>
       </div>
       <Suspense fallback={<Miniloader />}>
-        <ProductSpecs productId={data?.products.id} />
+        <ProductSpecs productId={productId} />
       </Suspense>
       <Suspense fallback={<Miniloader />}>
         <div className="py-10 px-5 md:py-20 md:px-40">
           <h2 className="text-2xl font-semibold mb-6">{t("relatedProducts")}</h2>
           <RelatedProducts
-            id={data?.products?.id}
-            category={data?.products?.categories?.id}
+            id={variantId}
+            category={fallbackCategoryId}
           />
         </div>
       </Suspense>
       <Suspense fallback={<Miniloader />}>
         <div className="rounded-3xl bg-surface shadow-2xl p-4 my-5 border border-border">
           <div>
-            <ProductRatingStats productId={data.products.id} />
+            <ProductRatingStats productId={productId} />
           </div>
           <div>
-            <MainCommentComponent productID={data?.products?.id} />
+            <MainCommentComponent productID={productId} />
           </div>
         </div>
       </Suspense>

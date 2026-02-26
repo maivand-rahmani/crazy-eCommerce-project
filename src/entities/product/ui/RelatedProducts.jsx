@@ -1,7 +1,7 @@
 import ProductCard from "@/entities/product/ProductCard/ProductCard";
+import Fetch from "@/shared/lib/fetch";
 
 const RelatedProducts = async ({ id, category }) => {
-  // Validate props
   if (!id || !category) {
     return null;
   }
@@ -10,29 +10,15 @@ const RelatedProducts = async ({ id, category }) => {
   let otherInfo = null;
 
   try {
-    // Fetch related products from API using optimized product_cards table
-    const res = await fetch(
-      `${process.env.API_URL}/api/products/related?id=${id}&category=${category}&limit=4`,
-      {
-        next: { revalidate: 60 }, // Cache for 60 seconds
-      }
-    );
+    const result = await Fetch(`/api/products/related?id=${id}&category=${category}&limit=4`);
 
-    if (!res.ok) {
-      throw new Error(`API error: ${res.status}`);
+    if (!result || result.error) {
+      throw new Error(result?.error || "Failed to fetch related products");
     }
 
-    const result = await res.json();
-    
-    // Handle API error response
-    if (result.error) {
-      throw new Error(result.error);
-    }
-    
     data = result;
 
-    // Try to get wishlist info - the API will handle auth check internally
-    const wishlistRes = await fetch(`${process.env.API_URL}/api/wishlist`, {
+    const wishlistRes = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/wishlist`, {
       cache: "no-store",
     });
     
@@ -47,7 +33,6 @@ const RelatedProducts = async ({ id, category }) => {
     }
   } catch (err) {
     console.error('Error loading related products:', err);
-    // Fail silently - don't break the page
     return null;
   }
 
@@ -55,7 +40,6 @@ const RelatedProducts = async ({ id, category }) => {
     return null;
   }
 
-  // Transform data for ProductCard - now simpler since using product_cards
   const transformedData = data.map(product => ({
     variant_id: product.variant_id,
     product_id: product.product_id,

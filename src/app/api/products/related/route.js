@@ -1,44 +1,70 @@
 import prisma from "../../../../../prisma/client";
+import { NextResponse } from "next/server"; 
+import { toSafeJson } from "../../../../../prisma/funcs";
 
 export async function GET(req) {
   const searchParams = req.nextUrl.searchParams;
   const id = searchParams.get("id");
   const category = searchParams.get("category");
-  const limit = searchParams.get("limit");
+  const limit = parseInt(searchParams.get("limit")) || 8;
 
-  // Validate required parameters
+  if (!id || !category) {
+    return NextResponse.json([], { 
+      status: 200,
+      headers: { "Content-Type": "application/json", "Access-Control-Allow-Origin": "*" }
+    });
+  }
+
   const categoryId = Number(category);
   const currentVariantId = Number(id);
 
-  if (!id || !category) {
-    return new Response(
-      JSON.stringify({ error: "Missing required parameters: id and category" }),
-      { status: 400, headers: { "Content-Type": "application/json" } }
-    );
-  }
-
   if (isNaN(categoryId) || isNaN(currentVariantId)) {
-    return new Response(
-      JSON.stringify({ error: "Invalid id or category: must be valid numbers" }),
-      { status: 400, headers: { "Content-Type": "application/json" } }
-    );
+    return NextResponse.json([], { 
+      status: 200,
+      headers: { "Content-Type": "application/json", "Access-Control-Allow-Origin": "*" }
+    });
   }
 
   try {
-    // Use product_cards table - much faster than joining multiple tables
-    const relatedProducts = await prisma.product_cards.findMany({
-      where: {
-        category_id: categoryId,
-        variant_id: { not: currentVariantId },
-        stock_quantity: { gt: 0 }, // Only show products in stock
-      },
-      take: limit ? Number(limit) : 4,
-      orderBy: {
-        updated_at: 'desc', // Show most recently updated first
-      },
+    const currentProduct = await prisma.product_cards.findUnique({
+      where: { variant_id: currentVariantId },
+      select: { 
+        product_id: true, 
+        price_cents: true,
+        category_id: true,
+      }
     });
 
-    // Transform to match expected format for ProductCard component
+    if (!currentProduct) {
+      return NextResponse.json([], { 
+        status: 200,
+        headers: { "Content-Type": "application/json", "Access-Control-Allow-Origin": "*" }
+      });
+    }
+
+    const priceMin = Math.floor(currentProduct.price_cents * 0.7);
+    const priceMax = Math.floor(currentProduct.price_cents * 1.3);
+
+    const relatedProducts = await prisma.$queryRaw`
+      WITH ranked_products AS (
+        SELECT 
+          pc.*,
+          CASE 
+            WHEN pc.product_id = ${currentProduct.product_id} THEN 1
+            WHEN pc.category_id = ${categoryId} AND pc.price_cents BETWEEN ${priceMin} AND ${priceMax} THEN 2
+            WHEN pc.category_id = ${categoryId} THEN 3
+            ELSE 4
+          END as relevance_score
+        FROM product_cards pc
+        WHERE pc.variant_id != ${currentVariantId}
+          AND pc.stock_quantity > 0
+      )
+      SELECT *
+      FROM ranked_products
+      ORDER BY relevance_score, updated_at DESC
+      LIMIT ${limit}
+    `;
+
     const transformedData = relatedProducts.map(card => ({
       variant_id: card.variant_id,
       product_id: card.product_id,
@@ -51,17 +77,32 @@ export async function GET(req) {
       specs: card.specs,
     }));
 
-    return new Response(JSON.stringify(transformedData), {
+    return NextResponse.json(toSafeJson(transformedData), { 
       status: 200,
-      headers: { 
-        "Content-Type": " "Cache-Control": "public, s-maxage=60, stale-while-revalidate=300",
-      },
+      headers: { "Content-Type": "application/json", "Access-Control-Allow-Origin": "*" }
     });
   } catch (error) {
-    console.error("❌ Failed to fetch related products:", error);
-    return new Response(
-      JSON.stringify({ error: "Failed to fetch related products", details: error.message }),
-      { status: 500, headers: { "Content-Type": "application/json" } }
-    );
+    console.error("Failed to fetch related products:", error);
+    
+    try {
+      const fallback = await prisma.product_cards.findMany({
+        where: {
+          variant_id: { not: currentVariantId },
+          stock_quantity: { gt: 0 },
+        },
+        take: limit,
+        orderBy: { updated_at: 'desc' },
+      });
+      
+      return NextResponse.json(toSafeJson(fallback), { 
+        status: 200,
+        headers: { "Content-Type": "application/json", "Access-Control-Allow-Origin": "*" }
+      });
+    } catch (fallbackError) {
+      return NextResponse.json([], { 
+        status: 200,
+        headers: { "Content-Type": "application/json", "Access-Control-Allow-Origin": "*" }
+      });
+    }
   }
 }

@@ -21,18 +21,16 @@ export async function GET(req, { params }) {
         price_cents: true,
         stock_quantity: true,
         variant_options: { select: { key: true, value: true } },
-        products: {
+          products: {
           select: {
             id: true,
             name: true,
             description: true,
-            product_variants: {
+            categories: {
               select: {
                 id: true,
-                variant_name: true,
-                variant_options: { select: { key: true, value: true } },
-              },
-            },
+              }
+            }
           },
         },
       },
