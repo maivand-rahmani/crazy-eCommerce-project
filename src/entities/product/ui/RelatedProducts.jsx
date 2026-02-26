@@ -1,56 +1,64 @@
 import React from 'react'
 import ProductCard from "@/entities/product/ProductCard/ProductCard";
 import { getTranslations } from "next-intl/server";
+import Fetch from "@/shared/lib/fetch";
 
 const RelatedProducts = async ({ id, category }) => {
   const t = await getTranslations("common");
+  
+  // Validate props
+  if (!id || !category) {
+    return null;
+  }
+
   let data = null;
   let otherInfo = null;
   let error = null;
 
   try {
     // Fetch related products from API
-    const res = await fetch(`${process.env.API_URL}/api/products/related?id=${id}&category=${category}&limit=4&vlimit=1`, {
+    const res = await fetch(
+      `${process.env.API_URL}/api/products/related?id=${id}&category=${category}&limit=4&vlimit=1`,
+      {
+        cache: "no-store",
+      }
+    );
+
+    if (!res.ok) {
+      throw new Error(`API error: ${res.status}`);
+    }
+
+    const result = await res.json();
+    
+    // Handle API error response
+    if (result.error) {
+      throw new Error(result.error);
+    }
+    
+    data = result;
+
+    // Try to get wishlist info - the API will handle auth check internally
+    const wishlistRes = await fetch(`${process.env.API_URL}/api/wishlist`, {
       cache: "no-store",
     });
     
-    // Check HTTP status before parsing JSON
-    if (!res.ok) {
-      throw new Error(`Failed to fetch related products: ${res.status}`);
-    }
-    data = await res.json();
-
-    // Try to get wishlist info - the API will handle auth check internally
-    try {
-      const wishlistRes = await fetch(`${process.env.API_URL}/api/wishlist`, {
-        cache: "no-store",
-      });
+    if (wishlistRes.ok) {
+      const wishlistData = await wishlistRes.json();
       
-      // Check HTTP status for wishlist API
-      if (wishlistRes.ok) {
-        const wishlistData = await wishlistRes.json();
-        if (wishlistData?.wishlist) {
-          otherInfo = {
-            isInWishlist: wishlistData.wishlist.map(item => item.variant_id) || []
-          };
-        }
+      if (wishlistData?.wishlist) {
+        otherInfo = {
+          isInWishlist: wishlistData.wishlist.map(item => item.variant_id) || []
+        };
       }
-      // Silently fail for wishlist - not critical, user can still see products
-    } catch (wishlistErr) {
-      // Wishlist is non-critical, continue without it
-      console.warn('Failed to load wishlist:', wishlistErr);
     }
   } catch (err) {
     console.error('Error loading related products:', err);
     error = err.message;
+    // Don't show section if there's an error - fail silently
+    return null;
   }
 
-  // Show error state to user if fetch failed
-  if (error) {
-    return null; // Silently hide section on error to not disrupt UX
-  }
-
-  if (!data || data.length === 0) {
+  if (!data || !Array.isArray(data) || data.length === 0) {
     return null; // Don't show section if no related products
   }
 
@@ -72,6 +80,10 @@ const RelatedProducts = async ({ id, category }) => {
       isFavorite: otherInfo?.isInWishlist?.includes(variant.id) || false
     }];
   });
+
+  if (transformedData.length === 0) {
+    return null;
+  }
 
   return (
     <div className="grid grid-cols-2 md:grid-cols-4 gap-4 lg:gap-6">
