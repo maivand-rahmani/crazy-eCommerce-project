@@ -1,33 +1,53 @@
 import React from 'react'
 import ProductCard from "@/entities/product/ProductCard/ProductCard";
 import { getTranslations } from "next-intl/server";
-import Fetch from "@/shared/lib/fetch";
 
 const RelatedProducts = async ({ id, category }) => {
   const t = await getTranslations("common");
-  let data;
+  let data = null;
   let otherInfo = null;
+  let error = null;
 
   try {
     // Fetch related products from API
     const res = await fetch(`${process.env.API_URL}/api/products/related?id=${id}&category=${category}&limit=4&vlimit=1`, {
       cache: "no-store",
     });
+    
+    // Check HTTP status before parsing JSON
+    if (!res.ok) {
+      throw new Error(`Failed to fetch related products: ${res.status}`);
+    }
     data = await res.json();
 
     // Try to get wishlist info - the API will handle auth check internally
-    const wishlistRes = await fetch(`${process.env.API_URL}/api/wishlist`, {
-      cache: "no-store",
-    });
-    const wishlistData = await wishlistRes.json();
-    
-    if (wishlistData?.wishlist) {
-      otherInfo = {
-        isInWishlist: wishlistData.wishlist.map(item => item.variant_id) || []
-      };
+    try {
+      const wishlistRes = await fetch(`${process.env.API_URL}/api/wishlist`, {
+        cache: "no-store",
+      });
+      
+      // Check HTTP status for wishlist API
+      if (wishlistRes.ok) {
+        const wishlistData = await wishlistRes.json();
+        if (wishlistData?.wishlist) {
+          otherInfo = {
+            isInWishlist: wishlistData.wishlist.map(item => item.variant_id) || []
+          };
+        }
+      }
+      // Silently fail for wishlist - not critical, user can still see products
+    } catch (wishlistErr) {
+      // Wishlist is non-critical, continue without it
+      console.warn('Failed to load wishlist:', wishlistErr);
     }
   } catch (err) {
-    console.log(err);
+    console.error('Error loading related products:', err);
+    error = err.message;
+  }
+
+  // Show error state to user if fetch failed
+  if (error) {
+    return null; // Silently hide section on error to not disrupt UX
   }
 
   if (!data || data.length === 0) {
