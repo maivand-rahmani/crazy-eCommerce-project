@@ -2,6 +2,10 @@ import { NextResponse } from 'next/server';
 import prisma from '../../../../prisma/client';
 import { toSafeJson } from '../../../../prisma/funcs';
 
+// Allowed sort values for validation
+const ALLOWED_SORT_BY = ['relevance', 'price_asc', 'price_desc', 'name_asc', 'name_desc', 'rating', 'created_at'];
+const ALLOWED_SORT_ORDER = ['asc', 'desc'];
+
 export async function GET(request) {
   try {
     const { searchParams } = new URL(request.url);
@@ -15,9 +19,17 @@ export async function GET(request) {
     const maxPrice = searchParams.get('maxPrice');
     const minRating = searchParams.get('minRating');
     
-    // Sorting
-    const sortBy = searchParams.get('sortBy') || 'relevance'; // relevance, price_asc, price_desc, name_asc, name_desc, rating, created_at
-    const sortOrder = searchParams.get('sortOrder') || 'desc';
+    // Sorting - with validation against allowed values
+    let sortBy = searchParams.get('sortBy') || 'relevance';
+    let sortOrder = searchParams.get('sortOrder') || 'desc';
+    
+    // Validate sortBy and sortOrder
+    if (!ALLOWED_SORT_BY.includes(sortBy)) {
+      sortBy = 'relevance'; // Default to relevance if invalid
+    }
+    if (!ALLOWED_SORT_ORDER.includes(sortOrder)) {
+      sortOrder = 'desc';
+    }
     
     // Pagination - with input validation
     const page = Math.max(1, parseInt(searchParams.get('page') || '1'));
@@ -31,6 +43,15 @@ export async function GET(request) {
       return NextResponse.json({ error: 'minPrice cannot be greater than maxPrice' }, { status: 400 });
     }
 
+    // Validate category if provided
+    let categoryCondition = {};
+    if (category) {
+      const categoryNum = parseInt(category);
+      if (!isNaN(categoryNum) && categoryNum > 0) {
+        categoryCondition = { category_id: categoryNum };
+      }
+    }
+
     // Build search condition
     const searchCondition = search ? {
       OR: [
@@ -39,17 +60,22 @@ export async function GET(request) {
       ],
     } : {};
 
-    // Build category filter
-    const categoryCondition = category ? { category_id: parseInt(category) } : {};
+    // Build base where clause
+    const baseWhere = {
+      AND: [
+        searchCondition,
+        categoryCondition,
+      ],
+    };
 
-    // Get products matching search criteria
+    // Get total count for pagination
+    const totalProductsCount = await prisma.products.count({
+      where: baseWhere,
+    });
+
+    // Get products matching search criteria with DB-level sorting where possible
     const products = await prisma.products.findMany({
-      where: {
-        AND: [
-          searchCondition,
-          categoryCondition,
-        ],
-      },
+      where: baseWhere,
       include: {
         categories: true,
         product_variants: {
@@ -68,29 +94,30 @@ export async function GET(request) {
           select: { rating: true },
         },
       },
-      // Apply sorting at DB level for supported fields
+      // Apply sorting at DB level
       orderBy: sortBy === 'name_asc' ? { name: 'asc' } :
                sortBy === 'name_desc' ? { name: 'desc' } :
                sortBy === 'created_at' ? { created_at: sortOrder } :
-               { created_at: 'desc' }, // Default to relevance (created_at desc)
+               { created_at: 'desc' }, // Default to relevance
       skip,
       take: limit,
     });
 
-    // If minRating filter is set, filter by average rating (post-DB filter)
+    // Apply rating filter
     let filteredProducts = products;
-    let totalCount = products.length;
+    let filteredTotal = totalProductsCount;
     
     if (minRating) {
       const minRatingNum = parseFloat(minRating);
-      filteredProducts = products.filter(product => {
-        if (product.reviews.length === 0) return false;
-        const avgRating = product.reviews.reduce((sum, r) => sum + r.rating, 0) / product.reviews.length;
-        return avgRating >= minRatingNum;
-      });
-      // Note: For accurate count with rating filter, a raw query would be needed
-      // This is an approximation
-      totalCount = filteredProducts.length;
+      if (!isNaN(minRatingNum) && minRatingNum >= 0 && minRatingNum <= 5) {
+        // Filter in memory (more reliable than complex raw query)
+        filteredProducts = products.filter(product => {
+          if (product.reviews.length === 0) return false;
+          const avgRating = product.reviews.reduce((sum, r) => sum + r.rating, 0) / product.reviews.length;
+          return avgRating >= minRatingNum;
+        });
+        filteredTotal = filteredProducts.length;
+      }
     }
 
     // Transform products to include computed fields
@@ -142,20 +169,13 @@ export async function GET(request) {
       sortedProducts.sort((a, b) => b.product_name.localeCompare(a.product_name));
     }
 
-    // Get total count for pagination (without rating filter for accuracy)
-    const totalProductsCount = await prisma.products.count({
-      where: {
-        AND: [searchCondition, categoryCondition],
-      },
-    });
-
     return NextResponse.json({
       data: toSafeJson(sortedProducts),
       pagination: {
         page,
         limit,
-        total: minRating ? totalProductsCount : totalProductsCount, // Note: rating filter affects actual count
-        totalPages: Math.ceil(totalProductsCount / limit),
+        total: minRating ? filteredTotal : totalProductsCount,
+        totalPages: Math.ceil((minRating ? filteredTotal : totalProductsCount) / limit),
       },
       search: {
         query: search,

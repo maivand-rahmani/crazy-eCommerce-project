@@ -5,7 +5,7 @@ import { useGuestCart } from './useGuestCart';
 import { useAuth } from '@clerk/nextjs';
 
 export function useCartWithGuest() {
-  const { isLoaded: authLoaded, isSignedIn, userId } = useAuth();
+  const { isLoaded: authLoaded, isSignedIn } = useAuth();
   const guestCart = useGuestCart();
   const [serverCart, setServerCart] = useState([]);
   const [isMerging, setIsMerging] = useState(false);
@@ -48,19 +48,30 @@ export function useCartWithGuest() {
     const guestItems = guestCart.exportCart();
 
     try {
-      // Add each guest item to server cart
-      for (const item of guestItems) {
-        await fetch('/api/cart', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({
-            variantId: item.variantId,
-            quantity: item.quantity,
-          }),
-        });
+      // Add each guest item to server cart using Promise.allSettled for better error handling
+      const results = await Promise.allSettled(
+        guestItems.map(item => 
+          fetch('/api/cart', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              variantId: item.variantId,
+              quantity: item.quantity,
+              // NOTE: Price should NEVER be sent from client
+              // Server fetches current price from database to prevent price manipulation
+            }),
+          })
+        )
+      );
+
+      // Check for failures
+      const failures = results.filter(r => r.status === 'rejected' || !r.value.ok);
+      if (failures.length > 0) {
+        console.warn(`${failures.length} items failed to merge`);
+        // Continue anyway - items that succeeded will be merged
       }
 
-      // Clear guest cart after successful merge
+      // Clear guest cart after merge attempt
       guestCart.clearCart();
       setShowMergePrompt(false);
       

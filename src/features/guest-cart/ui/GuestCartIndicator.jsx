@@ -1,22 +1,30 @@
 "use client";
 
-import React from 'react';
-import { ShoppingCart, AlertCircle, Check, X } from 'lucide-react';
+import React, { useState } from 'react';
+import { ShoppingCart, AlertCircle, Check, X, Loader2 } from 'lucide-react';
 import { useGuestCart } from '../model/useGuestCart';
 
-export function GuestCartIndicator({ onMerge, isLoggedIn = false }) {
+export function GuestCartIndicator({ onMerge, isLoggedIn = false, isMerging = false }) {
   const { items, isEmpty, itemCount, exportCart } = useGuestCart();
+  const [isProcessing, setIsProcessing] = useState(false);
 
   // Don't show if logged in or cart is empty
   if (isLoggedIn || isEmpty) {
     return null;
   }
 
-  const handleMerge = () => {
-    if (onMerge) {
-      onMerge(exportCart());
+  const handleMerge = async () => {
+    if (onMerge && !isProcessing && !isMerging) {
+      setIsProcessing(true);
+      try {
+        await onMerge(exportCart());
+      } finally {
+        setIsProcessing(false);
+      }
     }
   };
+
+  const isWorking = isProcessing || isMerging;
 
   return (
     <div className="fixed bottom-4 left-4 z-50 max-w-sm">
@@ -57,10 +65,20 @@ export function GuestCartIndicator({ onMerge, isLoggedIn = false }) {
               <div className="mt-3 flex gap-2">
                 <button
                   onClick={handleMerge}
-                  className="flex-1 flex items-center justify-center gap-1 px-3 py-2 bg-amber-500 text-white text-sm font-medium rounded-lg hover:bg-amber-600 transition-colors"
+                  disabled={isWorking}
+                  className="flex-1 flex items-center justify-center gap-1 px-3 py-2 bg-amber-500 text-white text-sm font-medium rounded-lg hover:bg-amber-600 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
                 >
-                  <Check size={16} />
-                  Save to Account
+                  {isWorking ? (
+                    <>
+                      <Loader2 size={16} className="animate-spin" />
+                      Saving...
+                    </>
+                  ) : (
+                    <>
+                      <Check size={16} />
+                      Save to Account
+                    </>
+                  )}
                 </button>
               </div>
             </div>

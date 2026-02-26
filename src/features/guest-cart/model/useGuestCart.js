@@ -1,13 +1,61 @@
 'use client';
 
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect, useCallback, useRef } from 'react';
 
 const CART_STORAGE_KEY = 'guest_cart';
 const MAX_ITEMS = 50;
+const CART_EXPIRY_DAYS = 30;
+
+// Schema validation for cart items
+const cartItemSchema = {
+  variantId: (v) => v && (typeof v === 'string' || typeof v === 'number'),
+  productId: (v) => v && (typeof v === 'string' || typeof v === 'number'),
+  name: (v) => typeof v === 'string',
+  imageUrl: (v) => v === undefined || typeof v === 'string',
+  priceCents: (v) => typeof v === 'number' && v >= 0,
+  quantity: (v) => typeof v === 'number' && v >= 1,
+  addedAt: (v) => typeof v === 'number',
+};
+
+const isValidCartItem = (item) => {
+  return (
+    item &&
+    cartItemSchema.variantId(item.variantId) &&
+    cartItemSchema.productId(item.productId) &&
+    cartItemSchema.name(item.name) &&
+    cartItemSchema.priceCents(item.priceCents) &&
+    cartItemSchema.quantity(item.quantity)
+  );
+};
+
+// Debounce helper
+const useDebouncedCallback = (callback, delay) => {
+  const timeoutRef = useRef(null);
+  
+  const debouncedCallback = useCallback((...args) => {
+    if (timeoutRef.current) {
+      clearTimeout(timeoutRef.current);
+    }
+    timeoutRef.current = setTimeout(() => {
+      callback(...args);
+    }, delay);
+  }, [callback, delay]);
+
+  useEffect(() => {
+    return () => {
+      if (timeoutRef.current) {
+        clearTimeout(timeoutRef.current);
+      }
+    };
+  }, []);
+
+  return debouncedCallback;
+};
 
 export function useGuestCart() {
   const [items, setItems] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState(null);
 
   // Load cart from localStorage on mount
   useEffect(() => {
@@ -24,14 +72,25 @@ export function useGuestCart() {
     }
   }, []);
 
-  // Save to localStorage whenever items change
+  // Save to localStorage whenever items change (debounced for performance)
   const saveToStorage = useCallback((newItems) => {
     try {
       localStorage.setItem(CART_STORAGE_KEY, JSON.stringify(newItems));
+      setError(null); // Clear any previous errors
     } catch (error) {
       console.error('Failed to save guest cart:', error);
+      if (error.name === 'QuotaExceededError') {
+        setError('Cart is full. Please remove some items.');
+      } else if (error.name === 'SecurityError') {
+        setError('Cannot save cart in private browsing mode.');
+      } else {
+        setError('Failed to save cart.');
+      }
     }
   }, []);
+
+  // Debounced version for rapid updates
+  const debouncedSaveToStorage = useDebouncedCallback(saveToStorage, 300);
 
   // Add item to cart
   const addItem = useCallback((product) => {
@@ -65,12 +124,22 @@ export function useGuestCart() {
         ];
       }
 
-      // Limit max items
-      newItems = newItems.slice(0, MAX_ITEMS);
-      saveToStorage(newItems);
+      // Calculate total quantity instead of just item count
+      const totalQuantity = newItems.reduce((sum, item) => sum + item.quantity, 0);
+      
+      // If adding would exceed max items, remove oldest items
+      if (newItems.length > MAX_ITEMS || totalQuantity > MAX_ITEMS * 10) {
+        // Sort by addedAt and keep the most recent items up to MAX_ITEMS
+        newItems = newItems
+          .sort((a, b) => b.addedAt - a.addedAt)
+          .slice(0, MAX_ITEMS);
+      }
+      
+      // Use debounced save for rapid updates
+      debouncedSaveToStorage(newItems);
       return newItems;
     });
-  }, [saveToStorage]);
+  }, [debouncedSaveToStorage]);
 
   // Update item quantity
   const updateQuantity = useCallback((variantId, quantity) => {
@@ -128,11 +197,20 @@ export function useGuestCart() {
       return;
     }
 
+    const now = Date.now();
+    const expiryMs = CART_EXPIRY_DAYS * 24 * 60 * 60 * 1000;
+
     setItems(prev => {
-      // Merge server items with local items
+      // Merge server items with local items, validating each item
       const merged = [...prev];
       
       serverItems.forEach(serverItem => {
+        // Validate item has required fields
+        if (!isValidCartItem(serverItem)) {
+          console.warn('Skipping invalid cart item:', serverItem);
+          return;
+        }
+
         const existingIndex = merged.findIndex(
           item => item.variantId === serverItem.variantId?.toString()
         );
@@ -150,14 +228,19 @@ export function useGuestCart() {
             productId: serverItem.productId?.toString(),
             name: serverItem.productName || serverItem.name,
             imageUrl: serverItem.imageUrl,
-            priceCents: serverItem.priceCents || serverItem.price,
+            priceCents: serverItem.priceCents || serverItem.price || 0,
             quantity: serverItem.quantity || 1,
-            addedAt: Date.now(),
+            addedAt: serverItem.addedAt || now, // Preserve original timestamp or set new
           });
         }
       });
 
-      const newItems = merged.slice(0, MAX_ITEMS);
+      // Filter out expired items
+      const validItems = merged.filter(item => 
+        !item.addedAt || (now - item.addedAt < expiryMs)
+      );
+
+      const newItems = validItems.slice(0, MAX_ITEMS);
       saveToStorage(newItems);
       return newItems;
     });
@@ -177,6 +260,7 @@ export function useGuestCart() {
     isEmpty: items.length === 0,
     itemCount: getItemCount(),
     totalCents: getTotal(),
+    error, // Expose error state for UI feedback
     addItem,
     updateQuantity,
     removeItem,
