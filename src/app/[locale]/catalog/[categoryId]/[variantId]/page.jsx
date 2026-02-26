@@ -72,15 +72,15 @@ const page = async ({ params }) => {
       <Suspense fallback={<Miniloader />}>
         <ProductSpecs productId={data?.products.id} />
       </Suspense>
-      {/* <Suspense fallback={<Miniloader />}>
+      <Suspense fallback={<Miniloader />}>
         <div className="py-10 px-5 md:py-20 md:px-40">
-          <h2 className="text-2xl font-semibold mb-6">{t("productDetails.relatedProducts")}</h2>
+          <h2 className="text-2xl font-semibold mb-6">{t("relatedProducts")}</h2>
           <RelatedProducts
             id={data?.products?.id}
             category={data?.products?.categories?.id}
           />
         </div>
-      </Suspense> */}
+      </Suspense>
       <Suspense fallback={<Miniloader />}>
         <div className="rounded-3xl bg-surface shadow-2xl p-4 my-5 border border-border">
           <div>
