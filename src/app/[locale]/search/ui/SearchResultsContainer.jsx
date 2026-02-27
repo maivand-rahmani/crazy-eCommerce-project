@@ -29,6 +29,9 @@ const SearchResultsContainer = ({ query: initialQuery, initialData, locale = "en
   // Use ref to avoid stale closure issues
   const filterRef = useRef({ sortBy, minPrice: "", maxPrice: "", selectedCategory: "" });
   filterRef.current = { sortBy, minPrice, maxPrice, selectedCategory };
+  
+  // Track initial render to avoid unnecessary filter fetches
+  const isInitialMount = useRef(true);
 
   // Fetch search results - fixed stale closure
   const fetchResults = useCallback(async (searchQuery, page = 1) => {
@@ -85,6 +88,20 @@ const SearchResultsContainer = ({ query: initialQuery, initialData, locale = "en
 
     return () => clearTimeout(timeoutId);
   }, [query, fetchResults, initialQuery, initialData]);
+
+  // React immediately when filters change (while keeping query)
+  useEffect(() => {
+    // Skip initial mount - filters will be applied with initial query if needed
+    if (isInitialMount.current) {
+      isInitialMount.current = false;
+      return;
+    }
+    
+    // Only fetch when there's an active query
+    if (query?.trim()) {
+      fetchResults(query, 1);
+    }
+  }, [sortBy, minPrice, maxPrice, selectedCategory, fetchResults, query]);
 
   // Handle search submission
   const handleSearchSubmit = (e) => {
