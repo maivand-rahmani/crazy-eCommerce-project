@@ -24,6 +24,7 @@ export async function generateMetadata({ params }) {
 const SearchPage = async ({ params }) => {
   const t = await getTranslations("search");
   const resolvedParams = await params;
+  const locale = resolvedParams?.locale || "en";
   
   // In Next.js 15+, searchParams is a promise
   const searchParams = resolvedParams?.searchParams || {};
@@ -35,7 +36,7 @@ const SearchPage = async ({ params }) => {
   if (query) {
     try {
       const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || "http://localhost:3000";
-      const response = await fetch(`${baseUrl}/api/products/search?search=${encodeURIComponent(query)}&limit=20`, {
+      const response = await fetch(`${baseUrl}/${locale}/api/products/search?search=${encodeURIComponent(query)}&limit=20`, {
         cache: "no-store",
       });
       if (response.ok) {
@@ -50,7 +51,8 @@ const SearchPage = async ({ params }) => {
     <div className="min-h-screen">
       <SearchResultsContainer 
         query={query} 
-        initialData={data} 
+        initialData={data}
+        locale={locale}
       />
     </div>
   );

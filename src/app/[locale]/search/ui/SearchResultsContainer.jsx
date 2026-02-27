@@ -1,13 +1,13 @@
 "use client";
 
-import React, { useState, useEffect, useCallback } from "react";
+import React, { useState, useEffect, useCallback, useRef } from "react";
 import { Search, SlidersHorizontal, X, ChevronLeft, ChevronRight } from "lucide-react";
 import ProductCard from "@/entities/product/ProductCard/ProductCard";
 import { useRouter, usePathname } from "@/shared/i18n/model/routing";
 import { useSearchParams } from "next/navigation";
 import { useTranslations } from "next-intl";
 
-const SearchResultsContainer = ({ query: initialQuery, initialData }) => {
+const SearchResultsContainer = ({ query: initialQuery, initialData, locale = "en" }) => {
   const t = useTranslations("search");
   const router = useRouter();
   const searchParams = useSearchParams();
@@ -15,6 +15,7 @@ const SearchResultsContainer = ({ query: initialQuery, initialData }) => {
   const [query, setQuery] = useState(initialQuery || searchParams.get("q") || "");
   const [results, setResults] = useState(initialData?.data || []);
   const [isLoading, setIsLoading] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const [error, setError] = useState(null);
   const [pagination, setPagination] = useState(initialData?.pagination || { page: 1, limit: 20, total: 0, totalPages: 0 });
   const [sortBy, setSortBy] = useState("relevance");
@@ -25,9 +26,13 @@ const SearchResultsContainer = ({ query: initialQuery, initialData }) => {
   const [maxPrice, setMaxPrice] = useState("");
   const [selectedCategory, setSelectedCategory] = useState("");
 
-  // Fetch search results
-  const fetchResults = useCallback(async (searchQuery, page = 1, sort = sortBy, minP, maxP, category) => {
-    if (!searchQuery.trim()) {
+  // Use ref to avoid stale closure issues
+  const filterRef = useRef({ sortBy, minPrice: "", maxPrice: "", selectedCategory: "" });
+  filterRef.current = { sortBy, minPrice, maxPrice, selectedCategory };
+
+  // Fetch search results - fixed stale closure
+  const fetchResults = useCallback(async (searchQuery, page = 1) => {
+    if (!searchQuery?.trim()) {
       setResults([]);
       return;
     }
@@ -36,11 +41,13 @@ const SearchResultsContainer = ({ query: initialQuery, initialData }) => {
     setError(null);
 
     try {
+      const { sortBy: currentSort, minPrice: minP, maxPrice: maxP, selectedCategory: category } = filterRef.current;
+      
       const params = new URLSearchParams();
       params.set("search", searchQuery);
       params.set("page", page.toString());
       params.set("limit", "20");
-      params.set("sortBy", sort);
+      params.set("sortBy", currentSort);
       
       if (minP) params.set("minPrice", minP);
       if (maxP) params.set("maxPrice", maxP);
@@ -63,34 +70,40 @@ const SearchResultsContainer = ({ query: initialQuery, initialData }) => {
     } finally {
       setIsLoading(false);
     }
-  }, [sortBy]);
+  }, []);
 
   // Debounced search on query change
   useEffect(() => {
+    // Skip initial fetch if we already have server-side data and query hasn't changed
+    if (initialQuery === query && initialData?.data?.length > 0) {
+      return;
+    }
+    
     const timeoutId = setTimeout(() => {
-      fetchResults(query, 1, sortBy, minPrice, maxPrice, selectedCategory);
+      fetchResults(query, 1);
     }, 300);
 
     return () => clearTimeout(timeoutId);
-  }, [query, sortBy, minPrice, maxPrice, selectedCategory, fetchResults]);
+  }, [query, fetchResults, initialQuery, initialData]);
 
   // Handle search submission
   const handleSearchSubmit = (e) => {
     e.preventDefault();
-    // Update URL
+    setIsSubmitting(true);
+    // Update URL with locale prefix
     const params = new URLSearchParams(searchParams.toString());
     if (query) {
       params.set("q", query);
     } else {
       params.delete("q");
     }
-    router.push(`/search?${params.toString()}`);
+    router.push(`/${locale}/search?${params.toString()}`).finally(() => setIsSubmitting(false));
   };
 
   // Handle pagination
   const handlePageChange = (newPage) => {
     if (newPage >= 1 && newPage <= pagination.totalPages) {
-      fetchResults(query, newPage, sortBy, minPrice, maxPrice, selectedCategory);
+      fetchResults(query, newPage);
     }
   };
 
@@ -121,6 +134,8 @@ const SearchResultsContainer = ({ query: initialQuery, initialData }) => {
               value={query}
               onChange={(e) => setQuery(e.target.value)}
               placeholder={t("placeholder")}
+              minLength={0}
+              maxLength={200}
               className="w-full pl-12 pr-4 py-3 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent text-lg"
             />
           </div>
@@ -187,19 +202,38 @@ const SearchResultsContainer = ({ query: initialQuery, initialData }) => {
               <div className="flex gap-2">
                 <input
                   type="number"
+                  min="0"
                   value={minPrice}
-                  onChange={(e) => setMinPrice(e.target.value)}
+                  onChange={(e) => {
+                    const val = e.target.value;
+                    // Only allow non-negative numbers
+                    if (val === "" || (parseFloat(val) >= 0 && !isNaN(parseFloat(val)))) {
+                      setMinPrice(val);
+                    }
+                  }}
                   placeholder={t("min")}
                   className="w-full p-2 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
                 />
                 <input
                   type="number"
+                  min="0"
                   value={maxPrice}
-                  onChange={(e) => setMaxPrice(e.target.value)}
+                  onChange={(e) => {
+                    const val = e.target.value;
+                    // Only allow non-negative numbers and validate min < max
+                    if (val === "" || (parseFloat(val) >= 0 && !isNaN(parseFloat(val)))) {
+                      if (!minPrice || parseFloat(val) >= parseFloat(minPrice)) {
+                        setMaxPrice(val);
+                      }
+                    }
+                  }}
                   placeholder={t("max")}
                   className="w-full p-2 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
                 />
               </div>
+              {minPrice && maxPrice && parseFloat(minPrice) > parseFloat(maxPrice) && (
+                <p className="text-xs text-red-500 mt-1">Min must be less than max</p>
+              )}
             </div>
           </div>
         </div>
@@ -214,7 +248,7 @@ const SearchResultsContainer = ({ query: initialQuery, initialData }) => {
             <div className="text-center py-20">
               <p className="text-red-500">{error}</p>
               <button
-                onClick={() => fetchResults(query, 1, sortBy, minPrice, maxPrice, selectedCategory)}
+                onClick={() => fetchResults(query, 1)}
                 className="mt-4 px-4 py-2 bg-button text-button-text rounded-lg"
               >
                 {t("retry")}
