@@ -3,7 +3,7 @@ import prisma from "../../../../../prisma/client";
 import { getToken } from "next-auth/jwt";
 
 
-export async function POST(req, { res }) {
+export async function POST(req) {
   const user = await getToken({ req, secret: process.env.NEXTAUTH_SECRET });
   let orderInfo = {};
   const { order_items, address, status, coupon_id, total_cents , cart_id , order_id } =

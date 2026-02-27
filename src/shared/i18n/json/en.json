@@ -445,6 +445,30 @@
     "relatedProducts": "Related Products"
   },
 
+  "search": {
+    "title": "Search Products",
+    "resultsFor": "Results for \"{query}\"",
+    "placeholder": "Search for products...",
+    "search": "Search",
+    "filters": "Filters",
+    "clear": "Clear",
+    "sortBy": "Sort by",
+    "sortRelevance": "Relevance",
+    "priceLowHigh": "Price: Low to High",
+    "priceHighLow": "Price: High to Low",
+    "nameAZ": "Name: A to Z",
+    "nameZA": "Name: Z to A",
+    "newest": "Newest",
+    "priceRange": "Price Range",
+    "min": "Min",
+    "max": "Max",
+    "noResults": "No products found",
+    "tryDifferent": "Try a different search term or adjust your filters",
+    "enterSearch": "Enter a search term to find products",
+    "showingResults": "Showing {count} of {total} results",
+    "retry": "Try Again"
+  },
+
   "banner": {
     "shopNow": "Shop now"
   },
