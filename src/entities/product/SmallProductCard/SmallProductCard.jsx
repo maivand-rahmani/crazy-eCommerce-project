@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import Counter from "../../../features/add-to-cart/ui/counter";
 import DeleteButton from "../../../features/add-to-cart/ui/deleteButton";
 import { handleCartQuantityChange } from "../../../features/add-to-cart/model/handleCartQuantityChangeOnClient";
+import Image from "next/image";
 
 const SmallProductCard = ({
   productData,
@@ -48,7 +49,7 @@ const SmallProductCard = ({
     <div className="flex gap-5 shadow-xl center border border-border rounded-2xl p-5 w-full bg-surface">
       {accessibility?.image && (
         <div className="flex center w-[90px] flex-shrink-0">
-          <img
+          <Image
             src={productData?.image_url}
             alt={productData?.variant_name}
             width={90}
