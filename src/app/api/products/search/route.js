@@ -79,7 +79,6 @@ export async function GET(request) {
 
     // If minRating filter is set, filter by average rating (post-DB filter)
     let filteredProducts = products;
-    let totalCount = products.length;
     
     // if (minRating) {
     //   const minRatingNum = parseFloat(minRating);
