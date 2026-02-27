@@ -31,7 +31,7 @@ const ProductCard = ({ data, otherInfo }) => {
 
       {/* Image */}
       <div className="flex items-center justify-center w-full max-h-[220px] overflow-clip">
-        <img
+        <Image
           src={data.image_url || "/placeholder.png"}
           alt={data.variant_name}
           width={220}
