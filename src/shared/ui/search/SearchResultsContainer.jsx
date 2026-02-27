@@ -145,7 +145,7 @@ const SearchResultsContainer = ({ query: initialQuery, initialData, locale = "en
         {/* Search Input */}
         <form onSubmit={handleSearchSubmit} className="flex gap-3">
           <div className="relative flex-1 max-w-2xl">
-            <Search className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400" size={20} />
+            <Search className="absolute left-4 top-1/2 -translate-y-1/2 text-muted" size={20} />
             <input
               type="text"
               value={query}
@@ -153,7 +153,7 @@ const SearchResultsContainer = ({ query: initialQuery, initialData, locale = "en
               placeholder={t("placeholder")}
               minLength={0}
               maxLength={200}
-              className="w-full pl-12 pr-4 py-3 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent text-lg"
+              className="inputStyle pl-12 pr-4 py-3 text-lg"
             />
           </div>
           <button
@@ -172,7 +172,7 @@ const SearchResultsContainer = ({ query: initialQuery, initialData, locale = "en
           {/* Mobile Filter Toggle */}
           <button
             onClick={() => setShowFilters(!showFilters)}
-            className="md:hidden w-full flex items-center justify-center gap-2 p-3 border border-gray-200 rounded-xl mb-4"
+            className="md:hidden w-full flex items-center justify-center gap-2 p-3 border border-border rounded-xl mb-4"
           >
             <SlidersHorizontal size={20} />
             {t("filters")}
@@ -185,7 +185,7 @@ const SearchResultsContainer = ({ query: initialQuery, initialData, locale = "en
               {hasActiveFilters && (
                 <button
                   onClick={clearFilters}
-                  className="text-sm text-blue-600 hover:underline"
+                  className="text-sm text-accent hover:underline"
                 >
                   {t("clear")}
                 </button>
@@ -194,13 +194,13 @@ const SearchResultsContainer = ({ query: initialQuery, initialData, locale = "en
 
             {/* Sort */}
             <div className="mb-4">
-              <label className="block text-sm font-medium text-gray-600 mb-2">
+              <label className="block text-sm font-medium text-muted mb-2">
                 {t("sortBy")}
               </label>
               <select
                 value={sortBy}
                 onChange={(e) => setSortBy(e.target.value)}
-                className="w-full p-2 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                className="inputStyle"
               >
                 <option value="relevance">{t("sortRelevance")}</option>
                 <option value="price_asc">{t("priceLowHigh")}</option>
@@ -213,7 +213,7 @@ const SearchResultsContainer = ({ query: initialQuery, initialData, locale = "en
 
             {/* Price Range */}
             <div className="mb-4">
-              <label className="block text-sm font-medium text-gray-600 mb-2">
+              <label className="block text-sm font-medium text-muted mb-2">
                 {t("priceRange")}
               </label>
               <div className="flex gap-2">
@@ -229,7 +229,7 @@ const SearchResultsContainer = ({ query: initialQuery, initialData, locale = "en
                     }
                   }}
                   placeholder={t("min")}
-                  className="w-full p-2 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  className="inputStyle"
                 />
                 <input
                   type="number"
@@ -245,11 +245,11 @@ const SearchResultsContainer = ({ query: initialQuery, initialData, locale = "en
                     }
                   }}
                   placeholder={t("max")}
-                  className="w-full p-2 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  className="inputStyle"
                 />
               </div>
               {minPrice && maxPrice && parseFloat(minPrice) > parseFloat(maxPrice) && (
-                <p className="text-xs text-red-500 mt-1">Min must be less than max</p>
+                <p className="text-xs text-danger mt-1">Min must be less than max</p>
               )}
             </div>
           </div>
@@ -259,11 +259,11 @@ const SearchResultsContainer = ({ query: initialQuery, initialData, locale = "en
         <div className="flex-1">
           {isLoading ? (
             <div className="flex items-center justify-center py-20">
-              <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600"></div>
+              <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-ring"></div>
             </div>
           ) : error ? (
             <div className="text-center py-20">
-              <p className="text-red-500">{error}</p>
+              <p className="text-danger">{error}</p>
               <button
                 onClick={() => fetchResults(query, 1)}
                 className="mt-4 px-4 py-2 bg-button text-button-text rounded-lg"
@@ -273,19 +273,19 @@ const SearchResultsContainer = ({ query: initialQuery, initialData, locale = "en
             </div>
           ) : query && results.length === 0 ? (
             <div className="text-center py-20">
-              <Search size={48} className="mx-auto text-gray-300 mb-4" />
-              <p className="text-gray-500 text-lg">{t("noResults")}</p>
-              <p className="text-gray-400 mt-2">{t("tryDifferent")}</p>
+              <Search size={48} className="mx-auto text-muted mb-4" />
+              <p className="text-muted text-lg">{t("noResults")}</p>
+              <p className="text-muted mt-2">{t("tryDifferent")}</p>
             </div>
           ) : !query ? (
             <div className="text-center py-20">
-              <Search size={48} className="mx-auto text-gray-300 mb-4" />
-              <p className="text-gray-500 text-lg">{t("enterSearch")}</p>
+              <Search size={48} className="mx-auto text-muted mb-4" />
+              <p className="text-muted text-lg">{t("enterSearch")}</p>
             </div>
           ) : (
             <>
               {/* Results Count */}
-              <p className="text-gray-500 mb-4">
+              <p className="text-muted mb-4">
                 {t("showingResults", { count: results.length, total: pagination.total })}
               </p>
 
@@ -302,7 +302,7 @@ const SearchResultsContainer = ({ query: initialQuery, initialData, locale = "en
                   <button
                     onClick={() => handlePageChange(pagination.page - 1)}
                     disabled={pagination.page <= 1}
-                    className="p-2 rounded-lg border border-gray-200 hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed"
+                    className="p-2 rounded-lg border border-border hover:bg-surface disabled:opacity-50 disabled:cursor-not-allowed"
                   >
                     <ChevronLeft size={20} />
                   </button>
@@ -326,7 +326,7 @@ const SearchResultsContainer = ({ query: initialQuery, initialData, locale = "en
                         className={`w-10 h-10 rounded-lg ${
                           pagination.page === pageNum
                             ? "bg-button text-button-text"
-                            : "border border-gray-200 hover:bg-gray-50"
+                            : "border border-border hover:bg-surface"
                         }`}
                       >
                         {pageNum}
@@ -337,7 +337,7 @@ const SearchResultsContainer = ({ query: initialQuery, initialData, locale = "en
                   <button
                     onClick={() => handlePageChange(pagination.page + 1)}
                     disabled={pagination.page >= pagination.totalPages}
-                    className="p-2 rounded-lg border border-gray-200 hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed"
+                    className="p-2 rounded-lg border border-border hover:bg-surface disabled:opacity-50 disabled:cursor-not-allowed"
                   >
                     <ChevronRight size={20} />
                   </button>

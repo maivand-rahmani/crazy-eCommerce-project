@@ -1,7 +1,7 @@
 export const dynamic = "force-dynamic";
 
 import React from "react";
-import SearchResultsContainer from "./ui/SearchResultsContainer";
+import SearchResultsContainer from "@/shared/ui/search/SearchResultsContainer";
 import { getTranslations } from "next-intl/server";
 
 export async function generateMetadata({ params }) {
