@@ -445,6 +445,30 @@
     "relatedProducts": "محصولات مرتبط"
   },
 
+  "search": {
+    "title": "جستجوی محصولات",
+    "resultsFor": "نتایج جستجو برای \"{query}\"",
+    "placeholder": "جستجوی محصولات...",
+    "search": "جستجو",
+    "filters": "فیلترها",
+    "clear": "پاک کردن",
+    "sortBy": "مرتب سازی بر اساس",
+    "sortRelevance": "مرتبط",
+    "priceLowHigh": "قیمت: کم به زیاد",
+    "priceHighLow": "قیمت: زیاد به کم",
+    "nameAZ": "نام: الف تا ی",
+    "nameZA": "نام: ی تا الف",
+    "newest": "جدیدترین",
+    "priceRange": "محدوده قیمت",
+    "min": "کمینه",
+    "max": "بیشینه",
+    "noResults": "محصولی یافت نشد",
+    "tryDifferent": "عبارت دیگری را امتحان کنید یا فیلترها را تغییر دهید",
+    "enterSearch": "برای یافتن محصولات عبارتی را وارد کنید",
+    "showingResults": "نمایش {count} از {total} نتیجه",
+    "retry": "تلاش مجدد"
+  },
+
   "banner": {
     "shopNow": "خرید کنید"
   },

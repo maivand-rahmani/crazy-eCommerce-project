@@ -447,6 +447,30 @@
     "relatedProducts": "Похожие товары"
   },
 
+  "search": {
+    "title": "Поиск товаров",
+    "resultsFor": "Результаты по запросу \"{query}\"",
+    "placeholder": "Поиск товаров...",
+    "search": "Поиск",
+    "filters": "Фильтры",
+    "clear": "Очистить",
+    "sortBy": "Сортировать по",
+    "sortRelevance": "Релевантность",
+    "priceLowHigh": "Цена: по возрастанию",
+    "priceHighLow": "Цена: по убыванию",
+    "nameAZ": "Название: А-Я",
+    "nameZA": "Название: Я-А",
+    "newest": "Новинки",
+    "priceRange": "Диапазон цен",
+    "min": "Мин",
+    "max": "Макс",
+    "noResults": "Товары не найдены",
+    "tryDifferent": "Попробуйте другой запрос или измените фильтры",
+    "enterSearch": "Введите запрос для поиска товаров",
+    "showingResults": "Показано {count} из {total} результатов",
+    "retry": "Повторить"
+  },
+
   "banner": {
     "shopNow": "Купить сейчас"
   },
