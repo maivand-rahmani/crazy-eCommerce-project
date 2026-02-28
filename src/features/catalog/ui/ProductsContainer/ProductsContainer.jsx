@@ -6,11 +6,14 @@ import ProductsFilter from "./ProductsFilter";
 import ProductsLists from "./ProductsLists";
 import { useTranslations } from "next-intl";
 
-const ProductsContainer = ({ data }) => {
+const ProductsContainer = ({ data, loading: externalLoading }) => {
   const t = useTranslations("filter");
   const [products, setProducts] = useState(data.data);
   const [open, setOpen] = useState(false);
-  const [loading, setLoading] = useState(false);
+  const [internalLoading, setInternalLoading] = useState(false);
+  
+  // Use external loading prop if provided, otherwise use internal state
+  const loading = externalLoading ?? internalLoading;
 
   return (
     <div className="flex flex-col md:flex-row p-5 md:p-20 gap-10 relative">

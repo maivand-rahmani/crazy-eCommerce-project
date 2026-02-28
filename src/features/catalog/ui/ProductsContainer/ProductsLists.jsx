@@ -5,14 +5,14 @@ import { PackageX } from "lucide-react";
 import { ProductCardSkeleton } from "@/shared/ui/skeleton";
 
 
-const ProductsLists = ({ data, info, loading }) => {
+const ProductsLists = ({ data, info, loading, loadingCount = 8 }) => {
   const t = useTranslations("filter");
   
   // Loading state - show skeletons
   if (loading) {
     return (
       <div className='grid grid-cols-2 md:grid-cols-4 gap-5'>
-        {Array.from({ length: 8 }).map((_, index) => (
+        {Array.from({ length: loadingCount }).map((_, index) => (
           <ProductCardSkeleton key={index} />
         ))}
       </div>
