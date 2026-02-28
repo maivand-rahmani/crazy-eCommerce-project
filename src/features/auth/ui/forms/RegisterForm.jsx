@@ -32,12 +32,10 @@ const RegisterForm = () => {
         });
 
         if (res?.error) {
-          console.error("Ошибка логина:", res.error);
+          // Login error handled silently - user can try again
         } else {
-          console.log("Успешный логин!");
           reset();
           router.replace("/");
-          ;
         }
       }
     } catch (error) {

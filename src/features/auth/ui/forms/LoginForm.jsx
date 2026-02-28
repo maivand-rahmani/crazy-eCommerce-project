@@ -23,7 +23,6 @@ const LoginForm = () => {
       email: data.email,
       password: data.password,
     });
-    console.log(res)
 
     if (res?.status === 401) {
        setError("root" , { message: t("errors.invalid") })
