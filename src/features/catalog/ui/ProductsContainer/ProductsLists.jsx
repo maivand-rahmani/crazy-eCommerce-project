@@ -2,10 +2,22 @@ import ProductCard from "@/entities/product/ProductCard/ProductCard"
 import React from 'react'
 import { useTranslations } from "next-intl";
 import { PackageX } from "lucide-react";
+import { ProductCardSkeleton } from "@/shared/ui/skeleton";
 
 
-const ProductsLists = ({ data , info }) => {
+const ProductsLists = ({ data, info, loading }) => {
   const t = useTranslations("filter");
+  
+  // Loading state - show skeletons
+  if (loading) {
+    return (
+      <div className='grid grid-cols-2 md:grid-cols-4 gap-5'>
+        {Array.from({ length: 8 }).map((_, index) => (
+          <ProductCardSkeleton key={index} />
+        ))}
+      </div>
+    );
+  }
   
   // Empty state
   if (!data || data.length === 0) {

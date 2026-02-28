@@ -10,6 +10,7 @@ const ProductsContainer = ({ data }) => {
   const t = useTranslations("filter");
   const [products, setProducts] = useState(data.data);
   const [open, setOpen] = useState(false);
+  const [loading, setLoading] = useState(false);
 
   return (
     <div className="flex flex-col md:flex-row p-5 md:p-20 gap-10 relative">
@@ -69,7 +70,7 @@ const ProductsContainer = ({ data }) => {
 
       {/* Products list */}
       <div className="flex-1">
-        <ProductsLists data={products} info={data?.otherInfo}/>
+        <ProductsLists data={products} info={data?.otherInfo} loading={loading} />
       </div>
     </div>
   );
