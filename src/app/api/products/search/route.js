@@ -1,9 +1,14 @@
 import { NextResponse } from 'next/server';
 import prisma from '../../../../../prisma/client';
 import { toSafeJson } from '../../../../../prisma/funcs';
+import { getToken } from "next-auth/jwt";
 
 export async function GET(request) {
   try {
+    // Get authenticated user for wishlist
+    const user = await getToken({ request, secret: process.env.NEXTAUTH_SECRET });
+    const userId = user?.sub;
+
     const { searchParams } = new URL(request.url);
 
     // Search query
@@ -148,12 +153,32 @@ export async function GET(request) {
       },
     });
 
-    return NextResponse.json({
-      data: toSafeJson(sortedProducts),
+    // Add wishlist info if user is authenticated
+    let wishlistInfo = null;
+    let productsWithFav = sortedProducts;
+
+    if (userId) {
+      const wishlist = await prisma.wishlist.findUnique({
+        where: { user_id: userId },
+        include: { wishlist_items: true },
+      });
+
+      const wishlistVariantIds = wishlist?.wishlist_items.map((item) => item.variant_id) || [];
+      
+      productsWithFav = sortedProducts.map((product) => ({
+        ...product,
+        isFavorite: wishlistVariantIds.includes(product.variant_id),
+      }));
+
+      wishlistInfo = { wishlist_id: wishlist?.id };
+    }
+
+    const response = {
+      data: toSafeJson(productsWithFav),
       pagination: {
         page,
         limit,
-        total: minRating ? totalProductsCount : totalProductsCount, // Note: rating filter affects actual count
+        total: minRating ? totalProductsCount : totalProductsCount,
         totalPages: Math.ceil(totalProductsCount / limit),
       },
       search: {
@@ -161,7 +186,14 @@ export async function GET(request) {
         filters: { category, minPrice: minPriceNum, maxPrice: maxPriceNum, minRating },
         sort: { by: sortBy, order: sortOrder },
       },
-    });
+    };
+
+    // Add wishlist info if user is authenticated
+    if (wishlistInfo) {
+      response.otherInfo = wishlistInfo;
+    }
+
+    return NextResponse.json(response);
   } catch (error) {
     console.error('Search API error:', error);
     return NextResponse.json(
