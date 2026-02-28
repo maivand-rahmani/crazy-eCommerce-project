@@ -14,6 +14,7 @@ const SearchResultsContainer = ({ query: initialQuery, initialData, locale = "en
   
   const [query, setQuery] = useState(initialQuery || searchParams.get("q") || "");
   const [results, setResults] = useState(initialData?.data || []);
+  const [otherInfo, setOtherInfo] = useState(initialData?.otherInfo || null);
   const [isLoading, setIsLoading] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [error, setError] = useState(null);
@@ -62,6 +63,7 @@ const SearchResultsContainer = ({ query: initialQuery, initialData, locale = "en
       if (res.ok) {
         setResults(data.data || []);
         setPagination(data.pagination || { page: 1, limit: 20, total: 0, totalPages: 0 });
+        setOtherInfo(data.otherInfo || null);
       } else {
         setError(data.error || "Search failed");
         setResults([]);
@@ -292,7 +294,7 @@ const SearchResultsContainer = ({ query: initialQuery, initialData, locale = "en
               {/* Products Grid */}
               <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-5">
                 {results.map((product) => (
-                  <ProductCard key={product.variant_id} data={product} />
+                  <ProductCard key={product.variant_id} data={product} otherInfo={{ ...otherInfo, isFavorite: product.isFavorite }} />
                 ))}
               </div>
 
