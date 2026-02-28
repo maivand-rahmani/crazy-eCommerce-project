@@ -64,7 +64,7 @@ const page = async ({ params }) => {
 
   return (
     <div className="">
-      <ProductsContainer category={categoryId} data={data} />
+      <ProductsContainer category={categoryId} data={data}  />
     </div>
   );
 };

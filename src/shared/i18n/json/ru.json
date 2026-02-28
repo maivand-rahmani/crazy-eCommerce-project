@@ -164,6 +164,8 @@
       "title": "Вход в аккаунт",
       "subtitle": "Введите ваш email для входа",
       "button": "Войти",
+      "email": "Email",
+      "password": "Пароль",
       "noAccount": "Нет аккаунта?",
       "register": "Регистрация",
       "errors": {
@@ -353,6 +355,8 @@
     "cancel": "Отмена",
     "confirm": "Подтвердить",
     "success": "Адрес успешно добавлен",
+    "deleteFaild": "Не удалось удалить адрес",
+    "deleteSuccess": "Адрес успешно удалён",
     "errors": {
       "streetRequired": "Улица обязательна",
       "cityRequired": "Город обязателен",
@@ -414,6 +418,7 @@
     "lastUpdated": "Последнее обновление",
     "myAddresses": "Мои адреса",
     "addNew": "Добавить новый",
+    "addFirst": "Добавьте первый адрес",
     "noAddresses": "Адресов пока нет"
   },
 

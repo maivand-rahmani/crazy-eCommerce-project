@@ -351,13 +351,18 @@
     "cancel": "Cancel",
     "confirm": "confirm",
     "success": "Address added successfully",
+    "updated": "Address updated successfully",
+    "deleteFaild": "Failed to delete address",
+    "deleteSuccess": "Address deleted successfully",
     "errors": {
       "streetRequired": "Street address is required",
       "cityRequired": "City is required",
       "stateRequired": "State is required",
       "zipRequired": "ZIP code is required",
       "countryRequired": "Country is required",
-      "phoneRequired": "Phone number is required"
+      "phoneRequired": "Phone number is required",
+      "allreadyAdded": "This address is already added",
+      "isDefault": "Only one address can be set as default. Please unset the current default address before setting a new one."
     },
     "noAddresses": "No addresses added yet",
     "addFirst": "Add your first address",
@@ -394,6 +399,15 @@
     "notAvailable": "N/A"
   },
 
+  "errors": {
+    "network": "Network error. Please check your connection and try again.",
+    "server": "Server error. Please try again later.",
+    "validation": "Validation error. Please check your input and try again.",
+    "unknown": "An unknown error occurred. Please try again.",
+    "somethingWrong": "Something gone wrong. Please try again." ,
+    "isDefault": "Only one address can be set as default. Please unset the current default address before setting a new one."
+  },
+
   "notFound": {
     "title": "404 - Page Not Found"
   },
@@ -412,6 +426,7 @@
     "lastUpdated": "Last Updated",
     "myAddresses": "My Addresses",
     "addNew": "Add New",
+    "addFirst": "Add your first address",
     "noAddresses": "No addresses added yet"
   },
 

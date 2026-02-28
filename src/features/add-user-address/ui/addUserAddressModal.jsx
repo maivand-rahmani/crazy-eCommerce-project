@@ -2,40 +2,45 @@
 import React, { useEffect, useState } from "react";
 import { set, useForm } from "react-hook-form";
 import Modal from "@/shared/ui/modal/Modal";
-import addUserAddress from "../model/UserAddress";
+import { addUserAddress  , updateUserAddress} from "../model/UserAddress";
 import toast from "react-hot-toast";
 import Fetch from "@/shared/lib/fetch";
 import Miniloader from "@/shared/ui/Loading/ComponentLoader/miniloader";
 import { useTranslations } from "next-intl";
 
-const AddUserAddressForm = ({ setStep = () => {} , setOrderInfo = () => {}, onAddressAdded, onCancel }) => {
+const AddUserAddressForm = ({ setStep = () => {} , setOrderInfo = () => {}, onAddressAdded, onCancel , addressForEdit = false }) => {
   const t = useTranslations("address");
   const [loading, setLoading] = useState(false);
-  const [address, setAddress] = useState(false);
+  const [address, setAddress] = useState(addressForEdit);
 
   const {
     register,
     handleSubmit,
     formState: { errors },
     setValue,
-    reset,
+    setError
   } = useForm();
 
-  let defaultAddress = async () => {
+  let fillForm = ({ street , city , isDefault , zip , country , phone , state }) => {
+      setValue("street", street);
+      setValue("city",  city);
+      setValue("state",  state);
+      setValue("zip", zip);
+      setValue("country", country);
+      setValue("phone", phone);
+      setValue("isDefault", isDefault);
+  }
+
+  let getDefaultAddress = async () => {
     try {
       setLoading(true);
-      const addresses = await Fetch("/api/user/addresses").then((res) =>
+      const defaultAddress = await Fetch("/api/user/addresses").then((res) =>
         res.data.addresses.find((address) => address.isDefault === true),
       );
-      if (addresses) {
-        setValue("street", addresses.street);
-        setValue("city", addresses.city);
-        setValue("state", addresses.state);
-        setValue("zip", addresses.zip);
-        setValue("country", addresses.country);
-        setValue("phone", addresses.phone);
-        setValue("isDefault", addresses.isDefault);
-        setAddress(addresses);
+
+      if (defaultAddress) {
+        fillForm(defaultAddress)
+        setAddress(defaultAddress);
       }
     } catch (error) {
       return new Error(error);
@@ -44,19 +49,39 @@ const AddUserAddressForm = ({ setStep = () => {} , setOrderInfo = () => {}, onAd
     }
   };
   useEffect(() => {
-    defaultAddress();
-  }, []);
+    if (!address) {
+      getDefaultAddress();
+    }
+    if (addressForEdit) {
+      fillForm(addressForEdit)
+    }
+  }, [address , addressForEdit]);
 
   const onSubmit = async (data) => {
     setLoading(true);
     try {
       if (address && address.street === data.street && address.city === data.city && address.state === data.state && address.zip === data.zip) {
-        setOrderInfo((s) => ({ ...s, address: data }));
-        setStep(2);
-        toast.success(t("success"));
+        if ( setStep && setOrderInfo) {
+          // If we are in the checkout flow, we just set the order info and move to the next step
+          setOrderInfo((s) => ({ ...s, address: data }));
+          setStep(2);
+        }
+        toast.success(t("errors.allreadyAdded"));
+        onAddressAdded && onAddressAdded();
       } else {
-        const res = await addUserAddress( data );
-        setOrderInfo((s) => ({ ...s, address: data }));
+        const res = await addUserAddress({ ...data , id: crypto.randomUUID()});
+
+        if (res?.status === 409) {
+          setError("isDefault", { type: "server" ,message: t("errors.isDefault") } , { shouldFocus: true }); 
+          return;
+        }
+
+        if (setOrderInfo && setStep) {
+          // If we are in the checkout flow, we just set the order info but we don't move to the next step because the user might want to add another address
+          setOrderInfo((s) => ({ ...s, address: data }));
+          setStep(2);
+        }
+        
         if (res?.status === 200 || res?.status === 201) {
           toast.success(t("success"));
           if (onAddressAdded) {
@@ -65,14 +90,39 @@ const AddUserAddressForm = ({ setStep = () => {} , setOrderInfo = () => {}, onAd
         }
       } 
     } catch (error) {
-      toast.error(t("errors.streetRequired") + ": Something gone wrong while sending request");
+      toast.error(t("errors.somethingWentWrong"));
     } finally {
       setLoading(false);
     }
   };
 
+  const onUpdate = async (data) => {
+    setLoading(true);
+    try {
+      const res = await updateUserAddress(addressForEdit.id , data);
+      if (res?.status === 200 || res?.status === 201) {
+        toast.success(t("updated"));
+        if (onAddressAdded) {
+          onAddressAdded();
+        }
+      }
+    } catch (error) {
+      toast.error(t("errors.somethingWentWrong"));
+    } finally {
+      setLoading(false);
+    }
+  } 
+
+  let correctAction = (data) => {
+    if (addressForEdit) {
+      onUpdate(data);
+    } else {
+      onSubmit(data);
+    }
+  }
+
   return (
-    <form onSubmit={handleSubmit(onSubmit)} className="flex relative flex-col gap-6">
+    <form onSubmit={handleSubmit(correctAction)} className="flex relative flex-col gap-6">
       {loading && <div className="flex justify-center absolute top-0 left-0 w-full h-full"><Miniloader /></div>}
       <div className="flex flex-col gap-2 text-center">
         <h2 className="text-2xl font-bold text-text">
@@ -186,6 +236,7 @@ const AddUserAddressForm = ({ setStep = () => {} , setOrderInfo = () => {}, onAd
           />
           <span className="text-text text-sm">{t("setDefault")}</span>
         </label>
+          <span>{ errors.isDefault && <span className="text-danger text-center text-sm">{errors.isDefault.message}</span>}</span>
       </div>
 
       <div className="flex gap-3 pt-2">

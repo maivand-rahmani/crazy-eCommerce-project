@@ -11,7 +11,7 @@ export default async function LocaleLayout({ children, params }) {
   const messages = await getMessages({ locale });
 
   return (
-    <html lang={locale} data-theme="vintage">
+    <html lang={locale} data-theme="dark">
       <body className="mx-auto overflow-auto max-w-[1440px]">
         <NextIntlClientProvider locale={locale} messages={messages}>
           <AuthProvider>

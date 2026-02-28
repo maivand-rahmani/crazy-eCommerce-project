@@ -36,11 +36,17 @@ export const POST = async (req) => {
     const addresses = existingAddresses?.addresses ?? [];
 
     const alreadyExists = addresses.some(address =>
-    address.street === body.street &&
-    address.city === body.city &&
-    address.state === body.state &&
-    address.zip === body.zip
+        address.street === body.street &&
+        address.city === body.city &&
+        address.state === body.state &&
+        address.zip === body.zip
     );
+
+    const alreadyDefault = addresses.some(address => address.isDefault === true);
+    
+    if (body.isDefault && alreadyDefault) {
+        return NextResponse.json({ error: "Only one address can be set as default. Please unset the current default address before setting a new one." , status: 409 }, { status: 409 })
+    }
 
     if (!alreadyExists) {
         const response = await prisma.user.update({
@@ -58,4 +64,90 @@ export const POST = async (req) => {
     }
 
     return NextResponse.json({ error: "Address already exists" }, { status: 400 })
+}
+
+export const DELETE = async (req) => {
+    const data = await req.json()
+    const addressId = data.id;
+
+    // if (!index) {
+    //     return NextResponse.json({ error: "Address ID is required" }, { status: 400 })
+    // }
+
+    const user = await getToken({ req, secret: process.env.NEXTAUTH_SECRET });
+
+    if (!user) 
+        return NextResponse.json({ error: "Unauthorized" }, { status: 401 })
+
+    const existingAddresses = await prisma.user.findUnique({
+        where: {
+            id: user.id
+        },
+        select: {
+            addresses: true
+        }
+    })
+    
+    const addresses = existingAddresses?.addresses ?? [];
+    const addressToDelete = existingAddresses.addresses.find((address) => address.id === addressId);
+
+    if (addressToDelete) {
+        await prisma.user.update({
+            where: {
+                id: user.id
+            },
+            data: {
+                addresses: {
+                    set: addresses.filter((address) => address.id !== addressId)
+                }
+            }
+        })  
+
+        return NextResponse.json({ message: "Address deleted successfully" , status: 200 }, { status: 200 })
+    } 
+
+    return NextResponse.json({ error: "Address not found" }, { status: 404 })
+}
+
+export const PUT = async (req) => {
+    const user = await getToken({ req, secret: process.env.NEXTAUTH_SECRET });
+    const body = await req.json();
+
+    if (!user) {
+        return NextResponse.json({ message: "user not found" , status: 400})
+    }
+
+    const existingAddresses = await prisma.user.findUnique({
+        where: {
+            id: user.id
+        },
+        select: {
+            addresses: true
+        }
+    })
+
+    const addresses = existingAddresses?.addresses ?? [];
+    const addressToUpdate = existingAddresses.addresses.find((address) => address.id === body.id);
+
+    if (addressToUpdate) {
+        const response = await prisma.user.update({
+            where: {
+                id: user.id
+            },
+            data: {
+                addresses: {
+                    set: addresses.map((address) => {
+                        if (address.id === body.id) {
+                            return body;
+                        }
+                        return address;
+                    })
+                }
+            }
+        })
+
+        return NextResponse.json({ data: response, status: 200 })
+    }
+
+    return NextResponse.json({ error: "Address not found" }, { status: 404 })
 }

@@ -93,7 +93,7 @@ const OrderModal = ({ isOpen , items , total , couponInfo , setOrderModal }) => 
     try {
       if (!orderInfo.order_id && step === 3) {
         (async () => {
-          const data = await Fetch("/api/cart/order" , "POST" , null , orderInfo);
+          const data = await Fetch("/api/cart/order" , "POST" , orderInfo);
           if (data.status === 200) {
             setOrderInfo({ ...orderInfo, order_id: data.order.id });
             router.replace(`/orders/${data.order.id}`);

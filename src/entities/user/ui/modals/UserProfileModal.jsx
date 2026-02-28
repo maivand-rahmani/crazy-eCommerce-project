@@ -7,6 +7,7 @@ import { Mail, Calendar, Clock, Fingerprint, MapPin, Plus, Trash2, Edit } from "
 import AddUserAddressForm from "@/features/add-user-address/ui/addUserAddressModal";
 import Fetch from "@/shared/lib/fetch";
 import { useTranslations } from "next-intl";
+import toast from "react-hot-toast";
 
 export const UserProfileModal = ({ isOpen, onClose, user }) => {
   const t = useTranslations("account");
@@ -15,6 +16,7 @@ export const UserProfileModal = ({ isOpen, onClose, user }) => {
   const [addresses, setAddresses] = useState([]);
   const [isAddressModalOpen, setIsAddressModalOpen] = useState(false);
   const [loadingAddresses, setLoadingAddresses] = useState(false);
+  const [ addressToEdit, setAddressToEdit ] = useState(null);
 
   const {
     register,
@@ -34,7 +36,6 @@ export const UserProfileModal = ({ isOpen, onClose, user }) => {
       const res = await Fetch("/api/user/addresses");
       if (res?.data?.addresses) {
         setAddresses(res.data.addresses);
-        console.log(res.data.addresses)
       }
     } catch (error) {
       console.error("Failed to fetch addresses:", error);
@@ -86,12 +87,29 @@ export const UserProfileModal = ({ isOpen, onClose, user }) => {
       .join(", ");
   };
 
+  const deleteAddress = async (addressId) => {
+    try {
+      const res = await Fetch(`/api/user/addresses`, "DELETE" , { id: addressId });
+      if (res?.status === 200) {
+        toast.success(tAddress("deleteSuccess"));
+        fetchAddresses();
+      }
+    } catch (error) {
+      toast.error(tAddress("deleteFailed"));
+      console.error("Failed to delete address:", error);
+    }
+  }
+
+  const editAddress = (address) => {
+    setIsAddressModalOpen(true);
+    setAddressToEdit(address);
+  }
   return (
     <>
       <Modal isOpen={isOpen} onClose={onClose}>
-        <div className="space-y-6">
+        <div className="space-y-6 ">
           {/* Header */}
-          <div className="text-center">
+          <div className="text-center p-1">
             <h2 className="text-2xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
               {t("myProfile")}
             </h2>
@@ -123,7 +141,7 @@ export const UserProfileModal = ({ isOpen, onClose, user }) => {
             </div>
           </div>
 
-          <form onSubmit={handleSubmit(onSubmit)} className="space-y-5">
+          <form onSubmit={handleSubmit(onSubmit)} className="space-y-5 flex flex-col py-2 gap-2">
             {/* Editable Field */}
             <div className="bg-surface rounded-lg border border-border p-4 hover:border-primary transition-colors">
               <label className="block text-sm font-semibold text-text mb-2">
@@ -243,6 +261,14 @@ export const UserProfileModal = ({ isOpen, onClose, user }) => {
                             <p className="text-sm text-unactive-text mt-1">{tAddress("phone")}: {address.phone}</p>
                           )}
                         </div>
+                        <div className="flex gap-2">
+                           <button className="btn" type="button" onClick={() => deleteAddress(address.id)}>
+                            <Trash2 className="w-4 h-4 text-danger" />
+                          </button>
+                          <button className="btn" type="button" onClick={() => editAddress(address)}>
+                            <Edit className="w-4 h-4 text-primary" />
+                          </button>
+                        </div>
                       </div>
                     </div>
                   ))}
@@ -301,6 +327,7 @@ export const UserProfileModal = ({ isOpen, onClose, user }) => {
         <AddUserAddressForm 
           onAddressAdded={handleAddressAdded} 
           onCancel={() => setIsAddressModalOpen(false)} 
+          addressForEdit={addressToEdit}
         />
       </Modal>
     </>

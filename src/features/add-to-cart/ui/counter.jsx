@@ -2,10 +2,10 @@ import React from "react";
 import { PlusSquare, MinusSquare } from "lucide-react";
 import deleteButton from "./deleteButton";
 
-const Counter = ({ handleClick, state, withPrice, className }) => {
+const Counter = ({ handleClick, state , className }) => {
   return (
     <div className={`flex justify-between w-full gap-5 ${className}`}>
-      <div className="flex justify-between w-full max-w-70 gap-1.5 ">
+      <div className="flex justify-between w-full gap-1.5 ">
         <button disabled={state?.loading} onClick={() => handleClick("remove")}>
           <MinusSquare className={`${state?.loading ? "opacity-50" : null} text-text`} />
         </button>

@@ -9,6 +9,10 @@ export async function POST(req) {
   const { order_items, address, status, coupon_id, total_cents , cart_id , order_id } =
     await req.json();
 
+  if ( !order_items || !address || !status || !total_cents || !cart_id ) {
+    return NextResponse.json({ error: "Missing required fields" }, { status: 400 });
+  }
+
   if (!user) return Response.json({ error: "Not authorized" }, { status: 401 });
 
   await prisma.$transaction(async (tx) => {
