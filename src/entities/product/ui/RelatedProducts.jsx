@@ -18,7 +18,7 @@ const RelatedProducts = async ({ id, category }) => {
 
     data = result;
 
-    const wishlistRes = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/wishlist`, {
+    const wishlistRes = await fetch(`/api/wishlist`, {
       cache: "no-store",
     });
     
