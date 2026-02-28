@@ -1,17 +1,30 @@
 "use client";
 
 import { Settings2Icon, X } from "lucide-react";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import ProductsFilter from "./ProductsFilter";
 import ProductsLists from "./ProductsLists";
 import { useTranslations } from "next-intl";
 
 const ProductsContainer = ({ data, loading: externalLoading }) => {
   const t = useTranslations("filter");
-  const [products, setProducts] = useState(data.data);
+  const [products, setProducts] = useState(data?.data || []);
   const [open, setOpen] = useState(false);
   const [internalLoading, setInternalLoading] = useState(false);
-  
+  const [isInitialLoad, setIsInitialLoad] = useState(true);
+
+  // Auto-detect loading state: show skeleton when data is not yet available
+  useEffect(() => {
+    if (data === undefined || data === null) {
+      setInternalLoading(true);
+    }
+    // Mark initial load complete after first data arrives
+    if (data && isInitialLoad) {
+      setIsInitialLoad(false);
+      setInternalLoading(false);
+    }
+  }, [data, isInitialLoad]);
+
   // Use external loading prop if provided, otherwise use internal state
   const loading = externalLoading ?? internalLoading;
 
