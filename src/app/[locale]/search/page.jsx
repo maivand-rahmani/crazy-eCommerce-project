@@ -3,6 +3,8 @@ export const dynamic = "force-dynamic";
 import React from "react";
 import SearchResultsContainer from "@/shared/ui/search/SearchResultsContainer";
 import { getTranslations } from "next-intl/server";
+import { getServerSession } from "next-auth";
+import { authParams } from "@/app/api/auth/[...nextauth]/route";
 
 export async function generateMetadata({ params }) {
   const resolvedParams = await params;
@@ -31,14 +33,24 @@ const SearchPage = async ({ params }) => {
   const resolvedSearchParams = await Promise.resolve(searchParams);
   const query = resolvedSearchParams?.q || "";
 
+  // Get session for authenticated requests
+  const session = await getServerSession(authParams);
+
   // Fetch search results from API
   let data = null;
   if (query) {
     try {
       const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || "http://localhost:3000";
-      const response = await fetch(`${baseUrl}/${locale}/api/products/search?search=${encodeURIComponent(query)}&limit=20`, {
+      const fetchOptions = {
         cache: "no-store",
-      });
+      };
+      
+      // Include credentials for authenticated requests
+      if (session?.user?.id) {
+        fetchOptions.credentials = "include";
+      }
+      
+      const response = await fetch(`${baseUrl}/${locale}/api/products/search?search=${encodeURIComponent(query)}&limit=20`, fetchOptions);
       if (response.ok) {
         data = await response.json();
       }
