@@ -21,7 +21,10 @@ export function AddToWishListCom({
   const user = session?.data?.user;
 
   const handleClick = async () => {
-    if (!user?.id) return toast(tCommon("error") + ": Authorization required.", { icon: "🔐" });
+    if (!user?.id) {
+      toast.error(tCommon("error") + ": Authorization required.", { icon: "🔐" });
+      return;
+    }
 
     if (user?.id) {
       setAdded((s) => !s);
