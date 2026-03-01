@@ -28,7 +28,7 @@ const page = async () => {
     <div className="p-5 md:p-20">
       {wishlist.length > 0 && (
         <>
-          <h1 className="font-bold text-2xl p-3">{t("title")}</h1>
+          <h1 className="font-bold text-text text-2xl p-3">{t("title")}</h1>
           <div className="grid grid-cols-2 md:grid-cols-4 gap-5">
             {wishlist.map((item) => (
               <ProductCard

@@ -242,10 +242,14 @@ A full-featured Next.js e-commerce platform with multi-language support (i18n), 
 
 - [ ] Now, when the user makes an order, the form of the user's address is shown to him and he can only add an address or edit the already existing one. I would like there to be an opportunity to select the existing user addresses in the system, if they are there, if not, then this form was shown. 
 
+- [ ] adding full skeleton layout for product page
+
 ### 🐞 Fixes
 - [ ] ...
 
 - [x] On the search page, when we search for products, the addition to the favorite ones does not work in the product card. (Fixed in PR #20 and subsequent improvements)
+
+- [ ] On the back-end API side of the search The system that considers the average rating does not work. 
 
 
 ---

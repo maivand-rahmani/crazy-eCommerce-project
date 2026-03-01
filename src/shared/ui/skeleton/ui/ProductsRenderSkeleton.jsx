@@ -1,5 +1,6 @@
+import ProductCard from "@/entities/product/ProductCard/ProductCard";
 import React from "react";
-import Skeleton from "react-loading-skeleton";
+import ProductCardSkeleton from "@/shared/ui/skeleton/ui/ProductCardSkeleton";
 import "react-loading-skeleton/dist/skeleton.css";
 
 const productsRenderSkeleton = ({ productsCount }) => {
@@ -7,8 +8,7 @@ const productsRenderSkeleton = ({ productsCount }) => {
     <div className="grid grid-cols-2 md:grid-cols-4 gap-5 ">
       {Array.from({ length: productsCount }).map((_, i) => (
         <div key={i} className="p-3">
-            <Skeleton borderRadius={20} height={100} />
-            <Skeleton borderRadius={20} />
+            <ProductCardSkeleton />
         </div>
       ))}
     </div>

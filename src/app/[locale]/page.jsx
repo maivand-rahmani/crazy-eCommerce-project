@@ -35,7 +35,7 @@ import Main from "@/features/home/ui/banners/main";
 import CategorySection from "@/features/home/ui/CategorySection/Main";
 import DragScrollContainer from "@/shared/ui/ScrollContainer/ScrollContainer";
 import FeaturedProducts from "@/features/home/ui/CategorySection/FeaturedProducts";
-import ProductsRenderSkeleton from "@/shared/ui/skeleton/ProductsRenderSkeleton";
+import ProductsRenderSkeleton from "@/shared/ui/skeleton/ui/ProductsRenderSkeleton";
 
 const Page = async () => {
   const t = await getTranslations("home");

@@ -1,7 +1,6 @@
 "use client";
 import { signIn, signOut, useSession } from "next-auth/react";
 import Image from "next/image";
-import { useLocalizedPath } from "@/shared/hooks/useLocalizedPath";
 import { useRouter } from "@/shared/i18n/model/routing";
 import { useState } from "react";
 import { UserProfileModal } from "@/entities/user/ui/modals/UserProfileModal";
@@ -56,7 +55,7 @@ export const UserInfoModal = () => {
     <>
       <Dropdown.Root>
         <Dropdown.DotsButton className="rounded-full overflow-hidden">
-          <img
+          <Image
             src={user.image || "/icons/profile-circle-svgrepo-com.svg"}
             alt="profile"
             width={25}

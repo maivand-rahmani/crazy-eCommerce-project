@@ -3,13 +3,13 @@ import prisma from '../../../../../prisma/client';
 import { toSafeJson } from '../../../../../prisma/funcs';
 import { getToken } from "next-auth/jwt";
 
-export async function GET(request) {
+export async function GET(req) {
   try {
     // Get authenticated user for wishlist
-    const user = await getToken({ request, secret: process.env.NEXTAUTH_SECRET });
+    const user = await getToken({ req, secret: process.env.NEXTAUTH_SECRET });
     const userId = user?.sub;
 
-    const { searchParams } = new URL(request.url);
+    const { searchParams } = new URL(req.url);
 
     // Search query
     const search = searchParams.get('search') || '';
