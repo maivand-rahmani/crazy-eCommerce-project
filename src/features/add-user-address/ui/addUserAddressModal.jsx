@@ -9,16 +9,14 @@ import Miniloader from "@/shared/ui/Loading/ComponentLoader/miniloader";
 import { useTranslations } from "next-intl";
 import { MapPin, Plus, Check } from "lucide-react";
 
-const AddUserAddressForm = ({ setStep = () => {}, setOrderInfo = () => {}, onAddressAdded, onCancel, addressForEdit = false }) => {
+const AddUserAddressForm = ({ setStep = false, setOrderInfo = false, onAddressAdded, onCancel, addressForEdit = false }) => {
   const t = useTranslations("address");
   const [loading, setLoading] = useState(false);
   const [address, setAddress] = useState(addressForEdit);
   const [allAddresses, setAllAddresses] = useState([]);
   const [selectedAddressId, setSelectedAddressId] = useState(null);
   const [showAddForm, setShowAddForm] = useState(false);
-  
-  // Check if we're in checkout mode
-  const isCheckoutMode = setStep && setOrderInfo;
+  const [isCheckoutMode, setIsCheckoutMode] = useState(!!(setStep && setOrderInfo));
 
   const {
     register,
@@ -78,14 +76,12 @@ const AddUserAddressForm = ({ setStep = () => {}, setOrderInfo = () => {}, onAdd
   };
 
   useEffect(() => {
-    if (isCheckoutMode) {
-      // In checkout mode, fetch all addresses
-      getAllAddresses();
-    } else if (!address) {
-      getDefaultAddress();
-    }
     if (addressForEdit) {
       fillForm(addressForEdit);
+    }
+
+    if (isCheckoutMode) {
+      getAllAddresses();
     }
   }, [address, addressForEdit, isCheckoutMode]);
 

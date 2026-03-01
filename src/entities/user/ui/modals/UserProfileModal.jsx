@@ -16,7 +16,7 @@ export const UserProfileModal = ({ isOpen, onClose, user }) => {
   const [addresses, setAddresses] = useState([]);
   const [isAddressModalOpen, setIsAddressModalOpen] = useState(false);
   const [loadingAddresses, setLoadingAddresses] = useState(false);
-  const [ addressToEdit, setAddressToEdit ] = useState(null);
+  const [ addressToEdit, setAddressToEdit ] = useState(false);
 
   const {
     register,
@@ -327,7 +327,7 @@ export const UserProfileModal = ({ isOpen, onClose, user }) => {
         <AddUserAddressForm 
           onAddressAdded={handleAddressAdded} 
           onCancel={() => setIsAddressModalOpen(false)} 
-          addressForEdit={addressToEdit}
+          {...addressToEdit && { addressForEdit: addressToEdit }}
         />
       </Modal>
     </>

@@ -339,6 +339,12 @@
   "address": {
     "add": "Add Address",
     "update": "Update Address",
+    "continue": "Continue",
+    "addNewAddress": "Add New Address",
+    "selectAddress": "Select Address",
+    "selectAddressDescription": "Select the address you want to use for the order",
+    "yourAddresses": "Your Addresses",
+    "backToAddresses": "Back to Addresses",
     "updateDescription": "Fill in the details below to update your address",
     "addDescription": "Fill in the details below to add a new address",
     "street": "Street Address",
