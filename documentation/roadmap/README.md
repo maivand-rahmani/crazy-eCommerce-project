@@ -240,7 +240,7 @@ A full-featured Next.js e-commerce platform with multi-language support (i18n), 
 
 ### ⚡ Improvements
 
-- [ ] Now, when the user makes an order, the form of the user's address is shown to him and he can only add an address or edit the already existing one. I would like there to be an opportunity to select the existing user addresses in the system, if they are there, if not, then this form was shown. 
+- [x] Now, when the user makes an order, the form of the user's address is shown to him and he can only add an address or edit the already existing one. I would like there to be an opportunity to select the existing user addresses in the system, if they are there, if not, then this form was shown. (Implemented in PR #22)
 
 - [ ] adding full skeleton layout for product page
 
@@ -266,5 +266,6 @@ A full-featured Next.js e-commerce platform with multi-language support (i18n), 
 
 ### 1.3.2026
 - Fixed: Search page wishlist functionality - added proper authentication handling, auto-create wishlist for new users, fixed toast message for unauthenticated users
+- Added: Address selection in checkout flow - users can now select existing saved addresses or add new ones during checkout (PR #22)
 
 (repeatable section)
