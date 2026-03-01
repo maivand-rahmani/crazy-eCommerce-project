@@ -7,8 +7,7 @@ export async function GET(request) {
   try {
     // Get authenticated user for wishlist
     const user = await getToken({ request, secret: process.env.NEXTAUTH_SECRET });
-    // JWT strategy stores user id in 'sub' claim, but also in 'id' for backwards compatibility
-    const userId = user?.sub || user?.id;
+    const userId = user?.sub;
 
     const { searchParams } = new URL(request.url);
 
