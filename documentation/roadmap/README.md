@@ -249,7 +249,7 @@ A full-featured Next.js e-commerce platform with multi-language support (i18n), 
 
 - [x] On the search page, when we search for products, the addition to the favorite ones does not work in the product card. (Fixed in PR #20 and subsequent improvements)
 
-- [ ] On the back-end API side of the search The system that considers the average rating does not work. 
+- [x] On the back-end API side of the search The system that considers the average rating does not work. (Fixed in PR #23) 
 
 
 ---
@@ -261,11 +261,14 @@ A full-featured Next.js e-commerce platform with multi-language support (i18n), 
 - Updated:
 - Fixed:
 
-### 29.2.2026
-- Added: Function for editing and removing user addresses in the system has been added. 
+### 2.3.2026
+- Added: Function for editing and removing user addresses in the system has been added.
 
 ### 1.3.2026
 - Fixed: Search page wishlist functionality - added proper authentication handling, auto-create wishlist for new users, fixed toast message for unauthenticated users
 - Added: Address selection in checkout flow - users can now select existing saved addresses or add new ones during checkout (PR #22)
+
+### 2.3.2026
+- Fixed: Search API rating calculation - enabled reviews fetch, average rating calculation, review count, and minRating filter (PR #23)
 
 (repeatable section)
