@@ -1,6 +1,6 @@
 "use client";
 
-import Link from "next/link";
+import { Link } from "@/shared/i18n";
 import { usePathname } from "next/navigation";
 
 const NavLink = ({ href, children , className}) => {

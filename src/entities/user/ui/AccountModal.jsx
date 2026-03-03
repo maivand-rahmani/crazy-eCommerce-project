@@ -9,6 +9,7 @@ import { CreditCard, LogOut, Settings, User } from "lucide-react";
 import { LangSwitcher } from "@/shared/i18n";
 import { useTranslations } from "next-intl";
 
+
 export const UserInfoModal = () => {
   const t = useTranslations("account");
   const router = useRouter();

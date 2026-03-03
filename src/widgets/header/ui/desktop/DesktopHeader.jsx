@@ -11,7 +11,7 @@ import { Link, usePathname } from "@/shared/i18n";
 import { useTranslations, useLocale } from "next-intl";
 import { UserInfoModal } from "@/entities/user";
 import ProductSearch from "@/features/search/ui/ProductSearch";
-import { ShoppingCartButton, WishlistButton, Cyber } from "../index";
+import { ShoppingCartButton, WishlistButton, Cyber, ThemeSwitcher } from "../index";
 
 const routes = [
   { name: "Home", path: "/" },
@@ -55,13 +55,14 @@ export const DesktopHeader = () => {
         </ul>
 
         {/* Icons */}
-        <div className="hidden md:flex gap-6">
+        <div className="hidden md:flex center gap-6">
           <Suspense fallback={<Heart />}>
             <WishlistButton />
           </Suspense>
           <Suspense fallback={<ShoppingCart />}>
             <ShoppingCartButton />
           </Suspense>
+          <ThemeSwitcher />
           <UserInfoModal />
         </div>
       </header>

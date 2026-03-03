@@ -1,5 +1,5 @@
 "use client";
-import React from "react";
+import React, { Suspense } from "react";
 import {
   Home,
   PackageSearchIcon,
@@ -8,7 +8,7 @@ import {
   CircleUserRound,
   Settings,
 } from "lucide-react";
-import { NavLink } from "../index";
+import { NavLink, ShoppingCartButton, WishlistButton } from "../index";
 import { useSession } from "next-auth/react";
 import { UserInfoModal } from "@/entities/user";
 
@@ -27,10 +27,14 @@ export const MobileHeader = () => {
       {user && <UserInfoModal />}
 
       <NavLink href={"/wishlist"} className={``}>
-        <Heart />
+        <Suspense fallback={<Heart />}>
+          <WishlistButton />
+        </Suspense>
       </NavLink>
       <NavLink href={"/cart"} className={``}>
-        <ShoppingCart />
+        <Suspense fallback={<ShoppingCart />}>
+          <ShoppingCartButton />
+        </Suspense>
       </NavLink>
     </header>
   );
