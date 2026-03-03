@@ -35,6 +35,14 @@ export async function GET(req) {
     if (minPriceNum && maxPriceNum && minPriceNum > maxPriceNum) {
       return NextResponse.json({ error: 'minPrice cannot be greater than maxPrice' }, { status: 400 });
     }
+    
+    // Validate minRating
+    if (minRating) {
+      const minRatingNum = parseFloat(minRating);
+      if (isNaN(minRatingNum) || minRatingNum < 0 || minRatingNum > 5) {
+        return NextResponse.json({ error: 'minRating must be between 0 and 5' }, { status: 400 });
+      }
+    }
 
     // Build search condition
     const searchCondition = search ? {
@@ -143,12 +151,34 @@ export async function GET(req) {
       sortedProducts.sort((a, b) => b.product_name.localeCompare(a.product_name));
     }
 
-    // Get total count for pagination (without rating filter for accuracy)
-    const totalProductsCount = await prisma.products.count({
-      where: {
-        AND: [searchCondition, categoryCondition],
-      },
-    });
+    // Get total count for pagination
+    // When minRating is applied, we need to count products that match the rating criteria
+    let totalProductsCount;
+    
+    if (minRating) {
+      // Count products that have average rating >= minRating
+      const minRatingNum = parseFloat(minRating);
+      const allProducts = await prisma.products.findMany({
+        where: {
+          AND: [searchCondition, categoryCondition],
+        },
+        include: {
+          reviews: { select: { rating: true } },
+        },
+      });
+      
+      totalProductsCount = allProducts.filter(product => {
+        if (product.reviews.length === 0) return false;
+        const avgRating = product.reviews.reduce((sum, r) => sum + r.rating, 0) / product.reviews.length;
+        return avgRating >= minRatingNum;
+      }).length;
+    } else {
+      totalProductsCount = await prisma.products.count({
+        where: {
+          AND: [searchCondition, categoryCondition],
+        },
+      });
+    }
 
     // Add wishlist info if user is authenticated
     let wishlistInfo = null;
@@ -175,7 +205,7 @@ export async function GET(req) {
       pagination: {
         page,
         limit,
-        total: minRating ? totalProductsCount : totalProductsCount,
+        total: totalProductsCount,
         totalPages: Math.ceil(totalProductsCount / limit),
       },
       search: {
