@@ -13,12 +13,14 @@ const themes = [
 const ThemeSwitcher = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [currentTheme, setCurrentTheme] = useState("dark");
+  const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
     // Load theme from localStorage or use default
     const savedTheme = localStorage.getItem("theme") || "dark";
     setCurrentTheme(savedTheme);
     document.documentElement.setAttribute("data-theme", savedTheme);
+    setMounted(true);
   }, []);
 
   const handleThemeChange = (themeId) => {
@@ -31,12 +33,23 @@ const ThemeSwitcher = () => {
   const currentThemeData = themes.find((t) => t.id === currentTheme) || themes[1];
   const CurrentIcon = currentThemeData.icon;
 
+  // Prevent hydration mismatch by not rendering until mounted
+  if (!mounted) {
+    return (
+      <div className="p-2">
+        <CurrentIcon className="w-5 h-5" />
+      </div>
+    );
+  }
+
   return (
     <div className="relative">
       <button
         onClick={() => setIsOpen(!isOpen)}
         className="p-2 rounded-lg hover:bg-border/50 transition-colors flex items-center gap-2"
         aria-label="Switch theme"
+        aria-haspopup="true"
+        aria-expanded={isOpen}
       >
         <CurrentIcon className="w-5 h-5" />
       </button>
@@ -46,8 +59,13 @@ const ThemeSwitcher = () => {
           <div
             className="fixed inset-0 z-40"
             onClick={() => setIsOpen(false)}
+            aria-hidden="true"
           />
-          <div className="absolute right-0 top-full mt-2 w-40 bg-surface border border-border rounded-lg shadow-lg z-50 overflow-hidden">
+          <div 
+            className="absolute right-0 top-full mt-2 w-40 bg-surface border border-border rounded-lg shadow-lg z-50 overflow-hidden"
+            role="menu"
+            aria-label="Theme options"
+          >
             {themes.map((theme) => {
               const Icon = theme.icon;
               return (
@@ -57,6 +75,7 @@ const ThemeSwitcher = () => {
                   className={`w-full px-4 py-2 flex items-center gap-2 hover:bg-border/50 transition-colors ${
                     currentTheme === theme.id ? "bg-primary/10 text-primary" : ""
                   }`}
+                  role="menuitem"
                 >
                   <Icon className="w-4 h-4" />
                   <span className="text-sm">{theme.label}</span>
