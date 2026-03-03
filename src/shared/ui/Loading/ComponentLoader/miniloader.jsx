@@ -1,7 +1,7 @@
 import React from 'react'
 import './miniloader.css'
 
-const Miniloader = () => {
+export const Miniloader = () => {
   return (
     <div className="w-full   flex justify-center items-center p-20">
         <svg className="pl" width={240} height={240} viewBox="0 0 240 240">
@@ -13,5 +13,3 @@ const Miniloader = () => {
     </div>
   )
 }
-
-export default Miniloader;

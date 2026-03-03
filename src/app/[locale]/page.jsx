@@ -30,22 +30,19 @@ export const metadata = {
 
 import React, { Suspense } from "react";
 import { getTranslations } from "next-intl/server";
-import MiniLoader from "@/shared/ui/Loading/ComponentLoader/miniloader";
-import Main from "@/features/home/ui/banners/main";
-import CategorySection from "@/features/home/ui/CategorySection/Main";
-import DragScrollContainer from "@/shared/ui/ScrollContainer/ScrollContainer";
-import FeaturedProducts from "@/features/home/ui/CategorySection/FeaturedProducts";
-import ProductsRenderSkeleton from "@/shared/ui/skeleton/ui/ProductsRenderSkeleton";
+import { Miniloader, ProductsRenderSkeleton } from "@/shared";
+import { Main, CategorySection, FeaturedProducts } from "@/features/home";
+import { DragScrollContainer } from "@/shared/ui/ScrollContainer";
 
 const Page = async () => {
   const t = await getTranslations("home");
 
   return (
     <div className="mx-auto max-w-[1440px]">
-      <Suspense fallback={<MiniLoader />}>
+      <Suspense fallback={<Miniloader />}>
         <Main />
       </Suspense>
-      <Suspense fallback={<MiniLoader />}>
+      <Suspense fallback={<Miniloader />}>
         <CategorySection />
       </Suspense>
       <div className="md:my-14 md:mx-40 text-text">

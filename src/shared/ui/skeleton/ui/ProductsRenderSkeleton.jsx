@@ -1,4 +1,4 @@
-import ProductCard from "@/entities/product/ProductCard/ProductCard";
+import ProductCard from "@/entities/product";
 import React from "react";
 import ProductCardSkeleton from "@/shared/ui/skeleton/ui/ProductCardSkeleton";
 import "react-loading-skeleton/dist/skeleton.css";

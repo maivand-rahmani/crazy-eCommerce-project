@@ -1,9 +1,8 @@
 import React from "react";
 import CommentSection from "./CommentSection/CommentSection";
-import Fetch from "@/shared/lib/fetch";
-import { getServerSession } from 'next-auth'
+import { Fetch } from "@/shared/lib";
+import { getServerSession } from "next-auth";
 import { authParams } from "@/app/api/auth/[...nextauth]/route";
-
 
 const MainCommentComponent = async ({ productID }) => {
   const user = await getServerSession(authParams).then((res) => res?.user);
@@ -18,7 +17,6 @@ const MainCommentComponent = async ({ productID }) => {
       : null,
   }));
 
-  
   return (
     <div>
       <CommentSection

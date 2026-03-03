@@ -2,7 +2,7 @@
 import React, { useState } from "react";
 import { CommentAction } from "../model/FormAction";
 import styled from "styled-components";
-import Rating from "@/entities/rating/ui/Rating";
+import Rating from "@/entities/rating";
 import { toast } from "react-hot-toast";
 import { useTranslations } from "next-intl";
 

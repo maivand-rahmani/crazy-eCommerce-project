@@ -14,9 +14,9 @@ import {
   CircleUserRound,
   Menu,
 } from "lucide-react";
-import { Link , usePathname  } from "@/shared/i18n/model/routing";
+import { Link , usePathname  } from "@/shared/i18n";
 import { useTranslations , useLocale } from "next-intl";
-import { UserInfoModal } from "@/entities/user/ui/AccountModal";
+import { UserInfoModal } from "@/entities/user";
 import ProductSearch from "@/features/search/ui/ProductSearch";
 import { ShoppingCartButton , WishlistButton } from "@/shared/ui/layout/header/ui";
 

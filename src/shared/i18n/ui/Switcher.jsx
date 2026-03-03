@@ -1,7 +1,7 @@
 "use client";
 
 import React from "react";
-import { useRouter, usePathname } from "@/shared/i18n/model/routing";
+import { useRouter, usePathname } from "@/shared/i18n";
 import { useLocale } from "next-intl";
 import styled from "styled-components";
 

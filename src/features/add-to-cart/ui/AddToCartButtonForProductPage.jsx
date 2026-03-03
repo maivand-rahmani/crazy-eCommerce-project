@@ -4,7 +4,7 @@ import { useSession } from "next-auth/react";
 import { handleCartQuantityChange } from "../model/handleCartQuantityChangeOnClient";
 import { ShoppingCart, PlusSquare, MinusSquare, Trash2 } from "lucide-react";
 import { toast } from "react-hot-toast";
-import Fetch from "@/shared/lib/fetch";
+import { Fetch } from "@/shared/lib";
 import Counter from "./counter.jsx";
 import { useTranslations } from "next-intl";
 
@@ -20,7 +20,7 @@ export const AddToCartButtonForProductPage = ({ variantId, cart_id }) => {
   const [counter, setCounter] = useState(0);
 
   useEffect(() => {
-    if (!isSignedIn) return; 
+    if (!isSignedIn) return;
 
     const checkItem = async () => {
       setLoading(true);
@@ -54,7 +54,10 @@ export const AddToCartButtonForProductPage = ({ variantId, cart_id }) => {
   }, [isSignedIn, variantId, cart_id]); // Added isSignedIn to dependencies
 
   function callCartHandler(method) {
-    if (!isSignedIn) return toast(tCommon("error") + ": Authorization required.", { icon: "🔐" });
+    if (!isSignedIn)
+      return toast(tCommon("error") + ": Authorization required.", {
+        icon: "🔐",
+      });
     handleCartQuantityChange({
       setLoading,
       setCounter,

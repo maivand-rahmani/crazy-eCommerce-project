@@ -1,4 +1,4 @@
-import Fetch from "@/shared/lib/fetch";
+import { Fetch } from "@/shared/lib";
 import React from "react";
 import { getTranslations } from "next-intl/server";
 

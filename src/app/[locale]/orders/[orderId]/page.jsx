@@ -1,8 +1,8 @@
 "use client";
 import React, { useState, useEffect, use } from "react";
-import { useParams  } from "next/navigation";
-import { Link , useRouter } from "@/shared/i18n/model/routing";
-import Fetch from "@/shared/lib/fetch";
+import { useParams } from "next/navigation";
+import { Link, useRouter } from "@/shared/i18n";
+import { Fetch } from "@/shared/lib";
 import Image from "next/image";
 import { useTranslations } from "next-intl";
 
@@ -85,9 +85,7 @@ const OrderDetailPage = () => {
     return (
       <div className="container mx-auto px-4 py-8">
         <div className="text-center py-12">
-          <p className="text-danger text-lg mb-4">
-            {error || t("notFound")}
-          </p>
+          <p className="text-danger text-lg mb-4">{error || t("notFound")}</p>
           <button
             onClick={() => router.push("/orders")}
             className="px-4 py-2 bg-primary text-primary-text rounded hover:opacity-80 transition-colors"
@@ -172,7 +170,9 @@ const OrderDetailPage = () => {
                       />
                     ) : (
                       <div className="w-full h-full bg-gray-300 flex items-center justify-center">
-                        <span className="text-gray-500 text-xs">{tCommon("noImage")}</span>
+                        <span className="text-gray-500 text-xs">
+                          {tCommon("noImage")}
+                        </span>
                       </div>
                     )}
                   </Link>
@@ -183,7 +183,8 @@ const OrderDetailPage = () => {
                       href={`/catalog/${item.product_variants.products?.categories?.id}/${item.product_variants.id}`}
                       className="font-medium text-gray-900 hover:text-blue-600 transition-colors"
                     >
-                      {item.product_variants.products?.name || tCommon("notAvailable")}
+                      {item.product_variants.products?.name ||
+                        tCommon("notAvailable")}
                     </Link>
                     {item.product_variants.variant_name && (
                       <p className="text-sm text-gray-600">
@@ -237,9 +238,7 @@ const OrderDetailPage = () => {
               )}
               <div className="flex justify-between font-semibold text-lg pt-2 border-t">
                 <span>{t("total")}:</span>
-                <span>
-                  ${formatPrice(finalPrice)}
-                </span>
+                <span>${formatPrice(finalPrice)}</span>
               </div>
             </div>
           </div>
@@ -247,7 +246,9 @@ const OrderDetailPage = () => {
           {/* Shipping Address */}
           {order.address && (
             <div className="bg-white rounded-lg shadow-md p-6">
-              <h3 className="text-lg font-semibold mb-4">{t("shippingAddress")}</h3>
+              <h3 className="text-lg font-semibold mb-4">
+                {t("shippingAddress")}
+              </h3>
               <div className="text-gray-600">
                 {typeof order.address === "object" ? (
                   <div>
@@ -269,8 +270,12 @@ const OrderDetailPage = () => {
           <div className="bg-white rounded-lg shadow-md p-6">
             <h3 className="text-lg font-semibold mb-4">{t("customerInfo")}</h3>
             <div className="text-gray-600">
-              <p>{t("name")}: {order.user?.name || tCommon("notAvailable")}</p>
-              <p>{t("email")}: {order.user?.email || tCommon("notAvailable")}</p>
+              <p>
+                {t("name")}: {order.user?.name || tCommon("notAvailable")}
+              </p>
+              <p>
+                {t("email")}: {order.user?.email || tCommon("notAvailable")}
+              </p>
             </div>
           </div>
         </div>

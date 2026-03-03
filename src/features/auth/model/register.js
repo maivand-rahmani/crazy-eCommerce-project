@@ -1,6 +1,6 @@
 "use server";
 import { hash } from 'bcrypt'
-import Fetch from '@/shared/lib/fetch'
+import { Fetch } from '@/shared/lib/fetch'
 
 export async function register(data) {
   const { firstname, lastname, email, password } = data;

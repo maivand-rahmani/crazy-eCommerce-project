@@ -10,7 +10,7 @@ import {
 } from "lucide-react";
 import NavLink from "../ui/NavLink";
 import { useSession } from "next-auth/react";
-import { UserInfoModal } from "@/entities/user/ui/AccountModal";
+import { UserInfoModal } from "@/entities/user";
 
 const MobileHeader = () => {
   const session = useSession();

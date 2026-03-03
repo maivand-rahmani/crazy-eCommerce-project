@@ -1,9 +1,9 @@
 export const dynamic = "force-dynamic";
 export const dynamicParams = false;
 import React from "react";
-import ProductsContainer from "@/features/catalog/ui/ProductsContainer/ProductsContainer";
-import { Url } from "@/shared/ui/urlWay/url.jsx";
-import Fetch from "@/shared/lib/fetch";
+import { ProductsContainer } from "@/features/catalog";
+import { Url } from "@/shared/ui/urlWay";
+import { getProducts } from "@/features/catalog";
 import { getTranslations } from "next-intl/server";
 
 export async function generateMetadata({ params }) {
@@ -58,7 +58,7 @@ const page = async ({ params }) => {
   const t = await getTranslations("common");
   const { categoryId } = params;
 
-  let data = await Fetch(`/api/products?category=${categoryId}`);
+  let data = await getProducts(categoryId);
 
   if (!data) return <div>{t("error")}</div>;
 

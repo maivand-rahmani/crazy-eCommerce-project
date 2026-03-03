@@ -1,6 +1,6 @@
 "use client";
 import React, { useRef } from "react";
-import ResponsibleBanner from "@/features/home/ui/banners/ResponsibleBanner";
+import { ResponsibleBanner } from "@/features/home";
 import { useTranslations } from "next-intl";
 
 const bannersInfo = [

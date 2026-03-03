@@ -24,14 +24,14 @@ export const metadata = {
   },
 };
 
-import Fetch from "@/shared/lib/fetch";
-import CategoryCard from "@/features/home/ui/CategorySection/CategoryCard";
+import { getCategories } from "@/features/catalog";
+import { CategoryCard } from "@/features/home";
 import React from "react";
 import { getTranslations } from "next-intl/server";
 
 const page = async () => {
   const t = await getTranslations("common");
-  let data = await Fetch("/api/categories");
+  let data = await getCategories();
 
   if (!data) return <div>{t("error")}</div>;
 

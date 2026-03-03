@@ -1,6 +1,6 @@
 "use client";
 import React, { useState } from "react";
-import { Link } from "@/shared/i18n/model/routing";
+import { Link } from "@/shared/i18n";
 import {useParams } from "next/navigation"
 import { Truck , Store , BadgeCheck , ShoppingCart } from 'lucide-react';
 import { AddToWishListCom } from '@/features/add-to-wishlist/ui/AddToWishListCom.jsx';

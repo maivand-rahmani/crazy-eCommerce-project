@@ -2,8 +2,8 @@
 
 import React, { useState, useEffect, useCallback, useRef } from "react";
 import { Search, SlidersHorizontal, X, ChevronLeft, ChevronRight } from "lucide-react";
-import ProductCard from "@/entities/product/ProductCard/ProductCard";
-import { useRouter, usePathname } from "@/shared/i18n/model/routing";
+import ProductCard from "@/entities/product";
+import { useRouter, usePathname } from "@/shared/i18n";
 import { useSearchParams } from "next/navigation";
 import { useTranslations } from "next-intl";
 

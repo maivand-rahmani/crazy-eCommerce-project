@@ -1,7 +1,7 @@
 import React from "react";
 import { getTranslations } from "next-intl/server";
-import Fetch from "@/shared/lib/fetch";
-import ProductCard from "@/entities/product/ProductCard/ProductCard";
+import { getWishlist } from "@/features/wishlist";
+import ProductCard from "@/entities/product";
 import Link from "next/link";
 
 export const metadata = {
@@ -23,7 +23,7 @@ export const metadata = {
 
 const page = async () => {
   const t = await getTranslations("wishlist");
-  const wishlist = await Fetch("/api/wishlist");
+  const wishlist = await getWishlist();
   return (
     <div className="p-5 md:p-20">
       {wishlist.length > 0 && (

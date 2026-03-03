@@ -4,7 +4,7 @@ import GitHubProvider from "next-auth/providers/github";
 import CredentialsProvider from "next-auth/providers/credentials";
 import { PrismaAdapter } from "@next-auth/prisma-adapter";
 import prisma from "../../../../../prisma/client";
-import { authorizeUser } from '@/shared/lib/auth/authorizeUser'
+import { authorizeUser } from '@/features/auth';
 
 export const authParams = {
     session: { strategy: "jwt" },

@@ -1,12 +1,12 @@
 "use client";
 import { signIn, signOut, useSession } from "next-auth/react";
 import Image from "next/image";
-import { useRouter } from "@/shared/i18n/model/routing";
+import { useRouter } from "@/shared/i18n";
 import { useState } from "react";
-import { UserProfileModal } from "@/entities/user/ui/modals/UserProfileModal";
-import { Dropdown } from "@/shared/ui/dropdown/dropdown";
+import { UserProfileModal } from "@/entities/user";
+import { Dropdown } from "@/shared";
 import { CreditCard, LogOut, Settings, User } from "lucide-react";
-import LangSwitcher from "@/shared/i18n/ui/Switcher";
+import { LangSwitcher } from "@/shared/i18n";
 import { useTranslations } from "next-intl";
 
 export const UserInfoModal = () => {
@@ -14,12 +14,12 @@ export const UserInfoModal = () => {
   const router = useRouter();
   const { data } = useSession();
   const user = data?.user;
-  const [modal , setModal] = useState(false)
+  const [modal, setModal] = useState(false);
 
   function handleMenuAction(key) {
     switch (key) {
       case "profile":
-        setModal("profile")
+        setModal("profile");
         break;
       case "orders":
         router.push("/orders");
@@ -33,7 +33,6 @@ export const UserInfoModal = () => {
     }
   }
 
-   
   if (!user) {
     return (
       <button
@@ -50,7 +49,6 @@ export const UserInfoModal = () => {
     );
   }
 
-   
   return (
     <>
       <Dropdown.Root>
@@ -63,16 +61,23 @@ export const UserInfoModal = () => {
           />
         </Dropdown.DotsButton>
 
-        <Dropdown.Popover className="bg-bg text-text"> 
+        <Dropdown.Popover className="bg-bg text-text">
           <Dropdown.Menu onAction={handleMenuAction}>
             <Dropdown.Section>
               <Dropdown.Item id="profile" label={t("profile")} icon={User} />
-              <Dropdown.Item id="orders" label={t("orders")} icon={CreditCard} />
-              <Dropdown.Item id="settings" label={t("settings")} icon={Settings} />
-
+              <Dropdown.Item
+                id="orders"
+                label={t("orders")}
+                icon={CreditCard}
+              />
+              <Dropdown.Item
+                id="settings"
+                label={t("settings")}
+                icon={Settings}
+              />
 
               <Dropdown.Separator />
-                <Dropdown.Item label={<LangSwitcher />} />
+              <Dropdown.Item label={<LangSwitcher />} />
               <Dropdown.Separator />
 
               <Dropdown.Item
@@ -86,8 +91,15 @@ export const UserInfoModal = () => {
         </Dropdown.Popover>
       </Dropdown.Root>
 
-      {modal === "profile" && <UserProfileModal user={user} isOpen={modal} onClose={() => setModal(false)} /> }
+      {modal === "profile" && (
+        <UserProfileModal
+          user={user}
+          isOpen={modal}
+          onClose={() => setModal(false)}
+        />
+      )}
     </>
-    
   );
 };
+
+export default UserInfoModal;

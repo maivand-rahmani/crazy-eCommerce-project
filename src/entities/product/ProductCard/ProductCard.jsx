@@ -3,7 +3,7 @@ import React, { useState } from "react";
 import { Heart } from "lucide-react";
 import Image from "next/image";
 import { AddToWishListCom } from "../../../features/add-to-wishlist/ui/AddToWishListCom";
-import { useRouter } from "@/shared/i18n/model/routing";
+import { useRouter } from "@/shared/i18n";
 import { useTranslations } from "next-intl";
 
 const ProductCard = ({ data, otherInfo }) => {
@@ -12,7 +12,9 @@ const ProductCard = ({ data, otherInfo }) => {
   if (!data) return <div>{t("notFound")}</div>;
 
   function handleClick() {
-    router.push(`/catalog/${data.category_id}/${data.variant_id}?product=${data.product_name}&variant=${data.variant_name}`);
+    router.push(
+      `/catalog/${data.category_id}/${data.variant_id}?product=${data.product_name}&variant=${data.variant_name}`,
+    );
   }
 
   return (

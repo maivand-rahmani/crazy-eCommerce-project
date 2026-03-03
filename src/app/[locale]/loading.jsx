@@ -1,8 +1,8 @@
 import React from "react";
-import Loader from "@/shared/ui/Loading/PageLoader/loader";
+import { PageLoader } from "@/shared";
 
 const LoadingPage = () => {
-  return "loading";
+  return <PageLoader />;
 };
 
 export default LoadingPage;

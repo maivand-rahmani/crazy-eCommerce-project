@@ -1,12 +1,12 @@
 "use client";
-import { useSession } from 'next-auth/react'
+import { useSession } from "next-auth/react";
 import React, { useState, useEffect } from "react";
 import { Star } from "lucide-react";
-import { LikeDisLike } from "@/features/react-to-comment/ui/likeComponent";
+import { CommentReaction } from "@/entities/rating";
 import { Edit01, Delete, DotsVertical } from "@untitledui/icons";
-import { Dropdown } from "@/shared/ui/dropdown/dropdown";
-import Fetch from "@/shared/lib/fetch";
-import Rating from "@/entities/rating/ui/Rating";
+import { Dropdown } from "@/shared";
+import { Fetch } from "@/shared/lib";
+import Rating from "@/entities/rating";
 import { toast } from "react-hot-toast";
 import { useTranslations } from "next-intl";
 
@@ -28,7 +28,10 @@ const DropdownIcon = ({ setEditing, editing, comment, handleDelete }) => {
             >
               {t("edit")}
             </Dropdown.Item>
-            <Dropdown.Item icon={Delete} onClick={() => handleDelete(comment.id)}>
+            <Dropdown.Item
+              icon={Delete}
+              onClick={() => handleDelete(comment.id)}
+            >
               {t("delete")}
             </Dropdown.Item>
           </Dropdown.Section>
@@ -47,11 +50,9 @@ const CommentComponent = ({ comment, user, handleDelete, handleEdit }) => {
 
   const { data: session } = useSession();
   const currentUser = session?.user;
-   
-  
 
   const deleteComment = async (commentId) => {
-    const data = await Fetch(`/api/products/comments`, "DELETE", null, {
+    const data = await Fetch(`/api/products/comments`, "DELETE" , {
       id: commentId,
     });
     if (data?.status === 201) {
@@ -64,7 +65,7 @@ const CommentComponent = ({ comment, user, handleDelete, handleEdit }) => {
   };
 
   const editComment = async (commentId) => {
-    const data = await Fetch(`/api/products/comments`, "PUT", null, {
+    const data = await Fetch(`/api/products/comments`, "PUT" , {
       id: commentId,
       comment: commentText,
       rating: rating,
@@ -144,7 +145,7 @@ const CommentComponent = ({ comment, user, handleDelete, handleEdit }) => {
             </div>
           )}
         </form>
-        <LikeDisLike
+        <CommentReaction
           commentId={comment.id}
           dislikes={comment.dislikes}
           userReaction={comment.userReaction}

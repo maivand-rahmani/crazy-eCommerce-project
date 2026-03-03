@@ -1,22 +1,19 @@
-
-import Slider from "@/shared/ui/slider/Slider";
+import { getProduct } from "@/features/catalog";
+import { Fetch } from "@/shared/lib";
 import React, { Suspense } from "react";
-import Miniloader from "@/shared/ui/Loading/ComponentLoader/miniloader";
-import MainInfo from "@/entities/product/ui/MainInfo.jsx";
-import ProductSpecs from "@/entities/product/ui/ProductSpecs.jsx";
-import RelatedProducts from "@/entities/product/ui/RelatedProducts.jsx";
-import MainCommentComponent from "@/entities/comment/ui/CommentSection/MainComponent.jsx";
-import Fetch from "@/shared/lib/fetch";
-import { ProductRatingStats } from "@/entities/rating/ui/ProductRatingStats.jsx";
+import { Miniloader, Slider } from "@/shared";
+import { MainInfo, ProductSpecs, RelatedProducts } from "@/entities/product";
+import MainCommentComponent from "@/entities/comment";
+import { ProductRatingStats } from "@/entities/rating";
 import { getServerSession } from "next-auth";
 import { authParams } from "@/app/api/auth/[...nextauth]/route";
 import { getTranslations } from "next-intl/server";
 
 export async function generateMetadata({ params }) {
-  const { variantId } = params;
-  
+  const { variantId } = await params;
+
   try {
-    const MainData = await Fetch(`/api/products/${variantId}`);
+    const MainData = await getProduct(variantId);
     const data = MainData?.variant;
     const productName = data?.products?.name || "Product";
     const productCategory = data?.products?.categories?.name || "Products";
@@ -24,7 +21,13 @@ export async function generateMetadata({ params }) {
     return {
       title: `${productName} - Reviews, Specs & Best Price`,
       description: `Buy ${productName} online. Check ${productName} specs, read reviews, compare prices. Free shipping on orders over $50. Secure checkout.`,
-      keywords: [productName, productCategory, "buy online", "product reviews", "best price"],
+      keywords: [
+        productName,
+        productCategory,
+        "buy online",
+        "product reviews",
+        "best price",
+      ],
       // openGraph: {
       //   title: `${productName} - Reviews, Specs & Best Price`,
       //   description: `Buy ${productName} online. Free shipping on orders over $50.`,
@@ -46,11 +49,11 @@ export async function generateMetadata({ params }) {
 
 const page = async ({ params }) => {
   const t = await getTranslations("productDetails");
-  const { variantId, categoryId } = params;
+  const { variantId, categoryId } = await params;
   const user = await getServerSession(authParams).then((res) => res?.user);
   const userId = user ? user.id : null;
 
-  let MainData = await Fetch(`/api/products/${variantId}`);
+  let MainData = await getProduct(variantId);
 
   const data = userId ? MainData.variant : MainData;
   const metaData = userId ? MainData.meta : null;
@@ -78,11 +81,10 @@ const page = async ({ params }) => {
       </Suspense>
       <Suspense fallback={<Miniloader />}>
         <div className="py-10 px-5 md:py-20 md:px-40">
-          <h2 className="text-2xl font-semibold mb-6">{t("relatedProducts")}</h2>
-          <RelatedProducts
-            id={variantId}
-            category={fallbackCategoryId}
-          />
+          <h2 className="text-2xl font-semibold mb-6">
+            {t("relatedProducts")}
+          </h2>
+          <RelatedProducts id={variantId} category={fallbackCategoryId} />
         </div>
       </Suspense>
       <Suspense fallback={<Miniloader />}>

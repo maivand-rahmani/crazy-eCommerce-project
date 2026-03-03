@@ -1,8 +1,8 @@
-import ProductCard from "@/entities/product/ProductCard/ProductCard"
+import ProductCard from "@/entities/product"
 import React from 'react'
 import { useTranslations } from "next-intl";
 import { PackageX } from "lucide-react";
-import { ProductCardSkeleton } from "@/shared/ui/skeleton";
+import { ProductCardSkeleton } from "@/shared";
 
 
 const ProductsLists = ({ data, info, loading, loadingCount = 8 }) => {

@@ -1,5 +1,5 @@
 "use server"
-import Fetch from "@/shared/lib/fetch"
+import { Fetch } from "@/shared/lib/fetch"
 
 export async function addUserAddress(address) {
     try {

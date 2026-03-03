@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import Fetch from "@/shared/lib/fetch";
+import { Fetch } from "@/shared/lib";
 import { useTranslations } from "next-intl";
 
 export function ProductRatingStats({ productId }) {
@@ -62,8 +62,7 @@ export function ProductRatingStats({ productId }) {
                   <svg
                     key={i}
                     className={
-                      "h-4 w-4 " +
-                      (filled ? "text-accent" : "text-muted")
+                      "h-4 w-4 " + (filled ? "text-accent" : "text-muted")
                     }
                     viewBox="0 0 20 20"
                     fill="currentColor"
@@ -76,7 +75,8 @@ export function ProductRatingStats({ productId }) {
           </div>
 
           <p className="mt-2 text-xs text-unactive-text">
-            {t("basedOn")} {total} {t("reviews")} • {t("median")} {median.toFixed(1)}
+            {t("basedOn")} {total} {t("reviews")} • {t("median")}{" "}
+            {median.toFixed(1)}
           </p>
         </div>
       </div>

@@ -1,9 +1,9 @@
 export const dynamic = "force-dynamic";
 
 import React from "react";
-import SearchResultsContainer from "@/shared/ui/search/SearchResultsContainer";
+import { SearchResultsContainer } from "@/shared/ui/search";
 import { getTranslations } from "next-intl/server";
-import Fetch from "@/shared/lib/fetch";
+import { searchProducts } from "@/features/catalog";
 
 export async function generateMetadata({ params }) {
   const resolvedParams = await params;
@@ -36,7 +36,7 @@ const SearchPage = async ({ params }) => {
   let data = null;
   if (query) {
     try {
-      data = await Fetch(`/api/products/search?search=${encodeURIComponent(query)}&limit=20`);
+      data = await searchProducts(query);
     } catch (error) {
       console.error("Failed to fetch search results:", error);
     }

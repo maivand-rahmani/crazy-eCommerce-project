@@ -1,7 +1,7 @@
 "use server";
 import { cookies } from "next/headers";
 
-export default async function Fetch(url, method = "GET" , body) {
+export async function Fetch(url, method = "GET" , body) {
   const cookiesStore = await cookies();
   const token = cookiesStore.get("next-auth.session-token")?.value; 
 

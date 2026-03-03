@@ -1,3 +1,4 @@
+"use client";
 import React, { useState } from "react";
 import Counter from "../../../features/add-to-cart/ui/counter";
 import DeleteButton from "../../../features/add-to-cart/ui/deleteButton";

@@ -4,19 +4,27 @@ import { set, useForm } from "react-hook-form";
 import Modal from "@/shared/ui/modal/Modal";
 import { addUserAddress, updateUserAddress } from "../model/UserAddress";
 import toast from "react-hot-toast";
-import Fetch from "@/shared/lib/fetch";
-import Miniloader from "@/shared/ui/Loading/ComponentLoader/miniloader";
+import { Fetch } from "@/shared/lib/fetch";
+import { Miniloader } from "@/shared/ui/Loading/ComponentLoader/miniloader";
 import { useTranslations } from "next-intl";
 import { MapPin, Plus, Check } from "lucide-react";
 
-const AddUserAddressForm = ({ setStep = false, setOrderInfo = false, onAddressAdded, onCancel, addressForEdit = false }) => {
+const AddUserAddressForm = ({
+  setStep = false,
+  setOrderInfo = false,
+  onAddressAdded,
+  onCancel,
+  addressForEdit = false,
+}) => {
   const t = useTranslations("address");
   const [loading, setLoading] = useState(false);
   const [address, setAddress] = useState(addressForEdit);
   const [allAddresses, setAllAddresses] = useState([]);
   const [selectedAddressId, setSelectedAddressId] = useState(null);
   const [showAddForm, setShowAddForm] = useState(false);
-  const [isCheckoutMode, setIsCheckoutMode] = useState(!!(setStep && setOrderInfo));
+  const [isCheckoutMode, setIsCheckoutMode] = useState(
+    !!(setStep && setOrderInfo),
+  );
 
   const {
     register,
@@ -24,7 +32,7 @@ const AddUserAddressForm = ({ setStep = false, setOrderInfo = false, onAddressAd
     formState: { errors },
     setValue,
     setError,
-    reset
+    reset,
   } = useForm();
 
   let fillForm = ({ street, city, isDefault, zip, country, phone, state }) => {
@@ -45,7 +53,9 @@ const AddUserAddressForm = ({ setStep = false, setOrderInfo = false, onAddressAd
       if (response?.data?.addresses) {
         setAllAddresses(response.data.addresses);
         // Auto-select default address if in checkout mode
-        const defaultAddr = response.data.addresses.find((addr) => addr.isDefault === true);
+        const defaultAddr = response.data.addresses.find(
+          (addr) => addr.isDefault === true,
+        );
         if (defaultAddr) {
           setSelectedAddressId(defaultAddr.id);
         }
@@ -95,7 +105,9 @@ const AddUserAddressForm = ({ setStep = false, setOrderInfo = false, onAddressAd
   // Handle continue with selected address in checkout mode
   const handleContinueWithSelected = () => {
     if (selectedAddressId) {
-      const selectedAddr = allAddresses.find((addr) => addr.id === selectedAddressId);
+      const selectedAddr = allAddresses.find(
+        (addr) => addr.id === selectedAddressId,
+      );
       if (selectedAddr) {
         setOrderInfo((s) => ({ ...s, address: selectedAddr }));
         setStep(2);
@@ -109,7 +121,13 @@ const AddUserAddressForm = ({ setStep = false, setOrderInfo = false, onAddressAd
   const onSubmit = async (data) => {
     setLoading(true);
     try {
-      if (address && address.street === data.street && address.city === data.city && address.state === data.state && address.zip === data.zip) {
+      if (
+        address &&
+        address.street === data.street &&
+        address.city === data.city &&
+        address.state === data.state &&
+        address.zip === data.zip
+      ) {
         if (setStep && setOrderInfo) {
           // If we are in the checkout flow, we just set the order info and move to the next step
           setOrderInfo((s) => ({ ...s, address: data }));
@@ -121,7 +139,11 @@ const AddUserAddressForm = ({ setStep = false, setOrderInfo = false, onAddressAd
         const res = await addUserAddress({ ...data, id: crypto.randomUUID() });
 
         if (res?.status === 409) {
-          setError("isDefault", { type: "server", message: t("errors.isDefault") }, { shouldFocus: true });
+          setError(
+            "isDefault",
+            { type: "server", message: t("errors.isDefault") },
+            { shouldFocus: true },
+          );
           return;
         }
 
@@ -179,37 +201,46 @@ const AddUserAddressForm = ({ setStep = false, setOrderInfo = false, onAddressAd
             <Miniloader />
           </div>
         )}
-        
+
         <div className="flex flex-col gap-2 text-center">
           <h2 className="text-2xl font-bold text-text">
             {t("selectAddress") || "Select Shipping Address"}
           </h2>
           <p className="text-unactive-text text-sm">
-            {t("selectAddressDescription") || "Choose an existing address or add a new one"}
+            {t("selectAddressDescription") ||
+              "Choose an existing address or add a new one"}
           </p>
         </div>
 
         {/* Existing Addresses List */}
         {allAddresses.length > 0 ? (
           <div className="flex flex-col gap-3">
-            <p className="text-text text-sm font-medium">{t("yourAddresses") || "Your Addresses"}</p>
+            <p className="text-text text-sm font-medium">
+              {t("yourAddresses") || "Your Addresses"}
+            </p>
             {allAddresses.map((addr) => (
               <div
                 key={addr.id}
                 onClick={() => handleSelectAddress(addr)}
                 className={`
                   cursor-pointer p-4 rounded-xl border-2 transition-all
-                  ${selectedAddressId === addr.id 
-                    ? "border-primary bg-primary/10" 
-                    : "border-border hover:border-primary/50"}
+                  ${
+                    selectedAddressId === addr.id
+                      ? "border-primary bg-primary/10"
+                      : "border-border hover:border-primary/50"
+                  }
                 `}
               >
                 <div className="flex items-start gap-3">
-                  <div className={`
+                  <div
+                    className={`
                     w-5 h-5 rounded-full border-2 flex items-center justify-center mt-0.5
                     ${selectedAddressId === addr.id ? "border-primary" : "border-border"}
-                  `}>
-                    {selectedAddressId === addr.id && <div className="w-2.5 h-2.5 rounded-full bg-primary" />}
+                  `}
+                  >
+                    {selectedAddressId === addr.id && (
+                      <div className="w-2.5 h-2.5 rounded-full bg-primary" />
+                    )}
                   </div>
                   <div className="flex-1">
                     <div className="flex items-center gap-2">
@@ -238,12 +269,14 @@ const AddUserAddressForm = ({ setStep = false, setOrderInfo = false, onAddressAd
         )}
 
         {/* Add New Address Option */}
-        <div 
+        <div
           onClick={() => setShowAddForm(true)}
           className="cursor-pointer p-4 rounded-xl border-2 border-dashed border-border hover:border-primary/50 transition flex items-center justify-center gap-2"
         >
           <Plus className="w-5 h-5 text-primary" />
-          <span className="text-text font-medium">{t("addNewAddress") || "Add New Address"}</span>
+          <span className="text-text font-medium">
+            {t("addNewAddress") || "Add New Address"}
+          </span>
         </div>
 
         {/* Continue Button */}
@@ -263,12 +296,16 @@ const AddUserAddressForm = ({ setStep = false, setOrderInfo = false, onAddressAd
             disabled={!selectedAddressId && allAddresses.length > 0}
             className={`
               flex-1 p-3 rounded-xl text-center font-medium transition
-              ${selectedAddressId || allAddresses.length === 0
-                ? "bg-primary text-primary-text hover:opacity-80" 
-                : "bg-muted text-unactive-text cursor-not-allowed"}
+              ${
+                selectedAddressId || allAddresses.length === 0
+                  ? "bg-primary text-primary-text hover:opacity-80"
+                  : "bg-muted text-unactive-text cursor-not-allowed"
+              }
             `}
           >
-            {selectedAddressId ? (t("continue") || "Continue") : (t("selectAddress") || "Select an Address")}
+            {selectedAddressId
+              ? t("continue") || "Continue"
+              : t("selectAddress") || "Select an Address"}
           </button>
         </div>
       </div>
@@ -278,13 +315,16 @@ const AddUserAddressForm = ({ setStep = false, setOrderInfo = false, onAddressAd
   // Show add form when in checkout mode and user clicked "Add New Address"
   if (isCheckoutMode && showAddForm && !addressForEdit) {
     return (
-      <form onSubmit={handleSubmit(correctAction)} className="flex relative flex-col gap-6">
+      <form
+        onSubmit={handleSubmit(correctAction)}
+        className="flex relative flex-col gap-6"
+      >
         {loading && (
           <div className="flex justify-center absolute top-0 left-0 w-full h-full z-10 bg-surface/80">
             <Miniloader />
           </div>
         )}
-        
+
         <div className="flex flex-col gap-2 text-center">
           <h2 className="text-2xl font-bold text-text">{t("add")}</h2>
           <p className="text-unactive-text text-sm">{t("addDescription")}</p>
@@ -339,7 +379,9 @@ const AddUserAddressForm = ({ setStep = false, setOrderInfo = false, onAddressAd
             </label>
 
             <label className="flex flex-col gap-2">
-              <span className="text-text text-sm font-medium">{t("state")}</span>
+              <span className="text-text text-sm font-medium">
+                {t("state")}
+              </span>
               <input
                 {...register("state", { required: t("errors.stateRequired") })}
                 className="inputStyle"
@@ -364,14 +406,20 @@ const AddUserAddressForm = ({ setStep = false, setOrderInfo = false, onAddressAd
                 type="text"
               />
               {errors.zip && (
-                <span className="text-danger text-sm">{errors.zip.message}</span>
+                <span className="text-danger text-sm">
+                  {errors.zip.message}
+                </span>
               )}
             </label>
 
             <label className="flex flex-col gap-2">
-              <span className="text-text text-sm font-medium">{t("country")}</span>
+              <span className="text-text text-sm font-medium">
+                {t("country")}
+              </span>
               <input
-                {...register("country", { required: t("errors.countryRequired") })}
+                {...register("country", {
+                  required: t("errors.countryRequired"),
+                })}
                 className="inputStyle"
                 placeholder="United States"
                 type="text"
@@ -393,7 +441,9 @@ const AddUserAddressForm = ({ setStep = false, setOrderInfo = false, onAddressAd
               type="tel"
             />
             {errors.phone && (
-              <span className="text-danger text-sm">{errors.phone.message}</span>
+              <span className="text-danger text-sm">
+                {errors.phone.message}
+              </span>
             )}
           </label>
 
@@ -405,7 +455,13 @@ const AddUserAddressForm = ({ setStep = false, setOrderInfo = false, onAddressAd
             />
             <span className="text-text text-sm">{t("setDefault")}</span>
           </label>
-          <span>{errors.isDefault && <span className="text-danger text-center text-sm">{errors.isDefault.message}</span>}</span>
+          <span>
+            {errors.isDefault && (
+              <span className="text-danger text-center text-sm">
+                {errors.isDefault.message}
+              </span>
+            )}
+          </span>
         </div>
 
         <div className="flex gap-3 pt-2">
@@ -429,16 +485,21 @@ const AddUserAddressForm = ({ setStep = false, setOrderInfo = false, onAddressAd
 
   // Original form for non-checkout mode (profile editing, etc.)
   return (
-    <form onSubmit={handleSubmit(correctAction)} className="flex relative flex-col gap-6">
-      {loading && <div className="flex justify-center absolute top-0 left-0 w-full h-full"><Miniloader /></div>}
+    <form
+      onSubmit={handleSubmit(correctAction)}
+      className="flex relative flex-col gap-6"
+    >
+      {loading && (
+        <div className="flex justify-center absolute top-0 left-0 w-full h-full">
+          <Miniloader />
+        </div>
+      )}
       <div className="flex flex-col gap-2 text-center">
         <h2 className="text-2xl font-bold text-text">
           {address ? t("update") : t("add")}
         </h2>
         <p className="text-unactive-text text-sm">
-          {address
-            ? t("updateDescription")
-            : t("addDescription")}
+          {address ? t("updateDescription") : t("addDescription")}
         </p>
       </div>
 
@@ -454,9 +515,7 @@ const AddUserAddressForm = ({ setStep = false, setOrderInfo = false, onAddressAd
             type="text"
           />
           {errors.street && (
-            <span className="text-danger text-sm">
-              {errors.street.message}
-            </span>
+            <span className="text-danger text-sm">{errors.street.message}</span>
           )}
         </label>
 
@@ -470,9 +529,7 @@ const AddUserAddressForm = ({ setStep = false, setOrderInfo = false, onAddressAd
               type="text"
             />
             {errors.city && (
-              <span className="text-danger text-sm">
-                {errors.city.message}
-              </span>
+              <span className="text-danger text-sm">{errors.city.message}</span>
             )}
           </label>
 
@@ -507,9 +564,13 @@ const AddUserAddressForm = ({ setStep = false, setOrderInfo = false, onAddressAd
           </label>
 
           <label className="flex flex-col gap-2">
-            <span className="text-text text-sm font-medium">{t("country")}</span>
+            <span className="text-text text-sm font-medium">
+              {t("country")}
+            </span>
             <input
-              {...register("country", { required: t("errors.countryRequired") })}
+              {...register("country", {
+                required: t("errors.countryRequired"),
+              })}
               className="inputStyle"
               placeholder="United States"
               type="text"
@@ -543,7 +604,13 @@ const AddUserAddressForm = ({ setStep = false, setOrderInfo = false, onAddressAd
           />
           <span className="text-text text-sm">{t("setDefault")}</span>
         </label>
-          <span>{ errors.isDefault && <span className="text-danger text-center text-sm">{errors.isDefault.message}</span>}</span>
+        <span>
+          {errors.isDefault && (
+            <span className="text-danger text-center text-sm">
+              {errors.isDefault.message}
+            </span>
+          )}
+        </span>
       </div>
 
       <div className="flex gap-3 pt-2">

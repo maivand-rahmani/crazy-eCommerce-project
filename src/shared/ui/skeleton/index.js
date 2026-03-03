@@ -1,1 +1,2 @@
-export { default as ProductCardSkeleton } from "@/shared/ui/skeleton/ui/ProductCardSkeleton";
+export { default as ProductCardSkeleton } from "./ui/ProductCardSkeleton";
+export { default as ProductsRenderSkeleton } from "./ui/ProductsRenderSkeleton";

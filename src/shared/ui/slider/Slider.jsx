@@ -1,9 +1,9 @@
 "use client";
-import Miniloader from "@/shared/ui/Loading/ComponentLoader/miniloader";
+import { Miniloader } from "@/shared";
 import Image from "next/image";
 import React, { Suspense, useRef, useState, useEffect } from "react";
 import { ArrowBigLeft, ArrowBigRight } from "lucide-react";
-import Fetch from "@/shared/lib/fetch";
+import { Fetch } from "@/shared/lib";
 
 const Slider = ({ productId, variantId }) => {
   let [clicked, setClicked] = useState(false);

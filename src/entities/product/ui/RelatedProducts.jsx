@@ -1,5 +1,5 @@
-import ProductCard from "@/entities/product/ProductCard/ProductCard";
-import Fetch from "@/shared/lib/fetch";
+import ProductCard from "@/entities/product";
+import { Fetch } from "@/shared/lib";
 
 const RelatedProducts = async ({ id, category }) => {
   if (!id || !category) {
@@ -10,7 +10,9 @@ const RelatedProducts = async ({ id, category }) => {
   let otherInfo = null;
 
   try {
-    const result = await Fetch(`/api/products/related?id=${id}&category=${category}&limit=4`);
+    const result = await Fetch(
+      `/api/products/related?id=${id}&category=${category}&limit=4`,
+    );
 
     if (!result || result.error) {
       throw new Error(result?.error || "Failed to fetch related products");
@@ -18,21 +20,25 @@ const RelatedProducts = async ({ id, category }) => {
 
     data = result;
 
-    const wishlistRes = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/wishlist`, {
-      cache: "no-store",
-    });
-    
+    const wishlistRes = await fetch(
+      `${process.env.NEXT_PUBLIC_API_URL}/api/wishlist`,
+      {
+        cache: "no-store",
+      },
+    );
+
     if (wishlistRes.ok) {
       const wishlistData = await wishlistRes.json();
-      
+
       if (wishlistData?.wishlist) {
         otherInfo = {
-          isInWishlist: wishlistData.wishlist.map(item => item.variant_id) || []
+          isInWishlist:
+            wishlistData.wishlist.map((item) => item.variant_id) || [],
         };
       }
     }
   } catch (err) {
-    console.error('Error loading related products:', err);
+    console.error("Error loading related products:", err);
     return null;
   }
 
@@ -40,7 +46,7 @@ const RelatedProducts = async ({ id, category }) => {
     return null;
   }
 
-  const transformedData = data.map(product => ({
+  const transformedData = data.map((product) => ({
     variant_id: product.variant_id,
     product_id: product.product_id,
     category_id: product.category_id,
@@ -48,16 +54,16 @@ const RelatedProducts = async ({ id, category }) => {
     variant_name: product.variant_name,
     price_cents: product.price_cents,
     image_url: product.image_url,
-    isFavorite: otherInfo?.isInWishlist?.includes(product.variant_id) || false
+    isFavorite: otherInfo?.isInWishlist?.includes(product.variant_id) || false,
   }));
 
   return (
     <div className="grid grid-cols-2 md:grid-cols-4 gap-4 lg:gap-6">
       {transformedData.map((product) => (
-        <ProductCard 
-          key={product.variant_id} 
-          data={product} 
-          otherInfo={otherInfo} 
+        <ProductCard
+          key={product.variant_id}
+          data={product}
+          otherInfo={otherInfo}
         />
       ))}
     </div>
