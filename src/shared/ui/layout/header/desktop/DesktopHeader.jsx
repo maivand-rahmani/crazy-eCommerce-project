@@ -19,6 +19,7 @@ import { useTranslations , useLocale } from "next-intl";
 import { UserInfoModal } from "@/entities/user/ui/AccountModal";
 import ProductSearch from "@/features/search/ui/ProductSearch";
 import { ShoppingCartButton , WishlistButton } from "@/shared/ui/layout/header/ui";
+import ThemeSwitcher from "@/shared/ui/layout/header/ui/ThemeSwitcher";
 
 const routes = [
   { name: "Home", path: "/" },
@@ -60,7 +61,8 @@ const DesktopHeader = () => {
         </ul>
 
         {/* Icons */}
-        <div className="hidden md:flex gap-6">
+        <div className="hidden md:flex gap-4">
+          <ThemeSwitcher />
           <Suspense fallback={<Heart />}>
             <WishlistButton />
           </Suspense>
