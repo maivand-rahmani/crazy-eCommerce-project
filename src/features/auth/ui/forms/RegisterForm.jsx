@@ -5,6 +5,7 @@ import { register as registerUser } from "@/features/auth/model/register";
 import { signIn } from "next-auth/react";
 import { useRouter} from "next/navigation";
 import { useTranslations } from "next-intl";
+import toast from "react-hot-toast";
 
 const RegisterForm = () => {
   const t = useTranslations("auth.register");
@@ -32,14 +33,16 @@ const RegisterForm = () => {
         });
 
         if (res?.error) {
-          console.error("Ошибка логина:", res.error);
+          console.error("Login error:", res.error);
+          toast.error(t("errors.somethingWrong"));
         } else {
           reset();
           router.replace("/");
         }
       }
     } catch (error) {
-      console.error("Ошибка регистрации:", error);
+      console.error("Registration error:", error);
+      toast.error(t("errors.somethingWrong"));
     } finally {
       setLoading(false);
     }
