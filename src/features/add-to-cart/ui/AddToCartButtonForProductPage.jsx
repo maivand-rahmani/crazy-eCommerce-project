@@ -31,7 +31,6 @@ export const AddToCartButtonForProductPage = ({ variantId, cart_id }) => {
 
         if (!res) throw new Error("Request failed");
 
-        console.log(res);
         if (res.item) setAdded(res.item);
         if (res.item) setCounter(res.item.quantity);
       } catch (error) {
@@ -43,7 +42,6 @@ export const AddToCartButtonForProductPage = ({ variantId, cart_id }) => {
           toast.error("The request is taking longer than expected.", {
             duration: 2000,
           });
-          console.log(error);
         }
       } finally {
         setLoading(false);

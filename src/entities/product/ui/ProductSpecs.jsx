@@ -6,6 +6,17 @@ const ProductSpecs = async ({ productId }) => {
   const t = await getTranslations("product");
   const data = await Fetch(`/api/products/specs?productId=${productId}`);
 
+  if (!data?.data || !Array.isArray(data.data)) {
+    return (
+      <div className="py-5 px-5 md:py-20 md:px-40 bg-bg">
+        <div className="py-12 px-10 bg-surface rounded-2xl border border-border">
+          <h2 className="text-2xl font-semibold text-text">{t("details")}</h2>
+          <p className="text-text/60 mt-4">No specifications available</p>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div className="py-5 px-5 md:py-20 md:px-40 bg-bg">
       <div className="py-12 px-10 bg-surface rounded-2xl border border-border">

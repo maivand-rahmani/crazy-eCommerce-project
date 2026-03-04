@@ -9,7 +9,7 @@ import { useTranslations } from "next-intl";
 
 const  MainInfo = ({ product , otherInfo }) => {
   const t = useTranslations("product");
-  const variants = product.products?.product_variants || [];
+  const variants = product?.products?.product_variants || [];
   const currentVariant = product;
 
    const { categoryId } = useParams()
@@ -17,58 +17,58 @@ const  MainInfo = ({ product , otherInfo }) => {
  
 
   // {Характеристики для ТОвара (экран , камера и т.д.)} можно добавить ниже
-  const productSpecs = product.products?.product_specs || [];
+  const productSpecs = product?.products?.product_specs || [];
   const specs = ["RAM" , "Screen Size" , "Battery Capacity" , "Weight" , "Processor" , "Operating System"];
 
   // gurantee , stock , free delivery можно добавить ниже
   const info = [
     { icon: <BadgeCheck />, key: t("guarantee.title"), text: t("guarantee.value") },
-    { icon: <Store />, key: t("stock.title"), text: product.stock_quantity > 0 ? t("stock.available") : t("stock.outOfStock") },
+    { icon: <Store />, key: t("stock.title"), text: product?.stock_quantity > 0 ? t("stock.available") : t("stock.outOfStock") },
     { icon: <Truck />, key: t("delivery.title") , text: t("delivery.value") },
   ]
 
   const [selectedColor, setSelectedColor] = useState(
-    currentVariant?.variant_options.find(o => o.key === "Color")?.value || null
+    currentVariant?.variant_options?.find(o => o.key === "Color")?.value || null
   );
   const [selectedStorage, setSelectedStorage] = useState(
-    currentVariant?.variant_options.find(o => o.key === "Storage")?.value || null
+    currentVariant?.variant_options?.find(o => o.key === "Storage")?.value || null
   );
 
   // Уникальные цвета
   const colorOptions = Array.from(
     new Map(
-      variants.map(v => [
-        v.variant_options.find(o => o.key === "Color")?.value || "N/A",
+      (variants || []).map(v => [
+        v.variant_options?.find(o => o.key === "Color")?.value || "N/A",
         v,
       ])
     ).values()
   );
 
   // Storage для выбранного цвета
-  const storageOptions = variants
-    .filter(v => (v.variant_options.find(o => o.key === "Color")?.value || "N/A") === selectedColor)
+  const storageOptions = (variants || [])
+    .filter(v => (v.variant_options?.find(o => o.key === "Color")?.value || "N/A") === selectedColor)
     .map(v => ({
       id: v.id,
-      storage: v.variant_options.find(o => o.key === "Storage")?.value || "N/A",
+      storage: v.variant_options?.find(o => o.key === "Storage")?.value || "N/A",
       variant_name: v.variant_name,
     }));
 
   // RAM для выбранного цвета + storage
-  const ramOptions = variants
+  const ramOptions = (variants || [])
     .filter(v => {
-      const color = v.variant_options.find(o => o.key === "Color")?.value || "N/A";
-      const storage = v.variant_options.find(o => o.key === "Storage")?.value || null;
-      return color === selectedColor && storage === selectedStorage && v.variant_options.find(o => o.key === "RAM");
+      const color = v.variant_options?.find(o => o.key === "Color")?.value || "N/A";
+      const storage = v.variant_options?.find(o => o.key === "Storage")?.value || null;
+      return color === selectedColor && storage === selectedStorage && v.variant_options?.find(o => o.key === "RAM");
     })
     .map(v => ({
       id: v.id,
-      ram: v.variant_options.find(o => o.key === "RAM")?.value || "N/A",
+      ram: v.variant_options?.find(o => o.key === "RAM")?.value || "N/A",
       variant_name: v.variant_name,
     }));
 
-  const currentColor = currentVariant?.variant_options.find(o => o.key === "Color")?.value;
-  const currentStorage = currentVariant?.variant_options.find(o => o.key === "Storage")?.value;
-  const currentRam = currentVariant?.variant_options.find(o => o.key === "RAM")?.value;
+  const currentColor = currentVariant?.variant_options?.find(o => o.key === "Color")?.value;
+  const currentStorage = currentVariant?.variant_options?.find(o => o.key === "Storage")?.value;
+  const currentRam = currentVariant?.variant_options?.find(o => o.key === "RAM")?.value;
 
   return (
     <div className="h-full w-full">

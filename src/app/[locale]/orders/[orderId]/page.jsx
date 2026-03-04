@@ -26,7 +26,6 @@ const OrderDetailPage = () => {
           setError(fetchError);
         } else {
           setOrder(data);
-          console.log(data);
         }
       } catch (err) {
         setError("Failed to fetch order details");
