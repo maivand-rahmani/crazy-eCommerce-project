@@ -37,7 +37,7 @@ const CouponForm = ({ total, setAmount = () => {}, setCoupon = () => {} }) => {
         setSubmited(false);
       }
     } catch (error) {
-      console.log("error while applying coupon", error);
+      console.error("Error while applying coupon:", error);
       setSubmited(false);
     }
   }

@@ -34,10 +34,8 @@ const RegisterForm = () => {
         if (res?.error) {
           console.error("Ошибка логина:", res.error);
         } else {
-          console.log("Успешный логин!");
           reset();
           router.replace("/");
-          ;
         }
       }
     } catch (error) {

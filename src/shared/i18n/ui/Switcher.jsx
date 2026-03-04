@@ -12,7 +12,6 @@ const LangSwitcher = () => {
 
   const changeLang = (nextLocale) => {
     if (nextLocale === locale) return;
-    console.log(nextLocale)
 
     router.replace(pathname, { locale: nextLocale , scroll: false});
   };
@@ -25,7 +24,6 @@ const LangSwitcher = () => {
         onChange={(e) => {
           e.stopPropagation();
           const target = e.target;
-          console.log(e)
           if (target.type === "radio") {
             changeLang(target.value.toLowerCase());
           }
