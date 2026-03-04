@@ -4,6 +4,7 @@ import { useForm } from "react-hook-form";
 import { signIn } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import { useTranslations } from "next-intl";
+import toast from "react-hot-toast";
 
 const LoginForm = () => {
   const t = useTranslations("auth.login");
@@ -26,10 +27,12 @@ const LoginForm = () => {
 
     if (res?.status === 401) {
        setError("root" , { message: t("errors.invalid") })
+       toast.error(t("errors.invalid"));
      }
 
     if (!res?.error) {
       reset();
+      toast.success(tCommon("success"));
       router.replace("/");
     }
     

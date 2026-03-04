@@ -5,6 +5,7 @@ import { getToken } from "next-auth/jwt";
 
 export let GET = async (req) => {
     const user = await getToken({ req, secret: process.env.NEXTAUTH_SECRET });  
+    if (!user) return new Response("Unauthorized", { status: 401 });
 
     const orders = await prisma.orders.findMany({
         where: {
