@@ -6,6 +6,10 @@ const ProductSpecs = async ({ productId }) => {
   const t = await getTranslations("product");
   const data = await Fetch(`/api/products/specs?productId=${productId}`);
 
+  if (!data?.data) {
+    return null;
+  }
+
   return (
     <div className="py-5 px-5 md:py-20 md:px-40 bg-bg">
       <div className="py-12 px-10 bg-surface rounded-2xl border border-border">

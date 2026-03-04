@@ -13,7 +13,7 @@ const CategorySection = async () => {
   try {
     categories = await Fetch(`/api/categories`);
   } catch (error) {
-    console.log(error);
+    console.error("Failed to fetch categories:", error);
   }
 
   return (
