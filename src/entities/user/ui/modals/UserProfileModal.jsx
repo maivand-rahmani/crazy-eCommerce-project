@@ -62,7 +62,6 @@ export const UserProfileModal = ({ isOpen, onClose, user }) => {
   const onSubmit = async (data) => {
     setIsSubmitting(true);
     try {
-      console.log("Updating profile:", data);
       reset(data);
       onClose();
     } catch (error) {

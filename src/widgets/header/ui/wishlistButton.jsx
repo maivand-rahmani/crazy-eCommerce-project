@@ -8,11 +8,11 @@ import { Fetch } from "@/shared/lib/fetch";
 const WishlistButton = () => {
   const [wishlist, setWishlist] = useState([]);
   useEffect(() => {
-    try {
-      Fetch("/api/wishlist").then((res) => setWishlist(res));
-    } catch (error) {
-      console.error("Failed to fetch wishlist:", error);
-    }
+    Fetch("/api/wishlist")
+      .then((res) => setWishlist(res))
+      .catch((error) => {
+        console.error("Failed to fetch wishlist:", error);
+      });
   }, []);
 
   return (
