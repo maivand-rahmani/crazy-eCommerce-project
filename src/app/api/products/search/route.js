@@ -69,9 +69,13 @@ export async function GET(req) {
           orderBy: { position: 'asc' },
           take: 1,
         },
-        // reviews: {
-        //   select: { rating: true },
-        // },
+        // Use _count and _avg for efficient aggregation (fixes memory bloat from fetching all reviews)
+        _count: {
+          select: { reviews: true },
+        },
+        _avg: {
+          select: { rating: true },
+        },
       },
       // Apply sorting at DB level for supported fields
       orderBy: sortBy === 'name_asc' ? { name: 'asc' } :
@@ -82,27 +86,22 @@ export async function GET(req) {
       take: limit,
     });
 
-    // If minRating filter is set, filter by average rating (post-DB filter)
+    // If minRating filter is set, filter by average rating (in-memory filter)
     let filteredProducts = products;
     
-    // if (minRating) {
-    //   const minRatingNum = parseFloat(minRating);
-    //   filteredProducts = products.filter(product => {
-    //     if (product?.reviews.length === 0) return false;
-    //     const avgRating = product?.reviews.reduce((sum, r) => sum + r.rating, 0) / product.reviews.length;
-    //     return avgRating >= minRatingNum;
-    //   });
-    //   // Note: For accurate count with rating filter, a raw query would be needed
-    //   // This is an approximation
-    //   totalCount = filteredProducts.length;
-    // }
+    if (minRating) {
+      const minRatingNum = parseFloat(minRating);
+      filteredProducts = products.filter(product => {
+        if (product?._count?.reviews === 0 || product?._avg?.rating === null) return false;
+        const avgRating = product._avg.rating;
+        return avgRating >= minRatingNum;
+      });
+    }
 
     // Transform products to include computed fields
     const transformedProducts = filteredProducts.map(product => {
-      // Calculate average rating
-      // const avgRating = product?.reviews.length > 0
-      //   ? product?.reviews.reduce((sum, r) => sum + r.rating, 0) / product.reviews.length
-      //   : 0;
+      // Use pre-calculated average from DB (_avg)
+      const avgRating = product._avg.rating ? Math.round(product._avg.rating * 10) / 10 : 0;
 
       // Get minimum price from variants - with null check
       const firstVariant = product.product_variants[0];
@@ -127,8 +126,8 @@ export async function GET(req) {
         stock_quantity: totalStock,
         image_url: product.product_images[0]?.url || null,
         variant_name: minPriceVariant?.variant_name || null,
-        // avg_rating: Math.round(avgRating * 10) / 10,
-        // review_count: product.reviews.length,
+        avg_rating: avgRating,
+        review_count: product._count.reviews,
       };
     });
 
@@ -178,8 +177,8 @@ export async function GET(req) {
       pagination: {
         page,
         limit,
-        total: minRating ? totalProductsCount : totalProductsCount,
-        totalPages: Math.ceil(totalProductsCount / limit),
+        total: minRating ? filteredProducts.length : totalProductsCount,
+        totalPages: Math.ceil((minRating ? filteredProducts.length : totalProductsCount) / limit),
       },
       search: {
         query: search,
