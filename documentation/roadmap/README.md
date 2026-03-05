@@ -274,4 +274,7 @@ A full-featured Next.js e-commerce platform with multi-language support (i18n), 
 ### 5.3.2026
 - Fixed: Search API average rating - enabled reviews in query, added avg_rating and review_count to search results, enabled minRating filter (PR #35)
 
+### 5.3.2026
+- Fixed: User profile modal null safety - removed console.log, added null checks for user object to prevent runtime errors (PR #43)
+
 (repeatable section)

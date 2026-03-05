@@ -350,8 +350,8 @@ export default Component;
 
 ### Code Smells
 
-1. **Console.log in production** - Auth flows have `console.log(res)`
-2. **Hardcoded API URL** - `${process.env.NEXT_PUBLIC_API_URL}` should be centralized
+1. ~~Console.log in production~~ - Auth flows have `console.log(res)` - FIXED
+2. ~~Hardcoded API URL~~ - `${process.env.NEXT_PUBLIC_API_URL}` should be centralized
 3. **No error boundaries** - Missing React error boundary implementation
 4. **Unused imports possible** - No strict import analysis
 5. **No loading states** - Some async operations lack loading feedback
