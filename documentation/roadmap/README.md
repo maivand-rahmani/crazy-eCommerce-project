@@ -249,7 +249,9 @@ A full-featured Next.js e-commerce platform with multi-language support (i18n), 
 
 - [x] On the search page, when we search for products, the addition to the favorite ones does not work in the product card. (Fixed in PR #20 and subsequent improvements)
 
-- [x] On the back-end API side of the search The system that considers the average rating does not work. (Fixed in PR #35) 
+- [x] On the back-end API side of the search The system that considers the average rating does not work. (Fixed in PR #35)
+
+- [x] Console.log in UserProfileModal (Fixed in PR #40) 
 
 
 ---
@@ -273,5 +275,7 @@ A full-featured Next.js e-commerce platform with multi-language support (i18n), 
 
 ### 5.3.2026
 - Fixed: Search API average rating - enabled reviews in query, added avg_rating and review_count to search results, enabled minRating filter (PR #35)
+
+- Fixed: Removed console.log from UserProfileModal - cleaned up debug statement that could expose user data (PR #40)
 
 (repeatable section)
