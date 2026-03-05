@@ -8,6 +8,11 @@ import { useTranslations } from "next-intl";
 
 
 export const UserProfileModal = ({ isOpen, onClose, user }) => {
+  // Early return if no user provided
+  if (!user) {
+    return null;
+  }
+
   const t = useTranslations("userInfo");
   return (
   <Modal isOpen={isOpen} onClose={onClose}>

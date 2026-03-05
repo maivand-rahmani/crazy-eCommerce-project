@@ -19,6 +19,11 @@ import { useTranslations } from "next-intl";
 import toast from "react-hot-toast";
 
 export const UserProfileModal = ({ isOpen, onClose, user }) => {
+  // Early return if no user provided
+  if (!user) {
+    return null;
+  }
+
   const t = useTranslations("account");
   const tAddress = useTranslations("address");
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -62,7 +67,7 @@ export const UserProfileModal = ({ isOpen, onClose, user }) => {
   const onSubmit = async (data) => {
     setIsSubmitting(true);
     try {
-      console.log("Updating profile:", data);
+      // Update user profile - API call would go here
       reset(data);
       onClose();
     } catch (error) {
