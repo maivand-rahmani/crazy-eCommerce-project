@@ -4,6 +4,8 @@ import LoginForm from "./forms/LoginForm";
 import RegisterForm from "./forms/RegisterForm";
 import OAuthForm from "./OAuthForm/OAuthForm";
 import { useTranslations } from "next-intl";
+import ThemeSwitcher from "@/widgets/header/ui/ThemeSwitcher";
+import LangSwitcher from "@/shared/i18n/ui/Switcher";
 
 const AuthFormLayout = () => {
   const t = useTranslations("auth");
@@ -38,6 +40,12 @@ const AuthFormLayout = () => {
           >
             {form === "login" ? tLogin("register") : tRegister("login")}
           </button>
+        </div>
+
+        {/* Theme and Language Switchers */}
+        <div className="flex items-center justify-center gap-4 mt-4 pt-4 border-t border-border/50">
+          <ThemeSwitcher />
+          <LangSwitcher />
         </div>
       </div>
 
