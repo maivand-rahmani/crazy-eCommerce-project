@@ -14,48 +14,51 @@ export default async function addToWishlist(productId, variantId, wishlistId) {
 
   const userId = session.user.id;
 
-  // Get or create wishlist for the user
-  let wishlist = await prisma.wishlist.findUnique({
-    where: { user_id: userId },
-  });
-
-  // Create wishlist if it doesn't exist
-  if (!wishlist) {
-    wishlist = await prisma.wishlist.create({
-      data: { user_id: userId },
+  try {
+    // Get or create wishlist for the user
+    let wishlist = await prisma.wishlist.findUnique({
+      where: { user_id: userId },
     });
-  }
 
-  const currentWishlistId = wishlistId || wishlist.id;
-
-  const existing = await prisma.wishlist_items.findFirst({
-    where: {
-      wishlist_id: currentWishlistId,
-      product_id: productId,
-      variant_id: variantId,
+    // Create wishlist if it doesn't exist
+    if (!wishlist) {
+      wishlist = await prisma.wishlist.create({
+        data: { user_id: userId },
+      });
     }
-  });
-  
-  if (existing) {
-    await prisma.wishlist_items.delete({
-      where: { id: existing.id },
+
+    const currentWishlistId = wishlistId || wishlist.id;
+
+    const existing = await prisma.wishlist_items.findFirst({
+      where: {
+        wishlist_id: currentWishlistId,
+        product_id: productId,
+        variant_id: variantId,
+      }
     });
-    revalidatePath("/Wishlist")
-    revalidatePath("/wishlist")
-    revalidatePath("/catalog")
-    return { status: "removed", line: existing };
-  } else {
-    await prisma.wishlist_items.create({
-    data: {
-      wishlist_id: currentWishlistId,
-      product_id: productId,
-      variant_id: variantId,
-    },
     
-   });
-   revalidatePath("/Wishlist")
-   revalidatePath("/wishlist")
-   revalidatePath("/catalog")
-   return { status: "added" };
+    if (existing) {
+      await prisma.wishlist_items.delete({
+        where: { id: existing.id },
+      });
+      revalidatePath("/wishlist");
+      revalidatePath("/catalog");
+      return { status: "removed", line: existing };
+    } else {
+      await prisma.wishlist_items.create({
+      data: {
+        wishlist_id: currentWishlistId,
+        product_id: productId,
+        variant_id: variantId,
+      },
+      
+     });
+     revalidatePath("/wishlist");
+     revalidatePath("/catalog");
+     return { status: "added" };
+    }
+  } catch (error) {
+    console.error("Error managing wishlist:", error);
+    return { status: "error", message: "Failed to update wishlist" };
   }
 }

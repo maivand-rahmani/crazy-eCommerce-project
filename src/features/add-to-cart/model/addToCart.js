@@ -14,58 +14,32 @@ import { toSafeJson } from "../../../../prisma/funcs";
 import { revalidatePath } from "next/cache";
 
 export async function addToCart(variantId, method, cartId) {
-   
-
-  if (method === "add") {
-    let res = await prisma.cart_items.upsert({
-      where: {
-        cart_id_variant_id: {
-          cart_id: cartId,
-          variant_id: variantId,
-        },
-      },
-      update: {
-        quantity: {
-          increment: 1, // или decrement
-        },
-      },
-      create: {
-        cart_id: cartId,
-        variant_id: variantId,
-        quantity: 1,
-      },
-    });
-
-    return { item: toSafeJson(res) };
-  } else if (method === "remove") {
-    const result = await prisma.$transaction(async (tx) => {
-      const item = await tx.cart_items.findUnique({
+  try {
+    if (method === "add") {
+      let res = await prisma.cart_items.upsert({
         where: {
           cart_id_variant_id: {
             cart_id: cartId,
             variant_id: variantId,
           },
         },
+        update: {
+          quantity: {
+            increment: 1,
+          },
+        },
+        create: {
+          cart_id: cartId,
+          variant_id: variantId,
+          quantity: 1,
+        },
       });
 
-      if (!item) return null;
-
-      if (item.quantity > 1) {
-        const res = await tx.cart_items.update({
-          where: {
-            cart_id_variant_id: {
-              cart_id: cartId,
-              variant_id: variantId,
-            },
-          },
-          data: {
-            quantity: { decrement: 1 },
-          },
-        });
-
-        return { item: toSafeJson(res) };
-      } else {
-        await tx.cart_items.delete({
+      revalidatePath("/cart");
+      return { item: toSafeJson(res) };
+    } else if (method === "remove") {
+      const result = await prisma.$transaction(async (tx) => {
+        const item = await tx.cart_items.findUnique({
           where: {
             cart_id_variant_id: {
               cart_id: cartId,
@@ -74,23 +48,55 @@ export async function addToCart(variantId, method, cartId) {
           },
         });
 
-        return { item: null };
-      }
-    });
+        if (!item) return null;
 
-    return result ?? { success: true };
-  } else if (method === "delete") {
-    await prisma.cart_items.delete({
-      where: { 
-        cart_id_variant_id: {
-              cart_id: cartId,
-              variant_id: variantId,
-          },
-      },
-    });
+        if (item.quantity > 1) {
+          const res = await tx.cart_items.update({
+            where: {
+              cart_id_variant_id: {
+                cart_id: cartId,
+                variant_id: variantId,
+              },
+            },
+            data: {
+              quantity: { decrement: 1 },
+            },
+          });
 
-    return { success: true };
+          return { item: toSafeJson(res) };
+        } else {
+          await tx.cart_items.delete({
+            where: {
+              cart_id_variant_id: {
+                cart_id: cartId,
+                variant_id: variantId,
+              },
+            },
+          });
+
+          return { item: null };
+        }
+      });
+
+      revalidatePath("/cart");
+      return result ?? { success: true };
+    } else if (method === "delete") {
+      await prisma.cart_items.delete({
+        where: { 
+          cart_id_variant_id: {
+                cart_id: cartId,
+                variant_id: variantId,
+            },
+        },
+      });
+
+      revalidatePath("/cart");
+      return { success: true };
+    }
+
+    return { error: "Invalid method" };
+  } catch (error) {
+    console.error("Error managing cart:", error);
+    return { error: "Failed to update cart" };
   }
-
-  revalidatePath("/cart");
 }
