@@ -33,7 +33,6 @@ const RegisterForm = () => {
         });
 
         if (res?.error) {
-          console.error("Login error:", res.error);
           toast.error(t("errors.somethingWrong"));
         } else {
           reset();
@@ -41,7 +40,6 @@ const RegisterForm = () => {
         }
       }
     } catch (error) {
-      console.error("Registration error:", error);
       toast.error(t("errors.somethingWrong"));
     } finally {
       setLoading(false);
@@ -76,10 +74,6 @@ const RegisterForm = () => {
               maxLength: {
                 value: 20,
                 message: "First name must be less than 20 characters",
-              },
-              pattern: {
-                value: /^[A-Za-z]+$/,
-                message: t("errors.firstNameLetters"),
               },
             })}
             className="inputStyle"
