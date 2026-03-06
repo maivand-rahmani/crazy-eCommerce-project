@@ -3,10 +3,19 @@ import { PlusSquare, MinusSquare } from "lucide-react";
 import deleteButton from "./deleteButton";
 
 const Counter = ({ handleClick, state , className }) => {
+  const minQuantity = 1;
+  const maxQuantity = 99;
+  const isAtMin = state?.quantity <= minQuantity;
+  const isAtMax = state?.quantity >= maxQuantity;
+
   return (
     <div className={`flex justify-between w-full gap-5 ${className}`}>
       <div className="flex justify-between w-full gap-1.5 ">
-        <button disabled={state?.loading} onClick={() => handleClick("remove")}>
+        <button 
+          disabled={state?.loading || isAtMin} 
+          onClick={() => handleClick("remove")}
+          className={isAtMin ? "opacity-30" : ""}
+        >
           <MinusSquare className={`${state?.loading ? "opacity-50" : null} text-text`} />
         </button>
 
@@ -14,7 +23,11 @@ const Counter = ({ handleClick, state , className }) => {
           {state?.quantity}
         </div>
 
-        <button disabled={state?.loading} onClick={() => handleClick("add")}>
+        <button 
+          disabled={state?.loading || isAtMax} 
+          onClick={() => handleClick("add")}
+          className={isAtMax ? "opacity-30" : ""}
+        >
           <PlusSquare className={`${state?.loading ? "opacity-50" : null} text-text`} />
         </button>
       </div>
