@@ -19,13 +19,13 @@ const OrderSummary = ({ total , setCheckout ,  checkout , items }) => {
 
   const [orderModal , setOrderModal] = useState(false)
 
-  let discardCheckout = () => {
+  const discardCheckout = () => {
     setCheckout(false)
     setCoupon(false)
     setDiscountAmount(0)
   }
 
-  let handleOrderSummary = () => {
+  const handleOrderSummary = () => {
     setOrderModal(true)
   }
 
