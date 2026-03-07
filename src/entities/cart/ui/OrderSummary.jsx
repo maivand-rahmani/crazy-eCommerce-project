@@ -19,20 +19,17 @@ const OrderSummary = ({ total , setCheckout ,  checkout , items }) => {
 
   const [orderModal , setOrderModal] = useState(false)
 
+  const finalTotal = Math.max(0, total - discountAmount);
+
   let discardChecout = () => {
     setCheckout(false)
     setCoupon(false)
     setDiscountAmount(0)
   }
 
-  let handleOrderSummary = () => {
-    setOrderModal(true)
-    try {
-      
-    } catch (error) {
-      return new Error(error)
-    }
-  }
+  const handleOrderSummary = () => {
+    setOrderModal(true);
+  };
 
   return (
     <div className="md:pt-25 p-4 transition-all duration-500 ease-in-out">
@@ -58,7 +55,7 @@ const OrderSummary = ({ total , setCheckout ,  checkout , items }) => {
           )}
           <div className="font-bold flex justify-between">
             <h2>{t("total")}: </h2>
-            <h2>{(total - discountAmount).toFixed(2)}$</h2>
+            <h2>{finalTotal.toFixed(2)}$</h2>
           </div>
         </div>
 
