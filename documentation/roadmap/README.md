@@ -274,4 +274,7 @@ A full-featured Next.js e-commerce platform with multi-language support (i18n), 
 ### 5.3.2026
 - Fixed: Search API average rating - enabled reviews in query, added avg_rating and review_count to search results, enabled minRating filter (PR #35)
 
+### 7.3.2026
+- Fixed: Cart discount calculation bug - prevented negative total when discount exceeds cart total, removed empty try-catch block in OrderSummary (PR #49)
+
 (repeatable section)
