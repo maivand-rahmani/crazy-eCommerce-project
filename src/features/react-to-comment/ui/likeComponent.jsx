@@ -10,7 +10,7 @@ export function LikeDisLike({ commentId, likes, dislikes, userReaction }) {
   const [likesCount, setLikesCount] = useState(likes);
   const [dislikesCount, setDislikesCount] = useState(dislikes);
 
-  const [isPending, startTransition] = useTransition(); 
+  const [, startTransition] = useTransition();
 
   async function sendReaction(type) {
     const prev = {
@@ -58,7 +58,6 @@ export function LikeDisLike({ commentId, likes, dislikes, userReaction }) {
         setDislikesCount(prev.dislikesCount);
 
         toast.error("Не удалось сохранить реакцию");
-        console.error(await res.text());
         return;
       }
 
