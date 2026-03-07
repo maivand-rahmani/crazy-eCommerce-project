@@ -89,7 +89,7 @@ export const DELETE = async (req) => {
     })
     
     const addresses = existingAddresses?.addresses ?? [];
-    const addressToDelete = existingAddresses.addresses.find((address) => address.id === addressId);
+    const addressToDelete = addresses.find((address) => address.id === addressId);
 
     if (addressToDelete) {
         await prisma.user.update({
@@ -127,7 +127,7 @@ export const PUT = async (req) => {
     })
 
     const addresses = existingAddresses?.addresses ?? [];
-    const addressToUpdate = existingAddresses.addresses.find((address) => address.id === body.id);
+    const addressToUpdate = addresses.find((address) => address.id === body.id);
 
     if (addressToUpdate) {
         const response = await prisma.user.update({
