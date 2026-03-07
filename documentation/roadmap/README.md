@@ -236,7 +236,7 @@ A full-featured Next.js e-commerce platform with multi-language support (i18n), 
 - [ ] Theme switcher:
   - Description: A beautiful component for switching themes.
   - Priority: Medium
-  - Notes: To implement this component, you first need to change the user's portal because only the user who is already registered has access to the portal now, and the users who are not registered, they go to the login page, and it is necessary that there is a button for moving to the registration page, and at the bottom there were those very components for changing the language and changing the theme.
+  - Notes: To implement this component, you first need to change the user's portal because only the user who is already registered has access to the portal now, and the users who are not registered, they go to the login page, and it is necessary that there is a button for moving to the registration page, and at the bottom there were those very components for changing the language and changing the theme. (Partially implemented in PR #56 - added to auth page)
 
 ### ⚡ Improvements
 
@@ -278,5 +278,8 @@ A full-featured Next.js e-commerce platform with multi-language support (i18n), 
 
 ### 5.3.2026
 - Fixed: Search API average rating - enabled reviews in query, added avg_rating and review_count to search results, enabled minRating filter (PR #35)
+
+### 7.3.2026
+- Added: Theme and language switchers to auth page - unauthenticated users can now switch themes (light, dark, vintage, retro) and languages (en, ru, fa) before logging in (PR #56)
 
 (repeatable section)
