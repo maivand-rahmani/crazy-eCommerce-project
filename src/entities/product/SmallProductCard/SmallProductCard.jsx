@@ -51,7 +51,7 @@ const SmallProductCard = ({
       {accessibility?.image && (
         <div className="flex center w-[90px] flex-shrink-0">
           <Image
-            src={productData?.image_url}
+            src={productData?.image_url || "/placeholder.png"}
             alt={productData?.variant_name}
             width={90}
             height={90}

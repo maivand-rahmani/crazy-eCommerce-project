@@ -19,7 +19,7 @@ const OrderSummary = ({ total , setCheckout ,  checkout , items }) => {
 
   const [orderModal , setOrderModal] = useState(false)
 
-  let discardChecout = () => {
+  let discardCheckout = () => {
     setCheckout(false)
     setCoupon(false)
     setDiscountAmount(0)
@@ -27,11 +27,6 @@ const OrderSummary = ({ total , setCheckout ,  checkout , items }) => {
 
   let handleOrderSummary = () => {
     setOrderModal(true)
-    try {
-      
-    } catch (error) {
-      return new Error(error)
-    }
   }
 
   return (
@@ -39,7 +34,7 @@ const OrderSummary = ({ total , setCheckout ,  checkout , items }) => {
       <div className="rounded-2xl block sticky p-5 top-25 border-border border shadow-xl bg-surface">
         <div className="font-extrabold text-2xl uppercase flex justify-between">
           <h1>{t("title")}: </h1>
-          {checkout && <X onClick={discardChecout}/>} 
+          {checkout && <X onClick={discardCheckout}/>} 
         </div>
 
         {<CouponForm total={total} setAmount={setDiscountAmount} setCoupon={setCoupon}/>}

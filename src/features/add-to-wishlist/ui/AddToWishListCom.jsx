@@ -26,22 +26,18 @@ export function AddToWishListCom({
       return;
     }
 
-    if (user?.id) {
-      setAdded((s) => !s);
-      startTransition(async () => {
-        const res = await addToWishlist(
-          productId,
-          variantId,
-          wishlistInfo?.wishlist_id,
-        );
-        added
-          ? toast(t("removeFromWishlist"), { icon: "❎" })
-          : toast(t("addedToWishlist"), { icon: "✅" });
-        setAdded(res.status === "added");
-      });
-    } else {
-      toast.error(tCommon("error"));
-    }
+    setAdded((s) => !s);
+    startTransition(async () => {
+      const res = await addToWishlist(
+        productId,
+        variantId,
+        wishlistInfo?.wishlist_id,
+      );
+      added
+        ? toast(t("removeFromWishlist"), { icon: "❎" })
+        : toast(t("addedToWishlist"), { icon: "✅" });
+      setAdded(res.status === "added");
+    });
   };
 
   const colorClass = added

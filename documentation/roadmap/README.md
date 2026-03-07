@@ -251,6 +251,8 @@ A full-featured Next.js e-commerce platform with multi-language support (i18n), 
 
 - [x] On the back-end API side of the search The system that considers the average rating does not work. (Fixed in PR #35) 
 
+- [x] Multiple bugs in cart checkout flow - empty try-catch blocks, typos, missing image null checks, redundant wishlist logic (Fixed in PR #51) 
+
 
 ---
 
@@ -270,6 +272,9 @@ A full-featured Next.js e-commerce platform with multi-language support (i18n), 
 
 ### 4.3.2026
 - Added: Loading skeleton for product detail page - created loading.jsx with comprehensive skeleton UI including image slider, product info, specs, related products, and reviews sections (PR #25)
+
+### 7.3.2026
+- Fixed: Multiple bugs in cart checkout flow - removed empty try-catch blocks, fixed typo in function name, added null check for product images, simplified redundant logic in wishlist component (PR #51)
 
 ### 5.3.2026
 - Fixed: Search API average rating - enabled reviews in query, added avg_rating and review_count to search results, enabled minRating filter (PR #35)
