@@ -8,6 +8,9 @@ import { AddToCartButtonForProductPage } from '@/features/add-to-cart/ui/AddToCa
 import { useTranslations } from "next-intl";
 
 const  MainInfo = ({ product , otherInfo }) => {
+  // Guard clause for null safety
+  if (!product) return null;
+  
   const t = useTranslations("product");
   const variants = product?.products?.product_variants || [];
   const currentVariant = product;
@@ -76,7 +79,7 @@ const  MainInfo = ({ product , otherInfo }) => {
         {product?.products?.name} | {currentVariant?.variant_name}
       </h1>
       <p className="text-2xl font-semibold text-accent mb-6">
-        ${(currentVariant.price_cents / 100)}
+        ${(currentVariant?.price_cents / 100)}
       </p>
 
       {/* COLOR */}
@@ -113,7 +116,7 @@ const  MainInfo = ({ product , otherInfo }) => {
                           onClick={() => setSelectedStorage(option.storage)}
                         >
                           <Link
-                            href={`/catalog/${categoryId}/${option.id}?variant=${option.variant_name}&product=${product.products.name}`}
+                            href={`/catalog/${categoryId}/${option.id}?variant=${option.variant_name}&product=${product?.products?.name}`}
                           >
                             {option.storage}
                           </Link>
@@ -131,7 +134,7 @@ const  MainInfo = ({ product , otherInfo }) => {
                                     }`}
                                   >
                                     <Link
-                                      href={`/catalog/${categoryId}/${r.id}?variant=${r.variant_name}&product=${product.products.name}`}
+                                      href={`/catalog/${categoryId}/${r.id}?variant=${r.variant_name}&product=${product?.products?.name}`}
                                     >
                                       {r.ram}
                                     </Link>
@@ -181,7 +184,7 @@ const  MainInfo = ({ product , otherInfo }) => {
         </div>
         
         
-        <AddToCartButtonForProductPage variantId={currentVariant.id} cart_id={otherInfo?.cart_id}/>
+        <AddToCartButtonForProductPage variantId={currentVariant?.id} cart_id={otherInfo?.cart_id}/>
       </div>
 
       {/* {guarantee , stock , free delivery} */}
