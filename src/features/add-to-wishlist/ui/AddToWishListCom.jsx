@@ -26,16 +26,20 @@ export function AddToWishListCom({
       return;
     }
 
-    setAdded((s) => !s);
+    // Capture the new state BEFORE toggling for correct toast message
+    const willBeAdded = !added;
+    
+    setAdded(willBeAdded);
     startTransition(async () => {
       const res = await addToWishlist(
         productId,
         variantId,
         wishlistInfo?.wishlist_id,
       );
-      added
-        ? toast(t("removeFromWishlist"), { icon: "❎" })
-        : toast(t("addedToWishlist"), { icon: "✅" });
+      // Use willBeAdded (the new state) for toast message
+      willBeAdded
+        ? toast(t("addedToWishlist"), { icon: "✅" })
+        : toast(t("removeFromWishlist"), { icon: "❎" });
       setAdded(res.status === "added");
     });
   };
