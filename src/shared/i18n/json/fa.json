@@ -254,6 +254,9 @@
   "product": {
     "notFound": "محصول یافت نشد",
     "buyNow": "خرید کنید",
+    "inStock": "موجود",
+    "outOfStock": "ناموجود",
+    "onlyLeft": "فقط",
     "selectColor": "رنگ را انتخاب کنید",
     "specifications": "مشخصات محصول",
     "addToWishlist": "افزودن به علاقه‌مندی‌ها",

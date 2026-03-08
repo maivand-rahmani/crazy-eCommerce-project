@@ -258,6 +258,9 @@
   "product": {
     "notFound": "Товар не найден",
     "buyNow": "Купить сейчас",
+    "inStock": "В наличии",
+    "outOfStock": "Нет в наличии",
+    "onlyLeft": "Осталось",
     "selectColor": "Выберите цвет",
     "specifications": "Характеристики товара",
     "addToWishlist": "Добавить в список желаний",
