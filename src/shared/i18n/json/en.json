@@ -254,6 +254,9 @@
   "product": {
     "notFound": "Product not found",
     "buyNow": "Buy Now",
+    "inStock": "In Stock",
+    "outOfStock": "Out of Stock",
+    "onlyLeft": "Only",
     "selectColor": "Select color",
     "specifications": "Product Specifications",
     "addToWishlist": "Add to Wishlist",

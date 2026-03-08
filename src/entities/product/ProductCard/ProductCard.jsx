@@ -17,6 +17,23 @@ const ProductCard = ({ data, otherInfo }) => {
     );
   }
 
+  // Stock indicator logic
+  const stockQuantity = data.stock_quantity || 0;
+  const isInStock = stockQuantity > 0;
+  const isLowStock = stockQuantity > 0 && stockQuantity <= 5;
+
+  const getStockDisplay = () => {
+    if (!isInStock) {
+      return { text: t("outOfStock"), className: "text-red-500 bg-red-50" };
+    }
+    if (isLowStock) {
+      return { text: `${t("onlyLeft")} ${stockQuantity}`, className: "text-orange-600 bg-orange-50" };
+    }
+    return { text: t("inStock"), className: "text-green-600 bg-green-50" };
+  };
+
+  const stockDisplay = getStockDisplay();
+
   return (
     <div className="group relative flex flex-col items-center justify-between rounded-2xl bg-card p-6 shadow-md transition-all duration-300 hover:-translate-y-1 hover:shadow-2xl">
       {/* Like button */}
@@ -26,6 +43,11 @@ const ProductCard = ({ data, otherInfo }) => {
           productId={data.product_id}
           variantId={data.variant_id}
         />
+      </div>
+
+      {/* Stock indicator badge */}
+      <div className={`absolute z-20 top-4 left-4 px-2 py-1 rounded-full text-xs font-medium ${stockDisplay.className}`}>
+        {stockDisplay.text}
       </div>
 
       {/* Image */}
@@ -55,9 +77,14 @@ const ProductCard = ({ data, otherInfo }) => {
       {/* Button */}
       <button
         onClick={handleClick}
-        className="mt-4 w-[140px] rounded-xl bg-button px-4 py-2 text-button-text transition-all duration-300 hover:opacity-80"
+        disabled={!isInStock}
+        className={`mt-4 w-[140px] rounded-xl px-4 py-2 transition-all duration-300 ${
+          isInStock 
+            ? "bg-button text-button-text hover:opacity-80" 
+            : "bg-gray-400 text-white cursor-not-allowed"
+        }`}
       >
-        {t("buyNow")}
+        {isInStock ? t("buyNow") : t("outOfStock")}
       </button>
     </div>
   );
