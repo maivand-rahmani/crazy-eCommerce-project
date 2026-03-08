@@ -276,6 +276,9 @@ A full-featured Next.js e-commerce platform with multi-language support (i18n), 
 ### 7.3.2026
 - Fixed: Multiple bugs in cart checkout flow - removed empty try-catch blocks, fixed typo in function name, added null check for product images, simplified redundant logic in wishlist component (PR #51)
 
+### 8.3.2026
+- Added: Loading skeletons for catalog, search, and wishlist pages - created loading.jsx files with animated skeleton UI components for better UX while pages load (PR #66)
+
 ### 5.3.2026
 - Fixed: Search API average rating - enabled reviews in query, added avg_rating and review_count to search results, enabled minRating filter (PR #35)
 
