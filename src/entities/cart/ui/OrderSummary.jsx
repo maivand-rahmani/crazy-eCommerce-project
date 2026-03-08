@@ -43,7 +43,7 @@ const OrderSummary = ({ total , setCheckout ,  checkout , items }) => {
         <div className="flex flex-col text-xl gap-5 my-5">
           <div className="font-bold flex justify-between">
             <h1>{t("subtotal")}: </h1>
-            <h1>{total.toFixed(2)}$</h1>
+            <h1>{total?.toFixed(2) || "0.00"}$</h1>
           </div>
           {coupon && (
             <div className="flex justify-between text-unactive-text">
@@ -53,7 +53,7 @@ const OrderSummary = ({ total , setCheckout ,  checkout , items }) => {
           )}
           <div className="font-bold flex justify-between">
             <h2>{t("total")}: </h2>
-            <h2>{(total - discountAmount).toFixed(2)}$</h2>
+            <h2>{(total - discountAmount)?.toFixed(2) || "0.00"}$</h2>
           </div>
         </div>
 

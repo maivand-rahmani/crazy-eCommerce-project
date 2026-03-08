@@ -169,13 +169,13 @@ const  MainInfo = ({ product , otherInfo }) => {
 
       {/* Product Description */}
       <div>
-        <p className="text-xl text-text">{product.products.description}</p>
+        <p className="text-xl text-text">{product?.products?.description}</p>
       </div>
 
       {/* add to favorite , cart button */}
       <div className="grid grid-cols-2 gap-4 mt-6">
         <div className={`border-2 border-border rounded flex center hover:border-danger transition ${otherInfo?.isFavorite ? "border-danger" : null}`}>
-          <AddToWishListCom wishlistInfo={otherInfo} variantId={currentVariant.id} productId={product.products.id}> 
+          <AddToWishListCom wishlistInfo={otherInfo} variantId={currentVariant?.id} productId={product?.products?.id}> 
           {otherInfo?.isFavorite ? t("addedToWishlist") : t("addToWishlist")}
         </AddToWishListCom>
         </div>
