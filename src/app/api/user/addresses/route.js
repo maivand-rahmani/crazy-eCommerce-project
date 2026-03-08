@@ -4,6 +4,11 @@ import { NextResponse } from 'next/server';
 
 export const GET = async (req) => {
     const user = await getToken({ req, secret: process.env.NEXTAUTH_SECRET });
+    
+    if (!user) {
+        return NextResponse.json({ error: "Unauthorized" }, { status: 401 })
+    }
+    
     const addresses = await prisma.user.findUnique({
         where: {
             id: user.id

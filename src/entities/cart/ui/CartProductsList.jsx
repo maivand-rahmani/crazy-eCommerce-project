@@ -18,6 +18,12 @@ const CartProductsList = ({ checkoutState, setItems, setTotal = () => {} }) => {
       const cartProducts = async () => {
         const data = await getUserCart()
         
+        if (!data) {
+          setProducts([]);
+          setLoading(false);
+          return;
+        }
+        
         setProducts(data);
         setLoading(false);
         let total = data.reduce((sum, product) => {
