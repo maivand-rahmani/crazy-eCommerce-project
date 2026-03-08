@@ -11,7 +11,7 @@ import { Link, usePathname } from "@/shared/i18n";
 import { useTranslations, useLocale } from "next-intl";
 import { UserInfoModal } from "@/entities/user";
 import ProductSearch from "@/features/search/ui/ProductSearch";
-import { ShoppingCartButton, WishlistButton, Cyber, ThemeSwitcher } from "../index";
+import { ShoppingCartButton, WishlistButton, Cyber, ThemeSwitcher, LanguageSwitcher } from "../index";
 
 const routes = [
   { name: "Home", path: "/" },
@@ -62,6 +62,7 @@ export const DesktopHeader = () => {
           <Suspense fallback={<ShoppingCart />}>
             <ShoppingCartButton />
           </Suspense>
+          <LanguageSwitcher />
           <ThemeSwitcher />
           <UserInfoModal />
         </div>
