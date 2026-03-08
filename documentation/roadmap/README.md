@@ -278,6 +278,8 @@ A full-featured Next.js e-commerce platform with multi-language support (i18n), 
 
 ### 8.3.2026
 - Added: Loading skeletons for catalog, search, and wishlist pages - created loading.jsx files with animated skeleton UI components for better UX while pages load (PR #66)
+- Added: Language Switcher component - created reusable LanguageSwitcher with support for EN, RU, FA languages, added to DesktopHeader and Auth page
+- Added: Theme and Language switchers to Auth page - users can now switch language and theme while on login/register page
 
 ### 5.3.2026
 - Fixed: Search API average rating - enabled reviews in query, added avg_rating and review_count to search results, enabled minRating filter (PR #35)
