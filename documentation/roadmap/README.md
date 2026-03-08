@@ -285,4 +285,7 @@ A full-featured Next.js e-commerce platform with multi-language support (i18n), 
 ### 8.3.2026
 - Fixed: Wishlist toast message showing opposite action - when adding to wishlist showed "remove" and vice versa (PR #61)
 
+### 8.3.2026
+- Added: Product stock indicator - displays stock status badge on product cards (In Stock/Low Stock/Out of Stock), disables Buy Now button for out of stock products (PR #68)
+
 (repeatable section)
