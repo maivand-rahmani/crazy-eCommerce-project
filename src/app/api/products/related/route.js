@@ -75,6 +75,7 @@ export async function GET(req) {
       image_url: card.image_url,
       variant_options: card.variant_options,
       specs: card.specs,
+      stock_quantity: card.stock_quantity,
     }));
 
     return NextResponse.json(toSafeJson(transformedData), { 

@@ -1,6 +1,7 @@
 import React from "react";
 import { PlusSquare, MinusSquare } from "lucide-react";
 import deleteButton from "./deleteButton";
+import { Trash02 } from "@untitledui/icons";
 
 const Counter = ({ handleClick, state , className }) => {
   const minQuantity = 1;
@@ -31,13 +32,26 @@ const Counter = ({ handleClick, state , className }) => {
           <PlusSquare className={`${state?.loading ? "opacity-50" : null} text-text`} />
         </button>
       </div>
-      {state?.price && (
+      <div>
+        {state?.deleteButton && (
+          <button 
+            disabled={state?.loading}
+            onClick={() => handleClick("remove")}
+            className="text-red-500 hover:text-red-700 disabled:opacity-50"
+          >
+            <Trash02 className={`${state?.loading ? "opacity-50" : ""}`} />
+          </button>
+        )}
+      </div>
+      <div>
+        {state?.price && (
         <div className="flex gap-5">
           <div className="text-2xl text-accent text-center">
             ={`${state?.price * state?.quantity}$`}
           </div>
         </div>
-      )}
+        )}
+      </div>
     </div>
   );
 };

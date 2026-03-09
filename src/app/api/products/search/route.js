@@ -69,13 +69,6 @@ export async function GET(req) {
           orderBy: { position: 'asc' },
           take: 1,
         },
-        // Use _count and _avg for efficient aggregation (fixes memory bloat from fetching all reviews)
-        _count: {
-          select: { reviews: true },
-        },
-        _avg: {
-          select: { rating: true },
-        },
       },
       // Apply sorting at DB level for supported fields
       orderBy: sortBy === 'name_asc' ? { name: 'asc' } :
@@ -86,22 +79,39 @@ export async function GET(req) {
       take: limit,
     });
 
+    const productIds = products.map((product) => product.id);
+    const reviewStats = productIds.length
+      ? await prisma.reviews.groupBy({
+          by: ['product_id'],
+          where: { product_id: { in: productIds } },
+          _avg: { rating: true },
+          _count: { _all: true },
+        })
+      : [];
+
+    const reviewStatsMap = reviewStats.reduce((acc, stat) => {
+      acc[stat.product_id.toString()] = {
+        avgRating: stat._avg?.rating ?? null,
+        reviewCount: stat._count?._all ?? 0,
+      };
+      return acc;
+    }, {});
+
     // If minRating filter is set, filter by average rating (in-memory filter)
     let filteredProducts = products;
-    
     if (minRating) {
       const minRatingNum = parseFloat(minRating);
-      filteredProducts = products.filter(product => {
-        if (product?._count?.reviews === 0 || product?._avg?.rating === null) return false;
-        const avgRating = product._avg.rating;
-        return avgRating >= minRatingNum;
+      filteredProducts = products.filter((product) => {
+        const stats = reviewStatsMap[product.id.toString()] ?? { avgRating: null, reviewCount: 0 };
+        if (stats.reviewCount === 0 || stats.avgRating === null) return false;
+        return stats.avgRating >= minRatingNum;
       });
     }
 
     // Transform products to include computed fields
-    const transformedProducts = filteredProducts.map(product => {
-      // Use pre-calculated average from DB (_avg)
-      const avgRating = product._avg.rating ? Math.round(product._avg.rating * 10) / 10 : 0;
+    const transformedProducts = filteredProducts.map((product) => {
+      const stats = reviewStatsMap[product.id.toString()] ?? { avgRating: null, reviewCount: 0 };
+      const avgRating = stats.avgRating != null ? Math.round(stats.avgRating * 10) / 10 : 0;
 
       // Get minimum price from variants - with null check
       const firstVariant = product.product_variants[0];
@@ -127,7 +137,7 @@ export async function GET(req) {
         image_url: product.product_images[0]?.url || null,
         variant_name: minPriceVariant?.variant_name || null,
         avg_rating: avgRating,
-        review_count: product._count.reviews,
+        review_count: stats.reviewCount,
       };
     });
 

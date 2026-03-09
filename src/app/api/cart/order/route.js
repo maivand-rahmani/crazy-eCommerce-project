@@ -37,6 +37,15 @@ export async function POST(req) {
 
     const cartItems = await tx.cart_items.deleteMany({ where: { cart_id: cart_id }});
 
+    for (const item of order_items) {
+      await tx.product_variants.update({
+        where: { id: item.variant_id },
+        data: {
+          stock_quantity: { decrement: item.quantity }
+        }
+      });
+    }
+
     orderInfo = order
   });
 

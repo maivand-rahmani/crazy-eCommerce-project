@@ -98,7 +98,7 @@ export const AddToCartButtonForProductPage = ({ variantId, cart_id }) => {
       {added && counter >= 1 && (
         <Counter
           handleClick={callCartHandler}
-          state={{ loading: loading, quantity: counter }}
+          state={{ loading: loading, quantity: counter , deleteButton: true }}
         />
       )}
     </div>

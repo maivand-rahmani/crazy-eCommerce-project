@@ -180,8 +180,14 @@ const  MainInfo = ({ product , otherInfo }) => {
         </AddToWishListCom>
         </div>
         
-        
-        <AddToCartButtonForProductPage variantId={currentVariant.id} cart_id={otherInfo?.cart_id}/>
+        {/* Add to cart button disable if out of stock */}
+        {
+          product?.stock_quantity > 0 ? <AddToCartButtonForProductPage variantId={currentVariant.id} cart_id={otherInfo?.cart_id}/> : (
+            <div className="border-2 border-border rounded flex center cursor-not-allowed opacity-50">
+              <span>{t("outOfStock")}</span>
+            </div>
+          )
+        }
       </div>
 
       {/* {guarantee , stock , free delivery} */}
