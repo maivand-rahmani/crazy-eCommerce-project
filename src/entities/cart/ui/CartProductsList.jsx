@@ -18,9 +18,12 @@ const CartProductsList = ({ checkoutState, setItems, setTotal = () => {} }) => {
       const cartProducts = async () => {
         const data = await getUserCart()
         
-        setProducts(data);
+        // Null check - handle case where cart data is null/undefined
+        const safeData = data || [];
+        
+        setProducts(safeData);
         setLoading(false);
-        let total = data.reduce((sum, product) => {
+        let total = safeData.reduce((sum, product) => {
           return sum + (product?.price_cents * product?.quantity) / 100;
         }, 0);
         setTotal(Number(total));

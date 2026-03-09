@@ -21,6 +21,11 @@ import toast from "react-hot-toast";
 export const UserProfileModal = ({ isOpen, onClose, user }) => {
   const t = useTranslations("account");
   const tAddress = useTranslations("address");
+  
+  // Null check - return null if user is not provided
+  if (!user) {
+    return null;
+  }
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [addresses, setAddresses] = useState([]);
   const [isAddressModalOpen, setIsAddressModalOpen] = useState(false);
