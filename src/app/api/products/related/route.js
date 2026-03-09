@@ -99,7 +99,8 @@ export async function GET(req) {
         status: 200,
         headers: { "Content-Type": "application/json", "Access-Control-Allow-Origin": "*" }
       });
-    } catch {
+    } catch (fallbackError) {
+      console.error("Fallback query failed:", fallbackError);
       return NextResponse.json([], { 
         status: 200,
         headers: { "Content-Type": "application/json", "Access-Control-Allow-Origin": "*" }
