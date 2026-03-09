@@ -132,6 +132,9 @@
   "cart": {
     "title": "Your shopping cart",
     "addToCart": "Add to cart",
+    "quickAdd": "Quick Add",
+    "added": "Added!",
+    "addedToCart": "Added to cart",
     "empty": {
       "title": "Your cart is empty",
       "description": "You haven't added any products to your cart yet. Start exploring.",

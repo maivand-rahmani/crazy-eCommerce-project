@@ -3,6 +3,7 @@ import React, { useState } from "react";
 import { Heart } from "lucide-react";
 import Image from "next/image";
 import { AddToWishListCom } from "../../../features/add-to-wishlist/ui/AddToWishListCom";
+import { QuickAddToCart } from "../../../features/add-to-cart";
 import { useRouter } from "@/shared/i18n";
 import { useTranslations } from "next-intl";
 
@@ -76,18 +77,27 @@ const ProductCard = ({ data, otherInfo }) => {
         {data.price_cents / 100} $
       </h4>
 
-      {/* Button */}
-      <button
-        onClick={handleClick}
-        disabled={!isInStock}
-        className={`mt-4 w-[140px] rounded-xl px-4 py-2 transition-all duration-300 ${
-          isInStock 
-            ? "bg-button text-button-text hover:opacity-80" 
-            : "bg-muted text-card opacity-50 cursor-not-allowed"
-        }`}
-      >
-        {isInStock ? t("buyNow") : t("outOfStock")}
-      </button>
+      {/* Action buttons - Quick Add + Buy Now */}
+      <div className="mt-4 flex gap-2">
+        {/* Quick Add to Cart button */}
+        <QuickAddToCart 
+          variantId={data.variant_id} 
+          productName={`${data.product_name} - ${data.variant_name}`}
+        />
+        
+        {/* Buy Now button */}
+        <button
+          onClick={handleClick}
+          disabled={!isInStock}
+          className={`w-[100px] rounded-xl px-4 py-2 transition-all duration-300 ${
+            isInStock 
+              ? "bg-button text-button-text hover:opacity-80" 
+              : "bg-muted text-card opacity-50 cursor-not-allowed"
+          }`}
+        >
+          {isInStock ? t("buyNow") : t("outOfStock")}
+        </button>
+      </div>
     </div>
   );
 };

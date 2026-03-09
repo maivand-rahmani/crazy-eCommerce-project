@@ -3,6 +3,9 @@
  *
  * Props:
  * @param {number} variantId - product variant id
+ * @param {string} method - add, remove, or delete
+ * @param {number} cartId - cart id (optional, will create/get cart if not provided)
+ * @param {string} userId - user id (required if cartId not provided)
  *
  * @returns {string} - info about status of function
  */
@@ -13,8 +16,35 @@ import prisma from "../../../../prisma/client";
 import { toSafeJson } from "../../../../prisma/funcs";
 import { revalidatePath } from "next/cache";
 
-export async function addToCart(variantId, method, cartId) {
+// Helper function to get or create cart for user
+async function getOrCreateCart(userId) {
+  let cart = await prisma.carts.findFirst({
+    where: { user_id: userId, status: "OPEN" },
+  });
+
+  if (!cart) {
+    cart = await prisma.carts.create({
+      data: {
+        user_id: userId,
+        status: "OPEN",
+      },
+    });
+  }
+
+  return cart;
+}
+
+export async function addToCart(variantId, method, cartId, userId) {
    
+  // If no cartId but userId provided, get or create cart
+  if (!cartId && userId) {
+    const cart = await getOrCreateCart(userId);
+    cartId = cart.id;
+  }
+
+  if (!cartId) {
+    return { error: "Cart not found. Please log in." };
+  }
 
   if (method === "add") {
     let res = await prisma.cart_items.upsert({
