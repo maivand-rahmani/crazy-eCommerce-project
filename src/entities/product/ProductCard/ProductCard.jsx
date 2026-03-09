@@ -78,7 +78,7 @@ const ProductCard = ({ data, otherInfo }) => {
       </h4>
 
       {/* Action buttons - Quick Add + Buy Now */}
-      <div className="mt-4 flex gap-2">
+      <div className="mt-4 flex">
         {/* Quick Add to Cart button */}
         <QuickAddToCart 
           variantId={data.variant_id} 
@@ -89,7 +89,7 @@ const ProductCard = ({ data, otherInfo }) => {
         <button
           onClick={handleClick}
           disabled={!isInStock}
-          className={`w-[100px] rounded-xl px-4 py-2 transition-all duration-300 ${
+          className={`w-[100px] rounded-r-xl px-4 py-2 transition-all duration-300 ${
             isInStock 
               ? "bg-button text-button-text hover:opacity-80" 
               : "bg-muted text-card opacity-50 cursor-not-allowed"

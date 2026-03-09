@@ -45,10 +45,10 @@ export function QuickAddToCart({ variantId, productName }) {
     <button
       onClick={handleClick}
       disabled={loading || added}
-      className={`flex items-center justify-center gap-2 px-3 py-2 rounded-xl text-sm font-medium transition-all duration-300 ${
+      className={` flex items-center justify-center gap-2 px-3 py-2 rounded-l-xl text-sm font-medium transition-all duration-300 ${
         added
           ? "bg-green-600 text-white"
-          : "bg-button text-button-text hover:opacity-80"
+          : "bg-button/30 text-button-text hover:opacity-80"
       }`}
       title={productName ? `Quick add: ${productName}` : "Quick add to cart"}
     >
@@ -59,7 +59,6 @@ export function QuickAddToCart({ variantId, productName }) {
       ) : (
         <ShoppingCart size={16} />
       )}
-      <span>{added ? t("added") : t("quickAdd")}</span>
     </button>
   );
 }
