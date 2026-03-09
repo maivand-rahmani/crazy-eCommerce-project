@@ -27,6 +27,11 @@ export const UserProfileModal = ({ isOpen, onClose, user }) => {
   const [loadingAddresses, setLoadingAddresses] = useState(false);
   const [addressToEdit, setAddressToEdit] = useState(false);
 
+  // Return null or loading state if user is not available
+  if (!user) {
+    return null;
+  }
+
   const {
     register,
     handleSubmit,
@@ -35,7 +40,7 @@ export const UserProfileModal = ({ isOpen, onClose, user }) => {
   } = useForm({
     mode: "onChange",
     defaultValues: {
-      name: user.name,
+      name: user?.name || "",
     },
   });
 
@@ -138,8 +143,8 @@ export const UserProfileModal = ({ isOpen, onClose, user }) => {
               <div className="relative group">
                 <div className="w-24 h-24 rounded-full overflow-hidden ring-4 ring-white shadow-lg">
                   <Image
-                    src={user.image || "/icons/profile-circle-svgrepo-com.svg"}
-                    alt={user.name}
+                    src={user?.image || "/icons/profile-circle-svgrepo-com.svg"}
+                    alt={user?.name || "User"}
                     fill
                     className="object-cover group-hover:scale-105 transition-transform duration-200"
                     sizes="96px"
@@ -149,11 +154,11 @@ export const UserProfileModal = ({ isOpen, onClose, user }) => {
               </div>
               <div className="flex-1">
                 <h3 className="text-xl font-semibold text-gray-800">
-                  {user.name}
+                  {user?.name || "User"}
                 </h3>
                 <div className="flex items-center text-sm text-gray-600 mt-1">
                   <Mail className="w-4 h-4 mr-1.5" />
-                  {user.email}
+                  {user?.email || "No email"}
                 </div>
               </div>
             </div>
@@ -197,7 +202,7 @@ export const UserProfileModal = ({ isOpen, onClose, user }) => {
                       {t("emailAddress")}
                     </p>
                     <p className="text-sm text-text font-mono mt-1">
-                      {user.email}
+                      {user?.email || "No email"}
                     </p>
                   </div>
                 </div>
@@ -211,7 +216,7 @@ export const UserProfileModal = ({ isOpen, onClose, user }) => {
                       {t("userId")}
                     </p>
                     <p className="text-sm text-text font-mono mt-1">
-                      {user.id}
+                      {user?.id || "N/A"}
                     </p>
                   </div>
                 </div>

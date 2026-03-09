@@ -18,9 +18,12 @@ const CartProductsList = ({ checkoutState, setItems, setTotal = () => {} }) => {
       const cartProducts = async () => {
         const data = await getUserCart()
         
-        setProducts(data);
+        // Handle null/undefined data safely
+        const safeData = data ?? [];
+        
+        setProducts(safeData);
         setLoading(false);
-        let total = data.reduce((sum, product) => {
+        let total = safeData.reduce((sum, product) => {
           return sum + (product?.price_cents * product?.quantity) / 100;
         }, 0);
         setTotal(Number(total));
@@ -76,7 +79,7 @@ const CartProductsList = ({ checkoutState, setItems, setTotal = () => {} }) => {
 
       {loading ? tCommon("common.loading") : null}
 
-      {!loading && products.length < 1 && (
+      {(!loading && !products?.length) && (
         <div className="flex flex-col w-full items-center justify-center min-h-[60vh] text-center">
           <h2 className="text-2xl font-semibold text-text mb-3">
             {t("empty.title")}

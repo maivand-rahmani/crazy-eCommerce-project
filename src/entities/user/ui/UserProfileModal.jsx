@@ -9,14 +9,20 @@ import { useTranslations } from "next-intl";
 
 export const UserProfileModal = ({ isOpen, onClose, user }) => {
   const t = useTranslations("userInfo");
+  
+  // Return null if user is not available
+  if (!user) {
+    return null;
+  }
+  
   return (
   <Modal isOpen={isOpen} onClose={onClose}>
     <h2 className="text-xl font-bold mb-3">{t("title")}</h2>
     <p>
-      <strong>{t("name")}:</strong> {user.name}
+      <strong>{t("name")}:</strong> {user?.name || "User"}
     </p>
     <p>
-      <strong>{t("email")}:</strong> {user.email}
+      <strong>{t("email")}:</strong> {user?.email || "No email"}
     </p>
     <button onClick={() => signOut()}>{t("logout")}</button>
   </Modal>)
