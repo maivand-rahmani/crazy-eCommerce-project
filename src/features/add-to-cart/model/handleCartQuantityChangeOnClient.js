@@ -25,7 +25,8 @@ export async function handleCartQuantityChange({ setLoading = () => {} , setCoun
         setAdded(res.item);
         if (!res.item)
           throw new Error("Something gone wrong while sending request");
-      } catch {
+      } catch (error) {
+        console.error("Add to cart failed:", error);
         setCounter((s) => s - 1);
         toast.error("Something gone wrong while sending request");
       } finally {
@@ -50,7 +51,8 @@ export async function handleCartQuantityChange({ setLoading = () => {} , setCoun
 
         if (res?.success)
           throw new Error("Something gone wrong while sending request");
-      } catch {
+      } catch (error) {
+        console.error("Remove from cart failed:", error);
         setCounter((s) => s + 1);
         toast.error("Something gone wrong while sending request");
       } finally {
@@ -69,7 +71,8 @@ export async function handleCartQuantityChange({ setLoading = () => {} , setCoun
         }
         if (!res?.success)
           throw new Error("Something gone wrong while sending request");
-      } catch {
+      } catch (error) {
+        console.error("Delete from cart failed:", error);
         toast.error("Something gone wrong while sending request");
       } finally {
         setLoading(false);
