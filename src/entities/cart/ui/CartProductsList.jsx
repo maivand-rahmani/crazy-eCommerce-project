@@ -19,7 +19,6 @@ const CartProductsList = ({ checkoutState, setItems, setTotal = () => {} }) => {
         const data = await getUserCart()
         
         setProducts(data || []);
-        setLoading(false);
         let total = (data || []).reduce((sum, product) => {
           return sum + (product?.price_cents * product?.quantity) / 100;
         }, 0);
@@ -28,7 +27,6 @@ const CartProductsList = ({ checkoutState, setItems, setTotal = () => {} }) => {
       cartProducts();
     } catch (error) {
       console.error(`error while fetching user cart products: ${error}`);
-      setLoading(false);
     } finally {
       setLoading(false);
     }

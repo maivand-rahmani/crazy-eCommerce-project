@@ -65,7 +65,7 @@ const page = async ({ params }) => {
   return (
     <main className="md:px-4 h-full text-text w-full overflow-hidden p-5 md:p-20 flex flex-col">
       <div className="w-full flex-col flex center pb-28 md:px-20 md:flex-row md:gap-10 gap-5">
-        <Suspense fallback={<Miniloader />}>
+        <Suspense>
           <Slider productId={productId} variantId={variantId} />
         </Suspense>
         <Suspense
@@ -76,10 +76,10 @@ const page = async ({ params }) => {
           <MainInfo product={data} otherInfo={userId ? metaData : null} />
         </Suspense>
       </div>
-      <Suspense fallback={<Miniloader />}>
+      <Suspense >
         <ProductSpecs productId={productId} />
       </Suspense>
-      <Suspense fallback={<Miniloader />}>
+      <Suspense >
         <div className="py-10 px-5 md:py-20 md:px-40">
           <h2 className="text-2xl font-semibold mb-6">
             {t("relatedProducts")}
@@ -87,7 +87,7 @@ const page = async ({ params }) => {
           <RelatedProducts id={variantId} category={fallbackCategoryId} />
         </div>
       </Suspense>
-      <Suspense fallback={<Miniloader />}>
+      <Suspense>
         <div className="rounded-3xl bg-surface shadow-2xl p-4 my-5 border border-border">
           <div>
             <ProductRatingStats productId={productId} />

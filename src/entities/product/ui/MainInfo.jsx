@@ -84,7 +84,7 @@ const  MainInfo = ({ product , otherInfo }) => {
         <h2 className="text-2xl font-bold mb-2 text-text">{t("selectColor")}</h2>
         <ul className="flex flex-wrap gap-4">
           {colorOptions.map((v, i) => {
-            const color = v.variant_options.find(o => o.key === "Color")?.value || "N/A";
+            const color = v.variant_options?.find(o => o.key === "Color")?.value || "N/A";
             const isSelected = color === selectedColor;
             return (
               <li
