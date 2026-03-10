@@ -35,10 +35,11 @@ const ProductCard = ({ data, otherInfo }) => {
   const isInStock = stockQuantity > 0;
   const stockDisplay = getStockDisplay(stockQuantity, t);
 
-  // Calculate discounted price if on sale
-  const hasDiscount = data.discount_percent && data.discount_percent > 0;
+  // Calculate discounted price if on sale (with null safety)
+  const discountPercent = data.discount_percent ?? 0;
+  const hasDiscount = discountPercent > 0;
   const displayPrice = hasDiscount 
-    ? getDiscountedPrice(data.price_cents, data.discount_percent) / 100 
+    ? getDiscountedPrice(data.price_cents, discountPercent) / 100 
     : data.price_cents / 100;
   const originalPrice = data.price_cents / 100;
 
@@ -47,7 +48,7 @@ const ProductCard = ({ data, otherInfo }) => {
       {/* Product Badges (New / Sale) */}
       <ProductBadges 
         createdAt={data.created_at} 
-        discountPercent={data.discount_percent}
+        discountPercent={discountPercent}
       />
 
       {/* Like button */}
