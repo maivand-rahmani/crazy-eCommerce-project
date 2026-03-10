@@ -4,6 +4,7 @@ import { Heart } from "lucide-react";
 import Image from "next/image";
 import { AddToWishListCom } from "../../../features/add-to-wishlist/ui/AddToWishListCom";
 import { QuickAddToCart } from "../../../features/add-to-cart";
+import { ProductBadges, getDiscountedPrice } from "@/shared/ui/product-badges";
 import { useRouter } from "@/shared/i18n";
 import { useTranslations } from "next-intl";
 
@@ -34,8 +35,21 @@ const ProductCard = ({ data, otherInfo }) => {
   const isInStock = stockQuantity > 0;
   const stockDisplay = getStockDisplay(stockQuantity, t);
 
+  // Calculate discounted price if on sale
+  const hasDiscount = data.discount_percent && data.discount_percent > 0;
+  const displayPrice = hasDiscount 
+    ? getDiscountedPrice(data.price_cents, data.discount_percent) / 100 
+    : data.price_cents / 100;
+  const originalPrice = data.price_cents / 100;
+
   return (
     <div className="group relative flex flex-col items-center justify-between rounded-2xl bg-card p-6 shadow-md transition-all duration-300 hover:-translate-y-1 hover:shadow-2xl">
+      {/* Product Badges (New / Sale) */}
+      <ProductBadges 
+        createdAt={data.created_at} 
+        discountPercent={data.discount_percent}
+      />
+
       {/* Like button */}
       <div className="absolute z-20 top-4 right-4">
         <AddToWishListCom
@@ -73,9 +87,16 @@ const ProductCard = ({ data, otherInfo }) => {
       </h1>
 
       {/* Price */}
-      <h4 className="text-[clamp(1.25rem,2vw,1.5rem)] font-bold text-text mt-1">
-        {data.price_cents / 100} $
-      </h4>
+      <div className="flex items-center gap-2 mt-1">
+        {hasDiscount && (
+          <span className="text-lg font-bold text-muted line-through">
+            {originalPrice} $
+          </span>
+        )}
+        <h4 className={`text-[clamp(1.25rem,2vw,1.5rem)] font-bold ${hasDiscount ? 'text-red-500' : 'text-text'}`}>
+          {displayPrice} $
+        </h4>
+      </div>
 
       {/* Action buttons - Quick Add + Buy Now */}
       <div className="mt-4 flex">
