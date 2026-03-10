@@ -100,7 +100,8 @@ export async function GET(req) {
         headers: { "Content-Type": "application/json", "Access-Control-Allow-Origin": "*" }
       });
     } catch (fallbackError) {
-      console.error("Fallback query failed:", fallbackError);
+      // Fallback failed - log at warn level since it's a recovery path
+      console.warn("Fallback query for related products failed:", fallbackError);
       return NextResponse.json([], { 
         status: 200,
         headers: { "Content-Type": "application/json", "Access-Control-Allow-Origin": "*" }
