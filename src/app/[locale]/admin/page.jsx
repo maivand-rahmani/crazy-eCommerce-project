@@ -18,7 +18,7 @@ export const metadata = {
 };
 
 const page = async () => {
-  return <div>admin page mazafucker</div>;
+  return <div>Admin Dashboard - Coming Soon</div>;
 };
 
 export default page;
