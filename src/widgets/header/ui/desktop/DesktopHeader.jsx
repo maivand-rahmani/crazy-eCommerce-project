@@ -1,17 +1,15 @@
 "use client";
 import React, { Suspense } from "react";
 import {
-  SearchIcon,
   Heart,
   ShoppingCart,
-  CircleUserRound,
-  Menu,
 } from "lucide-react";
 import { Link, usePathname } from "@/shared/i18n";
-import { useTranslations, useLocale } from "next-intl";
+import { useTranslations } from "next-intl";
 import { UserInfoModal } from "@/entities/user";
 import ProductSearch from "@/features/search/ui/ProductSearch";
 import { ShoppingCartButton, WishlistButton, Cyber, ThemeSwitcher } from "../index";
+import { NavLink } from "@/shared";
 
 const routes = [
   { name: "Home", path: "/" },
@@ -42,13 +40,10 @@ export const DesktopHeader = () => {
           {routes.map(
             (route) =>
               !route.onlyPhone && (
-                <li
-                  className={pathname === route.path ? "font-bold" : ""}
-                  key={route.name}
-                >
-                  <Link href={`${route.path}`}>
+                <li key={route.name}>
+                  <NavLink href={`${route.path}`} isActiveStyle={"shadow-2xl/50 font-bold mb-2"} className={`transition-all hover:text-primary`}>
                     {t(`header.nav.${route.name}`)}
-                  </Link>
+                  </NavLink>
                 </li>
               ),
           )}

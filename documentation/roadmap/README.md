@@ -255,8 +255,14 @@ A full-featured Next.js e-commerce platform with multi-language support (i18n), 
 - [x] On the search page, when we search for products, the addition to the favorite ones does not work in the product card. (Fixed in PR #20 and subsequent improvements)
 
 - [x] On the back-end API side of the search The system that considers the average rating does not work. (Fixed in PR #35) 
+---
+ 
+## 🧪 Testing Roadmap
 
-- [x] Multiple bugs in cart checkout flow - empty try-catch blocks, typos, missing image null checks, redundant wishlist logic (Fixed in PR #51) 
+- [ ] **Automated testing setup**
+  - Description: Follow the detailed checklist in `documentation/test/README.md` for per-layer/component coverage.
+  - Priority: High — ensures future changes remain safe and makes agentic work reproducible.
+  - Notes: The playbook is increasingly granular (shared, entities, features, widgets, API, CI and agent workflow). Update this section whenever a major milestone completes.
 
 
 ---
@@ -287,13 +293,30 @@ A full-featured Next.js e-commerce platform with multi-language support (i18n), 
 ### 5.3.2026
 - Fixed: Search API average rating - enabled reviews in query, added avg_rating and review_count to search results, enabled minRating filter (PR #35)
 
+### 6.3.2026
+- Added: Admin sidebar navigation - implemented AdminSidebar component with links to dashboard, products, orders, users, categories 
+- Updated: Admin page placeholder - added basic admin dashboard page with metadata
+- Fix: NavLink active state - updated to use pathname for accurate active link highlighting
+- Added: Tests for shared helpers (`shared/lib/fetch` and `shared/utils/cx`) to exercise foundation coverage.
+- Added: Testing foundation with Vitest, `tests/setup.ts`, and the first shared fetch test so the automated suite can run end-to-end.
+
+### 7.3.2026
+- Added: `OrderSummary` totals test that mocks translations/auth props and validates subtotal/total rendering in checkout state.
+
 ### 8.3.2026
-- Fixed: Wishlist toast message showing opposite action - when adding to wishlist showed "remove" and vice versa (PR #61)
+- Added: Catalog model tests that confirm product/category/search endpoints call `Fetch` with the expected query/parameter combinations.
+
+### 9.3.2026
+- Added: `addToCart` service tests covering add/remove/delete flows so the feature layer handles quantity/state transitions reliably.
 
 ### 10.3.2026
-- Added: Product badges (New/Sale) - displays "New" badge on products added within 7 days, "Sale" badge with discount percentage when discount_percent > 0, shows discounted price with strikethrough original price (PR #88)
+- Added: `cart` model test verifying `getUserCart` forwards `/api/cart` requests to the shared `Fetch`.
+- Added: `leave-comment` action tests covering unauthorized flows and valid submissions calling `/api/products/comments`.
+- Added: `register` model test that hashes passwords before POSTing to `/api/auth/register`.
+- Added: `payment mock` form test that formats card/expiry inputs, shows coupon pricing, and advances the checkout step.
+- Added: `ProductSearch` component tests that exercise the debounce, result list, and “view all” navigation.
+- Added: Header widget test ensuring desktop/mobile fragments render together.
+- Added: Footer widget test verifying nav/copyright copy, cart page test that surfaces `OrderSummary`, and orders page test covering filters/table rows.
 
-### 8.3.2026
-- Added: Product stock indicator - displays stock status badge on product cards (In Stock/Low Stock/Out of Stock), disables Buy Now button for out of stock products (PR #68)
 
 (repeatable section)
