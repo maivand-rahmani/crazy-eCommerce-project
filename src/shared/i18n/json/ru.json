@@ -128,7 +128,9 @@
 
   "home": {
     "featuredProducts": "Рекомендуемые товары",
-    "BrowseByCategory": "Просмотр по категориям"
+    "BrowseByCategory": "Просмотр по категориям",
+    "recentlyViewed": "Недавно просмотренные",
+    "clearHistory": "Очистить историю"
   },
 
   "cart": {

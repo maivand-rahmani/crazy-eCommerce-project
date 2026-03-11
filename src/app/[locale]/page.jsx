@@ -33,6 +33,7 @@ import { getTranslations } from "next-intl/server";
 import { Miniloader, ProductsRenderSkeleton } from "@/shared";
 import { Main, CategorySection, FeaturedProducts } from "@/features/home";
 import { DragScrollContainer } from "@/shared/ui/ScrollContainer";
+import { RecentlyViewedProducts } from "@/features/recently-viewed";
 
 const Page = async () => {
   const t = await getTranslations("home");
@@ -51,6 +52,7 @@ const Page = async () => {
           <FeaturedProducts />
         </Suspense>
       </div>
+      <RecentlyViewedProducts />
       <DragScrollContainer />
     </div>
   );

@@ -126,7 +126,9 @@
 
   "home": {
     "featuredProducts": "محصولات ویژه",
-    "BrowseByCategory": "دسته‌بندی بر اساس"
+    "BrowseByCategory": "دسته‌بندی بر اساس",
+    "recentlyViewed": "محصولات بازدید شده",
+    "clearHistory": "پاک کردن تاریخچه"
   },
 
   "cart": {
