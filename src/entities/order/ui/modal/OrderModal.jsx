@@ -5,6 +5,7 @@ import AddUserAddressForm from "@/features/add-user-address/ui/addUserAddressMod
 import PaymentMockForm from "@/features/payment-mock/ui/PaymentMockForm";
 import { Fetch } from "@/shared/lib/fetch";
 import OrderingLoader from "@/entities/order/ui/ordering";
+import { getLineItemTotalCents, getProductPriceInfo } from "@/entities/product";
 import { useRouter } from "@/shared/i18n/model/routing";
 import { useTranslations } from "next-intl";
 
@@ -26,7 +27,7 @@ export function OrderStepper({ currentStep = 1 }) {
     <div className="w-full max-w-2xl mx-auto py-8">
       <div className="flex items-center justify-between relative">
         {/* Progress Line */}
-        <div className="absolute top-5 left-0 w-full h-[2px] bg-border">
+        <div className="absolute top-5 left-0 w-full h-0.5 bg-border">
           <div
             className="h-full bg-text transition-all duration-500 ease-in-out"
             style={{
@@ -98,31 +99,32 @@ const OrderModal = ({ isOpen, items, total, couponInfo, setOrderModal }) => {
     order_items: items.map((item) => ({
       variant_id: item.variant_id,
       quantity: item.quantity,
-      unit_price_cents: item.price_cents,
+      unit_price_cents: getProductPriceInfo(item).currentPriceCents,
     })),
     coupon_id: couponInfo.id,
     address: null,
     status: "created",
     total_cents: items.reduce(
-      (total, item) => total + item.price_cents * item.quantity,
+      (total, item) =>
+        total +
+        getLineItemTotalCents(
+          getProductPriceInfo(item).currentPriceCents,
+          item.quantity,
+        ),
       0,
     ),
     cart_id: items[0].cart_id,
   });
 
   useEffect(() => {
-    try {
-      if (!orderInfo.order_id && step === 3) {
-        (async () => {
-          const data = await Fetch("/api/cart/order", "POST", orderInfo);
-          if (data.status === 200) {
-            setOrderInfo({ ...orderInfo, order_id: data.order.id });
-            router.replace(`/orders/${data.order.id}`);
-          }
-        })();
-      }
-    } catch (error) {
-      return new Error(error);
+    if (!orderInfo.order_id && step === 3) {
+      (async () => {
+        const data = await Fetch("/api/cart/order", "POST", orderInfo);
+        if (data.status === 200) {
+          setOrderInfo({ ...orderInfo, order_id: data.order.id });
+          router.replace(`/orders/${data.order.id}`);
+        }
+      })();
     }
   }, [step]);
 

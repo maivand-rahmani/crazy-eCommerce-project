@@ -72,9 +72,12 @@ export async function GET(req) {
       product_name: card.product_name,
       variant_name: card.variant_name,
       price_cents: card.price_cents,
+      discount_percent: card.discount_percent,
       image_url: card.image_url,
       variant_options: card.variant_options,
       specs: card.specs,
+      stock_quantity: card.stock_quantity,
+      created_at: card.created_at,
     }));
 
     return NextResponse.json(toSafeJson(transformedData), { 

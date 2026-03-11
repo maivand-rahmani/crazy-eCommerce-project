@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import prisma from "../../../../../prisma/client";
 import { toSafeJson } from "../../../../../prisma/funcs";
+import { getToken } from "next-auth/jwt";
 
 export async function GET(req) {
   try {
@@ -34,11 +35,16 @@ export async function GET(req) {
 
 export async function POST(req) {
   try {
+    const user = await getToken({ req, secret: process.env.NEXTAUTH_SECRET });
+    if (!user) {
+      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+    }
+
     const data = await req.json();
 
     const comment = await prisma.reviews.create({
       data: {
-        user_id: data?.user_id,
+        user_id: user.id,
         product_id: Number(data?.productId),
         rating: Number(data?.rating),
         comment: String(data?.comment),
@@ -57,7 +63,20 @@ export async function POST(req) {
 
 export async function PUT(req) {
   try {
+    const user = await getToken({ req, secret: process.env.NEXTAUTH_SECRET });
+    if (!user) {
+      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+    }
+
     const data = await req.json();
+
+    const existingComment = await prisma.reviews.findUnique({
+      where: { id: Number(data?.id) },
+    });
+
+    if (!existingComment || existingComment.user_id !== user.id) {
+      return NextResponse.json({ error: "Forbidden" }, { status: 403 });
+    }
 
     const Comment = await prisma.reviews.update({
       where: {
@@ -80,8 +99,22 @@ export async function PUT(req) {
 }
 
 export async function DELETE(req) {
-  const data = await req.json();
   try {
+    const user = await getToken({ req, secret: process.env.NEXTAUTH_SECRET });
+    if (!user) {
+      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+    }
+
+    const data = await req.json();
+
+    const existingComment = await prisma.reviews.findUnique({
+      where: { id: Number(data?.id) },
+    });
+
+    if (!existingComment || existingComment.user_id !== user.id) {
+      return NextResponse.json({ error: "Forbidden" }, { status: 403 });
+    }
+
     const comment = await prisma.reviews.delete({
       where: {
         id: Number(data?.id),

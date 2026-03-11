@@ -3,6 +3,10 @@ import React, { useState, useEffect, use } from "react";
 import { useParams } from "next/navigation";
 import { Link, useRouter } from "@/shared/i18n";
 import { Fetch } from "@/shared/lib";
+import {
+  formatPriceFromCents,
+  getLineItemTotalCents,
+} from "@/entities/product";
 import Image from "next/image";
 import { useTranslations } from "next-intl";
 
@@ -39,9 +43,11 @@ const OrderDetailPage = () => {
     }
   }, [params.orderId]);
 
-  const formatPrice = (cents) => {
-    return (cents / 100).toFixed(2);
-  };
+  const formatPrice = (cents) =>
+    formatPriceFromCents(cents, {
+      minimumFractionDigits: 2,
+      maximumFractionDigits: 2,
+    });
 
   const formatDate = (dateString) => {
     return new Date(dateString).toLocaleDateString("en-US", {
@@ -154,7 +160,7 @@ const OrderDetailPage = () => {
                   {/* Product Image */}
                   <Link
                     href={`/catalog/${item.product_variants.products?.categories?.id}/${item.product_variants.id}`}
-                    className="w-20 h-20 bg-gray-200 rounded-md overflow-hidden flex-shrink-0 hover:opacity-90 transition-opacity"
+                    className="w-20 h-20 bg-gray-200 rounded-md overflow-hidden shrink-0 hover:opacity-90 transition-opacity"
                   >
                     {item.product_variants.products?.product_images?.[0]
                       ?.url ? (
@@ -207,7 +213,12 @@ const OrderDetailPage = () => {
                     </p>
                     <p className="text-sm text-gray-600">
                       {t("total")}: $
-                      {formatPrice(item.unit_price_cents * item.quantity)}
+                      {formatPrice(
+                        getLineItemTotalCents(
+                          item.unit_price_cents,
+                          item.quantity,
+                        ),
+                      )}
                     </p>
                   </div>
                 </div>

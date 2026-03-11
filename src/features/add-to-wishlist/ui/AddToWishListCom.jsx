@@ -26,22 +26,22 @@ export function AddToWishListCom({
       return;
     }
 
-    if (user?.id) {
-      setAdded((s) => !s);
-      startTransition(async () => {
-        const res = await addToWishlist(
-          productId,
-          variantId,
-          wishlistInfo?.wishlist_id,
-        );
-        added
-          ? toast(t("removeFromWishlist"), { icon: "❎" })
-          : toast(t("addedToWishlist"), { icon: "✅" });
-        setAdded(res.status === "added");
-      });
-    } else {
-      toast.error(tCommon("error"));
-    }
+    // Capture the new state BEFORE toggling for correct toast message
+    const willBeAdded = !added;
+    
+    setAdded(willBeAdded);
+    startTransition(async () => {
+      const res = await addToWishlist(
+        productId,
+        variantId,
+        wishlistInfo?.wishlist_id,
+      );
+      // Use willBeAdded (the new state) for toast message
+      willBeAdded
+        ? toast(t("addedToWishlist"), { icon: "✅" })
+        : toast(t("removeFromWishlist"), { icon: "❎" });
+      setAdded(res.status === "added");
+    });
   };
 
   const colorClass = added

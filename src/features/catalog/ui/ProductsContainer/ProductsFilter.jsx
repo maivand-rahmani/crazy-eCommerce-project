@@ -1,6 +1,7 @@
 "use client";
-import { useState , useEffect } from "react";
+import { useState, useEffect } from "react";
 import { useTranslations } from "next-intl";
+import { centsToCurrencyValue } from "@/entities/product";
 
 export default function ProductFilters({ setProducts, products }) {
   const t = useTranslations("filter");
@@ -16,13 +17,13 @@ export default function ProductFilters({ setProducts, products }) {
 
   const filterOptions = {
     Brand: Array.from(
-      new Set(products.map((p) => p.specs?.Brand).filter(Boolean))
+      new Set(products.map((p) => p.specs?.Brand).filter(Boolean)),
     ),
     Storage: Array.from(
-      new Set(products.map((p) => p.variant_options?.Storage).filter(Boolean))
+      new Set(products.map((p) => p.variant_options?.Storage).filter(Boolean)),
     ),
     Color: Array.from(
-      new Set(products.map((p) => p.variant_options?.Color).filter(Boolean))
+      new Set(products.map((p) => p.variant_options?.Color).filter(Boolean)),
     ),
   };
 
@@ -80,7 +81,7 @@ export default function ProductFilters({ setProducts, products }) {
         selectedFilters.Color.includes(card.variant_options?.Color);
 
       /* ---------- PRICE ---------- */
-      const price = card.price_cents / 100;
+      const price = centsToCurrencyValue(card.price_cents);
       const priceMatch = price >= min && price <= max;
 
       return brandMatch && storageMatch && colorMatch && priceMatch;
@@ -92,7 +93,6 @@ export default function ProductFilters({ setProducts, products }) {
   useEffect(() => {
     applyFilters();
   }, [selectedFilters]);
-
 
   return (
     <div className="p-6 rounded-xl space-y-6 border border-border bg-surface text-text">

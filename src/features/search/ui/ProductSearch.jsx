@@ -1,16 +1,17 @@
 "use client";
 
-import React, { useState, useEffect, useRef } from 'react';
-import { Search, X, Star, ArrowRight } from 'lucide-react';
-import { useRouter } from '@/shared/i18n/model/routing';
+import React, { useState, useEffect, useRef } from "react";
+import { Search, X, Star, ArrowRight } from "lucide-react";
+import { useRouter } from "@/shared/i18n/model/routing";
+import { formatPriceFromCents } from "@/entities/product";
 
-export function ProductSearch({ 
-  placeholder = "Search products...", 
+export function ProductSearch({
+  placeholder = "Search products...",
   onSearch,
   className = "",
-  limit = 5 
+  limit = 5,
 }) {
-  const [query, setQuery] = useState('');
+  const [query, setQuery] = useState("");
   const [results, setResults] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
@@ -32,8 +33,8 @@ export function ProductSearch({
       setError(null);
       try {
         const params = new URLSearchParams();
-        params.set('search', query);
-        params.set('limit', limit.toString());
+        params.set("search", query);
+        params.set("limit", limit.toString());
 
         const res = await fetch(`/api/products/search?${params.toString()}`);
         const data = await res.json();
@@ -42,12 +43,12 @@ export function ProductSearch({
           setResults(data.data || []);
           setIsOpen(true);
         } else {
-          setError(data.error || 'Search failed');
+          setError(data.error || "Search failed");
           setResults([]);
         }
       } catch (err) {
-        console.error('Search error:', err);
-        setError('Failed to search. Please try again.');
+        console.error("Search error:", err);
+        setError("Failed to search. Please try again.");
         setResults([]);
       } finally {
         setIsLoading(false);
@@ -64,8 +65,8 @@ export function ProductSearch({
         setIsOpen(false);
       }
     }
-    document.addEventListener('mousedown', handleClickOutside);
-    return () => document.removeEventListener('mousedown', handleClickOutside);
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
 
   const handleSubmit = (e) => {
@@ -81,13 +82,15 @@ export function ProductSearch({
 
   const handleResultClick = (product) => {
     // Navigate to product page
-    router.push(`/catalog/${product.category_id}/${product.variant_id}?product=${encodeURIComponent(product.product_name)}&variant=${encodeURIComponent(product.variant_name || '')}`);
+    router.push(
+      `/catalog/${product.category_id}/${product.variant_id}?product=${encodeURIComponent(product.product_name)}&variant=${encodeURIComponent(product.variant_name || "")}`,
+    );
     setIsOpen(false);
-    setQuery('');
+    setQuery("");
   };
 
   const clearSearch = () => {
-    setQuery('');
+    setQuery("");
     setResults([]);
     setIsOpen(false);
     inputRef.current?.focus();
@@ -97,9 +100,9 @@ export function ProductSearch({
     <div ref={inputRef} className={`relative ${className}`}>
       <form onSubmit={handleSubmit}>
         <div className="relative">
-          <Search 
-            className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400" 
-            size={20} 
+          <Search
+            className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400"
+            size={20}
           />
           <input
             type="text"
@@ -107,7 +110,9 @@ export function ProductSearch({
             onChange={(e) => setQuery(e.target.value)}
             placeholder={placeholder}
             className="w-full pl-12 pr-12 py-3 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-            onFocus={() => query.trim() && results.length > 0 && setIsOpen(true)}
+            onFocus={() =>
+              query.trim() && results.length > 0 && setIsOpen(true)
+            }
           />
           {query && (
             <button
@@ -130,9 +135,7 @@ export function ProductSearch({
               <span className="ml-2">Searching...</span>
             </div>
           ) : error ? (
-            <div className="p-4 text-center text-red-500">
-              {error}
-            </div>
+            <div className="p-4 text-center text-red-500">{error}</div>
           ) : results.length > 0 ? (
             <>
               {results.map((product) => (
@@ -159,26 +162,35 @@ export function ProductSearch({
                     <div className="flex items-center gap-2 mt-1">
                       {product.avg_rating > 0 && (
                         <div className="flex items-center gap-1">
-                          <Star size={14} className="text-yellow-400 fill-yellow-400" />
+                          <Star
+                            size={14}
+                            className="text-yellow-400 fill-yellow-400"
+                          />
                           <span className="text-sm text-gray-500">
                             {product.avg_rating.toFixed(1)}
                           </span>
                         </div>
                       )}
                       <span className="text-lg font-bold text-blue-600">
-                        ${((product.price_cents || 0) / 100).toFixed(2)}
+                        $
+                        {formatPriceFromCents(product.price_cents || 0, {
+                          minimumFractionDigits: 2,
+                          maximumFractionDigits: 2,
+                        })}
                       </span>
                     </div>
                   </div>
                 </button>
               ))}
-              
+
               {/* View All Results Link */}
               <button
                 onClick={handleSubmit}
                 className="w-full flex items-center justify-between p-3 bg-gray-50 hover:bg-gray-100 transition-colors text-left border-t"
               >
-                <span className="text-blue-600 font-medium">View all results</span>
+                <span className="text-blue-600 font-medium">
+                  View all results
+                </span>
                 <ArrowRight size={18} className="text-blue-600" />
               </button>
             </>

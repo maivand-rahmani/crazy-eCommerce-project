@@ -24,7 +24,7 @@ export const MobileHeader = () => {
       <NavLink href={"/catalog"} className={``} isActiveStyle={isActiveStyle}>
         <PackageSearchIcon />
       </NavLink>
-      {user && <UserInfoModal />}
+      <UserInfoModal />
 
       <NavLink href={"/wishlist"} className={``} isActiveStyle={isActiveStyle}>
         <Suspense fallback={<Heart />}>

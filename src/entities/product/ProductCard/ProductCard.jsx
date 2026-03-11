@@ -1,8 +1,17 @@
 "use client";
-import React, { useState } from "react";
-import { Heart } from "lucide-react";
+import React from "react";
 import Image from "next/image";
 import { AddToWishListCom } from "../../../features/add-to-wishlist/ui/AddToWishListCom";
+import { QuickAddToCart } from "../../../features/add-to-cart";
+import {
+  ProductBadges,
+  ProductPrice,
+  getProductCreatedAt,
+  getProductPriceInfo,
+  getProductStockQuantity,
+  isProductInStock,
+} from "@/entities/product";
+import { StockIndicator } from "@/shared/ui/stock-indicator";
 import { useRouter } from "@/shared/i18n";
 import { useTranslations } from "next-intl";
 
@@ -17,8 +26,20 @@ const ProductCard = ({ data, otherInfo }) => {
     );
   }
 
+  // Handle negative stock values safely
+  const stockQuantity = getProductStockQuantity(data);
+  const isInStock = isProductInStock(data);
+
+  // Calculate discounted price if on sale (with null safety)
+  // Accept both snake_case (from server) and camelCase (possible client transforms)
+  const createdAt = getProductCreatedAt(data);
+  const { discountPercent, hasDiscount } = getProductPriceInfo(data);
+
   return (
     <div className="group relative flex flex-col items-center justify-between rounded-2xl bg-card p-6 shadow-md transition-all duration-300 hover:-translate-y-1 hover:shadow-2xl">
+      {/* Product Badges (New / Sale) */}
+      <ProductBadges createdAt={createdAt} discountPercent={discountPercent} />
+
       {/* Like button */}
       <div className="absolute z-20 top-4 right-4">
         <AddToWishListCom
@@ -28,6 +49,14 @@ const ProductCard = ({ data, otherInfo }) => {
         />
       </div>
 
+      {/* Stock indicator badge - positioned at bottom-left to avoid conflicts with other badges */}
+      <StockIndicator
+        stockQuantity={stockQuantity}
+        lowStockThreshold={5}
+        onlyLeftLabel={t("onlyLeft")}
+        inStockLabel={t("inStock")}
+      />
+
       {/* Image */}
       <div className="flex items-center justify-center w-full max-h-[220px] overflow-clip">
         <Image
@@ -35,7 +64,7 @@ const ProductCard = ({ data, otherInfo }) => {
           alt={data.variant_name}
           width={220}
           height={220}
-          className="object-cover [object-position:top_center] h-full w-auto transition-transform duration-500 group-hover:scale-105"
+          className="object-cover object-[top_center] h-full w-auto transition-transform duration-500 group-hover:scale-105"
         />
       </div>
 
@@ -48,17 +77,36 @@ const ProductCard = ({ data, otherInfo }) => {
       </h1>
 
       {/* Price */}
-      <h4 className="text-[clamp(1.25rem,2vw,1.5rem)] font-bold text-text mt-1">
-        {data.price_cents / 100} $
-      </h4>
+      <ProductPrice
+        priceCents={data.price_cents}
+        discountPercent={discountPercent}
+        containerClassName="flex items-center gap-2 mt-1"
+        originalPriceClassName="text-lg font-bold text-muted line-through"
+        currentPriceClassName={`text-[clamp(1.25rem,2vw,1.5rem)] font-bold ${hasDiscount ? "text-red-500" : "text-text"}`}
+        currencySuffix=" $"
+      />
 
-      {/* Button */}
-      <button
-        onClick={handleClick}
-        className="mt-4 w-[140px] rounded-xl bg-button px-4 py-2 text-button-text transition-all duration-300 hover:opacity-80"
-      >
-        {t("buyNow")}
-      </button>
+      {/* Action buttons - Quick Add + Buy Now */}
+      <div className="mt-4 flex">
+        {/* Quick Add to Cart button */}
+        <QuickAddToCart
+          variantId={data.variant_id}
+          productName={`${data.product_name} - ${data.variant_name}`}
+        />
+
+        {/* Buy Now button */}
+        <button
+          onClick={handleClick}
+          disabled={!isInStock}
+          className={`w-25 rounded-r-xl px-4 py-2 transition-all duration-300 ${
+            isInStock
+              ? "bg-button text-button-text hover:opacity-80"
+              : "bg-muted text-card opacity-50 cursor-not-allowed"
+          }`}
+        >
+          {isInStock ? t("buyNow") : t("outOfStock")}
+        </button>
+      </div>
     </div>
   );
 };

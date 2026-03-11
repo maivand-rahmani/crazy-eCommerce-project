@@ -167,6 +167,11 @@ A full-featured Next.js e-commerce platform with multi-language support (i18n), 
 - **Description**: Reusable product display cards
 - **What works**: ProductCard and SmallProductCard components
 
+#### ✅ Feature: Product Badges (New/Sale)
+- **Description**: Visual badges on product cards highlighting new and sale items
+- **What works**: "New" badge for products within 7 days, "Sale" badge with discount percentage, discounted price display
+- **Notes**: Requires `discount_percent` field on products, PR #88
+
 #### ✅ Feature: Image Slider
 - **Description**: Product image gallery
 - **What works**: Slider component for product detail page
@@ -233,7 +238,7 @@ A full-featured Next.js e-commerce platform with multi-language support (i18n), 
   - Priority:
   - Notes:
 
-- [ ] Theme switcher:
+- [x] Theme switcher:
   - Description: A beautiful component for switching themes.
   - Priority: Medium
   - Notes: To implement this component, you first need to change the user's portal because only the user who is already registered has access to the portal now, and the users who are not registered, they go to the login page, and it is necessary that there is a button for moving to the registration page, and at the bottom there were those very components for changing the language and changing the theme.
@@ -278,6 +283,12 @@ A full-featured Next.js e-commerce platform with multi-language support (i18n), 
 
 ### 4.3.2026
 - Added: Loading skeleton for product detail page - created loading.jsx with comprehensive skeleton UI including image slider, product info, specs, related products, and reviews sections (PR #25)
+
+### 7.3.2026
+- Fixed: Multiple bugs in cart checkout flow - removed empty try-catch blocks, fixed typo in function name, added null check for product images, simplified redundant logic in wishlist component (PR #51)
+
+### 8.3.2026
+- Added: Loading skeletons for catalog, search, and wishlist pages - created loading.jsx files with animated skeleton UI components for better UX while pages load (PR #66)
 
 ### 5.3.2026
 - Fixed: Search API average rating - enabled reviews in query, added avg_rating and review_count to search results, enabled minRating filter (PR #35)
