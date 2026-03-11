@@ -13,19 +13,27 @@ let checkIfCouponValid = (coupon) => {
 }
 
 export async function GET(req){
-    const { searchParams } = new URL(req.url)
-    const coupon = searchParams.get("coupon")
-    let checkedCoupon;
+    try {
+        const { searchParams } = new URL(req.url)
+        const coupon = searchParams.get("coupon")
+        let checkedCoupon;
 
-    const res = await prisma.coupons.findFirst({
-        where: {coupon_code: coupon}
-    })
+        const res = await prisma.coupons.findFirst({
+            where: {coupon_code: coupon}
+        })
 
-    if (res) checkedCoupon = checkIfCouponValid(res)
-    
-    if (checkedCoupon) {
-        return NextResponse.json({ ...checkedCoupon , status: 200 })
+        if (res) checkedCoupon = checkIfCouponValid(res)
+        
+        if (checkedCoupon) {
+            return NextResponse.json({ ...checkedCoupon , status: 200 })
+        }
+
+        return NextResponse.json({ status: 404 })
+    } catch (error) {
+        console.error("API error:", error);
+        return NextResponse.json(
+            { error: "Failed to validate coupon" },
+            { status: 500 }
+        );
     }
-
-    return NextResponse.json({ status: 404 })
 }

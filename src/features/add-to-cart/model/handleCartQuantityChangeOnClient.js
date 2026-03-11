@@ -48,7 +48,7 @@ export async function handleCartQuantityChange({ setLoading = () => {} , setCoun
         if (res?.item) setAdded(res?.item);
         else setAdded(false);
 
-        if (res?.success)
+        if (!res?.success && !res?.item)
           throw new Error("Something gone wrong while sending request");
       } catch {
         setCounter((s) => s + 1);
