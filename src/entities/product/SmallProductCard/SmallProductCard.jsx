@@ -4,6 +4,12 @@ import Counter from "../../../features/add-to-cart/ui/counter";
 import DeleteButton from "../../../features/add-to-cart/ui/deleteButton";
 import { handleCartQuantityChange } from "../../../features/add-to-cart/model/handleCartQuantityChangeOnClient";
 import Image from "next/image";
+import {
+  ProductPrice,
+  centsToCurrencyValue,
+  formatPriceFromCents,
+  getProductPriceInfo,
+} from "@/entities/product";
 
 const SmallProductCard = ({
   productData,
@@ -14,6 +20,12 @@ const SmallProductCard = ({
 }) => {
   let [quantity, setQuantity] = useState(productData?.quantity);
   let [loading, setLoading] = useState(false);
+  const {
+    currentPriceCents: unitPriceCents,
+    originalPriceCents,
+    discountPercent,
+  } = getProductPriceInfo(productData);
+  const unitPrice = centsToCurrencyValue(unitPriceCents);
 
   let deleteProductFromCartOnClient = () => {
     setProducts(initialProducts.filter((p) => p?.id !== productData?.id));
@@ -34,22 +46,20 @@ const SmallProductCard = ({
     ) {
       deleteProductFromCartOnClient();
       // При удалении вычитаем (цена × количество)
-      setTotal(
-        (prevTotal) => prevTotal - (productData?.price_cents * quantity) / 100,
-      );
+      setTotal((prevTotal) => prevTotal - unitPrice * quantity);
     } else if (res && method === "remove") {
       // При уменьшении на 1 вычитаем только одну цену товара
-      setTotal((prevTotal) => prevTotal - productData?.price_cents / 100);
+      setTotal((prevTotal) => prevTotal - unitPrice);
     } else if (res && method === "add") {
       // При добавлении прибавляем одну цену товара
-      setTotal((prevTotal) => prevTotal + productData?.price_cents / 100);
+      setTotal((prevTotal) => prevTotal + unitPrice);
     }
   };
 
   return (
     <div className="flex gap-5 shadow-xl center border border-border rounded-2xl p-5 w-full bg-surface">
       {accessibility?.image && (
-        <div className="flex center w-[90px] flex-shrink-0">
+        <div className="flex center w-22.5 shrink-0">
           <Image
             src={productData?.image_url || "/placeholder.png"}
             alt={productData?.variant_name}
@@ -72,7 +82,20 @@ const SmallProductCard = ({
             </div>
           )}
           <div className="text-unactive-text">
-            <div>{`${(productData?.price_cents / 100).toFixed(0)}$`}</div>
+            <ProductPrice
+              priceCents={originalPriceCents}
+              discountPercent={discountPercent}
+              originalPriceClassName="mr-2 text-unactive-text/50 line-through"
+              currentPriceClassName="text-unactive-text"
+              currencySuffix="$"
+              formatPrice={(priceCents) =>
+                formatPriceFromCents(priceCents, {
+                  minimumFractionDigits: 0,
+                  maximumFractionDigits: 0,
+                })
+              }
+              showOriginalPrice={true}
+            />
           </div>
         </div>
 
@@ -84,7 +107,8 @@ const SmallProductCard = ({
               loading: loading,
               quantity: quantity,
               withPrice: true,
-              price: (productData?.price_cents / 100).toFixed(0),
+              priceCents: unitPriceCents,
+              priceFractionDigits: 0,
             }}
             withTotalPrice
           />

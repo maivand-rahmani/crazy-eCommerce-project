@@ -3,6 +3,7 @@ import React, { useState, useMemo } from "react";
 import { useTranslations } from "next-intl";
 import { Fetch } from "@/shared/lib/fetch";
 import { Link } from "@/shared/i18n/model/routing";
+import { formatPriceFromCents } from "@/entities/product";
 
 const OrdersPage = () => {
   const t = useTranslations("orders");
@@ -63,9 +64,11 @@ const OrdersPage = () => {
     );
   };
 
-  const formatPrice = (cents) => {
-    return (cents / 100).toFixed(2);
-  };
+  const formatPrice = (cents) =>
+    formatPriceFromCents(cents, {
+      minimumFractionDigits: 2,
+      maximumFractionDigits: 2,
+    });
 
   const formatDate = (dateString) => {
     return new Date(dateString).toLocaleDateString();

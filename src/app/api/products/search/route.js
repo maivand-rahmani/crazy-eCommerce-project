@@ -133,9 +133,11 @@ export async function GET(req) {
         category_id: product.category_id,
         category_name: product.categories?.name,
         price_cents: minPriceVariant?.price_cents || 0,
+        discount_percent: minPriceVariant?.discount_percent || 0,
         stock_quantity: totalStock,
         image_url: product.product_images[0]?.url || null,
         variant_name: minPriceVariant?.variant_name || null,
+        created_at: product.created_at,
         avg_rating: avgRating,
         review_count: stats.reviewCount,
       };

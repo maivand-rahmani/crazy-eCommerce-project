@@ -3,6 +3,7 @@ import { Fetch } from "@/shared/lib";
 import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 import toast from "react-hot-toast";
+import { formatCurrencyValue } from "@/entities/product";
 import { useTranslations } from "next-intl";
 
 const CouponForm = ({ total, setAmount = () => {}, setCoupon = () => {} }) => {
@@ -24,14 +25,18 @@ const CouponForm = ({ total, setAmount = () => {}, setCoupon = () => {} }) => {
       if (data.status === 200) {
         setCoupon(data);
         let discount =
-          data.type === "amount"
-            ? data?.value
-            : ((total / 100) * data?.value).toFixed(2);
+          data.type === "amount" ? data?.value : (total * data?.value) / 100;
         setAmount(discount);
-        toast.success(`${t("applied")} ${discount}$`, {
-          duration: 2000,
-          icon: "🎉",
-        });
+        toast.success(
+          `${t("applied")} ${formatCurrencyValue(discount, {
+            minimumFractionDigits: 2,
+            maximumFractionDigits: 2,
+          })}$`,
+          {
+            duration: 2000,
+            icon: "🎉",
+          },
+        );
       } else {
         setError("coupon", { message: t("invalid") });
         setSubmited(false);
