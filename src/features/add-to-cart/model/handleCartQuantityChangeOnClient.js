@@ -78,4 +78,6 @@ export async function handleCartQuantityChange({ setLoading = () => {} , setCoun
 
     
     return true
-}
+  }
+
+  export default handleCartQuantityChange

@@ -153,6 +153,7 @@ model product_cards {
   variant_name    String?
   category_id     BigInt?
   price_cents     Int
+  discount_percent Int @default(0)    /// Percentage discount (0-100) for sale badges
   stock_quantity  Int
   image_url       String
   created_at      DateTime @default(now()) @db.Timestamptz(6)
@@ -184,6 +185,7 @@ model product_variants {
   product_id      BigInt
   variant_name    String?
   price_cents     Int
+  discount_percent Int @default(0)    /// Percentage discount (0-100) for sale badges
   stock_quantity  Int               @default(0)
   cart_items      cart_items[]
   order_items     order_items[]

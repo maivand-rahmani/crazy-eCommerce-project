@@ -1,7 +1,7 @@
 "use client";
 import React, { useEffect, useState } from "react";
 import { useSession } from "next-auth/react";
-import { handleCartQuantityChange } from "../model/handleCartQuantityChangeOnClient";
+import { handleCartQuantityChange } from "../index";
 import { ShoppingCart, PlusSquare, MinusSquare, Trash2 } from "lucide-react";
 import { toast } from "react-hot-toast";
 import { Fetch } from "@/shared/lib";

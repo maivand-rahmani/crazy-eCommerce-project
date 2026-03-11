@@ -1,16 +1,28 @@
 "use client";
 import React from "react";
 import { useForm } from "react-hook-form";
+import { formatCurrencyValue } from "@/entities/product";
 import { useTranslations } from "next-intl";
 
-const PaymentMockForm = ({ setStep, setOrderInfo , total , couponInfo = { discountAmount: 0 , coupon_id: null }}) => {
+const PaymentMockForm = ({
+  setStep,
+  setOrderInfo,
+  total,
+  couponInfo = { discountAmount: 0, coupon_id: null },
+}) => {
   const t = useTranslations("payment");
   const {
     register,
     handleSubmit,
     formState: { errors },
     watch,
-  } = useForm({ defaultValues: { cardNumber: "4242 4242 4242 4242", expiryDate: "1212" , cvv: "123" } });
+  } = useForm({
+    defaultValues: {
+      cardNumber: "4242 4242 4242 4242",
+      expiryDate: "1212",
+      cvv: "123",
+    },
+  });
 
   const cardNumber = watch("cardNumber", "");
   const expiryDate = watch("expiryDate", "");
@@ -34,38 +46,58 @@ const PaymentMockForm = ({ setStep, setOrderInfo , total , couponInfo = { discou
     setStep(3);
   };
 
-  const finalTotal = couponInfo ? couponInfo.type === "amount" ? total - couponInfo.value : total - (total * (couponInfo.value / 100)) : total
+  const finalTotal = couponInfo
+    ? couponInfo.type === "amount"
+      ? total - couponInfo.value
+      : total - total * (couponInfo.value / 100)
+    : total;
   const discountAmount = total - finalTotal;
+  const formatAmount = (value) =>
+    formatCurrencyValue(value, {
+      minimumFractionDigits: 2,
+      maximumFractionDigits: 2,
+    });
 
   return (
     <div className="w-full max-w-md mx-auto p-6 bg-surface rounded-lg shadow-md border border-border">
-      <h2 className="text-2xl font-bold mb-6 text-center text-text">{t("title")}</h2>
-      
+      <h2 className="text-2xl font-bold mb-6 text-center text-text">
+        {t("title")}
+      </h2>
+
       {/* Compact Order Summary */}
       <div className="mb-6 p-4 bg-bg rounded-md">
         <h3 className="text-sm font-semibold text-text mb-2">{t("summary")}</h3>
         <div className="space-y-1 text-sm">
           <div className="flex justify-between">
             <span className="text-unactive-text">{t("subtotal")}:</span>
-            <span className="font-medium text-text">${(total)}</span>
+            <span className="font-medium text-text">
+              ${formatAmount(total)}
+            </span>
           </div>
           {discountAmount > 0 && (
             <div className="flex justify-between">
               <span className="text-unactive-text">{t("discount")}:</span>
-              <span className="font-medium text-accent">-${(discountAmount.toFixed(2))}</span>
+              <span className="font-medium text-accent">
+                -${formatAmount(discountAmount)}
+              </span>
             </div>
           )}
           <div className="flex justify-between pt-2 border-t border-border">
             <span className="font-semibold text-text">{t("total")}:</span>
-            <span className="font-bold text-lg text-text">${(finalTotal)}</span>
+            <span className="font-bold text-lg text-text">
+              ${formatAmount(finalTotal)}
+            </span>
           </div>
         </div>
       </div>
-      
+
       <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
         {/* Card Number */}
         <div>
-          <label htmlFor="cardNumber" className="block text-sm font-medium text-text mb-1">
+          <label
+            htmlFor="cardNumber"
+            className="block text-sm font-medium text-text mb-1"
+          >
             {t("cardNumber")}
           </label>
           <input
@@ -85,13 +117,18 @@ const PaymentMockForm = ({ setStep, setOrderInfo , total , couponInfo = { discou
             })}
           />
           {errors.cardNumber && (
-            <p className="mt-1 text-sm text-danger">{errors.cardNumber.message}</p>
+            <p className="mt-1 text-sm text-danger">
+              {errors.cardNumber.message}
+            </p>
           )}
         </div>
 
         {/* Cardholder Name */}
         <div>
-          <label htmlFor="cardholderName" className="block text-sm font-medium text-text mb-1">
+          <label
+            htmlFor="cardholderName"
+            className="block text-sm font-medium text-text mb-1"
+          >
             {t("cardholderName")}
           </label>
           <input
@@ -108,14 +145,19 @@ const PaymentMockForm = ({ setStep, setOrderInfo , total , couponInfo = { discou
             })}
           />
           {errors.cardholderName && (
-            <p className="mt-1 text-sm text-danger">{errors.cardholderName.message}</p>
+            <p className="mt-1 text-sm text-danger">
+              {errors.cardholderName.message}
+            </p>
           )}
         </div>
 
         {/* Expiry Date and CVV */}
         <div className="grid grid-cols-2 gap-4">
           <div>
-            <label htmlFor="expiryDate" className="block text-sm font-medium text-text mb-1">
+            <label
+              htmlFor="expiryDate"
+              className="block text-sm font-medium text-text mb-1"
+            >
               {t("expiryDate")}
             </label>
             <input
@@ -136,12 +178,17 @@ const PaymentMockForm = ({ setStep, setOrderInfo , total , couponInfo = { discou
               })}
             />
             {errors.expiryDate && (
-              <p className="mt-1 text-sm text-danger">{errors.expiryDate.message}</p>
+              <p className="mt-1 text-sm text-danger">
+                {errors.expiryDate.message}
+              </p>
             )}
           </div>
 
           <div>
-            <label htmlFor="cvv" className="block text-sm font-medium text-text mb-1">
+            <label
+              htmlFor="cvv"
+              className="block text-sm font-medium text-text mb-1"
+            >
               {t("cvv")}
             </label>
             <input
@@ -175,7 +222,9 @@ const PaymentMockForm = ({ setStep, setOrderInfo , total , couponInfo = { discou
 
       {/* Test Cards Info */}
       <div className="mt-6 p-4 bg-bg rounded-md">
-        <h3 className="text-sm font-semibold text-text mb-2">{t("testCards")}</h3>
+        <h3 className="text-sm font-semibold text-text mb-2">
+          {t("testCards")}
+        </h3>
         <div className="text-xs text-unactive-text space-y-1">
           <p>• {t("visa")}: 4242 4242 4242 4242</p>
           <p>• {t("mastercard")}: 5555 5555 5555 4444</p>

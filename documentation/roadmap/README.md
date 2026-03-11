@@ -167,6 +167,11 @@ A full-featured Next.js e-commerce platform with multi-language support (i18n), 
 - **Description**: Reusable product display cards
 - **What works**: ProductCard and SmallProductCard components
 
+#### ✅ Feature: Product Badges (New/Sale)
+- **Description**: Visual badges on product cards highlighting new and sale items
+- **What works**: "New" badge for products within 7 days, "Sale" badge with discount percentage, discounted price display
+- **Notes**: Requires `discount_percent` field on products, PR #88
+
 #### ✅ Feature: Image Slider
 - **Description**: Product image gallery
 - **What works**: Slider component for product detail page
@@ -284,6 +289,9 @@ A full-featured Next.js e-commerce platform with multi-language support (i18n), 
 
 ### 8.3.2026
 - Fixed: Wishlist toast message showing opposite action - when adding to wishlist showed "remove" and vice versa (PR #61)
+
+### 10.3.2026
+- Added: Product badges (New/Sale) - displays "New" badge on products added within 7 days, "Sale" badge with discount percentage when discount_percent > 0, shows discounted price with strikethrough original price (PR #88)
 
 ### 8.3.2026
 - Added: Product stock indicator - displays stock status badge on product cards (In Stock/Low Stock/Out of Stock), disables Buy Now button for out of stock products (PR #68)

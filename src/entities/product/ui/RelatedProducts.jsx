@@ -46,7 +46,6 @@ const RelatedProducts = async ({ id, category }) => {
     return null;
   }
 
-
   const transformedData = data.map((product) => ({
     variant_id: product.variant_id,
     product_id: product.product_id,
@@ -54,11 +53,12 @@ const RelatedProducts = async ({ id, category }) => {
     product_name: product.product_name,
     variant_name: product.variant_name,
     price_cents: product.price_cents,
+    discount_percent: product.discount_percent,
     image_url: product.image_url,
     isFavorite: otherInfo?.isInWishlist?.includes(product.variant_id) || false,
     stock_quantity: product?.stock_quantity,
+    created_at: product?.created_at,
   }));
-
 
   return (
     <div className="grid grid-cols-2 md:grid-cols-4 gap-4 lg:gap-6">
