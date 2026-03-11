@@ -2,6 +2,11 @@ import React from "react";
 import { describe, it, expect, vi } from "vitest";
 import { render, screen } from "@testing-library/react";
 
+vi.mock("@/entities/product", () => ({
+  formatCurrencyValue: (value, options) =>
+    new Intl.NumberFormat("en-US", options).format(Number(value ?? 0)),
+}));
+
 vi.mock("next-auth/react", () => ({
   useSession: () => ({ data: { user: { name: "Test user" } } }),
 }));

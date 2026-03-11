@@ -2,11 +2,17 @@ import React from "react";
 import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { describe, it, vi, beforeEach } from "vitest";
-import PaymentMockForm from "./PaymentMockForm";
 
 vi.mock("next-intl", () => ({
   useTranslations: () => (key) => key,
 }));
+
+vi.mock("@/entities/product", () => ({
+  formatCurrencyValue: (value, options) =>
+    new Intl.NumberFormat("en-US", options).format(Number(value ?? 0)),
+}));
+
+import PaymentMockForm from "./PaymentMockForm";
 
 describe("PaymentMockForm", () => {
   const setStep = vi.fn();
@@ -27,7 +33,7 @@ describe("PaymentMockForm", () => {
     );
 
     expect(screen.getByText("subtotal:")).toBeInTheDocument();
-    expect(screen.getByText("$120")).toBeInTheDocument();
+    expect(screen.getByText("$120.00")).toBeInTheDocument();
     expect(screen.getByText("discount:")).toBeInTheDocument();
 
     await userEvent.type(screen.getByLabelText("cardholderName"), "Alice");
