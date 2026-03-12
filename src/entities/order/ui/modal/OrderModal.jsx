@@ -119,10 +119,18 @@ const OrderModal = ({ isOpen, items, total, couponInfo, setOrderModal }) => {
   useEffect(() => {
     if (!orderInfo.order_id && step === 3) {
       (async () => {
-        const data = await Fetch("/api/cart/order", "POST", orderInfo);
-        if (data.status === 200) {
-          setOrderInfo({ ...orderInfo, order_id: data.order.id });
-          router.replace(`/orders/${data.order.id}`);
+        try {
+          const data = await Fetch("/api/cart/order", "POST", orderInfo);
+          if (data.status === 200) {
+            setOrderInfo({ ...orderInfo, order_id: data.order.id });
+            router.replace(`/orders/${data.order.id}`);
+          } else {
+            console.error("Order failed:", data.error);
+            setStep(2);
+          }
+        } catch (error) {
+          console.error("Order failed:", error);
+          setStep(2);
         }
       })();
     }
