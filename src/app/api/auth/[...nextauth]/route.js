@@ -48,12 +48,17 @@ export const authParams = {
     }
 
     if (token.id) {
-      const dbUser = await prisma.user.findUnique({
-        where: { id: token.id },
-        select: { role: true }
-      });
+      try {
+        const dbUser = await prisma.user.findUnique({
+          where: { id: token.id },
+          select: { role: true }
+        });
 
-      token.role = dbUser?.role;
+        token.role = dbUser?.role;
+      } catch (error) {
+        console.error("Failed to fetch user role in jwt callback:", error);
+        // Keep token but without role rather than crashing
+      }
     }
 
     return token;

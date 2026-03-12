@@ -7,6 +7,8 @@ import { Fetch } from "@/shared/lib/fetch";
 
 const WishlistButton = () => {
   const [wishlist, setWishlist] = useState([]);
+  const [loading, setLoading] = useState(true);
+  
   useEffect(() => {
     const fetchWishlist = async () => {
       try {
@@ -14,6 +16,8 @@ const WishlistButton = () => {
         setWishlist(res);
       } catch (error) {
         console.error("Failed to fetch wishlist:", error);
+      } finally {
+        setLoading(false);
       }
     };
     fetchWishlist();
@@ -21,10 +25,16 @@ const WishlistButton = () => {
 
   return (
     <Link href="/wishlist" className="relative">
-      {wishlist.length > 0 && (
-        <div className="absolute top-0 right-0 w-2 h-2 bg-accent rounded-full"></div>
+      {loading ? (
+        <div className="w-5 h-5 bg-muted animate-pulse rounded" />
+      ) : (
+        <>
+          {wishlist.length > 0 && (
+            <div className="absolute top-0 right-0 w-2 h-2 bg-accent rounded-full"></div>
+          )}
+          <Heart />
+        </>
       )}
-      <Heart />
     </Link>
   );
 };
