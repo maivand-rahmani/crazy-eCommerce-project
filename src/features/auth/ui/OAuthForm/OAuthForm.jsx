@@ -15,7 +15,7 @@ const OAuthForm = () => {
           src="/icons/google-color.png"
           width={18}
           height={18}
-          alt="Google"
+          alt="Sign in with Google"
         />
         <span>{t("continueWithGoogle")}</span>
       </button>
