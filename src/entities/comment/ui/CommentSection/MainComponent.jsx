@@ -8,6 +8,18 @@ const MainCommentComponent = async ({ productID }) => {
   const user = await getServerSession(authParams).then((res) => res?.user);
   const data = await Fetch(`/api/products/comments?id=${productID}`);
 
+  // Add null check to prevent crash if API returns null/undefined
+  if (!data || !Array.isArray(data)) {
+    return (
+      <div>
+        <CommentSection
+          initialComments={[]}
+          productID={productID}
+        />
+      </div>
+    );
+  }
+
   const serializedComments = data.map((c) => ({
     ...c,
     likes: c.reviews_reactions.filter((r) => r.type === "like").length,
