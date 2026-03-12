@@ -147,6 +147,9 @@
     "title": "خلاصه سفارش",
     "subtotal": "جمع جزئی",
     "discount": "تخفیف",
+    "shipping": "ارسال",
+    "free": "رایگان",
+    "freeShippingMessage": "شما واجد شرایط ارسال رایگان هستید!",
     "total": "مجموع",
     "checkout": "تسویه حساب",
     "order": "سفارش"

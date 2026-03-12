@@ -23,6 +23,11 @@ const OrderSummary = ({ total, setCheckout, checkout, items }) => {
       maximumFractionDigits: 2,
     });
 
+  // Shipping cost calculation: Free shipping over $100, otherwise $10
+  const subtotalAfterDiscount = (total || 0) - discountAmount;
+  const shippingCost = subtotalAfterDiscount >= 100 ? 0 : 10;
+  const isFreeShipping = shippingCost === 0;
+
   let discardCheckout = () => {
     setCheckout(false);
     setCoupon(false);
@@ -61,9 +66,20 @@ const OrderSummary = ({ total, setCheckout, checkout, items }) => {
               <h1 className="text-success">-{formatAmount(discountAmount)}$</h1>
             </div>
           )}
+          <div className="flex justify-between">
+            <h1>{t("shipping") || "Shipping"}: </h1>
+            <h1 className={isFreeShipping ? "text-success" : ""}>
+              {isFreeShipping ? (t("free") || "Free") : `${formatAmount(shippingCost)}$`}
+            </h1>
+          </div>
+          {isFreeShipping && (
+            <div className="text-sm text-success">
+              {t("freeShippingMessage") || "You qualify for free shipping!"}
+            </div>
+          )}
           <div className="font-bold flex justify-between">
             <h2>{t("total")}: </h2>
-            <h2>{formatAmount(finalTotal)}$</h2>
+            <h2>{formatAmount(finalTotal + shippingCost)}$</h2>
           </div>
         </div>
 

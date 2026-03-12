@@ -147,6 +147,9 @@
     "title": "Order summary",
     "subtotal": "Subtotal",
     "discount": "Discount",
+    "shipping": "Shipping",
+    "free": "Free",
+    "freeShippingMessage": "You qualify for free shipping!",
     "total": "Total",
     "checkout": "Checkout",
     "order": "Order"
