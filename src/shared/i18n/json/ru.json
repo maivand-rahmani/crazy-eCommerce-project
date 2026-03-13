@@ -130,7 +130,9 @@
     "featuredProducts": "Рекомендуемые товары",
     "BrowseByCategory": "Просмотр по категориям",
     "recentlyViewed": "Недавно просмотренные",
-    "clearHistory": "Очистить историю"
+    "clearHistory": "Очистить историю",
+    "productsShowcase": "Витрина товаров",
+    "recentlyViewedEmpty": "Откройте несколько карточек товаров, и они появятся здесь."
   },
 
   "cart": {

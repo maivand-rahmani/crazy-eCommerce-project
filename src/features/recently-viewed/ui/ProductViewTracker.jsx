@@ -11,16 +11,24 @@ const ProductViewTracker = ({ product }) => {
   const { addToRecentlyViewed } = useRecentlyViewed();
 
   useEffect(() => {
-    if (product && product.variant_id) {
+    const variantId = product?.variant_id ?? product?.id;
+
+    if (product && variantId) {
       // Extract the necessary product info for the recently viewed list
       const productInfo = {
-        variant_id: product.variant_id,
+        variant_id: variantId,
         product_id: product.products?.id || product.product_id,
         product_name: product.products?.name || product.product_name,
         variant_name: product.variant_name,
-        image_url: product.image_url,
+        image_url:
+          product.image_url ||
+          product.product_images?.[0]?.url ||
+          product.products?.product_images?.[0]?.url ||
+          null,
         price_cents: product.price_cents,
         discount_percent: product.discount_percent,
+        stock_quantity: product.stock_quantity,
+        created_at: product.products?.created_at || product.created_at,
         category_id: product.products?.categories?.id || product.category_id,
       };
 

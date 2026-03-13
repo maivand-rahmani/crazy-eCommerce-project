@@ -4,7 +4,6 @@ import React from "react";
 import { useTranslations } from "next-intl";
 import { useRecentlyViewed } from "../model";
 import { ProductCard } from "@/entities/product";
-import { ScrollContainer, DragScrollContainer } from "@/shared/ui/ScrollContainer";
 import { Miniloader } from "@/shared/ui/Loading";
 
 const RecentlyViewedProducts = () => {
@@ -38,16 +37,19 @@ const RecentlyViewedProducts = () => {
           </button>
         )}
       </div>
-      
-      <DragScrollContainer>
-        <div className="flex gap-4 pb-4">
+
+      <div className="overflow-x-auto pb-2 md:overflow-visible">
+        <div className="flex gap-4 pb-4 md:grid md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 md:gap-6 md:pb-0">
           {recentlyViewed.map((product) => (
-            <div key={product.variant_id} className="flex-shrink-0 w-[280px]">
+            <div
+              key={product.variant_id}
+              className="w-70 min-w-70 shrink-0 md:w-auto md:min-w-0"
+            >
               <ProductCard data={product} />
             </div>
           ))}
         </div>
-      </DragScrollContainer>
+      </div>
     </div>
   );
 };
