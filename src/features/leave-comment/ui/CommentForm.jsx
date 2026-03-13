@@ -17,8 +17,10 @@ export const CommentForm = ({ product_id, onAddComment }) => {
     if (!rating) return toast.error(t("errors.rating"));
     if (!comment) return toast.error(t("errors.comment"));
 
-    const formData = new FormData(e.target);
+    const formData = new FormData();
     formData.set("rating", rating);
+    formData.set("comment", comment);
+    formData.set("productId", product_id);
 
     const res = await CommentAction(formData);
 
@@ -52,9 +54,6 @@ export const CommentForm = ({ product_id, onAddComment }) => {
         />
 
         {/* <input type="hidden" name="user_id" value={userId} /> */}
-        <input type="hidden" name="comment" value={comment} />
-        <input type="hidden" name="rating" value={rating} />
-        <input type="hidden" name="productId" value={product_id} />
 
         <button
           className="bg-primary text-primary-text px-10 py-2 w-full btn rounded-3xl shadow-xl"
