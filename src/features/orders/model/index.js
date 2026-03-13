@@ -12,3 +12,13 @@ export async function getOrder(orderId) {
   }
   return data;
 }
+
+export async function cancelOrder(orderId) {
+  const { data, error } = await Fetch(`/api/orders/${orderId}`, "PATCH");
+
+  if (error) {
+    throw new Error(error);
+  }
+
+  return data;
+}

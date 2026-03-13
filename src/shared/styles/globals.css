@@ -1,4 +1,5 @@
 @tailwind utilities;
+@import url("https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500;600;700&family=Fira+Sans:wght@300;400;500;600;700&display=swap");
 @import "tailwindcss";
 @import "./animations.css";
 
@@ -92,6 +93,24 @@
   --danger-text: var(--primary-text);
   --unactive-text: var(--muted);
   --search-bg: var(--surface);
+  --admin-panel: var(--surface);
+  --admin-panel-muted: color-mix(in srgb, var(--surface) 86%, var(--primary) 14%);
+  --admin-panel-border: var(--border);
+  --admin-highlight: var(--primary);
+  --admin-highlight-soft: color-mix(in srgb, var(--primary) 18%, white 82%);
+  --admin-warning: #f59e0b;
+  --admin-danger: #b91c1c;
+  --admin-success: #0f766e;
+  --admin-shell-max: 1600px;
+  --admin-shell-gap: 24px;
+  --admin-content-gap: 28px;
+  --admin-card-radius: 28px;
+  --admin-card-radius-lg: 34px;
+  --admin-card-padding: 28px;
+  --admin-section-padding: 32px;
+  --admin-blur: 22px;
+  --admin-shadow-soft: 0 24px 70px -42px rgba(15, 23, 42, 0.36);
+  --admin-shadow-strong: 0 36px 90px -48px rgba(15, 23, 42, 0.55);
 }
 
 /* ============================= */
@@ -151,6 +170,22 @@
   --footer-bg: #1C1C1C;
   --footer-text: #030201;
   --footer-accent: #C6A75E;
+  --admin-bg: #F8FAFC;
+  --admin-panel: #FFFFFF;
+  --admin-panel-muted: #EEF4FF;
+  --admin-panel-border: #D9E2F3;
+  --admin-highlight: #1E40AF;
+  --admin-highlight-soft: #DBEAFE;
+  --admin-warning: #D97706;
+  --admin-danger: #BE123C;
+  --admin-success: #0F766E;
+  --admin-shell-surface: rgba(255, 255, 255, 0.82);
+  --admin-shell-border: rgba(217, 226, 243, 0.88);
+  --admin-hero-surface: rgba(255, 255, 255, 0.72);
+  --admin-hero-border: rgba(191, 219, 254, 0.65);
+  --admin-nav-surface: rgba(18, 28, 45, 0.9);
+  --admin-nav-border: rgba(255, 255, 255, 0.08);
+  --admin-nav-muted: rgba(255, 255, 255, 0.06);
 }
 
 /* ============================= */
@@ -207,6 +242,22 @@
   --footer-bg: #0B0D12;
   --footer-text: #9CA3AF;
   --footer-accent: #3B82F6;
+  --admin-bg: #09111F;
+  --admin-panel: #0F172A;
+  --admin-panel-muted: #13203A;
+  --admin-panel-border: #22314C;
+  --admin-highlight: #60A5FA;
+  --admin-highlight-soft: #1D4ED8;
+  --admin-warning: #F59E0B;
+  --admin-danger: #FB7185;
+  --admin-success: #34D399;
+  --admin-shell-surface: rgba(15, 23, 42, 0.74);
+  --admin-shell-border: rgba(71, 85, 105, 0.38);
+  --admin-hero-surface: rgba(15, 23, 42, 0.66);
+  --admin-hero-border: rgba(96, 165, 250, 0.18);
+  --admin-nav-surface: rgba(6, 11, 23, 0.88);
+  --admin-nav-border: rgba(255, 255, 255, 0.06);
+  --admin-nav-muted: rgba(255, 255, 255, 0.05);
 }
 /* ============================= */
 /* VINTAGE */
@@ -369,6 +420,14 @@ table {
 
 
 @layer utilities {
+  .font-admin-sans {
+    font-family: "Fira Sans", "Segoe UI", sans-serif;
+  }
+
+  .font-admin-code {
+    font-family: "Fira Code", "SFMono-Regular", monospace;
+  }
+
   .center {
     justify-content: center;
     align-items: center;

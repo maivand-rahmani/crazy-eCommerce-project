@@ -1,6 +1,7 @@
 import prisma from '../../../../../prisma/client';
 import { getToken } from 'next-auth/jwt';
 import { NextResponse } from 'next/server';
+import { getAuthSecret } from '@/shared/lib/auth';
 
 export const GET = async (req) => {
     try {

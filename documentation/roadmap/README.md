@@ -294,6 +294,9 @@ A full-featured Next.js e-commerce platform with multi-language support (i18n), 
 - Fixed: Search API average rating - enabled reviews in query, added avg_rating and review_count to search results, enabled minRating filter (PR #35)
 
 ### 6.3.2026
+- Added: Admin sidebar navigation - implemented AdminSidebar component with links to dashboard, products, orders, users, categories 
+- Updated: Admin page placeholder - added basic admin dashboard page with metadata
+- Fix: NavLink active state - updated to use pathname for accurate active link highlighting
 - Added: Admin sidebar navigation - implemented AdminSidebar component with links to dashboard, products, orders, users, categories
 - Updated: Admin page placeholder - added basic admin dashboard page with metadata
 - Fix: NavLink active state - updated to use pathname for accurate active link highlighting

@@ -1,11 +1,11 @@
 "use server";
 import { getServerSession } from "next-auth";
-import { authParams } from "@/app/api/auth/[...nextauth]/route";
+import { authOptions } from "@/features/auth/model/authOptions";
 import { Fetch } from "@/shared/lib";
 
 export async function CommentAction(formData) {
 
-  const session = await getServerSession(authParams);
+  const session = await getServerSession(authOptions);
 
   if (!session?.user?.id) {
     throw new Error("Unauthorized");

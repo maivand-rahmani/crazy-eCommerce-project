@@ -10,6 +10,9 @@ import {
 import Image from "next/image";
 import { useTranslations } from "next-intl";
 
+const RETURN_ELIGIBLE_STATUSES = ["paid", "shipped", "delivered"];
+const CANCELLATION_ELIGIBLE_STATUSES = ["created", "paid"];
+
 const OrderDetailPage = () => {
   const t = useTranslations("orders.detail");
   const tStatus = useTranslations("orders.status");
@@ -19,6 +22,9 @@ const OrderDetailPage = () => {
   const [order, setOrder] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [returnReason, setReturnReason] = useState("");
+  const [requestingReturn, setRequestingReturn] = useState(false);
+  const [cancellingOrder, setCancellingOrder] = useState(false);
 
   useEffect(() => {
     const fetchOrder = async () => {
@@ -66,6 +72,91 @@ const OrderDetailPage = () => {
       cancelled: "bg-status-cancelled-bg text-status-cancelled-text",
     };
     return colors[status] || "bg-surface text-text";
+  };
+
+  const getReturnStatusColor = (status) => {
+    const colors = {
+      none: "bg-surface text-text",
+      requested: "bg-yellow-100 text-yellow-800",
+      approved: "bg-blue-100 text-blue-800",
+      rejected: "bg-rose-100 text-rose-800",
+      processed: "bg-green-100 text-green-800",
+    };
+
+    return colors[status] || "bg-surface text-text";
+  };
+
+  const canRequestReturn =
+    order &&
+    RETURN_ELIGIBLE_STATUSES.includes(order.status) &&
+    ["none", "rejected", undefined, null].includes(order.return_status);
+
+  const canCancelOrder =
+    order && CANCELLATION_ELIGIBLE_STATUSES.includes(order.status);
+
+  const handleReturnRequest = async (event) => {
+    event.preventDefault();
+
+    if (!canRequestReturn) {
+      return;
+    }
+
+    try {
+      setRequestingReturn(true);
+      const { data, error: requestError } = await Fetch("/api/orders", "PATCH", {
+        orderId: order.id,
+        returnReason,
+      });
+
+      if (requestError) {
+        setError(requestError);
+        return;
+      }
+
+      setOrder((prev) => ({
+        ...prev,
+        return_requested: data.return_requested,
+        return_status: data.return_status,
+        return_reason: data.return_reason,
+      }));
+      setReturnReason("");
+    } catch (err) {
+      setError("Failed to submit return request");
+    } finally {
+      setRequestingReturn(false);
+    }
+  };
+
+  const handleCancelOrder = async () => {
+    if (!canCancelOrder) {
+      return;
+    }
+
+    try {
+      setCancellingOrder(true);
+      setError(null);
+      const { data, error: cancelError } = await Fetch(
+        `/api/orders/${order.id}`,
+        "PATCH",
+      );
+
+      if (cancelError) {
+        setError(cancelError);
+        return;
+      }
+
+      setOrder((prev) => ({
+        ...prev,
+        status: data.status,
+        return_requested: data.return_requested,
+        return_status: data.return_status,
+        return_reason: data.return_reason,
+      }));
+    } catch (err) {
+      setError("Failed to cancel order");
+    } finally {
+      setCancellingOrder(false);
+    }
   };
 
   const discount =
@@ -132,6 +223,28 @@ const OrderDetailPage = () => {
                 className={`inline-flex px-3 py-1 text-sm font-semibold rounded-full ${getStatusColor(order.status)}`}
               >
                 {tStatus(`${order.status}`)}
+              </span>
+            </div>
+
+            <div className="flex flex-wrap items-center gap-3 pt-2">
+              <span className="text-sm text-unactive-text">
+                {t("return.label")}
+              </span>
+              <span
+                className={`inline-flex px-3 py-1 text-sm font-semibold rounded-full ${getReturnStatusColor(order.return_status || "none")}`}
+              >
+                {t(`return.status.${order.return_status || "none"}`)}
+              </span>
+            </div>
+
+            <div className="mt-3 flex flex-wrap items-center gap-3">
+              <span className="text-sm text-unactive-text">
+                {t("cancellation.label")}
+              </span>
+              <span className="inline-flex px-3 py-1 text-sm font-semibold rounded-full bg-surface text-text">
+                {canCancelOrder
+                  ? t("cancellation.available")
+                  : t("cancellation.locked")}
               </span>
             </div>
 
@@ -250,6 +363,81 @@ const OrderDetailPage = () => {
                 <span>{t("total")}:</span>
                 <span>${formatPrice(finalPrice)}</span>
               </div>
+            </div>
+          </div>
+
+          <div className="bg-white rounded-lg shadow-md p-6">
+            <h3 className="text-lg font-semibold mb-4">{t("cancellation.title")}</h3>
+            <div className="space-y-4">
+              <div className="rounded-md border border-border bg-surface p-4">
+                <p className="text-sm text-unactive-text">{t("cancellation.infoTitle")}</p>
+                <p className="mt-2 text-sm text-text">
+                  {canCancelOrder
+                    ? t("cancellation.availableText")
+                    : t("cancellation.unavailableText")}
+                </p>
+              </div>
+              {canCancelOrder ? (
+                <button
+                  type="button"
+                  onClick={handleCancelOrder}
+                  disabled={cancellingOrder}
+                  className="rounded-md bg-red-600 px-4 py-2 text-white transition hover:opacity-90 disabled:opacity-50"
+                >
+                  {cancellingOrder ? t("cancellation.submitting") : t("cancellation.submit")}
+                </button>
+              ) : null}
+            </div>
+          </div>
+
+          <div className="bg-white rounded-lg shadow-md p-6">
+            <h3 className="text-lg font-semibold mb-4">{t("return.title")}</h3>
+            <div className="space-y-4">
+              <div className="rounded-md border border-border bg-surface p-4">
+                <p className="text-sm text-unactive-text">{t("return.currentStatus")}</p>
+                <p className="mt-2 text-sm font-semibold text-text">
+                  {t(`return.status.${order.return_status || "none"}`)}
+                </p>
+                {order.return_reason ? (
+                  <p className="mt-3 text-sm text-unactive-text">
+                    {t("return.reasonLabel")}: {order.return_reason}
+                  </p>
+                ) : null}
+              </div>
+
+              {canRequestReturn ? (
+                <form onSubmit={handleReturnRequest} className="space-y-3">
+                  <label className="flex flex-col gap-2">
+                    <span className="text-sm font-medium text-text">{t("return.reason")}</span>
+                    <textarea
+                      value={returnReason}
+                      onChange={(event) => setReturnReason(event.target.value)}
+                      rows={4}
+                      className="w-full rounded-md border border-border bg-input px-3 py-2 text-input-text focus:outline-none focus:ring-2 focus:ring-primary"
+                      placeholder={t("return.placeholder")}
+                    />
+                  </label>
+                  <button
+                    type="submit"
+                    disabled={requestingReturn}
+                    className="rounded-md bg-primary px-4 py-2 text-primary-text transition hover:opacity-90 disabled:opacity-50"
+                  >
+                    {requestingReturn ? t("return.submitting") : t("return.submit")}
+                  </button>
+                </form>
+              ) : (
+                <p className="text-sm text-unactive-text">
+                  {order.return_status === "requested"
+                    ? t("return.pending")
+                    : order.return_status === "approved"
+                      ? t("return.approved")
+                      : order.return_status === "processed"
+                        ? t("return.processed")
+                        : order.return_status === "rejected"
+                          ? t("return.rejected")
+                          : t("return.unavailable")}
+                </p>
+              )}
             </div>
           </div>
 
