@@ -522,5 +522,11 @@
       "title": "Apple Watch",
       "description": "Apple Watch is a smartwatch developed and marketed by Apple. It has fitness tracking, health-oriented capabilities, and wireless telecommunication, and integrates with watchOS and other Apple products and services."
     }
+  },
+
+  "recentlyViewed": {
+    "title": "Recently Viewed",
+    "clear": "Clear",
+    "seeAll": "See all"
   }
 }

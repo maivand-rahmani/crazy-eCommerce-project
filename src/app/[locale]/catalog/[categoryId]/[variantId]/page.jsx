@@ -8,6 +8,7 @@ import { ProductRatingStats } from "@/entities/rating";
 import { getServerSession } from "next-auth";
 import { authParams } from "@/app/api/auth/[...nextauth]/route";
 import { getTranslations } from "next-intl/server";
+import { RecentlyViewedTracker } from "@/features/recently-viewed";
 
 export async function generateMetadata({ params }) {
   const { variantId } = await params;
@@ -63,6 +64,15 @@ const page = async ({ params }) => {
   const fallbackCategoryId = categoryIdFromProduct || Number(categoryId);
 
   return (
+    <RecentlyViewedTracker
+      variantId={variantId}
+      productId={productId}
+      productName={data?.products?.name}
+      variantName={data?.variant_name}
+      imageUrl={data?.image_url}
+      priceCents={data?.price_cents}
+      categoryId={fallbackCategoryId}
+    >
     <main className="md:px-4 h-full text-text w-full overflow-hidden p-5 md:p-20 flex flex-col">
       <div className="w-full flex-col flex center pb-28 md:px-20 md:flex-row md:gap-10 gap-5">
         <Suspense>
@@ -98,6 +108,7 @@ const page = async ({ params }) => {
         </div>
       </Suspense>
     </main>
+    </RecentlyViewedTracker>
   );
 };
 

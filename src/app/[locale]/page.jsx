@@ -33,6 +33,7 @@ import { getTranslations } from "next-intl/server";
 import { Miniloader, ProductsRenderSkeleton } from "@/shared";
 import { Main, CategorySection, FeaturedProducts } from "@/features/home";
 import { DragScrollContainer } from "@/shared/ui/ScrollContainer";
+import { RecentlyViewedWidget } from "@/features/recently-viewed";
 
 const Page = async () => {
   const t = await getTranslations("home");
@@ -50,6 +51,9 @@ const Page = async () => {
         <Suspense fallback={<ProductsRenderSkeleton productsCount={8} />}>
           <FeaturedProducts />
         </Suspense>
+      </div>
+      <div className="md:my-14 md:mx-40">
+        <RecentlyViewedWidget />
       </div>
       <DragScrollContainer />
     </div>
