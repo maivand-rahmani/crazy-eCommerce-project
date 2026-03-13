@@ -54,10 +54,31 @@ const page = async ({ params }) => {
   const user = await getServerSession(authParams).then((res) => res?.user);
   const userId = user ? user.id : null;
 
-  let MainData = await getProduct(variantId);
+  let MainData;
+  try {
+    MainData = await getProduct(variantId);
+  } catch (error) {
+    console.error("Error fetching product:", error);
+    return (
+      <main className="md:px-4 h-full text-text w-full overflow-hidden p-5 md:p-20 flex flex-col items-center justify-center">
+        <h1 className="text-2xl font-semibold mb-4">Error Loading Product</h1>
+        <p className="text-muted">Something went wrong while loading the product.</p>
+      </main>
+    );
+  }
 
-  const data = userId ? MainData.variant : MainData;
-  const metaData = userId ? MainData.meta : null;
+  // Handle null/undefined product data gracefully
+  if (!MainData) {
+    return (
+      <main className="md:px-4 h-full text-text w-full overflow-hidden p-5 md:p-20 flex flex-col items-center justify-center">
+        <h1 className="text-2xl font-semibold mb-4">Product Not Found</h1>
+        <p className="text-muted">The requested product could not be found.</p>
+      </main>
+    );
+  }
+
+  const data = userId ? MainData?.variant : MainData;
+  const metaData = userId ? MainData?.meta : null;
 
   const productId = data?.products?.id;
   const categoryIdFromProduct = data?.products?.categories?.id;
