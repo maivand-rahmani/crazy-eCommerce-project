@@ -29,28 +29,23 @@ export const metadata = {
 };
 
 import React, { Suspense } from "react";
-import { getTranslations } from "next-intl/server";
 import { Miniloader, ProductsRenderSkeleton } from "@/shared";
-import { Main, CategorySection, FeaturedProducts } from "@/features/home";
+import { Main, CategorySection } from "@/features/home";
 import { DragScrollContainer } from "@/shared/ui/ScrollContainer";
+import { HomeProductShowcaseSection } from "@/widgets/home-product-showcase";
 
 const Page = async () => {
-  const t = await getTranslations("home");
-
   return (
-    <div className="mx-auto max-w-[1440px]">
+    <div className="mx-auto max-w-360">
       <Suspense fallback={<Miniloader />}>
         <Main />
       </Suspense>
       <Suspense fallback={<Miniloader />}>
         <CategorySection />
       </Suspense>
-      <div className="md:my-14 md:mx-40 text-text">
-        <h1 className="text-2xl font-bold my-6">{t("featuredProducts")}</h1>
-        <Suspense fallback={<ProductsRenderSkeleton productsCount={8} />}>
-          <FeaturedProducts />
-        </Suspense>
-      </div>
+      <Suspense fallback={<ProductsRenderSkeleton productsCount={8} />}>
+        <HomeProductShowcaseSection />
+      </Suspense>
       <DragScrollContainer />
     </div>
   );

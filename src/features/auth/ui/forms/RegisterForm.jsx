@@ -76,11 +76,7 @@ const RegisterForm = () => {
               maxLength: {
                 value: 20,
                 message: "First name must be less than 20 characters",
-              },
-              pattern: {
-                value: /^[A-Za-z]+$/,
-                message: t("errors.firstNameLetters"),
-              },
+              }
             })}
             className="inputStyle"
             placeholder="David"

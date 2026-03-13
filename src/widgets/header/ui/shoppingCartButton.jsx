@@ -8,11 +8,15 @@ import { Fetch } from "@/shared/lib/fetch";
 const ShoppingCartButton = () => {
   const [cart, setCart] = useState([]);
   useEffect(() => {
-    try {
-      Fetch("/api/cart").then((res) => setCart(res));
-    } catch (error) {
-      console.error("Failed to fetch cart:", error);
-    }
+    const fetchCart = async () => {
+      try {
+        const res = await Fetch("/api/cart");
+        setCart(res);
+      } catch (error) {
+        console.error("Failed to fetch cart:", error);
+      }
+    };
+    fetchCart();
   }, []);
 
   return (

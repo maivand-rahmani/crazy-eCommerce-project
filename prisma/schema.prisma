@@ -171,7 +171,7 @@ model product_cards {
   variant_name    String?
   category_id     BigInt?
   price_cents     Int
-  discount_percent Int?
+  discount_percent Int @default(0)    /// Percentage discount (0-100) for sale badges
   stock_quantity  Int
   image_url       String
   created_at      DateTime @default(now()) @db.Timestamptz(6)
@@ -208,7 +208,7 @@ model product_variants {
   product_id      BigInt
   variant_name    String?
   price_cents     Int
-  discount_percent Int?
+  discount_percent Int @default(0)    /// Percentage discount (0-100) for sale badges
   stock_quantity  Int               @default(0)
   status          variant_status    @default(active)
   deleted_at      DateTime?         @db.Timestamptz(6)
@@ -241,6 +241,7 @@ model products {
   product_variants product_variants[]
   categories       categories?        @relation(fields: [category_id], references: [id], onUpdate: NoAction)
   wishlist_items   wishlist_items[]
+  reviews          reviews[]
 
   @@index([category_id], map: "idx_products_category")
   @@index([name], map: "idx_products_name")
@@ -258,6 +259,7 @@ model reviews {
   comment           String?
   created_at        DateTime            @default(now()) @db.Timestamptz(6)
   user              User                @relation(fields: [user_id], references: [id], onDelete: Cascade, onUpdate: NoAction)
+  product           products            @relation(fields: [product_id], references: [id], onDelete: Cascade)
   reviews_reactions reviews_reactions[]
 
   @@unique([user_id, product_id])

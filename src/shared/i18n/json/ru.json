@@ -128,12 +128,19 @@
 
   "home": {
     "featuredProducts": "Рекомендуемые товары",
-    "BrowseByCategory": "Просмотр по категориям"
+    "BrowseByCategory": "Просмотр по категориям",
+    "recentlyViewed": "Недавно просмотренные",
+    "clearHistory": "Очистить историю",
+    "productsShowcase": "Витрина товаров",
+    "recentlyViewedEmpty": "Откройте несколько карточек товаров, и они появятся здесь."
   },
 
   "cart": {
     "title": "Ваша корзина",
     "addToCart": "Добавить в корзину",
+    "quickAdd": "Быстро добавить",
+    "added": "Добавлено!",
+    "addedToCart": "Добавлено в корзину",
     "empty": {
       "title": "Ваша корзина пуста",
       "description": "Вы ещё не добавили товары в корзину. Начните с каталога.",
@@ -293,6 +300,9 @@
   "product": {
     "notFound": "Товар не найден",
     "buyNow": "Купить сейчас",
+    "inStock": "В наличии",
+    "outOfStock": "Нет в наличии",
+    "onlyLeft": "Осталось",
     "selectColor": "Выберите цвет",
     "specifications": "Характеристики товара",
     "addToWishlist": "Добавить в список желаний",

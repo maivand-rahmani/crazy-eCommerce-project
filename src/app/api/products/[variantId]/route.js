@@ -20,13 +20,25 @@ export async function GET(req, { params }) {
         product_id: true,
         variant_name: true,
         price_cents: true,
+        discount_percent: true,
         stock_quantity: true,
         variant_options: { select: { key: true, value: true } },
+        product_images: {
+          select: { url: true },
+          orderBy: { position: "asc" },
+          take: 1,
+        },
           products: {
           select: {
             id: true,
             name: true,
             description: true,
+            created_at: true,
+            product_images: {
+              select: { url: true },
+              orderBy: { position: "asc" },
+              take: 1,
+            },
             categories: {
               select: {
                 id: true,

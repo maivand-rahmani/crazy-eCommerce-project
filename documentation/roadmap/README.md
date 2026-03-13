@@ -167,6 +167,11 @@ A full-featured Next.js e-commerce platform with multi-language support (i18n), 
 - **Description**: Reusable product display cards
 - **What works**: ProductCard and SmallProductCard components
 
+#### ✅ Feature: Product Badges (New/Sale)
+- **Description**: Visual badges on product cards highlighting new and sale items
+- **What works**: "New" badge for products within 7 days, "Sale" badge with discount percentage, discounted price display
+- **Notes**: Requires `discount_percent` field on products, PR #88
+
 #### ✅ Feature: Image Slider
 - **Description**: Product image gallery
 - **What works**: Slider component for product detail page
@@ -225,7 +230,7 @@ A full-featured Next.js e-commerce platform with multi-language support (i18n), 
 
 ---
 
-## ➕ Future Additions (EMPTY TEMPLATE — KEEP THIS)
+## ➕ Future Additions (EMPTY TEMPLATE - KEEP THIS)
 
 ### 🧠 Planned Features
 - [ ] Feature name:
@@ -233,7 +238,7 @@ A full-featured Next.js e-commerce platform with multi-language support (i18n), 
   - Priority:
   - Notes:
 
-- [ ] Theme switcher:
+- [x] Theme switcher:
   - Description: A beautiful component for switching themes.
   - Priority: Medium
   - Notes: To implement this component, you first need to change the user's portal because only the user who is already registered has access to the portal now, and the users who are not registered, they go to the login page, and it is necessary that there is a button for moving to the registration page, and at the bottom there were those very components for changing the language and changing the theme.
@@ -249,12 +254,20 @@ A full-featured Next.js e-commerce platform with multi-language support (i18n), 
 
 - [x] On the search page, when we search for products, the addition to the favorite ones does not work in the product card. (Fixed in PR #20 and subsequent improvements)
 
-- [x] On the back-end API side of the search The system that considers the average rating does not work. (Fixed in PR #35) 
+- [x] On the back-end API side of the search The system that considers the average rating does not work. (Fixed in PR #35)
+---
+
+## 🧪 Testing Roadmap
+
+- [ ] **Automated testing setup**
+  - Description: Follow the detailed checklist in `documentation/test/README.md` for per-layer/component coverage.
+  - Priority: High - ensures future changes remain safe and makes agentic work reproducible.
+  - Notes: The playbook is increasingly granular (shared, entities, features, widgets, API, CI and agent workflow). Update this section whenever a major milestone completes.
 
 
 ---
 
-## 📝 Development Log (EMPTY — FOR MANUAL USE)
+## 📝 Development Log (EMPTY - FOR MANUAL USE)
 
 ### [Date]
 - Added:
@@ -262,7 +275,7 @@ A full-featured Next.js e-commerce platform with multi-language support (i18n), 
 - Fixed:
 
 ### 29.2.2026
-- Added: Function for editing and removing user addresses in the system has been added. 
+- Added: Function for editing and removing user addresses in the system has been added.
 
 ### 1.3.2026
 - Fixed: Search page wishlist functionality - added proper authentication handling, auto-create wishlist for new users, fixed toast message for unauthenticated users
@@ -271,6 +284,12 @@ A full-featured Next.js e-commerce platform with multi-language support (i18n), 
 ### 4.3.2026
 - Added: Loading skeleton for product detail page - created loading.jsx with comprehensive skeleton UI including image slider, product info, specs, related products, and reviews sections (PR #25)
 
+### 7.3.2026
+- Fixed: Multiple bugs in cart checkout flow - removed empty try-catch blocks, fixed typo in function name, added null check for product images, simplified redundant logic in wishlist component (PR #51)
+
+### 8.3.2026
+- Added: Loading skeletons for catalog, search, and wishlist pages - created loading.jsx files with animated skeleton UI components for better UX while pages load (PR #66)
+
 ### 5.3.2026
 - Fixed: Search API average rating - enabled reviews in query, added avg_rating and review_count to search results, enabled minRating filter (PR #35)
 
@@ -278,6 +297,32 @@ A full-featured Next.js e-commerce platform with multi-language support (i18n), 
 - Added: Admin sidebar navigation - implemented AdminSidebar component with links to dashboard, products, orders, users, categories 
 - Updated: Admin page placeholder - added basic admin dashboard page with metadata
 - Fix: NavLink active state - updated to use pathname for accurate active link highlighting
+- Added: Admin sidebar navigation - implemented AdminSidebar component with links to dashboard, products, orders, users, categories
+- Updated: Admin page placeholder - added basic admin dashboard page with metadata
+- Fix: NavLink active state - updated to use pathname for accurate active link highlighting
+- Added: Tests for shared helpers (`shared/lib/fetch` and `shared/utils/cx`) to exercise foundation coverage.
+- Added: Testing foundation with Vitest, `tests/setup.ts`, and the first shared fetch test so the automated suite can run end-to-end.
+
+### 7.3.2026
+- Added: `OrderSummary` totals test that mocks translations/auth props and validates subtotal/total rendering in checkout state.
+
+### 8.3.2026
+- Added: Catalog model tests that confirm product/category/search endpoints call `Fetch` with the expected query/parameter combinations.
+
+### 9.3.2026
+- Added: `addToCart` service tests covering add/remove/delete flows so the feature layer handles quantity/state transitions reliably.
+
+### 10.3.2026
+- Added: `cart` model test verifying `getUserCart` forwards `/api/cart` requests to the shared `Fetch`.
+- Added: `leave-comment` action tests covering unauthorized flows and valid submissions calling `/api/products/comments`.
+- Added: `register` model test that hashes passwords before POSTing to `/api/auth/register`.
+- Added: `payment mock` form test that formats card/expiry inputs, shows coupon pricing, and advances the checkout step.
+- Added: `ProductSearch` component tests that exercise the debounce, result list, and "view all" navigation.
+- Added: Header widget test ensuring desktop/mobile fragments render together.
+- Added: Footer widget test verifying nav/copyright copy, cart page test that surfaces `OrderSummary`, and orders page test covering filters/table rows.
+
+### 11.3.2026
+- Added: Recently Viewed Products feature - tracks products user views and displays them on home page (PR #98)
 
 
 (repeatable section)

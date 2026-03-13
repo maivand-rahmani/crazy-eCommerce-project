@@ -1,0 +1,1 @@
+export { getFeaturedProducts } from "./getFeaturedProducts";

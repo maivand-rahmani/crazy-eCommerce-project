@@ -52,7 +52,7 @@ export async function GET(req) {
 
       return NextResponse.json({
         data: toSafeJson(productsWithFav),
-        otherInfo: { wishlist_id: wishlist.id },
+        otherInfo: { wishlist_id: wishlist?.id },
       });
     }
 

@@ -1,4 +1,5 @@
 "use client";
+import React from "react";
 import { Link , usePathname } from "@/shared/i18n";
 
 const NavLink = ({ href, children, className, isActiveStyle, exact = false }) => {

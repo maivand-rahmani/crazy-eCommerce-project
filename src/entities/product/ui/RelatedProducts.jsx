@@ -53,8 +53,11 @@ const RelatedProducts = async ({ id, category }) => {
     product_name: product.product_name,
     variant_name: product.variant_name,
     price_cents: product.price_cents,
+    discount_percent: product.discount_percent,
     image_url: product.image_url,
     isFavorite: otherInfo?.isInWishlist?.includes(product.variant_id) || false,
+    stock_quantity: product?.stock_quantity,
+    created_at: product?.created_at,
   }));
 
   return (
