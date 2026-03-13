@@ -46,6 +46,8 @@ model User {
   updatedAt         DateTime            @default(now()) @db.Timestamptz(6)
   password          String?
   role              user_role           @default(user)
+  isBlocked         Boolean             @default(false)
+  deletedAt         DateTime?           @db.Timestamptz(6)
   addresses         Json[]
 
 
@@ -56,6 +58,10 @@ model User {
   reviews           reviews[]
   reviews_reactions reviews_reactions[]
   wishlist          wishlist?
+
+  @@index([role], map: "idx_users_role")
+  @@index([isBlocked], map: "idx_users_is_blocked")
+  @@index([deletedAt], map: "idx_users_deleted_at")
 }
 
 model VerificationToken {
@@ -105,15 +111,20 @@ model coupons {
   id               Int       @id @default(autoincrement())
   coupon_code      String    @unique
   description      String?
+  type             coupon_type @default(fixed_amount)
   discount_amount  Decimal?  @db.Decimal(10, 2)
   discount_percent Int?
+  is_one_time      Boolean   @default(true)
   max_usage        Int?      @default(1)
   times_used       Int?      @default(0)
   valid_from       DateTime? @default(now()) @db.Timestamptz(6)
   expires_at       DateTime? @db.Timestamptz(6)
+  updated_at       DateTime  @default(now()) @updatedAt @db.Timestamptz(6)
+  deleted_at       DateTime? @db.Timestamptz(6)
   orders           orders[]
 
   @@index([coupon_code], map: "idx_coupon_code")
+  @@index([deleted_at], map: "idx_coupons_deleted_at")
 }
 
 /// This table contains check constraints and requires additional setup for migrations. Visit https://pris.ly/d/check-constraints for more info.
@@ -136,13 +147,20 @@ model orders {
   status      order_status  @default(created)
   total_cents Int
   created_at  DateTime      @default(now()) @db.Timestamptz(6)
+  updated_at  DateTime      @default(now()) @updatedAt @db.Timestamptz(6)
   coupon_id   Int?
   address     Json?
+  return_requested Boolean  @default(false)
+  return_status    order_return_status @default(none)
+  return_reason    String?
+  returned_at      DateTime? @db.Timestamptz(6)
   order_items order_items[]
   coupons     coupons?      @relation(fields: [coupon_id], references: [id])
   user        User          @relation(fields: [user_id], references: [id], onDelete: Cascade)
 
   @@index([user_id], map: "idx_orders_user")
+  @@index([status], map: "idx_orders_status")
+  @@index([return_status], map: "idx_orders_return_status")
 }
 
 model product_cards {
@@ -153,12 +171,18 @@ model product_cards {
   variant_name    String?
   category_id     BigInt?
   price_cents     Int
+  discount_percent Int?
   stock_quantity  Int
   image_url       String
   created_at      DateTime @default(now()) @db.Timestamptz(6)
   updated_at      DateTime @default(now()) @db.Timestamptz(6)
+  is_active       Boolean  @default(true)
+  deleted_at      DateTime? @db.Timestamptz(6)
   variant_options Json?
   specs           Json?
+
+  @@index([is_active], map: "idx_product_cards_is_active")
+  @@index([deleted_at], map: "idx_product_cards_deleted_at")
 }
 
 model product_images {
@@ -184,16 +208,23 @@ model product_variants {
   product_id      BigInt
   variant_name    String?
   price_cents     Int
+  discount_percent Int?
   stock_quantity  Int               @default(0)
+  status          variant_status    @default(active)
+  deleted_at      DateTime?         @db.Timestamptz(6)
+  updated_at      DateTime          @default(now()) @updatedAt @db.Timestamptz(6)
   cart_items      cart_items[]
   order_items     order_items[]
   product_images  product_images[]
   products        products          @relation(fields: [product_id], references: [id], onDelete: Cascade, onUpdate: NoAction)
+  variant_specs   variant_specs[]
   variant_options variant_options[]
   wishlist_items  wishlist_items[]
 
   @@index([product_id], map: "idx_product_variants_product_id")
   @@index([variant_name], map: "idx_product_variants_variant_name")
+  @@index([status], map: "idx_product_variants_status")
+  @@index([deleted_at], map: "idx_product_variants_deleted_at")
 }
 
 model products {
@@ -202,6 +233,9 @@ model products {
   description      String?
   category_id      BigInt?
   created_at       DateTime           @default(now()) @db.Timestamptz(6)
+  updated_at       DateTime           @default(now()) @updatedAt @db.Timestamptz(6)
+  status           product_status     @default(active)
+  deleted_at       DateTime?          @db.Timestamptz(6)
   product_images   product_images[]
   product_specs    product_specs[]
   product_variants product_variants[]
@@ -210,6 +244,8 @@ model products {
 
   @@index([category_id], map: "idx_products_category")
   @@index([name], map: "idx_products_name")
+  @@index([status], map: "idx_products_status")
+  @@index([deleted_at], map: "idx_products_deleted_at")
 }
 
 /// This table contains check constraints and requires additional setup for migrations. Visit https://pris.ly/d/check-constraints for more info.
@@ -244,6 +280,16 @@ model variant_options {
   key              String
   value            String
   product_variants product_variants @relation(fields: [variant_id], references: [id], onDelete: Cascade, onUpdate: NoAction)
+}
+
+model variant_specs {
+  id               BigInt           @id @default(autoincrement())
+  variant_id       BigInt
+  key              String
+  value            String?
+  product_variants product_variants @relation(fields: [variant_id], references: [id], onDelete: Cascade, onUpdate: NoAction)
+
+  @@index([variant_id], map: "idx_variant_specs_variant_id")
 }
 
 /// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
@@ -288,6 +334,31 @@ enum order_status {
   shipped
   delivered
   cancelled
+}
+
+enum product_status {
+  draft
+  active
+  archived
+}
+
+enum variant_status {
+  draft
+  active
+  archived
+}
+
+enum coupon_type {
+  percentage
+  fixed_amount
+}
+
+enum order_return_status {
+  none
+  requested
+  approved
+  rejected
+  processed
 }
 
 enum user_role {

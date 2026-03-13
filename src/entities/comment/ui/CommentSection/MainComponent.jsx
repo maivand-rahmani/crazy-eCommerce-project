@@ -2,10 +2,10 @@ import React from "react";
 import CommentSection from "./CommentSection/CommentSection";
 import { Fetch } from "@/shared/lib";
 import { getServerSession } from "next-auth";
-import { authParams } from "@/app/api/auth/[...nextauth]/route";
+import { authOptions } from "@/features/auth/model/authOptions";
 
 const MainCommentComponent = async ({ productID }) => {
-  const user = await getServerSession(authParams).then((res) => res?.user);
+  const user = await getServerSession(authOptions).then((res) => res?.user);
   const data = await Fetch(`/api/products/comments?id=${productID}`);
 
   const serializedComments = data.map((c) => ({

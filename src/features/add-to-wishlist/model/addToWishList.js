@@ -2,11 +2,11 @@
 import prisma from "../../../../prisma/client";
 import { revalidatePath } from "next/cache";
 import { getServerSession } from "next-auth";
-import { authParams } from "@/app/api/auth/[...nextauth]/route";
+import { authOptions } from "@/features/auth/model/authOptions";
 
 export default async function addToWishlist(productId, variantId, wishlistId) {
   // Get current session to ensure user is authenticated
-  const session = await getServerSession(authParams);
+  const session = await getServerSession(authOptions);
   
   if (!session?.user?.id) {
     return { status: "error", message: "Unauthorized" };

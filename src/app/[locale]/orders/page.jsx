@@ -82,6 +82,24 @@ const OrdersPage = () => {
     return colors[status] || "bg-surface text-text";
   };
 
+  const getReturnStatusColor = (status) => {
+    const colors = {
+      none: "bg-surface text-text",
+      requested: "bg-yellow-100 text-yellow-800",
+      approved: "bg-blue-100 text-blue-800",
+      rejected: "bg-rose-100 text-rose-800",
+      processed: "bg-green-100 text-green-800",
+    };
+
+    return colors[status] || "bg-surface text-text";
+  };
+
+  const getCancellationState = (order) => {
+    return ["created", "paid"].includes(order.status)
+      ? t("detail.cancellation.available")
+      : t("detail.cancellation.locked");
+  };
+
   const handleSort = (field) => {
     if (sortBy === field) {
       setSortOrder(sortOrder === "asc" ? "desc" : "asc");
@@ -175,6 +193,12 @@ const OrdersPage = () => {
                 <th className="px-6 py-4 text-left text-xs font-medium text-text uppercase tracking-wider">
                   {t("table.itemsQuantity")}
                 </th>
+                <th className="px-6 py-4 text-left text-xs font-medium text-text uppercase tracking-wider">
+                  {t("table.return")}
+                </th>
+                <th className="px-6 py-4 text-left text-xs font-medium text-text uppercase tracking-wider">
+                  {t("table.cancellation")}
+                </th>
               </tr>
             </thead>
             <tbody className="bg-surface divide-y divide-border">
@@ -208,13 +232,25 @@ const OrdersPage = () => {
                       {formatDate(order.created_at)}
                     </span>
                   </td>
-                  <td className="px-6 py-4 whitespace-nowrap">
-                    <span className="text-sm text-text">
-                      {calculateItemsQuantity(order)}
-                    </span>
-                  </td>
-                </tr>
-              ))}
+                   <td className="px-6 py-4 whitespace-nowrap">
+                     <span className="text-sm text-text">
+                       {calculateItemsQuantity(order)}
+                     </span>
+                   </td>
+                   <td className="px-6 py-4 whitespace-nowrap">
+                     <span
+                       className={`inline-flex px-2 py-1 text-xs font-semibold rounded-full ${getReturnStatusColor(order.return_status || "none")}`}
+                     >
+                       {t(`detail.return.status.${order.return_status || "none"}`)}
+                     </span>
+                   </td>
+                   <td className="px-6 py-4 whitespace-nowrap">
+                     <span className="text-sm text-unactive-text">
+                       {getCancellationState(order)}
+                     </span>
+                   </td>
+                 </tr>
+               ))}
             </tbody>
           </table>
         </div>

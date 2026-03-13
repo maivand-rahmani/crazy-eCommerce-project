@@ -1,9 +1,10 @@
 import prisma from '../../../../../prisma/client';
 import { getToken } from 'next-auth/jwt';
 import { NextResponse } from 'next/server';
+import { getAuthSecret } from '@/shared/lib/auth';
 
 export const GET = async (req) => {
-    const user = await getToken({ req, secret: process.env.NEXTAUTH_SECRET });
+    const user = await getToken({ req, secret: getAuthSecret() });
     const addresses = await prisma.user.findUnique({
         where: {
             id: user.id
@@ -20,7 +21,7 @@ export const GET = async (req) => {
 }
 
 export const POST = async (req) => {
-    const user = await getToken({ req, secret: process.env.NEXTAUTH_SECRET });
+    const user = await getToken({ req, secret: getAuthSecret() });
     const body = await req.json();
 
 
@@ -74,7 +75,7 @@ export const DELETE = async (req) => {
     //     return NextResponse.json({ error: "Address ID is required" }, { status: 400 })
     // }
 
-    const user = await getToken({ req, secret: process.env.NEXTAUTH_SECRET });
+    const user = await getToken({ req, secret: getAuthSecret() });
 
     if (!user) 
         return NextResponse.json({ error: "Unauthorized" }, { status: 401 })
@@ -110,7 +111,7 @@ export const DELETE = async (req) => {
 }
 
 export const PUT = async (req) => {
-    const user = await getToken({ req, secret: process.env.NEXTAUTH_SECRET });
+    const user = await getToken({ req, secret: getAuthSecret() });
     const body = await req.json();
 
     if (!user) {

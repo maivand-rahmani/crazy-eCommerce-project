@@ -6,7 +6,7 @@ import { MainInfo, ProductSpecs, RelatedProducts } from "@/entities/product";
 import MainCommentComponent from "@/entities/comment";
 import { ProductRatingStats } from "@/entities/rating";
 import { getServerSession } from "next-auth";
-import { authParams } from "@/app/api/auth/[...nextauth]/route";
+import { authOptions } from "@/features/auth/model/authOptions";
 import { getTranslations } from "next-intl/server";
 
 export async function generateMetadata({ params }) {
@@ -50,7 +50,7 @@ export async function generateMetadata({ params }) {
 const page = async ({ params }) => {
   const t = await getTranslations("productDetails");
   const { variantId, categoryId } = await params;
-  const user = await getServerSession(authParams).then((res) => res?.user);
+  const user = await getServerSession(authOptions).then((res) => res?.user);
   const userId = user ? user.id : null;
 
   let MainData = await getProduct(variantId);

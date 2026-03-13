@@ -1,10 +1,10 @@
 import { getServerSession } from 'next-auth'
 import prisma from "../../../../../../prisma/client";
-import { authParams } from '@/app/api/auth/[...nextauth]/route';
+import { authOptions } from '@/features/auth/model/authOptions';
 
 export async function POST(req) {
   const { commentId, type } = await req.json();
-  const user = await getServerSession(authParams).then((res) => res?.user);
+  const user = await getServerSession(authOptions).then((res) => res?.user);
 
   if (!user) return Response.json({ error: "Not authorized" }, { status: 401 });
 

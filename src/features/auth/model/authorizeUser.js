@@ -9,6 +9,8 @@ export async function authorizeUser(credentials) {
 
   const user = await getUserByEmail(email);
   if (!user) throw new Error("User not found");
+  if (user.deletedAt) throw new Error("Account disabled");
+  if (user.isBlocked) throw new Error("Account blocked");
 
   const passwordMatch = await compare(password, user.password);
   if (!passwordMatch) throw new Error("Incorrect password");

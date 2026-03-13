@@ -1,10 +1,9 @@
 import { NextIntlClientProvider } from "next-intl";
 import { getMessages } from "next-intl/server";
-import { Header } from "@/widgets/header";
-import { Footer } from "@/widgets/footer";
 import "@/shared/styles/globals.css";
 import { Toaster } from "react-hot-toast";
 import AuthProvider from "@/shared/ui/layout/Provider/AuthProvider";
+import { AppShell } from "@/widgets/app-shell";
 
 export default async function LocaleLayout({ children, params }) {
   const { locale } = await params;
@@ -12,13 +11,11 @@ export default async function LocaleLayout({ children, params }) {
 
   return (
     <html lang={locale} data-theme="dark">
-      <body className="mx-auto overflow-auto max-w-[1440px]">
+      <body className="mx-auto min-h-screen max-w-[1440px] bg-bg text-text">
         <NextIntlClientProvider locale={locale} messages={messages}>
           <AuthProvider>
-            <Header />
-            <div className="md:pt-22">{children}</div>
+            <AppShell>{children}</AppShell>
             <Toaster position="top-center" reverseOrder={true} />
-            <Footer />
           </AuthProvider>
         </NextIntlClientProvider>
       </body>

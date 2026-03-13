@@ -2,14 +2,16 @@
 import React from "react";
 import { useForm } from "react-hook-form";
 import { signIn } from "next-auth/react";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { useTranslations } from "next-intl";
 import toast from "react-hot-toast";
 
 const LoginForm = () => {
   const t = useTranslations("auth.login");
   const tCommon = useTranslations("common");
-  let router = useRouter()
+  const router = useRouter();
+  const searchParams = useSearchParams();
+  const redirectTo = searchParams.get("redirectTo") || "/";
   let {
     register,
     handleSubmit,
@@ -21,18 +23,19 @@ const LoginForm = () => {
   const onSubmit = async (data) => {
     let res = await signIn("credentials", {
       redirect: false,
+      callbackUrl: redirectTo,
       email: data.email,
       password: data.password,
     });
 
-    if (res?.status === 401) {
+    if (res?.status === 401 || res?.error) {
        setError("root" , { message: t("errors.invalid") })
        toast.error(t("errors.invalid"));
-     }
+      }
 
     if (!res?.error) {
       reset();
-      router.replace("/");
+      router.replace(redirectTo);
     }
     
   };

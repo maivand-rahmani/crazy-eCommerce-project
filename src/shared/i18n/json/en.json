@@ -162,6 +162,8 @@
       "title": "Login to your account",
       "subtitle": "Enter your email below to login to your account",
       "button": "Login",
+      "email": "Email",
+      "password": "Password",
       "noAccount": "Don't have an account?",
       "register": "Register",
       "errors": {
@@ -223,7 +225,9 @@
       "status": "Status",
       "price": "Price",
       "date": "Date",
-      "itemsQuantity": "Items Quantity"
+      "itemsQuantity": "Items Quantity",
+      "return": "Return",
+      "cancellation": "Cancellation"
     },
     "loading": "Loading orders...",
     "empty": "No orders found",
@@ -247,7 +251,40 @@
       "name": "Name",
       "email": "Email",
       "notFound": "Order not found",
-      "loadingDetails": "Loading order details..."
+      "loadingDetails": "Loading order details...",
+      "return": {
+        "label": "Return status",
+        "title": "Return Request",
+        "currentStatus": "Current return status",
+        "reason": "Reason for return",
+        "reasonLabel": "Return reason",
+        "placeholder": "Explain why you want to return this order...",
+        "submit": "Request return",
+        "submitting": "Submitting...",
+        "pending": "Your return request has been sent and is waiting for review.",
+        "approved": "Your return request has been approved by the store team.",
+        "processed": "Your return has been processed.",
+        "rejected": "Your previous request was rejected. You can send a new request with more details.",
+        "unavailable": "Returns are available after payment and remain available while the order is being shipped or already delivered.",
+        "status": {
+          "none": "No return",
+          "requested": "Requested",
+          "approved": "Approved",
+          "rejected": "Rejected",
+          "processed": "Processed"
+        }
+      },
+      "cancellation": {
+        "label": "Cancellation",
+        "title": "Cancel Order",
+        "available": "Available",
+        "locked": "Unavailable",
+        "infoTitle": "Cancellation policy",
+        "availableText": "This order can still be cancelled because it has not moved past the paid stage.",
+        "unavailableText": "This order can no longer be cancelled because it is already being fulfilled or completed.",
+        "submit": "Cancel order",
+        "submitting": "Cancelling..."
+      }
     }
   },
 
