@@ -6,7 +6,13 @@ import { toast } from "react-hot-toast";
 import { useSession } from "next-auth/react";
 import { useTranslations } from "next-intl";
 
-export function QuickAddToCart({ variantId, productName }) {
+export function QuickAddToCart({
+  variantId,
+  productName,
+  className = "",
+  showLabel = false,
+  disabled = false,
+}) {
   const t = useTranslations("cart");
   const tCommon = useTranslations("common");
   const [loading, setLoading] = useState(false);
@@ -16,7 +22,9 @@ export function QuickAddToCart({ variantId, productName }) {
 
   const handleClick = async () => {
     if (!user?.id) {
-      toast.error(tCommon("error") + ": Authorization required.", { icon: "🔐" });
+      toast.error(tCommon("error") + ": Authorization required.", {
+        icon: "🔐",
+      });
       return;
     }
 
@@ -24,7 +32,7 @@ export function QuickAddToCart({ variantId, productName }) {
     try {
       // Pass userId so cart is auto-created if needed
       const res = await addToCart(variantId, "add", null, user.id);
-      
+
       if (res?.error) {
         toast.error(res.error);
       } else if (res?.item) {
@@ -44,12 +52,14 @@ export function QuickAddToCart({ variantId, productName }) {
   return (
     <button
       onClick={handleClick}
-      disabled={loading || added}
-      className={` flex items-center justify-center gap-2 px-3 py-2 rounded-l-xl text-sm font-medium transition-all duration-300 ${
+      disabled={disabled || loading || added}
+      className={`flex items-center justify-center gap-2 px-3 py-2 rounded-l-xl text-sm font-medium transition-all duration-300 ${
         added
           ? "bg-green-600 text-white"
-          : "bg-button/30 text-button-text hover:opacity-80"
-      }`}
+          : disabled
+            ? "cursor-not-allowed bg-muted/40 text-muted"
+            : "bg-button/30 text-button-text hover:opacity-80"
+      } ${className}`}
       title={productName ? `Quick add: ${productName}` : "Quick add to cart"}
     >
       {loading ? (
@@ -59,6 +69,7 @@ export function QuickAddToCart({ variantId, productName }) {
       ) : (
         <ShoppingCart size={16} />
       )}
+      {showLabel && <span>{added ? t("added") : t("quickAdd")}</span>}
     </button>
   );
 }

@@ -1,12 +1,12 @@
 import React from "react";
 import ProductCard from "@/entities/product";
-import { Fetch } from "@/shared/lib";
 import { getTranslations } from "next-intl/server";
+import { getFeaturedProducts } from "@/features/home/model";
 
 const FeaturedProducts = async () => {
   const t = await getTranslations("common");
 
-  const res = await Fetch("/api/products?limit=8&distinctProducts=true");
+  const res = await getFeaturedProducts(8);
 
   if (!res) {
     return <div>{t("error")}</div>;

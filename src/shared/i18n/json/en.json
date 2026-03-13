@@ -126,7 +126,11 @@
 
   "home": {
     "featuredProducts": "Featured Products",
-    "BrowseByCategory": "Browse By Category"
+    "BrowseByCategory": "Browse By Category",
+    "recentlyViewed": "Recently Viewed",
+    "clearHistory": "Clear History",
+    "productsShowcase": "Product Showcase",
+    "recentlyViewedEmpty": "Open a few product pages and they will appear here."
   },
 
   "cart": {

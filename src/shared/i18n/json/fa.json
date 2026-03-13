@@ -126,7 +126,11 @@
 
   "home": {
     "featuredProducts": "محصولات ویژه",
-    "BrowseByCategory": "دسته‌بندی بر اساس"
+    "BrowseByCategory": "دسته‌بندی بر اساس",
+    "recentlyViewed": "محصولات بازدید شده",
+    "clearHistory": "پاک کردن تاریخچه",
+    "productsShowcase": "ویترین محصولات",
+    "recentlyViewedEmpty": "چند صفحه محصول را باز کنید تا اینجا نمایش داده شوند."
   },
 
   "cart": {

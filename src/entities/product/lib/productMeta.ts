@@ -29,8 +29,9 @@ const getFieldValue = <T>(
 ) => {
   if (input && typeof input === "object") {
     for (const key of keys) {
-      if (key in input && input[key] != null) {
-        return input[key];
+      const obj = input as Record<string, unknown>;
+      if (key in obj && obj[key] != null) {
+        return obj[key];
       }
     }
   }
@@ -73,7 +74,7 @@ export const isProductNew = (
 
   if (!createdAt) return false;
 
-  const createdDate = new Date(createdAt);
+  const createdDate = new Date(createdAt as string | Date);
   if (Number.isNaN(createdDate.getTime())) return false;
 
   const now = new Date();

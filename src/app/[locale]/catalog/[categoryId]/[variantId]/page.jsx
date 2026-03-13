@@ -8,6 +8,7 @@ import { ProductRatingStats } from "@/entities/rating";
 import { getServerSession } from "next-auth";
 import { authParams } from "@/app/api/auth/[...nextauth]/route";
 import { getTranslations } from "next-intl/server";
+import { ProductViewTracker } from "@/features/recently-viewed";
 
 export async function generateMetadata({ params }) {
   const { variantId } = await params;
@@ -64,6 +65,7 @@ const page = async ({ params }) => {
 
   return (
     <main className="md:px-4 h-full text-text w-full overflow-hidden p-5 md:p-20 flex flex-col">
+      <ProductViewTracker product={data} />
       <div className="w-full flex-col flex center pb-28 md:px-20 md:flex-row md:gap-10 gap-5">
         <Suspense>
           <Slider productId={productId} variantId={variantId} />
