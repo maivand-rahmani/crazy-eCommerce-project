@@ -1,15 +1,9 @@
 "use server";
-import { hash } from 'bcrypt'
-import { Fetch } from '@/shared/lib/fetch'
+
+import { Fetch } from "@/shared/lib/fetch";
+import { validateRegistrationPayload } from "@/shared/lib";
 
 export async function register(data) {
-  const { firstname, lastname, email, password } = data;
-  const hashedPassword = await hash(password, 10);
-
-  try {
-    const user = await Fetch('/api/auth/register', 'POST', null, { firstname, lastname, email, password: hashedPassword });
-    if (user) return user
-  } catch (error) {
-    return new Error("error while register" , error);
-  }
+  const payload = validateRegistrationPayload(data);
+  return Fetch("/api/auth/register", "POST", payload);
 }

@@ -5,6 +5,7 @@ import { PrismaAdapter } from "@next-auth/prisma-adapter";
 
 import prisma from "../../../../prisma/client";
 import { getAuthSecret } from "@/shared/lib/auth";
+import { sanitizeUser } from "@/shared/lib/auth";
 import { authorizeUser } from "./authorizeUser";
 
 export const authOptions = {
@@ -61,22 +62,40 @@ export const authOptions = {
       if (token.id) {
         const dbUser = await prisma.user.findUnique({
           where: { id: token.id },
-          select: { role: true, isBlocked: true, deletedAt: true },
+          select: {
+            role: true,
+            isBlocked: true,
+            deletedAt: true,
+            name: true,
+            email: true,
+            image: true,
+          },
         });
 
         token.role = dbUser?.role;
         token.isBlocked = dbUser?.isBlocked;
         token.deletedAt = dbUser?.deletedAt ? dbUser.deletedAt.toISOString() : null;
+        token.name = dbUser?.name ?? token.name;
+        token.email = dbUser?.email ?? token.email;
+        token.picture = dbUser?.image ?? token.picture;
       }
 
       return token;
     },
     async session({ session, token }) {
       if (session.user) {
-        session.user.id = token.id;
-        session.user.role = token.role;
-        session.user.isBlocked = Boolean(token.isBlocked);
-        session.user.deletedAt = token.deletedAt ?? null;
+        Object.assign(
+          session.user,
+          sanitizeUser({
+            id: token.id,
+            role: token.role,
+            isBlocked: token.isBlocked,
+            deletedAt: token.deletedAt,
+            name: token.name,
+            email: token.email,
+            image: token.picture,
+          }),
+        );
       }
       return session;
     },

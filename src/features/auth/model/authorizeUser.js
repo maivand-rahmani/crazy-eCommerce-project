@@ -1,19 +1,34 @@
 "use server";
-import { getUserByEmail } from "./getUserByEmail";
+
 import { compare } from "bcrypt";
 
-export async function authorizeUser(credentials) {
-  const { email, password } = credentials;
+import { sanitizeUser } from "@/shared/lib/auth";
+import { validateEmail, validatePassword } from "@/shared/lib";
+import { getUserByEmail } from "./getUserByEmail";
 
-  if (!email || !password) throw new Error("Missing credentials");
+export async function authorizeUser(credentials = {}) {
+  const email = validateEmail(credentials.email);
+  const password = validatePassword(credentials.password);
 
   const user = await getUserByEmail(email);
-  if (!user) throw new Error("User not found");
-  if (user.deletedAt) throw new Error("Account disabled");
-  if (user.isBlocked) throw new Error("Account blocked");
+
+  if (!user || !user.password) {
+    throw new Error("Invalid email or password.");
+  }
+
+  if (user.deletedAt) {
+    throw new Error("This account is disabled.");
+  }
+
+  if (user.isBlocked) {
+    throw new Error("This account is blocked.");
+  }
 
   const passwordMatch = await compare(password, user.password);
-  if (!passwordMatch) throw new Error("Incorrect password");
 
-  return user;
+  if (!passwordMatch) {
+    throw new Error("Invalid email or password.");
+  }
+
+  return sanitizeUser(user);
 }

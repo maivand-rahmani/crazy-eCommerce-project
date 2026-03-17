@@ -14,6 +14,11 @@ const nextConfig: NextConfig = {
         hostname: "194.156.118.210",
         pathname: "/uploads/images/**",
       },
+      {
+        protocol: "https",
+        hostname: "burst.shopifycdn.com",
+        pathname: "/**",
+      },
     ],
   },
   eslint: {

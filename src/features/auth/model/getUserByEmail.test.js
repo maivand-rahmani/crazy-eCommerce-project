@@ -36,12 +36,11 @@ describe("getUserByEmail", () => {
     await expect(getUserByEmail("missing@example.com")).resolves.toBeNull();
   });
 
-  it("returns an Error object when the query throws", async () => {
+  it("throws when the query fails", async () => {
     prismaMock.user.findUnique.mockRejectedValue(new Error("db failed"));
 
     const { getUserByEmail } = await import("./getUserByEmail.js");
-    const result = await getUserByEmail("john@example.com");
 
-    expect(result).toBeInstanceOf(Error);
+    await expect(getUserByEmail("john@example.com")).rejects.toThrow("db failed");
   });
 });

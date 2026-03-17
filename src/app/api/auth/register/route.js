@@ -1,29 +1,54 @@
-import prisma from "../../../../../prisma/client";
-import { NextResponse } from "next/server";
 import { hash } from "bcrypt";
+import { NextResponse } from "next/server";
+
+import prisma from "../../../../../prisma/client";
+import { sanitizeUser } from "@/shared/lib/auth";
+import { validateRegistrationPayload } from "@/shared/lib";
 
 export async function POST(req) {
   try {
-    const { email, password, firstname, lastname } = await req.json();
+    const payload = validateRegistrationPayload(await req.json());
 
-    if (!email || !password || !firstname || !lastname) {
-      return NextResponse.json({ error: "Missing fields" }, { status: 400 });
+    const existingUser = await prisma.user.findUnique({
+      where: { email: payload.email },
+      select: { id: true },
+    });
+
+    if (existingUser) {
+      return NextResponse.json(
+        { error: "An account with this email already exists." },
+        { status: 409 },
+      );
     }
 
-    const hashedPassword = await hash(password, 10);
+    const hashedPassword = await hash(payload.password, 10);
 
-    const user = await prisma.User.create({
+    const user = await prisma.user.create({
       data: {
-        email,
+        email: payload.email,
         password: hashedPassword,
-        name: `${firstname} ${lastname}`,
+        name: `${payload.firstname} ${payload.lastname}`,
         role: "user",
+        addresses: [],
       },
     });
 
-    return NextResponse.json({ user });
+    return NextResponse.json(
+      {
+        user: sanitizeUser(user),
+        status: 201,
+      },
+      { status: 201 },
+    );
   } catch (error) {
-    console.error("Registration error:", error);
-    return NextResponse.json({ error: "An error occurred during registration" }, { status: 500 });
+    const message =
+      error instanceof Error
+        ? error.message
+        : "Registration could not be completed.";
+
+    const status =
+      message === "An account with this email already exists." ? 409 : 400;
+
+    return NextResponse.json({ error: message }, { status });
   }
 }

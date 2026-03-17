@@ -1,8 +1,12 @@
 import { signIn } from "next-auth/react";
 
-export async function doSocialLogin(action) {
+import { sanitizeRedirectPath } from "@/shared/lib";
+
+export async function doSocialLogin(action, redirectTo = "/") {
   try {
-    await signIn(action, { redirectTo: "/" });
+    await signIn(action, {
+      callbackUrl: sanitizeRedirectPath(redirectTo),
+    });
   } catch (error) {
     return { error: error.message };
   }

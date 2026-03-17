@@ -1,17 +1,18 @@
 import React from "react";
 import { doSocialLogin } from "@/features/auth/model/SocialLogin";
 import { useTranslations } from "next-intl";
+import Image from "next/image";
 
-const OAuthForm = () => {
+const OAuthForm = ({ redirectTo = "/" }) => {
   const t = useTranslations("oauth");
   return (
-    <form action={doSocialLogin} className="w-full space-y-3 px-10">
+    <div className="w-full space-y-3">
       <button
         type="button"
-        onClick={() => doSocialLogin("google")}
-        className="w-full inline-flex items-center justify-center gap-3 rounded-lg border bg-background px-4 py-2.5 text-sm font-medium shadow-sm transition-colors hover:bg-accent hover:text-accent-foreground focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2"
+        onClick={() => doSocialLogin("google", redirectTo)}
+        className="inline-flex w-full items-center justify-center gap-3 rounded-xl border border-border/60 bg-background px-4 py-3 text-sm font-medium text-text shadow-sm transition hover:border-border hover:bg-card focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/60"
       >
-        <img
+        <Image
           src="/icons/google-color.png"
           width={18}
           height={18}
@@ -22,13 +23,13 @@ const OAuthForm = () => {
 
       <button
         type="button"
-        onClick={() => doSocialLogin("github")}
-        className="w-full inline-flex items-center justify-center gap-3 rounded-lg border bg-background px-4 py-2.5 text-sm font-medium shadow-sm transition-colors hover:bg-accent hover:text-accent-foreground focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2"
+        onClick={() => doSocialLogin("github", redirectTo)}
+        className="inline-flex w-full items-center justify-center gap-3 rounded-xl border border-border/60 bg-background px-4 py-3 text-sm font-medium text-text shadow-sm transition hover:border-border hover:bg-card focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/60"
       >
-        <img src="/icons/github.png" width={18} height={18} alt="GitHub" />
+        <Image src="/icons/github.png" width={18} height={18} alt="GitHub" />
         <span>{t("continueWithGithub")}</span>
       </button>
-    </form>
+    </div>
   );
 };
 

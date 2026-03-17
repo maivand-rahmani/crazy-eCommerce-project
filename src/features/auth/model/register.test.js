@@ -3,16 +3,12 @@ import { describe, it, expect, vi, beforeEach } from "vitest";
 const fetchMock = vi.fn();
 vi.mock("@/shared/lib/fetch", () => ({ Fetch: fetchMock }));
 
-const hashMock = vi.fn();
-vi.mock("bcrypt", () => ({ hash: hashMock }));
-
 describe("register", () => {
   beforeEach(() => {
     vi.clearAllMocks();
   });
 
-  it("hashes the password and calls Fetch", async () => {
-    hashMock.mockResolvedValue("hashed");
+  it("validates payload and calls Fetch", async () => {
     fetchMock.mockResolvedValue({ id: "user" });
 
     const { register } = await import("./register.js");
@@ -21,23 +17,40 @@ describe("register", () => {
       firstname: "John",
       lastname: "Doe",
       email: "john@example.com",
-      password: "1234",
+      password: "12345678",
     };
 
     const result = await register(payload);
 
-    expect(hashMock).toHaveBeenCalledWith("1234", 10);
     expect(fetchMock).toHaveBeenCalledWith(
       "/api/auth/register",
       "POST",
-      null,
       {
         firstname: "John",
         lastname: "Doe",
         email: "john@example.com",
-        password: "hashed",
+        password: "12345678",
       },
     );
     expect(result).toEqual({ id: "user" });
+  });
+
+  it("normalizes the email before sending it to the API", async () => {
+    fetchMock.mockResolvedValue({ id: "user" });
+
+    const { register } = await import("./register.js");
+
+    await register({
+      firstname: "John",
+      lastname: "Doe",
+      email: " John@Example.com ",
+      password: "12345678",
+    });
+
+    expect(fetchMock).toHaveBeenLastCalledWith(
+      "/api/auth/register",
+      "POST",
+      expect.objectContaining({ email: "john@example.com" }),
+    );
   });
 });

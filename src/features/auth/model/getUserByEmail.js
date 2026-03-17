@@ -1,11 +1,13 @@
 import prisma from "../../../../prisma/client";
 
+import { normalizeEmail } from "@/shared/lib";
+
 export async function getUserByEmail(email) {
-  try {
-    const user = await prisma.user.findUnique({ where: { email } });
-    if (!user) return null;
-    return user;
-  } catch (error) {
-    return new Error(error);
-  }
+  const normalizedEmail = normalizeEmail(email);
+
+  if (!normalizedEmail) return null;
+
+  return prisma.user.findUnique({
+    where: { email: normalizedEmail },
+  });
 }
