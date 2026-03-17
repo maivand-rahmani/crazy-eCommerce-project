@@ -1,66 +1,92 @@
 import { NextResponse } from "next/server";
-import prisma from "../../../../../prisma/client";
-import { getToken } from "next-auth/jwt";
-import { getAuthSecret } from "@/shared/lib/auth";
 
+import { normalizeAddressInput } from "@/shared/lib";
+import { getAuthUserFromRequest } from "@/shared/lib/auth";
+import { placeSandboxOrder } from "@/shared/lib/commerce";
+
+export const runtime = "nodejs";
+
+const CONFLICT_MESSAGES = new Set([
+  "Cart is empty.",
+  "One or more items are out of stock.",
+  "Stock changed while checkout was processing.",
+  "Checkout is being processed concurrently. Please retry.",
+  "Coupon usage limit has been reached.",
+  "Coupon was already used on this account.",
+]);
+
+function isValidationMessage(message) {
+  return Boolean(
+    message === "Missing checkout request id." ||
+      message === "Shipping address is required." ||
+      message === "Coupon was not found." ||
+      message === "Coupon is not active yet." ||
+      message === "Coupon has expired." ||
+      message === "Coupon does not apply to this cart." ||
+      message === "Enter a valid ZIP or postal code." ||
+      message === "Enter a valid phone number." ||
+      / is required\.$/.test(message) ||
+      / must be \d+ characters or fewer\.$/.test(message),
+  );
+}
+
+function getErrorResponse(error) {
+  if (error instanceof SyntaxError) {
+    return NextResponse.json(
+      { error: "Request body must be valid JSON." },
+      { status: 400 },
+    );
+  }
+
+  const message = error instanceof Error ? error.message : "Checkout failed.";
+
+  if (CONFLICT_MESSAGES.has(message)) {
+    return NextResponse.json({ error: message }, { status: 409 });
+  }
+
+  if (isValidationMessage(message)) {
+    return NextResponse.json({ error: message }, { status: 400 });
+  }
+
+  console.error("Order API error:", error);
+  return NextResponse.json({ error: "Checkout failed." }, { status: 500 });
+}
 
 export async function POST(req) {
   try {
-    const user = await getToken({ req, secret: process.env.NEXTAUTH_SECRET });
-    let orderInfo = {};
-    const { order_items, address, status, coupon_id, total_cents , cart_id , order_id } =
-      await req.json();
+    const user = await getAuthUserFromRequest(req);
 
-    if ( !order_items || !address || !status || !total_cents || !cart_id ) {
-      return NextResponse.json({ error: "Missing required fields" }, { status: 400 });
+    if (!user) {
+      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
 
-    if (!user) return Response.json({ error: "Not authorized" }, { status: 401 });
+    if (user.isBlocked || user.deletedAt) {
+      return NextResponse.json(
+        { error: "Your account cannot place orders." },
+        { status: 403 },
+      );
+    }
 
-    await prisma.$transaction(async (tx) => {
-      const order = await tx.orders.upsert({
-        where: { id: order_id || "0"},
-        update: {
-          status: status,
-        },
-        create: {
-          address: address,
-          user_id: user.id,
-          total_cents: total_cents,
-          coupon_id: coupon_id,
-          status: status,
-        },
-      });
-      
-      const items = await tx.order_items.createMany({
-        data: order_items.map((item) => ({ ...item , order_id: order.id })),
-        skipDuplicates: true
-      });
-
-      const cartItems = await tx.cart_items.deleteMany({ where: { cart_id: cart_id }});
-
-      for (const item of order_items) {
-        await tx.product_variants.update({
-          where: { id: item.variant_id },
-          data: {
-            stock_quantity: { decrement: item.quantity }
-          }
-        });
-      }
-
-      if (coupon_id) {
-        await tx.coupons.update({
-          where: { id: coupon_id },
-          data: { times_used: { increment: 1 } }
-        });
-      }
-
-      orderInfo = order
+    const payload = await req.json();
+    const address = normalizeAddressInput(payload?.address || {});
+    const result = await placeSandboxOrder({
+      userId: user.id,
+      address,
+      couponCode: payload?.couponCode,
+      orderRequestId: payload?.orderRequestId,
     });
 
-    return NextResponse.json({ message: "Order created" , order: orderInfo , status: 200 }, { status: 200 });
+    return NextResponse.json(
+      {
+        message: result.created ? "Order created" : "Order already processed",
+        order: result.order,
+        summary: result.summary,
+        created: result.created,
+        status: 200,
+      },
+      { status: 200 },
+    );
   } catch (error) {
-    console.error("Order API error:", error);
-    return NextResponse.json({ error: "Failed to create order" }, { status: 500 });
+    return getErrorResponse(error);
   }
 }

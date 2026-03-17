@@ -1,25 +1,27 @@
 import { NextResponse } from "next/server";
-import prisma from "../../../../prisma/client";
-import { toSafeJson } from "../../../../prisma/funcs";
-import { getToken } from "next-auth/jwt";
-import { getAuthSecret } from "@/shared/lib/auth";
+
+import { getAuthUserFromRequest } from "@/shared/lib/auth";
+import { getCartSummaryForUser } from "@/shared/lib/commerce";
 
 export async function GET(req) {
   try {
-    const user = await getToken({ req, secret: process.env.NEXTAUTH_SECRET });
-    if (!user) return new Response("Unauthorized", { status: 401 });
+    const user = await getAuthUserFromRequest(req);
 
-    const cart = await prisma.$queryRaw`
-      SELECT pc.* , wi.quantity , w.id as cart_id
-      FROM carts w
-      JOIN cart_items wi ON wi.cart_id = w.id
-      JOIN product_cards pc ON pc.variant_id = wi.variant_id
-      WHERE w.user_id = ${user.id} and w.status = 'OPEN'
-    `;
+    if (!user) {
+      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+    }
 
-    return NextResponse.json(toSafeJson(cart));
+    const cart = await getCartSummaryForUser(user.id);
+
+    return NextResponse.json({
+      data: cart.items,
+      summary: cart.summary,
+      status: 200,
+    });
   } catch (error) {
-    console.error("Cart API error:", error);
-    return NextResponse.json({ error: "Failed to fetch cart" }, { status: 500 });
+    return NextResponse.json(
+      { error: "Failed to fetch cart." },
+      { status: 500 },
+    );
   }
 }

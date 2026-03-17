@@ -65,7 +65,7 @@ describe("handleCartQuantityChange", () => {
   });
 
   it("rolls back the optimistic add when the request fails", async () => {
-    addToCartMock.mockRejectedValue(new Error("network"));
+    addToCartMock.mockResolvedValue({ error: "network" });
 
     const harness = createStateHarness(2);
     const { handleCartQuantityChange } = await import(
@@ -82,9 +82,7 @@ describe("handleCartQuantityChange", () => {
     });
 
     expect(harness.getCounter()).toBe(2);
-    expect(toast.error).toHaveBeenCalledWith(
-      "Something gone wrong while sending request",
-    );
+    expect(toast.error).toHaveBeenCalledWith("network");
     expect(harness.getLoadingStates()).toEqual([true, false]);
   });
 
@@ -108,6 +106,27 @@ describe("handleCartQuantityChange", () => {
     expect(addToCartMock).toHaveBeenCalledWith(10, "remove", 7);
     expect(harness.getCounter()).toBe(1);
     expect(harness.getAdded()).toEqual({ quantity: 1, id: 1 });
+  });
+
+  it("clears local state when remove deletes the last item", async () => {
+    addToCartMock.mockResolvedValue({ item: null, removed: true });
+
+    const harness = createStateHarness(1);
+    const { handleCartQuantityChange } = await import(
+      "./handleCartQuantityChangeOnClient.js"
+    );
+
+    await handleCartQuantityChange({
+      setLoading: harness.setLoading,
+      setCounter: harness.setCounter,
+      setAdded: harness.setAdded,
+      cart_id: 7,
+      variantId: 10,
+      method: "remove",
+    });
+
+    expect(harness.getCounter()).toBe(0);
+    expect(harness.getAdded()).toBe(false);
   });
 
   it("clears local state and shows success feedback on delete", async () => {

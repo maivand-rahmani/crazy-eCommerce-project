@@ -1,31 +1,27 @@
-import { NextResponse } from 'next/server'
-import prisma from '../../../../../prisma/client'
+import { NextResponse } from "next/server";
 
-let checkIfCouponValid = (coupon) => {
-    const { id , discount_amount , discount_percent , max_usage , times_used , valid_from , expires_at} = coupon
-    if (max_usage <= times_used) return false
-    if (new Date(valid_from) > new Date()) return false
-    if (new Date(expires_at) < new Date()) return false
+import { getAuthUserFromRequest } from "@/shared/lib/auth";
+import { getCouponPreview } from "@/shared/lib/commerce";
 
-    const type = discount_amount ? "amount" : "percent"
+export async function GET(req) {
+  try {
+    const user = await getAuthUserFromRequest(req);
 
-    return { id: id , type: type , value: type === "amount" ? discount_amount : discount_percent }
-}
-
-export async function GET(req){
-    const { searchParams } = new URL(req.url)
-    const coupon = searchParams.get("coupon")
-    let checkedCoupon;
-
-    const res = await prisma.coupons.findFirst({
-        where: {coupon_code: coupon}
-    })
-
-    if (res) checkedCoupon = checkIfCouponValid(res)
-    
-    if (checkedCoupon) {
-        return NextResponse.json({ ...checkedCoupon , status: 200 })
+    if (!user) {
+      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
 
-    return NextResponse.json({ status: 404 })
+    const couponCode = req.nextUrl.searchParams.get("coupon") || "";
+    const preview = await getCouponPreview({
+      userId: user.id,
+      couponCode,
+    });
+
+    return NextResponse.json(preview);
+  } catch (error) {
+    const message =
+      error instanceof Error ? error.message : "Coupon could not be applied.";
+
+    return NextResponse.json({ error: message }, { status: 400 });
+  }
 }
