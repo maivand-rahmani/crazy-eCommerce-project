@@ -1,4 +1,4 @@
-import React from "react";
+import React, { createElement } from "react";
 import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { describe, expect, it, vi } from "vitest";
@@ -16,10 +16,10 @@ describe("Counter", () => {
     const handleClick = vi.fn();
 
     render(
-      <Counter
-        handleClick={handleClick}
-        state={{ quantity: 2, loading: false }}
-      />,
+      createElement(Counter, {
+        handleClick,
+        state: { quantity: 2, loading: false },
+      }),
     );
 
     const buttons = screen.getAllByRole("button");
@@ -32,10 +32,10 @@ describe("Counter", () => {
 
   it("disables quantity changes at min and max boundaries", () => {
     const { rerender } = render(
-      <Counter
-        handleClick={vi.fn()}
-        state={{ quantity: 1, loading: false }}
-      />,
+      createElement(Counter, {
+        handleClick: vi.fn(),
+        state: { quantity: 1, loading: false },
+      }),
     );
 
     let buttons = screen.getAllByRole("button");
@@ -43,10 +43,10 @@ describe("Counter", () => {
     expect(buttons[1]).not.toBeDisabled();
 
     rerender(
-      <Counter
-        handleClick={vi.fn()}
-        state={{ quantity: 99, loading: false }}
-      />,
+      createElement(Counter, {
+        handleClick: vi.fn(),
+        state: { quantity: 99, loading: false },
+      }),
     );
 
     buttons = screen.getAllByRole("button");
@@ -59,16 +59,16 @@ describe("Counter", () => {
     const handleClick = vi.fn();
 
     render(
-      <Counter
-        handleClick={handleClick}
-        state={{
+      createElement(Counter, {
+        handleClick,
+        state: {
           quantity: 3,
           loading: false,
           deleteButton: true,
           priceCents: 499,
           priceFractionDigits: 2,
-        }}
-      />,
+        },
+      }),
     );
 
     expect(screen.getByText("=14.97$")).toBeInTheDocument();

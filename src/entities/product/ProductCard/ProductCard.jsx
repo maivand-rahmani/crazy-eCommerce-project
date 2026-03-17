@@ -74,7 +74,7 @@ const ProductCard = ({ data, otherInfo, contextLabel }) => {
         <div className="pointer-events-none absolute inset-x-0 bottom-0 h-24 bg-linear-to-t from-card via-card/50 to-transparent" />
       </div>
 
-      <div className="flex flex-1 flex-col gap-4 p-5">
+      <div className="flex min-w-0 flex-1 flex-col gap-4 p-5">
         <div className="space-y-2">
           {contextLabel && (
             <p className="text-xs font-medium uppercase tracking-[0.24em] text-muted">
@@ -102,22 +102,22 @@ const ProductCard = ({ data, otherInfo, contextLabel }) => {
             <p className="text-xs text-muted">{stockLabel || t("details")}</p>
           </div>
 
-          <div className="flex items-center gap-3">
+          <div className="flex min-w-0 flex-col items-stretch gap-3 sm:flex-row sm:items-center">
             <QuickAddToCart
               variantId={data.variant_id}
               productName={`${productName}${variantName ? ` - ${variantName}` : ""}`}
               disabled={hasKnownStock && !isInStock}
-              showLabel
-              className="flex-1 rounded-full border border-border/70 bg-background/60 px-4 py-3 text-text backdrop-blur-md hover:bg-background/80"
+              showLabel={false}
+              className="h-11 w-11 flex-none rounded-full border border-border/70 bg-background/60 p-0 text-text backdrop-blur-md hover:bg-background/80"
             />
 
             <button
               type="button"
               onClick={handleClick}
               disabled={!data?.category_id || !data?.variant_id}
-              className="flex-1 rounded-full bg-button px-4 py-3 text-sm font-medium text-button-text transition-opacity hover:opacity-85 disabled:cursor-not-allowed disabled:opacity-60"
+              className="min-w-0 flex-1 rounded-full bg-button px-4 py-3 text-sm font-medium text-button-text transition-opacity hover:opacity-85 disabled:cursor-not-allowed disabled:opacity-60"
             >
-              {t("details")}
+              <span className="block truncate">{t("details")}</span>
             </button>
           </div>
         </div>

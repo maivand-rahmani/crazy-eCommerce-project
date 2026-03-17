@@ -1,6 +1,11 @@
-import React from "react";
+import React, { createElement } from "react";
 import { render, screen } from "@testing-library/react";
 import { describe, it, vi } from "vitest";
+
+vi.mock("@/shared/i18n", () => ({
+  Link: ({ href, className, children }) =>
+    createElement("a", { href, className }, children),
+}));
 
 vi.mock("next-intl", () => ({
   useTranslations: () => (key) => key,
@@ -10,9 +15,9 @@ import Footer from "./Footer";
 
 describe("Footer widget", () => {
   it("renders navigation links and copyright", () => {
-    render(<Footer />);
+    render(createElement(Footer));
 
-    expect(screen.getByText("logo")).toBeInTheDocument();
+    expect(screen.getAllByText("logo")).toHaveLength(2);
     expect(screen.getByText("tagline")).toBeInTheDocument();
     expect(screen.getByText("nav.title")).toBeInTheDocument();
     expect(screen.getByText("nav.home")).toBeInTheDocument();

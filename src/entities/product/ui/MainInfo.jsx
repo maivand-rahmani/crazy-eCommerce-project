@@ -252,7 +252,6 @@ const MainInfo = ({ product, otherInfo }) => {
         {isInStock ? (
           <AddToCartButtonForProductPage
             variantId={currentVariant.id}
-            cart_id={otherInfo?.cart_id}
           />
         ) : (
           <div className="border-2 border-border rounded flex center cursor-not-allowed opacity-50">

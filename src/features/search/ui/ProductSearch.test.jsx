@@ -1,7 +1,7 @@
-import React from "react";
+import React, { createElement } from "react";
 import { act, render, screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
-import { describe, it, beforeEach, afterEach, vi } from "vitest";
+import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import ProductSearch from "./ProductSearch";
 
 const pushMock = vi.fn();
@@ -41,7 +41,7 @@ describe("ProductSearch", () => {
 
   it("searches after debounce and opens results", async () => {
     const user = userEvent.setup();
-    render(<ProductSearch />);
+    render(createElement(ProductSearch));
 
     await user.type(screen.getByPlaceholderText("Search products..."), "watch");
     await act(() => new Promise((resolve) => setTimeout(resolve, 400)));
@@ -57,7 +57,7 @@ describe("ProductSearch", () => {
 
   it("navigates to search page when clicking view all", async () => {
     const user = userEvent.setup();
-    render(<ProductSearch />);
+    render(createElement(ProductSearch));
 
     await user.type(screen.getByPlaceholderText("Search products..."), "watch");
     await act(() => new Promise((resolve) => setTimeout(resolve, 400)));

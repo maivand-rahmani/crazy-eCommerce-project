@@ -53,7 +53,7 @@ export function QuickAddToCart({
     <button
       onClick={handleClick}
       disabled={disabled || loading || added}
-      className={`flex items-center justify-center gap-2 px-3 py-2 rounded-l-xl text-sm font-medium transition-all duration-300 ${
+      className={`flex items-center justify-center gap-2 rounded-l-xl px-3 py-2 text-sm font-medium transition-all duration-300 ${
         added
           ? "bg-green-600 text-white"
           : disabled
@@ -61,6 +61,9 @@ export function QuickAddToCart({
             : "bg-button/30 text-button-text hover:opacity-80"
       } ${className}`}
       title={productName ? `Quick add: ${productName}` : "Quick add to cart"}
+      aria-label={
+        productName ? `Quick add: ${productName}` : "Quick add to cart"
+      }
     >
       {loading ? (
         <span className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" />
@@ -69,7 +72,9 @@ export function QuickAddToCart({
       ) : (
         <ShoppingCart size={16} />
       )}
-      {showLabel && <span>{added ? t("added") : t("quickAdd")}</span>}
+      {showLabel && (
+        <span className="truncate">{added ? t("added") : t("quickAdd")}</span>
+      )}
     </button>
   );
 }

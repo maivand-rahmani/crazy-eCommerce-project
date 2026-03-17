@@ -36,18 +36,30 @@ const page = async () => {
   if (!data) return <div>{t("error")}</div>;
 
   return (
-    <div className="h-full grid grid-cols-2 md:grid-cols-5 gap-10 p-5 md:p-20">
-      {Array.isArray(data)
-        ? data.map((category) => (
-            <CategoryCard
-              Scroll={false}
-              Category={category}
-              kidsList={data.filter((el) => el.parent_id === category.id)}
-              key={category.id}
-            />
-          ))
-        : null}
-    </div>
+    <section className="mx-auto flex w-full max-w-7xl flex-col gap-8 px-4 py-8 md:px-8 md:py-14 xl:px-10">
+      <div className="space-y-3 text-center md:text-left">
+        <h1 className="text-3xl font-semibold tracking-tight text-text md:text-4xl">
+          {metadata.title}
+        </h1>
+        <p className="mx-auto max-w-2xl text-sm leading-6 text-muted md:mx-0 md:text-base">
+          {metadata.description}
+        </p>
+      </div>
+
+      <div className="grid grid-cols-1 justify-items-center gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 xl:gap-6">
+        {Array.isArray(data)
+          ? data.map((category) => (
+              <div key={category.id} className="w-full max-w-80">
+                <CategoryCard
+                  Scroll={false}
+                  Category={category}
+                  kidsList={data.filter((el) => el.parent_id === category.id)}
+                />
+              </div>
+            ))
+          : null}
+      </div>
+    </section>
   );
 };
 

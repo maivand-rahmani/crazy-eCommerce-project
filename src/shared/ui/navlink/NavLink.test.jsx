@@ -1,4 +1,4 @@
-import React from "react";
+import React, { createElement } from "react";
 import { render, screen } from "@testing-library/react";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 
@@ -7,11 +7,8 @@ const { usePathnameMock } = vi.hoisted(() => ({
 }));
 
 vi.mock("@/shared/i18n", () => ({
-  Link: ({ href, className, children }) => (
-    <a href={href} className={className}>
-      {children}
-    </a>
-  ),
+  Link: ({ href, className, children }) =>
+    createElement("a", { href, className }, children),
   usePathname: usePathnameMock,
 }));
 
@@ -26,9 +23,11 @@ describe("NavLink", () => {
     usePathnameMock.mockReturnValue("/catalog/phones");
 
     render(
-      <NavLink href="/catalog" className="base" isActiveStyle="active">
-        Catalog
-      </NavLink>,
+      createElement(
+        NavLink,
+        { href: "/catalog", className: "base", isActiveStyle: "active" },
+        "Catalog",
+      ),
     );
 
     expect(screen.getByRole("link", { name: "Catalog" })).toHaveClass("base");
@@ -39,14 +38,16 @@ describe("NavLink", () => {
     usePathnameMock.mockReturnValue("/catalog/phones");
 
     render(
-      <NavLink
-        href="/catalog"
-        className="base"
-        isActiveStyle="active"
-        exact
-      >
-        Catalog
-      </NavLink>,
+      createElement(
+        NavLink,
+        {
+          href: "/catalog",
+          className: "base",
+          isActiveStyle: "active",
+          exact: true,
+        },
+        "Catalog",
+      ),
     );
 
     expect(screen.getByRole("link", { name: "Catalog" })).toHaveClass("base");

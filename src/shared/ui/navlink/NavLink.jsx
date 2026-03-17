@@ -1,13 +1,20 @@
 "use client";
 import React from "react";
-import { Link , usePathname } from "@/shared/i18n";
+import { Link, usePathname } from "@/shared/i18n";
 
-const NavLink = ({ href, children, className, isActiveStyle, exact = false }) => {
+const NavLink = ({
+  href,
+  children,
+  className,
+  isActiveStyle,
+  exact = false,
+}) => {
   const pathname = usePathname();
-  const isActive = exact 
-    ? pathname === href 
-    : pathname.startsWith(href);
-
+  const isRoot = href === "/";
+  const isActive =
+    exact || isRoot
+      ? pathname === href
+      : pathname === href || pathname.startsWith(`${href}/`);
 
   return (
     <Link

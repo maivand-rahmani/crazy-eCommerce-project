@@ -1,4 +1,4 @@
-import React from "react";
+import React, { createElement } from "react";
 import { render, screen } from "@testing-library/react";
 import { describe, expect, it } from "vitest";
 
@@ -7,13 +7,13 @@ import ProductPrice from "./ProductPrice";
 describe("ProductPrice", () => {
   it("renders original and discounted prices with formatting props", () => {
     render(
-      <ProductPrice
-        priceCents={1000}
-        discountPercent={25}
-        currencyPrefix="$"
-        currencySuffix=" USD"
-        formatPrice={(value) => `fmt-${value}`}
-      />,
+      createElement(ProductPrice, {
+        priceCents: 1000,
+        discountPercent: 25,
+        currencyPrefix: "$",
+        currencySuffix: " USD",
+        formatPrice: (value) => `fmt-${value}`,
+      }),
     );
 
     expect(screen.getByText("$fmt-1000 USD")).toBeInTheDocument();
@@ -22,11 +22,11 @@ describe("ProductPrice", () => {
 
   it("renders only the current price when there is no discount", () => {
     render(
-      <ProductPrice
-        priceCents={1000}
-        formatPrice={(value) => `fmt-${value}`}
-        showOriginalPrice={false}
-      />,
+      createElement(ProductPrice, {
+        priceCents: 1000,
+        formatPrice: (value) => `fmt-${value}`,
+        showOriginalPrice: false,
+      }),
     );
 
     expect(screen.getByText("fmt-1000")).toBeInTheDocument();
