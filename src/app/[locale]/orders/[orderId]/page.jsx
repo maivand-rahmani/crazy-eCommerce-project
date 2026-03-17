@@ -231,7 +231,7 @@ const OrderDetailPage = () => {
                 {t("return.label")}
               </span>
               <span
-                className={`inline-flex px-3 py-1 text-sm font-semibold rounded-full ${getReturnStatusColor(order.return_status || "none")}`}
+                className={`inline-flex px-3 py-1 text-text text-sm font-semibold rounded-full ${getReturnStatusColor(order.return_status || "none")}`}
               >
                 {t(`return.status.${order.return_status || "none"}`)}
               </span>

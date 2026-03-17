@@ -1,6 +1,6 @@
-import React from "react";
+import React, { createElement } from "react";
 import { render, screen, waitFor } from "@testing-library/react";
-import { describe, it, vi } from "vitest";
+import { describe, expect, it, vi } from "vitest";
 vi.mock("@/shared/lib/fetch", () => ({
   Fetch: vi.fn(),
 }));
@@ -10,7 +10,7 @@ vi.mock("next-intl", () => ({
 }));
 
 vi.mock("@/shared/i18n/model/routing", () => ({
-  Link: ({ children }) => <span>{children}</span>,
+  Link: ({ children }) => createElement("span", null, children),
   redirect: () => {},
   useRouter: () => ({ push: () => null }),
   usePathname: () => "/orders",
@@ -33,7 +33,7 @@ describe("Orders page", () => {
       ],
     });
 
-    render(<OrdersPage />);
+    render(createElement(OrdersPage));
 
     await waitFor(() => {
       expect(Fetch).toHaveBeenCalledWith("/api/orders");

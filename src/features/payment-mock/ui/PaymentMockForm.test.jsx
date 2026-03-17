@@ -1,14 +1,14 @@
-import React from "react";
+import React, { createElement } from "react";
 import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
-import { describe, it, vi, beforeEach } from "vitest";
+import { beforeEach, describe, expect, it, vi } from "vitest";
 
 vi.mock("next-intl", () => ({
   useTranslations: () => (key) => key,
 }));
 
 vi.mock("@/entities/product", () => ({
-  formatCurrencyValue: (value, options) =>
+  formatPriceFromCents: (value, options) =>
     new Intl.NumberFormat("en-US", options).format(Number(value ?? 0)),
 }));
 
@@ -23,22 +23,33 @@ describe("PaymentMockForm", () => {
   });
 
   it("renders summary and submits payment", async () => {
+    const user = userEvent.setup();
+
     render(
-      <PaymentMockForm
-        setStep={setStep}
-        setOrderInfo={setOrderInfo}
-        total={120}
-        couponInfo={{ type: "amount", value: 20 }}
-      />,
+      createElement(PaymentMockForm, {
+        setStep,
+        setOrderInfo,
+        totalCents: 12000,
+        couponInfo: { code: "SAVE20" },
+        summary: {
+          subtotalCents: 12000,
+          discountCents: 2000,
+          shippingCents: 0,
+          taxCents: 0,
+          totalCents: 10000,
+        },
+      }),
     );
 
     expect(screen.getByText("subtotal:")).toBeInTheDocument();
-    expect(screen.getByText("$120.00")).toBeInTheDocument();
+    expect(screen.getByText("$12,000.00")).toBeInTheDocument();
     expect(screen.getByText("discount:")).toBeInTheDocument();
+    expect(screen.getByText("-$2,000.00")).toBeInTheDocument();
+    expect(screen.getByText("Coupon: SAVE20")).toBeInTheDocument();
 
-    await userEvent.type(screen.getByLabelText("cardholderName"), "Alice");
-    await userEvent.type(screen.getByLabelText("expiryDate"), "12/34");
-    await userEvent.click(screen.getByRole("button", { name: "payNow" }));
+    await user.clear(screen.getByLabelText("cardholderName"));
+    await user.type(screen.getByLabelText("cardholderName"), "Alice");
+    await user.click(screen.getByRole("button", { name: "payNow" }));
 
     expect(setStep).toHaveBeenCalledWith(3);
     expect(setOrderInfo).toHaveBeenCalledTimes(1);

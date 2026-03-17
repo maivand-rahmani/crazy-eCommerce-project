@@ -161,7 +161,8 @@
     "placeholder": "Code",
     "button": "check",
     "applied": "Promo code applied you save",
-    "invalid": "the coupon is invalid!"
+    "invalid": "the coupon is invalid!",
+    "activeCode": "Active code"
   },
 
   "auth": {

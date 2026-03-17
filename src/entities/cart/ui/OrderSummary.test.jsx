@@ -1,9 +1,9 @@
-import React from "react";
+import React, { createElement } from "react";
 import { describe, it, expect, vi } from "vitest";
 import { render, screen } from "@testing-library/react";
 
 vi.mock("@/entities/product", () => ({
-  formatCurrencyValue: (value, options) =>
+  formatPriceFromCents: (value, options) =>
     new Intl.NumberFormat("en-US", options).format(Number(value ?? 0)),
 }));
 
@@ -30,17 +30,23 @@ import OrderSummary from "./OrderSummary";
 describe("OrderSummary", () => {
   it("renders subtotal and total", () => {
     const props = {
-      total: 150,
-      setCheckout: vi.fn(),
+      cart: {
+        summary: {
+          subtotalCents: 15000,
+          shippingCents: 0,
+          taxCents: 0,
+          totalCents: 15000,
+        },
+      },
       checkout: true,
       items: [],
     };
 
-    render(<OrderSummary {...props} />);
+    render(createElement(OrderSummary, props));
 
-    expect(screen.getByText("subtotal:")).toBeInTheDocument();
-    expect(screen.getByText("total:")).toBeInTheDocument();
-    expect(screen.getAllByText("150.00$").length).toBe(2);
+    expect(screen.getByText("subtotal")).toBeInTheDocument();
+    expect(screen.getByText("total")).toBeInTheDocument();
+    expect(screen.getAllByText("15,000.00$").length).toBeGreaterThanOrEqual(2);
     expect(screen.getByText("order")).toBeInTheDocument();
   });
 });

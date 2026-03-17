@@ -26,7 +26,8 @@ export let GET = async (req) => {
                     product_variants: true
                 }
             }
-        })
+        }
+    })
 
     return NextResponse.json({ data: toSafeJson(orders) , status: 200 })
 }

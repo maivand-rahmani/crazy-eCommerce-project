@@ -1,91 +1,102 @@
 "use client";
-import React, { useState } from "react";
-import CouponForm from "../../../features/cart/apply-cupon/ui/CouponForm";
-import { Link, X } from "lucide-react";
-import OrderModal from "@/entities/order/ui/modal/OrderModal";
-import { useSession } from "next-auth/react";
-import { formatCurrencyValue } from "@/entities/product";
+
+import React, { useMemo, useState } from "react";
 import { useTranslations } from "next-intl";
 
-const OrderSummary = ({ total, setCheckout, checkout, items }) => {
+import CouponForm from "@/features/cart/apply-cupon/ui/CouponForm";
+import OrderModal from "@/entities/order/ui/modal/OrderModal";
+import { formatPriceFromCents } from "@/entities/product";
+
+const OrderSummary = ({ cart, checkout, items, onOrderCreated = null }) => {
   const t = useTranslations("orderSummary");
-  const session = useSession();
-  const user = session?.data?.user;
-
-  const [coupon, setCoupon] = useState(false);
-  const [discountAmount, setDiscountAmount] = useState(0);
-
+  const [couponPreview, setCouponPreview] = useState(null);
   const [orderModal, setOrderModal] = useState(false);
-  const finalTotal = Math.max(0, (total || 0) - discountAmount);
-  const formatAmount = (value) =>
-    formatCurrencyValue(value, {
-      minimumFractionDigits: 2,
-      maximumFractionDigits: 2,
-    });
 
-  let discardCheckout = () => {
-    setCheckout(false);
-    setCoupon(false);
-    setDiscountAmount(0);
-  };
+  const summary = useMemo(() => {
+    const baseSummary = cart?.summary || {
+      subtotalCents: 0,
+      shippingCents: 0,
+      taxCents: 0,
+      totalCents: 0,
+    };
 
-  let handleOrderSummary = () => {
-    setOrderModal(true);
-  };
+    if (!couponPreview?.summary) {
+      return {
+        ...baseSummary,
+        discountCents: 0,
+      };
+    }
+
+    return {
+      ...baseSummary,
+      ...couponPreview.summary,
+    };
+  }, [cart, couponPreview]);
+
+  const totalItems = items.reduce((sum, item) => sum + Number(item.quantity || 0), 0);
 
   return (
-    <div className="md:pt-25 p-4 transition-all duration-500 ease-in-out">
-      <div className="rounded-2xl block sticky p-5 top-25 border-border border shadow-xl bg-surface">
-        <div className="font-extrabold text-2xl uppercase flex justify-between">
-          <h1>{t("title")}: </h1>
-          {checkout && <X onClick={discardCheckout} />}
+    <aside className="p-4 md:pt-16">
+      <div className="sticky top-24 rounded-[28px] border border-border/70 bg-surface p-5 shadow-[0_22px_60px_-36px_rgba(15,23,42,0.35)]">
+        <div className="flex items-center justify-between gap-3">
+          <div>
+            <h2 className="text-2xl font-extrabold uppercase text-text">{t("title")}</h2>
+            <p className="mt-1 text-sm text-unactive-text">{totalItems} items in this sandbox order</p>
+          </div>
         </div>
 
-        {
-          <CouponForm
-            total={total}
-            setAmount={setDiscountAmount}
-            setCoupon={setCoupon}
-          />
-        }
+        <CouponForm setCoupon={setCouponPreview} />
 
-        {/* totals */}
-        <div className="flex flex-col text-xl gap-5 my-5">
-          <div className="font-bold flex justify-between">
-            <h1>{t("subtotal")}: </h1>
-            <h1>{formatAmount(total || 0)}$</h1>
+        <div className="mt-6 space-y-3 text-sm text-text">
+          <div className="flex items-center justify-between">
+            <span>{t("subtotal")}</span>
+            <span>{formatPriceFromCents(summary.subtotalCents, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}$</span>
           </div>
-          {coupon && (
-            <div className="flex justify-between text-unactive-text">
-              <h1>{t("discount")}: </h1>
-              <h1 className="text-success">-{formatAmount(discountAmount)}$</h1>
+          {summary.discountCents > 0 ? (
+            <div className="flex items-center justify-between text-success">
+              <span>{t("discount")}</span>
+              <span>-{formatPriceFromCents(summary.discountCents, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}$</span>
             </div>
-          )}
-          <div className="font-bold flex justify-between">
-            <h2>{t("total")}: </h2>
-            <h2>{formatAmount(finalTotal)}$</h2>
+          ) : null}
+          <div className="flex items-center justify-between text-unactive-text">
+            <span>Shipping</span>
+            <span>{formatPriceFromCents(summary.shippingCents, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}$</span>
+          </div>
+          <div className="flex items-center justify-between text-unactive-text">
+            <span>Tax</span>
+            <span>{formatPriceFromCents(summary.taxCents, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}$</span>
+          </div>
+          <div className="flex items-center justify-between border-t border-border pt-3 text-base font-bold">
+            <span>{t("total")}</span>
+            <span>{formatPriceFromCents(summary.totalCents, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}$</span>
           </div>
         </div>
 
         <button
-          onClick={handleOrderSummary}
-          className="bg-button text-button-text w-full p-5 text-center font-extrabold font-mono rounded"
+          type="button"
+          onClick={() => setOrderModal(true)}
+          disabled={summary.totalCents <= 0}
+          className="mt-6 w-full rounded-2xl bg-button px-4 py-4 text-center font-extrabold text-button-text transition hover:opacity-90 disabled:cursor-not-allowed disabled:opacity-60"
         >
           {checkout ? t("order") : t("checkout")}
         </button>
 
-        {orderModal && (
+        <p className="mt-3 text-xs leading-5 text-unactive-text">
+          Sandbox checkout is fully server-controlled. Totals, coupon validation, stock, and final order status are recalculated on submit.
+        </p>
+
+        {orderModal ? (
           <OrderModal
             items={items}
             isOpen={orderModal}
             setOrderModal={setOrderModal}
-            total={total}
-            couponInfo={coupon}
-            user={user}
+            cart={cart}
+            couponInfo={couponPreview?.coupon || null}
+            onOrderCreated={onOrderCreated}
           />
-        )}
+        ) : null}
       </div>
-    </div>
+    </aside>
   );
 };
 

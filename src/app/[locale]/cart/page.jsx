@@ -1,32 +1,71 @@
 "use client";
-import React, { useState } from "react";
+
+import React, { useEffect, useState } from "react";
+
 import CartProductsList from "@/entities/cart/ui/CartProductsList";
 import { OrderSummary } from "@/entities/cart";
+import { Fetch } from "@/shared/lib";
 
-const page = () => {
-  const [total, setTotal] = useState(0);
+const CartPage = () => {
   const [checkout, setCheckout] = useState(false);
-  const [items, setItems] = useState([]);
+  const [cart, setCart] = useState({ data: [], summary: null, status: 200 });
+  const [loading, setLoading] = useState(true);
+
+  const refreshCart = async () => {
+    setLoading(true);
+
+    try {
+      const response = await Fetch("/api/cart");
+      setCart(response);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    refreshCart();
+  }, []);
+
+  const handleOrderCreated = async () => {
+    setCart({
+      data: [],
+      summary: {
+        cartId: null,
+        itemsCount: 0,
+        subtotalCents: 0,
+        shippingCents: 0,
+        taxCents: 0,
+        totalCents: 0,
+      },
+      status: 200,
+    });
+    setCheckout(false);
+    await refreshCart();
+  };
 
   return (
     <div
-      className={`py-10 transition-all text-text md:p-10 relative grid ${!checkout ? "md:grid-cols-[2fr_1fr]" : checkout ? "md:grid-cols-[1fr_2fr]" : ""}`}
+      className={`relative grid py-10 text-text transition-all md:p-10 ${
+        checkout ? "md:grid-cols-[1.2fr_0.8fr]" : "md:grid-cols-[1.6fr_0.9fr]"
+      }`}
     >
       <CartProductsList
-        setItems={setItems}
+        cart={cart}
+        loading={loading}
         checkoutState={checkout}
-        setTotal={setTotal}
+        onCartChange={refreshCart}
       />
-      {total > 0 && (
+      {(cart?.summary?.itemsCount || 0) > 0 ? (
         <OrderSummary
+          cart={cart}
           checkout={checkout}
-          items={items}
           setCheckout={setCheckout}
-          total={total}
+          items={cart.data || []}
+          onOrderCreated={handleOrderCreated}
         />
-      )}
+      ) : null}
     </div>
   );
 };
 
-export default page;
+export default CartPage;

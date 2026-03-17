@@ -6,7 +6,6 @@ import { handleCartQuantityChange } from "../../../features/add-to-cart/model/ha
 import Image from "next/image";
 import {
   ProductPrice,
-  centsToCurrencyValue,
   formatPriceFromCents,
   getProductPriceInfo,
 } from "@/entities/product";
@@ -14,9 +13,7 @@ import {
 const SmallProductCard = ({
   productData,
   accessibility,
-  setProducts,
-  initialProducts,
-  setTotal,
+  onCartChange,
 }) => {
   let [quantity, setQuantity] = useState(productData?.quantity);
   let [loading, setLoading] = useState(false);
@@ -25,41 +22,24 @@ const SmallProductCard = ({
     originalPriceCents,
     discountPercent,
   } = getProductPriceInfo(productData);
-  const unitPrice = centsToCurrencyValue(unitPriceCents);
-
-  let deleteProductFromCartOnClient = () => {
-    setProducts(initialProducts.filter((p) => p?.id !== productData?.id));
-  };
 
   let callCartHandler = async (method) => {
     let res = await handleCartQuantityChange({
       variantId: productData?.variant_id,
-      cart_id: productData?.cart_id,
       method,
       setCounter: setQuantity,
       setLoading: setLoading,
     });
 
-    if (
-      res &&
-      (method === "delete" || (method === "remove" && quantity === 1))
-    ) {
-      deleteProductFromCartOnClient();
-      // При удалении вычитаем (цена × количество)
-      setTotal((prevTotal) => prevTotal - unitPrice * quantity);
-    } else if (res && method === "remove") {
-      // При уменьшении на 1 вычитаем только одну цену товара
-      setTotal((prevTotal) => prevTotal - unitPrice);
-    } else if (res && method === "add") {
-      // При добавлении прибавляем одну цену товара
-      setTotal((prevTotal) => prevTotal + unitPrice);
+    if (res) {
+      onCartChange?.();
     }
   };
 
   return (
-    <div className="flex gap-5 shadow-xl center border border-border rounded-2xl p-5 w-full bg-surface">
+    <div className="flex w-full gap-4 rounded-[28px] border border-border/60 bg-card/90 p-4 text-text shadow-[0_18px_50px_-34px_rgba(15,23,42,0.35)] transition-all duration-300 md:gap-5 md:p-5">
       {accessibility?.image && (
-        <div className="flex center w-22.5 shrink-0">
+        <div className="flex w-24 shrink-0 items-center justify-center rounded-2xl bg-background/70 p-2 md:w-28">
           <Image
             src={productData?.image_url || "/placeholder.png"}
             alt={productData?.variant_name}
@@ -69,11 +49,11 @@ const SmallProductCard = ({
           />
         </div>
       )}
-      <div className="grid  w-full items-center gap-4">
+      <div className="grid w-full items-center gap-4">
         <div className="min-w-0">
           {accessibility?.fullname && (
-            <div>
-              <h1 className="z-20 drop-shadow-2xl text-xl text-text leading-snug line-clamp-2">
+            <div className="space-y-1">
+              <h1 className="line-clamp-2 text-lg leading-snug text-text md:text-xl">
                 {productData?.product_name} –{" "}
                 <span className="font-semibold text-text z-20">
                   {productData?.variant_name}
@@ -81,12 +61,12 @@ const SmallProductCard = ({
               </h1>
             </div>
           )}
-          <div className="text-unactive-text">
+          <div className="mt-2 text-muted">
             <ProductPrice
               priceCents={originalPriceCents}
               discountPercent={discountPercent}
-              originalPriceClassName="mr-2 text-unactive-text/50 line-through"
-              currentPriceClassName="text-unactive-text"
+              originalPriceClassName="mr-2 text-muted/60 line-through"
+              currentPriceClassName="text-text font-semibold"
               currencySuffix="$"
               formatPrice={(priceCents) =>
                 formatPriceFromCents(priceCents, {
@@ -99,9 +79,9 @@ const SmallProductCard = ({
           </div>
         </div>
 
-        <div className="flex flex-col gap-5 md:flex-row">
+        <div className="flex flex-col gap-3 md:flex-row md:items-center md:justify-between">
           <Counter
-            className="gap-2"
+            className="gap-2 rounded-2xl border border-border/60 bg-background/70 p-2"
             handleClick={callCartHandler}
             state={{
               loading: loading,

@@ -3,12 +3,10 @@
 import React, { useEffect, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Check, CreditCard, Package, Truck } from "lucide-react";
-import { useRouter } from "next/navigation";
 import { useTranslations } from "next-intl";
 
 const OrderingLoader = ({ success }) => {
   const t = useTranslations("orderModal");
-  const router = useRouter();
   const [currentStep, setCurrentStep] = useState(0);
   const [finished, setFinished] = useState(false);
 
@@ -29,11 +27,10 @@ const OrderingLoader = ({ success }) => {
         setCurrentStep(3);
         setFinished(true);
       }, 1800),
-      setTimeout(() => router.push("/"), 2800),
     ];
 
     return () => timers.forEach(clearTimeout);
-  }, [success, router]);
+  }, [success]);
 
   return (
     <div className="flex items-center justify-center z-50">
