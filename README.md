@@ -169,15 +169,39 @@ npm run test:watch
 
 ## Screenshots
 
-Add screenshots to the repository and replace the placeholder paths below.
+### Home Page
 
-| View | Placeholder path |
-| --- | --- |
-| Home page | `documentation/screenshots/homepage.png` |
-| Catalog page | `documentation/screenshots/catalog.png` |
-| Product details | `documentation/screenshots/product-details.png` |
-| Cart and checkout | `documentation/screenshots/cart-checkout.png` |
-| Admin dashboard | `documentation/screenshots/admin-dashboard.png` |
+![Home page with hero banner and featured storefront sections](documentation/screenshots/homepage.png)
+
+### Catalog
+
+![Catalog page with category cards and navigation](documentation/screenshots/catalog.png)
+
+### Product Details
+
+![Product detail page with pricing, specs, related products, and reviews](documentation/screenshots/product-detail.png)
+
+### Authentication
+
+![Authentication screen with credentials and OAuth options](documentation/screenshots/auth.png)
+
+### Cart and Checkout   
+
+![Cart page with product list, coupon input, and order summary](documentation/screenshots/cart.png)
+
+### Admin Dashboard
+
+![Admin dashboard with sales overview and low-stock monitoring](documentation/screenshots/admin-dashboard.png)
+
+![Product management page with variant editing](documentation/screenshots/admin-products.png)
+
+![Order management page with return processing](documentation/screenshots/admin-orders.png)
+
+![User management page with role controls](documentation/screenshots/admin-users.png)
+
+![Coupon management page with creation and filtering](documentation/screenshots/admin-coupons.png)
+
+
 
 ## Contributing
 
