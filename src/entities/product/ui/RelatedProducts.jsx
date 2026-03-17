@@ -1,30 +1,76 @@
-import React from 'react'
-import ProductCard from "@/entities/product/ProductCard/ProductCard";
+import ProductCard from "@/entities/product";
+import { Fetch } from "@/shared/lib";
 
-const RelatedProducts = async ({ id , category }) => {
-    let data;
-     
+const RelatedProducts = async ({ id, category }) => {
+  if (!id || !category) {
+    return null;
+  }
+
+  let data = null;
+  let otherInfo = null;
 
   try {
-    const res = await fetch(`${process.env.API_URL}/api/products/related?id=${id}&category=${category}&limit=4&vlimit=1`, {
-      cache: "no-store",
-    });
-    data = await res.json();
+    const result = await Fetch(
+      `/api/products/related?id=${id}&category=${category}&limit=4`,
+    );
+
+    if (!result || result.error) {
+      throw new Error(result?.error || "Failed to fetch related products");
+    }
+
+    data = result;
+
+    const wishlistRes = await fetch(
+      `${process.env.NEXT_PUBLIC_API_URL}/api/wishlist`,
+      {
+        cache: "no-store",
+      },
+    );
+
+    if (wishlistRes.ok) {
+      const wishlistData = await wishlistRes.json();
+
+      if (wishlistData?.wishlist) {
+        otherInfo = {
+          isInWishlist:
+            wishlistData.wishlist.map((item) => item.variant_id) || [],
+        };
+      }
+    }
   } catch (err) {
-    console.log(err);
+    console.error("Error loading related products:", err);
+    return null;
   }
 
-  if (!data) {
-    return <div>Failed to fetch product</div>;
+  if (!data || !Array.isArray(data) || data.length === 0) {
+    return null;
   }
+
+  const transformedData = data.map((product) => ({
+    variant_id: product.variant_id,
+    product_id: product.product_id,
+    category_id: product.category_id,
+    product_name: product.product_name,
+    variant_name: product.variant_name,
+    price_cents: product.price_cents,
+    discount_percent: product.discount_percent,
+    image_url: product.image_url,
+    isFavorite: otherInfo?.isInWishlist?.includes(product.variant_id) || false,
+    stock_quantity: product?.stock_quantity,
+    created_at: product?.created_at,
+  }));
 
   return (
-    <div className='grid grid-cols-4 gap-5'>
-        { data && data.flatMap((pro) => 
-             <ProductCard key={pro.id} variant={pro.product_variants[0]} product={pro} />
-        )}
+    <div className="grid grid-cols-2 md:grid-cols-4 gap-4 lg:gap-6">
+      {transformedData.map((product) => (
+        <ProductCard
+          key={product.variant_id}
+          data={product}
+          otherInfo={otherInfo}
+        />
+      ))}
     </div>
-  )
-}
+  );
+};
 
-export default RelatedProducts
+export default RelatedProducts;

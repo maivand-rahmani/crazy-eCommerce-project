@@ -1,18 +1,15 @@
 import React from "react";
-import ProductCard from "@/entities/product/ProductCard/ProductCard";
-import Fetch from "@/shared/lib/fetch";
-import { auth } from "@clerk/nextjs/server";
+import ProductCard from "@/entities/product";
+import { getTranslations } from "next-intl/server";
+import { getFeaturedProducts } from "@/features/home/model";
 
 const FeaturedProducts = async () => {
-  
+  const t = await getTranslations("common");
 
-  const res = await Fetch(
-    "/api/products?limit=8&distinctProducts=true",
-  );
-
+  const res = await getFeaturedProducts(8);
 
   if (!res) {
-    return <div>Failed to fetch product</div>;
+    return <div>{t("error")}</div>;
   }
 
   return (

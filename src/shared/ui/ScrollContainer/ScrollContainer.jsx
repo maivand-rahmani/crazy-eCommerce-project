@@ -1,39 +1,37 @@
 "use client";
 import React, { useRef } from "react";
-import ResponsibleBanner from "@/features/home/ui/banners/ResponsibleBanner";
+import { ResponsibleBanner } from "@/features/home";
+import { useTranslations } from "next-intl";
 
 const bannersInfo = [
   {
-    bg: "#FFFFFF",
-    name: "Ipad pro",
-    des: "iPad combines a magnificent 10.2-inch Retina display, incredible performance, multitasking and ease of use.",
+    bg: "var(--banner-white)",
+    key: "ipad",
     link: "ipad",
     img: "http://194.156.118.210/uploads/images/image%2064.png",
   },
   {
-    bg: "#F9F9F9",
-    name: "Samsung Galaxy",
-    des: "Samsung Galaxy is a series of mobile devices made by Samsung. Most of them are smartphones and tablet computers that run Android, an operating system made by Google. New models come out every year.",
+    bg: "var(--banner-light)",
+    key: "samsung",
     link: "Galaxy",
     img: "http://194.156.118.210/uploads/images/image%2041.png",
   },
   {
-    bg: "#EAEAEA",
-    name: "Mac Book Pro",
-    des: "MacBook is a type of Mac laptop computer that is developed and marketed by Apple that use Apple's macOS operating system since 2006.",
+    bg: "var(--banner-medium)",
+    key: "macbookpro",
     link: "Macbook",
     img: "http://194.156.118.210/uploads/images/Macbook%201.png",
   },
   {
-    bg: "#2C2C2C",
-    name: "Apple Watch",
-    des: "Apple Watch is a smartwatch developed and marketed by Apple. It has fitness tracking, health-oriented capabilities, and wireless telecommunication, and integrates with watchOS and other Apple products and services.",
+    bg: "var(--banner-dark)",
+    key: "applewatch",
     link: "Apple watch",
     img: "http://194.156.118.210/uploads/images/312d013f4012ee11f7fa28b1b3c9b9ea%201.png",
   },
 ];
 
 export default function DragScrollContainer({ children }) {
+  const t = useTranslations("homeBanners");
   const ref = useRef(null);
 
   const handleMouseDown = (e) => {
@@ -71,9 +69,9 @@ export default function DragScrollContainer({ children }) {
           className={""}
           bgColor={banner.bg}
           img={banner.img}
-          key={banner.link}
-          name={banner.name}
-          des={banner.des}
+          key={banner.key}
+          name={t(`${banner.key}.title`)}
+          des={t(`${banner.key}.description`)}
           link={banner.link}
         />
       ))}

@@ -1,97 +1,55 @@
 "use client";
-import Fetch from "@/shared/lib/fetch";
-import React, { useState, useEffect } from "react";
+
+import React from "react";
 import Link from "next/link";
-import { useAuth } from "@clerk/nextjs";
-import SmallProductCard from "@/entities/product/SmallProductCard/SmallProductCard";
+import { useTranslations } from "next-intl";
 
-const CartProductsList = ({ checkoutState , setItems , setTotal = () => {} }) => {
-  const [products, setProducts] = useState([]);
-  const [loading, setLoading] = useState(true);
+import { SmallProductCard } from "@/entities/product";
 
-  useEffect(() => {
-    setLoading(true);
-    try {
-      const cartProducts = async () => {
-        const data = await Fetch("/api/cart");
-
-        setProducts(data);
-        setLoading(false);
-        let total = data.reduce((sum, product) => {
-          return sum + (product?.price_cents * product?.quantity) / 100;
-        }, 0);
-        setTotal(Number(total));
-      };
-      cartProducts();
-    } catch (error) {
-      console.error(`error while fetching user cart products: ${error}`);
-      setLoading(false);
-    } finally {
-      setLoading(false);
-    }
-  }, []);
-
-  useEffect(() => {
-    console.log(products)
-    setItems(products);
-  }, [products]);
-
-  let accessibility = {
+const CartProductsList = ({ checkoutState, cart, loading, onCartChange }) => {
+  const t = useTranslations("cart");
+  const tCommon = useTranslations("common");
+  const products = cart?.data || [];
+  const accessibility = {
     image: true,
     fullname: true,
     counter: true,
   };
 
   return (
-    <main className="rounded-3xl p-4 relative transition-all duration-500 ease-in-out">
-      {checkoutState && (
-        <div className="z-999 right-2 rounded-3xl absolute w-full h-full"></div>
-      )}
-      {products && products.length >= 1 && (
-        <>
-          <div>
-            <div className="font-extrabold uppercase flex gap-10 p-5 text-2xl center">
-              <div>Your shopping cart: </div>
-              <div className="rounded-full bg-gray-300 p-2">
-                {products.length}
-              </div>
-            </div>
-            <div className="flex flex-col gap-5">
-              {products.map((product) => (
-                <div className=" " key={product?.id}>
-                  <SmallProductCard
-                    accessibility={accessibility}
-                    productData={product}
-                    setProducts={setProducts}
-                    initialProducts={products}
-                    key={product?.id}
-                    setTotal={setTotal}
-                  />
-                </div>
-              ))}
-            </div>
+    <main className="relative rounded-3xl p-4 transition-all duration-500 ease-in-out">
+      {checkoutState ? <div className="absolute right-2 z-10 h-full w-full rounded-3xl" /> : null}
+
+      {products.length > 0 ? (
+        <div>
+          <div className="flex items-center gap-4 p-5 text-2xl font-extrabold uppercase text-text">
+            <div>{t("title")}</div>
+            <div className="rounded-full bg-muted px-3 py-1 text-base">{products.length}</div>
           </div>
-        </>
-      )}
+          <div className="flex flex-col gap-5">
+            {products.map((product) => (
+              <SmallProductCard
+                accessibility={accessibility}
+                productData={product}
+                key={product.id}
+                onCartChange={onCartChange}
+              />
+            ))}
+          </div>
+        </div>
+      ) : null}
 
-      {loading ? "loading" : null}
+      {loading ? <p className="py-6 text-center text-unactive-text">{tCommon("loading")}</p> : null}
 
-      {!loading && products.length < 1 && (
-        <div className="flex flex-col w-full items-center justify-center min-h-[60vh] text-center">
-          <h2 className="text-2xl font-semibold text-gray-900 mb-3">
-            Your cart is empty
-          </h2>
-          <p className="text-gray-500 max-w-md">
-            You haven’t added any products to your cart yet. Start exploring.
-          </p>
-          <Link
-            href={"/catalog"}
-            className="rounded bg-blue-500 p-2 m-2 text-white"
-          >
-            To catalog
+      {!loading && products.length < 1 ? (
+        <div className="flex min-h-[60vh] w-full flex-col items-center justify-center text-center">
+          <h2 className="mb-3 text-2xl font-semibold text-text">{t("empty.title")}</h2>
+          <p className="max-w-md text-unactive-text">{t("empty.description")}</p>
+          <Link href="/catalog" className="m-2 rounded bg-primary p-2 text-primary-text">
+            {t("empty.cta")}
           </Link>
         </div>
-      )}
+      ) : null}
     </main>
   );
 };

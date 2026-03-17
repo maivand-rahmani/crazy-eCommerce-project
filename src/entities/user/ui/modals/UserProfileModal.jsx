@@ -1,17 +1,35 @@
 "use client";
-import Modal from "@/shared/ui/modal/Modal";
+import { Modal, Miniloader } from "@/shared";
 import { useState, useEffect } from "react";
 import { useForm } from "react-hook-form";
 import Image from "next/image";
-import { Mail, Calendar, Clock, Fingerprint, MapPin, Plus, Trash2, Edit } from "lucide-react";
-import AddUserAddressForm from "@/features/add-user-address/ui/addUserAddressModal";
-import Fetch from "@/shared/lib/fetch";
+import {
+  Mail,
+  Calendar,
+  Clock,
+  Fingerprint,
+  MapPin,
+  Plus,
+  Trash2,
+  Edit,
+} from "lucide-react";
+import { AddUserAddressForm } from "@/entities/user";
+import { Fetch } from "@/shared/lib";
+import { useTranslations } from "next-intl";
+import toast from "react-hot-toast";
 
 export const UserProfileModal = ({ isOpen, onClose, user }) => {
+  const t = useTranslations("account");
+  const tAddress = useTranslations("address");
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [addresses, setAddresses] = useState([]);
   const [isAddressModalOpen, setIsAddressModalOpen] = useState(false);
   const [loadingAddresses, setLoadingAddresses] = useState(false);
+  const [addressToEdit, setAddressToEdit] = useState(false);
+
+  if (!user) {
+    return null;
+  }
 
   const {
     register,
@@ -21,7 +39,7 @@ export const UserProfileModal = ({ isOpen, onClose, user }) => {
   } = useForm({
     mode: "onChange",
     defaultValues: {
-      name: user.name,
+      name: user?.name || "",
     },
   });
 
@@ -31,7 +49,6 @@ export const UserProfileModal = ({ isOpen, onClose, user }) => {
       const res = await Fetch("/api/user/addresses");
       if (res?.data?.addresses) {
         setAddresses(res.data.addresses);
-        console.log(res.data.addresses)
       }
     } catch (error) {
       console.error("Failed to fetch addresses:", error);
@@ -49,7 +66,6 @@ export const UserProfileModal = ({ isOpen, onClose, user }) => {
   const onSubmit = async (data) => {
     setIsSubmitting(true);
     try {
-      console.log("Updating profile:", data);
       reset(data);
       onClose();
     } catch (error) {
@@ -78,31 +94,56 @@ export const UserProfileModal = ({ isOpen, onClose, user }) => {
   };
 
   const getFullAddress = (address) => {
-    return [address.street, address.city, address.state, address.zip, address.country]
+    return [
+      address.street,
+      address.city,
+      address.state,
+      address.zip,
+      address.country,
+    ]
       .filter(Boolean)
       .join(", ");
   };
 
+  const deleteAddress = async (addressId) => {
+    try {
+      const res = await Fetch(`/api/user/addresses`, "DELETE", {
+        id: addressId,
+      });
+      if (res?.status === 200) {
+        toast.success(tAddress("deleteSuccess"));
+        fetchAddresses();
+      }
+    } catch (error) {
+      toast.error(tAddress("deleteFailed"));
+      console.error("Failed to delete address:", error);
+    }
+  };
+
+  const editAddress = (address) => {
+    setIsAddressModalOpen(true);
+    setAddressToEdit(address);
+  };
   return (
     <>
       <Modal isOpen={isOpen} onClose={onClose}>
-        <div className="space-y-6">
+        <div className="space-y-6 ">
           {/* Header */}
-          <div className="text-center">
+          <div className="text-center p-1">
             <h2 className="text-2xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
-              My Profile
+              {t("myProfile")}
             </h2>
-            <p className="text-sm text-gray-500 mt-1">Manage your account information</p>
+            <p className="text-sm text-gray-500 mt-1">{t("manageAccount")}</p>
           </div>
-          
+
           {/* Profile Card */}
           <div className="bg-gradient-to-br from-blue-50 to-purple-50 rounded-xl p-6 border border-blue-100">
             <div className="flex items-center space-x-4 gap-5">
               <div className="relative group">
                 <div className="w-24 h-24 rounded-full overflow-hidden ring-4 ring-white shadow-lg">
                   <Image
-                    src={user.image || "/icons/profile-circle-svgrepo-com.svg"}
-                    alt={user.name}
+                    src={user?.image || "/icons/profile-circle-svgrepo-com.svg"}
+                    alt={user?.name || "User"}
                     fill
                     className="object-cover group-hover:scale-105 transition-transform duration-200"
                     sizes="96px"
@@ -111,24 +152,29 @@ export const UserProfileModal = ({ isOpen, onClose, user }) => {
                 <div className="absolute inset-0 rounded-full bg-gradient-to-br from-blue-500/20 to-purple-500/20"></div>
               </div>
               <div className="flex-1">
-                <h3 className="text-xl font-semibold text-gray-800">{user.name}</h3>
+                <h3 className="text-xl font-semibold text-gray-800">
+                  {user?.name || "User"}
+                </h3>
                 <div className="flex items-center text-sm text-gray-600 mt-1">
                   <Mail className="w-4 h-4 mr-1.5" />
-                  {user.email}
+                  {user?.email}
                 </div>
               </div>
             </div>
           </div>
 
-          <form onSubmit={handleSubmit(onSubmit)} className="space-y-5">
+          <form
+            onSubmit={handleSubmit(onSubmit)}
+            className="space-y-5 flex flex-col py-2 gap-2"
+          >
             {/* Editable Field */}
-            <div className="bg-white rounded-lg border border-gray-200 p-4 hover:border-blue-300 transition-colors">
-              <label className="block text-sm font-semibold text-gray-700 mb-2">
-                Display Name
+            <div className="bg-surface rounded-lg border border-border p-4 hover:border-primary transition-colors">
+              <label className="block text-sm font-semibold text-text mb-2">
+                {t("displayName")}
               </label>
               <input
                 type="text"
-                className="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition-all bg-gray-50 hover:bg-white"
+                className="w-full px-4 py-2.5 border border-border rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent outline-none transition-all bg-surface hover:bg-surface"
                 {...register("name", {
                   required: "Name is required",
                   minLength: {
@@ -138,8 +184,8 @@ export const UserProfileModal = ({ isOpen, onClose, user }) => {
                 })}
               />
               {errors.name && (
-                <p className="mt-2 text-sm text-red-500 flex items-center">
-                  <span className="w-1 h-1 bg-red-500 rounded-full mr-2"></span>
+                <p className="mt-2 text-sm text-danger flex items-center">
+                  <span className="w-1 h-1 bg-danger rounded-full mr-2"></span>
                   {errors.name.message}
                 </p>
               )}
@@ -147,45 +193,61 @@ export const UserProfileModal = ({ isOpen, onClose, user }) => {
 
             {/* Read-only Information */}
             <div className="space-y-3">
-              <div className="bg-gray-50 rounded-lg p-4 border border-gray-100">
+              <div className="bg-surface rounded-lg p-4 border border-border">
                 <div className="flex items-start space-x-3">
-                  <Mail className="w-4 h-4 text-gray-400 mt-0.5" />
+                  <Mail className="w-4 h-4 text-unactive-text mt-0.5" />
                   <div className="flex-1">
-                    <p className="text-xs font-medium text-gray-500 uppercase tracking-wider">Email Address</p>
-                    <p className="text-sm text-gray-700 font-mono mt-1">{user.email}</p>
+                    <p className="text-xs font-medium text-unactive-text uppercase tracking-wider">
+                      {t("emailAddress")}
+                    </p>
+                    <p className="text-sm text-text font-mono mt-1">
+                      {user?.email}
+                    </p>
                   </div>
                 </div>
               </div>
-              
-              <div className="bg-gray-50 rounded-lg p-4 border border-gray-100">
+
+              <div className="bg-surface rounded-lg p-4 border border-border">
                 <div className="flex items-start space-x-3">
-                  <Fingerprint className="w-4 h-4 text-gray-400 mt-0.5" />
+                  <Fingerprint className="w-4 h-4 text-unactive-text mt-0.5" />
                   <div className="flex-1">
-                    <p className="text-xs font-medium text-gray-500 uppercase tracking-wider">User ID</p>
-                    <p className="text-sm text-gray-700 font-mono mt-1">{user.id}</p>
+                    <p className="text-xs font-medium text-unactive-text uppercase tracking-wider">
+                      {t("userId")}
+                    </p>
+                    <p className="text-sm text-text font-mono mt-1">
+                      {user?.id}
+                    </p>
                   </div>
                 </div>
               </div>
-              
+
               {user.createdAt && (
-                <div className="bg-gray-50 rounded-lg p-4 border border-gray-100">
+                <div className="bg-surface rounded-lg p-4 border border-border">
                   <div className="flex items-start space-x-3">
-                    <Calendar className="w-4 h-4 text-gray-400 mt-0.5" />
+                    <Calendar className="w-4 h-4 text-unactive-text mt-0.5" />
                     <div className="flex-1">
-                      <p className="text-xs font-medium text-gray-500 uppercase tracking-wider">Member Since</p>
-                      <p className="text-sm text-gray-700 mt-1">{formatDate(user.createdAt)}</p>
+                      <p className="text-xs font-medium text-unactive-text uppercase tracking-wider">
+                        {t("memberSince")}
+                      </p>
+                      <p className="text-sm text-text mt-1">
+                        {formatDate(user.createdAt)}
+                      </p>
                     </div>
                   </div>
                 </div>
               )}
-              
+
               {user.updatedAt && (
-                <div className="bg-gray-50 rounded-lg p-4 border border-gray-100">
+                <div className="bg-surface rounded-lg p-4 border border-border">
                   <div className="flex items-start space-x-3">
-                    <Clock className="w-4 h-4 text-gray-400 mt-0.5" />
+                    <Clock className="w-4 h-4 text-unactive-text mt-0.5" />
                     <div className="flex-1">
-                      <p className="text-xs font-medium text-gray-500 uppercase tracking-wider">Last Updated</p>
-                      <p className="text-sm text-gray-700 mt-1">{formatDate(user.updatedAt)}</p>
+                      <p className="text-xs font-medium text-unactive-text uppercase tracking-wider">
+                        {t("lastUpdated")}
+                      </p>
+                      <p className="text-sm text-text mt-1">
+                        {formatDate(user.updatedAt)}
+                      </p>
                     </div>
                   </div>
                 </div>
@@ -195,65 +257,87 @@ export const UserProfileModal = ({ isOpen, onClose, user }) => {
             {/* Addresses Section */}
             <div className="space-y-3">
               <div className="flex items-center justify-between">
-                <p className="text-sm font-semibold text-gray-700 flex items-center">
+                <p className="text-sm font-semibold text-text flex items-center">
                   <MapPin className="w-4 h-4 mr-2" />
-                  My Addresses
+                  {t("myAddresses")}
                 </p>
                 <button
                   type="button"
                   onClick={() => setIsAddressModalOpen(true)}
-                  className="text-sm text-blue-600 hover:text-blue-700 flex items-center font-medium transition-colors"
+                  className="text-sm text-primary hover:opacity-80 flex items-center font-medium transition-colors"
                 >
                   <Plus className="w-4 h-4 mr-1" />
-                  Add New
+                  {t("addNew")}
                 </button>
               </div>
 
               {loadingAddresses ? (
                 <div className="flex items-center justify-center py-4">
-                  <div className="w-6 h-6 border-2 border-blue-500 border-t-transparent rounded-full animate-spin"></div>
+                  <div className="w-6 h-6 border-2 border-primary border-t-transparent rounded-full animate-spin"></div>
                 </div>
               ) : addresses.length > 0 ? (
                 <div className="space-y-2 max-h-48 overflow-y-auto">
                   {addresses.map((address, index) => (
                     <div
                       key={index}
-                      className="bg-gray-50 rounded-lg p-4 border border-gray-100 hover:border-blue-300 transition-colors group"
+                      className="bg-surface rounded-lg p-4 border border-border hover:border-primary transition-colors group"
                     >
                       <div className="flex items-start justify-between">
                         <div className="flex-1">
                           <div className="flex items-center gap-2">
-                            <p className="text-sm font-medium text-gray-800">
+                            <p className="text-sm font-medium text-text">
                               {address.street}
                             </p>
                             {address.isDefault && (
-                              <span className="px-2 py-0.5 text-xs bg-blue-100 text-blue-700 rounded-full font-medium">
-                                Default
+                              <span className="px-2 py-0.5 text-xs bg-primary/10 text-primary rounded-full font-medium">
+                                {tAddress("default")}
                               </span>
                             )}
                           </div>
-                          <p className="text-sm text-gray-600 mt-1">
+                          <p className="text-sm text-unactive-text mt-1">
                             {address.city}, {address.state} {address.zip}
                           </p>
-                          <p className="text-sm text-gray-600">{address.country}</p>
+                          <p className="text-sm text-unactive-text">
+                            {address.country}
+                          </p>
                           {address.phone && (
-                            <p className="text-sm text-gray-600 mt-1">Phone: {address.phone}</p>
+                            <p className="text-sm text-unactive-text mt-1">
+                              {tAddress("phone")}: {address.phone}
+                            </p>
                           )}
+                        </div>
+                        <div className="flex gap-2">
+                          <button
+                            className="btn"
+                            type="button"
+                            onClick={() => deleteAddress(address.id)}
+                          >
+                            <Trash2 className="w-4 h-4 text-danger" />
+                          </button>
+                          <button
+                            className="btn"
+                            type="button"
+                            onClick={() => editAddress(address)}
+                          >
+                            <Edit className="w-4 h-4 text-primary" />
+                          </button>
                         </div>
                       </div>
                     </div>
                   ))}
                 </div>
               ) : (
-                <div className="text-center py-6 bg-gray-50 rounded-lg border border-dashed border-gray-200">
-                  <MapPin className="w-8 h-8 text-gray-400 mx-auto mb-2" />
-                  <p className="text-sm text-gray-500">No addresses added yet</p>
+                <div className="text-center py-6 bg-surface rounded-lg border border-dashed border-border">
+                  <MapPin className="w-8 h-8 text-unactive-text mx-auto mb-2" />
+                  <p className="text-sm text-unactive-text">
+                    {t("noAddresses")}
+                  </p>
                   <button
                     type="button"
                     onClick={() => setIsAddressModalOpen(true)}
-                    className="mt-2 text-sm text-blue-600 hover:text-blue-700 font-medium"
+                    className="mt-2 text-sm text-primary hover:opacity-80 font-medium"
                   >
-                    Add your first address
+                    {t("addFirst")}
                   </button>
                 </div>
               )}
@@ -261,30 +345,46 @@ export const UserProfileModal = ({ isOpen, onClose, user }) => {
 
             {/* Action Buttons */}
             {isDirty && (
-              <div className="flex gap-3 pt-4 border-t border-gray-200">
+              <div className="flex gap-3 pt-4 border-t border-border">
                 <button
                   type="button"
                   onClick={handleCancel}
                   disabled={isSubmitting}
-                  className="flex-1 px-4 py-2.5 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 transition-all duration-200 font-medium disabled:opacity-50 disabled:cursor-not-allowed"
+                  className="flex-1 px-4 py-2.5 border border-border text-text rounded-lg hover:bg-surface transition-all duration-200 font-medium disabled:opacity-50 disabled:cursor-not-allowed"
                 >
-                  Cancel
+                  {tAddress("cancel")}
                 </button>
                 <button
                   type="submit"
                   disabled={isSubmitting}
-                  className="flex-1 px-4 py-2.5 bg-gradient-to-r from-blue-600 to-blue-700 text-white rounded-lg hover:from-blue-700 hover:to-blue-800 transition-all duration-200 font-medium shadow-lg hover:shadow-xl disabled:opacity-50 disabled:cursor-not-allowed"
+                  className="flex-1 px-4 py-2.5 bg-primary text-primary-text rounded-lg hover:opacity-80 transition-all duration-200 font-medium disabled:opacity-50 disabled:cursor-not-allowed"
                 >
                   {isSubmitting ? (
                     <span className="flex items-center justify-center">
-                      <svg className="animate-spin -ml-1 mr-2 h-4 w-4 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                        <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
-                        <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                      <svg
+                        className="animate-spin -ml-1 mr-2 h-4 w-4 text-white"
+                        xmlns="http://www.w3.org/2000/svg"
+                        fill="none"
+                        viewBox="0 0 24 24"
+                      >
+                        <circle
+                          className="opacity-25"
+                          cx="12"
+                          cy="12"
+                          r="10"
+                          stroke="currentColor"
+                          strokeWidth="4"
+                        ></circle>
+                        <path
+                          className="opacity-75"
+                          fill="currentColor"
+                          d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+                        ></path>
                       </svg>
-                      Saving...
+                      {t("saving")}
                     </span>
                   ) : (
-                    "Save Changes"
+                    t("saveChanges")
                   )}
                 </button>
               </div>
@@ -294,10 +394,14 @@ export const UserProfileModal = ({ isOpen, onClose, user }) => {
       </Modal>
 
       {/* Address Modal */}
-      <Modal isOpen={isAddressModalOpen} onClose={() => setIsAddressModalOpen(false)}>
-        <AddUserAddressForm 
-          onAddressAdded={handleAddressAdded} 
-          onCancel={() => setIsAddressModalOpen(false)} 
+      <Modal
+        isOpen={isAddressModalOpen}
+        onClose={() => setIsAddressModalOpen(false)}
+      >
+        <AddUserAddressForm
+          onAddressAdded={handleAddressAdded}
+          onCancel={() => setIsAddressModalOpen(false)}
+          {...(addressToEdit && { addressForEdit: addressToEdit })}
         />
       </Modal>
     </>

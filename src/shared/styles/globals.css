@@ -1,15 +1,378 @@
-@tailwind base;
-@tailwind components;
 @tailwind utilities;
-
-
-
+@import url("https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500;600;700&family=Fira+Sans:wght@300;400;500;600;700&display=swap");
 @import "tailwindcss";
-@import "./components.css";
 @import "./animations.css";
 
+@theme {
+  /* Background colors */
+  --color-bg: var(--bg);
+  --color-surface: var(--surface);
+  --color-card: var(--card);
+  --color-accent: var(--accent);
+  --color-button: var(--button);
+  --color-input: var(--input);
+  --color-border: var(--border);
+  --color-muted: var(--muted);
+  --color-danger: var(--danger);
+  --color-success: var(--success);
+  --color-search-bg: var(--search-bg);
+
+  /* Primary colors */
+  --color-primary: var(--primary);
+  --color-primary-text: var(--primary-text);
+
+  /* Button colors */
+  --color-button-text: var(--button-text);
+  --color-button-border: var(--button-border);
+
+  /* Banner colors */
+  --color-bannerWhite: var(--banner-white);
+  --color-bannerLight: var(--banner-light);
+  --color-bannerMedium: var(--banner-medium);
+  --color-bannerDark: var(--banner-dark);
+  --color-banner-1: var(--banner-1);
+  --color-banner-2: var(--banner-2);
+  --color-banner-3: var(--banner-3);
+  --color-banner-4: var(--banner-4);
+
+  /* Status colors - background */
+  --color-status-created: var(--status-created-bg);
+  --color-status-created-bg: var(--status-created-bg);
+  --color-status-paid: var(--status-paid-bg);
+  --color-status-paid-bg: var(--status-paid-bg);
+  --color-status-shipped: var(--status-shipped-bg);
+  --color-status-shipped-bg: var(--status-shipped-bg);
+  --color-status-delivered: var(--status-delivered-bg);
+  --color-status-delivered-bg: var(--status-delivered-bg);
+  --color-status-cancelled: var(--status-cancelled-bg);
+  --color-status-cancelled-bg: var(--status-cancelled-bg);
+
+  /* Status colors - text */
+  --color-status-created-text: var(--status-created-text);
+  --color-status-paid-text: var(--status-paid-text);
+  --color-status-shipped-text: var(--status-shipped-text);
+  --color-status-delivered-text: var(--status-delivered-text);
+  --color-status-cancelled-text: var(--status-cancelled-text);
+
+  /* Footer colors */
+  --color-footer-bg: var(--footer-bg);
+  --color-footer: var(--footer-text);
+  --color-footer-text: var(--footer-text);
+  --color-footer-accent: var(--footer-accent);
+
+  /* Text colors */
+  --color-text: var(--text);
+  --color-input-text: var(--input-text);
+  --color-input-placeholder: var(--input-placeholder);
+  --color-danger-text: var(--danger-text);
+  --color-unactive-text: var(--unactive-text);
+  --color-success-text: var(--success);
+  --color-accent-foreground: var(--button-text);
+
+  /* Ring colors */
+  --color-ring: var(--ring);
+
+  /* Background colors for bg-* utilities */
+  --color-background: var(--bg);
+}
 
 
+
+/* ============================= */
+/* BASE VARIABLES STRUCTURE */
+/* ============================= */
+
+:root,
+.light,
+.dark,
+.vintage,
+.retro {
+  --card: var(--surface);
+  --ring: var(--primary);
+  --danger: var(--primary);
+  --danger-text: var(--primary-text);
+  --unactive-text: var(--muted);
+  --search-bg: var(--surface);
+  --admin-panel: var(--surface);
+  --admin-panel-muted: color-mix(in srgb, var(--surface) 86%, var(--primary) 14%);
+  --admin-panel-border: var(--border);
+  --admin-highlight: var(--primary);
+  --admin-highlight-soft: color-mix(in srgb, var(--primary) 18%, white 82%);
+  --admin-warning: #f59e0b;
+  --admin-danger: #b91c1c;
+  --admin-success: #0f766e;
+  --admin-shell-max: 1600px;
+  --admin-shell-gap: 24px;
+  --admin-content-gap: 28px;
+  --admin-card-radius: 28px;
+  --admin-card-radius-lg: 34px;
+  --admin-card-padding: 28px;
+  --admin-section-padding: 32px;
+  --admin-blur: 22px;
+  --admin-shadow-soft: 0 24px 70px -42px rgba(15, 23, 42, 0.36);
+  --admin-shadow-strong: 0 36px 90px -48px rgba(15, 23, 42, 0.55);
+}
+
+/* ============================= */
+/* LIGHT */
+/* ============================= */
+
+
+[data-theme="light"] {
+  --bg: #F5F3EF;
+  --surface: #FFFFFF;
+  --text: #1C1C1C;
+
+  --primary: #C6A75E;
+  --primary-text: #1C1C1C;
+
+  --border: #E8E5DF;
+  --muted: #7A746A;
+  --accent: #C6A75E;
+
+  --button: #C6A75E;
+  --button-text: #1C1C1C;
+  --button-border: #B8964F;
+
+  --input: #FFFFFF;
+  --input-text: #1C1C1C;
+  --input-placeholder: #A8A29E;
+
+  --banner-white: #FFFFFF;
+  --banner-light: #F0ECE6;
+  --banner-medium: #E5DFD6;
+  --banner-dark: #1C1C1C;
+
+  /* --- HERO PRODUCTS --- */
+
+  --banner-1: #D97706;   /* глубокий burnt orange */
+  --banner-2: #3A3A3A;   /* premium graphite */
+  --banner-3: #224f5a;   /* PlayStation blue (clean, modern) */
+  --banner-4: #E5E7EB;   /* Vision Pro glass light gray */  
+
+  --success: #3F6F4F;
+
+  --status-created-bg: #F4EBD0;
+  --status-created-text: #7A5C1E;
+
+  --status-paid-bg: #E8E1D5;
+  --status-paid-text: #5A5246;
+
+  --status-shipped-bg: #EDE7DD;
+  --status-shipped-text: #4B4339;
+
+  --status-delivered-bg: #E3F2E8;
+  --status-delivered-text: #2F5E44;
+
+  --status-cancelled-bg: #F8E1E1;
+  --status-cancelled-text: #7A2E2E;
+
+  --footer-bg: #1C1C1C;
+  --footer-text: #030201;
+  --footer-accent: #C6A75E;
+  --admin-bg: #F8FAFC;
+  --admin-panel: #FFFFFF;
+  --admin-panel-muted: #EEF4FF;
+  --admin-panel-border: #D9E2F3;
+  --admin-highlight: #1E40AF;
+  --admin-highlight-soft: #DBEAFE;
+  --admin-warning: #D97706;
+  --admin-danger: #BE123C;
+  --admin-success: #0F766E;
+  --admin-shell-surface: rgba(255, 255, 255, 0.82);
+  --admin-shell-border: rgba(217, 226, 243, 0.88);
+  --admin-hero-surface: rgba(255, 255, 255, 0.72);
+  --admin-hero-border: rgba(191, 219, 254, 0.65);
+  --admin-nav-surface: rgba(18, 28, 45, 0.9);
+  --admin-nav-border: rgba(255, 255, 255, 0.08);
+  --admin-nav-muted: rgba(255, 255, 255, 0.06);
+}
+
+/* ============================= */
+/* DARK */
+/* ============================= */
+
+[data-theme="dark"] {
+  --bg: #0F1115;
+  --surface: #181A20;
+  --text: #E6E8EB;
+
+  --primary: #3B82F6;
+  --primary-text: #FFFFFF;
+
+  --border: #242731;
+  --muted: #9CA3AF;
+  --accent: #3B82F6;
+
+  --button: #3B82F6;
+  --button-text: #FFFFFF;
+  --button-border: #2563EB;
+
+  --input: #1F222A;
+  --input-text: #E6E8EB;
+  --input-placeholder: #6B7280;
+
+  --banner-white: #181A20;
+  --banner-light: #1F222A;
+  --banner-medium: #242731;
+  --banner-dark: #0B0D12;
+
+  --banner-1: #1E40AF;  /* deep tech blue */
+  --banner-2: #2C2F36;  /* graphite device background */
+  --banner-3: #1D4ED8;   /* deep PlayStation blue */
+--banner-4: #2A2D35;   /* dark glass / Vision Pro */
+
+  --success: #22C55E;
+
+  --status-created-bg: #422006;
+  --status-created-text: #FCD34D;
+
+  --status-paid-bg: #1E3A8A;
+  --status-paid-text: #93C5FD;
+
+  --status-shipped-bg: #312E81;
+  --status-shipped-text: #C7D2FE;
+
+  --status-delivered-bg: #064E3B;
+  --status-delivered-text: #6EE7B7;
+
+  --status-cancelled-bg: #450A0A;
+  --status-cancelled-text: #FCA5A5;
+
+  --footer-bg: #0B0D12;
+  --footer-text: #9CA3AF;
+  --footer-accent: #3B82F6;
+  --admin-bg: #09111F;
+  --admin-panel: #0F172A;
+  --admin-panel-muted: #13203A;
+  --admin-panel-border: #22314C;
+  --admin-highlight: #60A5FA;
+  --admin-highlight-soft: #1D4ED8;
+  --admin-warning: #F59E0B;
+  --admin-danger: #FB7185;
+  --admin-success: #34D399;
+  --admin-shell-surface: rgba(15, 23, 42, 0.74);
+  --admin-shell-border: rgba(71, 85, 105, 0.38);
+  --admin-hero-surface: rgba(15, 23, 42, 0.66);
+  --admin-hero-border: rgba(96, 165, 250, 0.18);
+  --admin-nav-surface: rgba(6, 11, 23, 0.88);
+  --admin-nav-border: rgba(255, 255, 255, 0.06);
+  --admin-nav-muted: rgba(255, 255, 255, 0.05);
+}
+/* ============================= */
+/* VINTAGE */
+/* ============================= */
+
+[data-theme="vintage"] {
+  --bg: #F4F1EB;              /* тёплый кремовый фон */
+  --surface: #E3DED5;         /* мягкая поверхность карточек / секций */
+  --text: #2C2C2C;            /* контрастный текст */
+
+  --primary: #D98C3C;         /* мягкий оранжевый акцент */
+  --primary-text: #2C2C2C;
+
+  --border: #D1C7B7;
+  --muted: #A08C7F;
+  --accent: #6C8EAD;          /* приглушённый синий для интерактивных элементов */
+
+  --button: #D98C3C;
+  --button-text: #FFFFFF;
+  --button-border: #B5732E;
+
+  --input: #EFE8DF;
+  --input-text: #2C2C2C;
+  --input-placeholder: #A08C7F;
+
+  --banner-white: #FFFFFF;
+  --banner-light: #F8F5F0;
+  --banner-medium: #E3DED5;
+  --banner-dark: #4A4A3A;
+
+  --banner-1: #FF9E3B;        /* оранжевый iPhone vibe */
+  --banner-2: #8C8C8C;        /* серый MacBook vibe */
+  --banner-3: #3B82F6;   /* мягкий ретро-синий */
+--banner-4: #D6D3D1;   /* винтажный “стеклянный” серый */
+
+  --success: #2F855A;
+
+  --status-created-bg: #FEF3C7;
+  --status-created-text: #92400E;
+
+  --status-paid-bg: #DBEAFE;
+  --status-paid-text: #1E40AF;
+
+  --status-shipped-bg: #EDE9FE;
+  --status-shipped-text: #5B21B6;
+
+  --status-delivered-bg: #D1FAE5;
+  --status-delivered-text: #065F46;
+
+  --status-cancelled-bg: #FEE2E2;
+  --status-cancelled-text: #991B1B;
+
+  --footer-bg: #3D3D2D;
+  --footer-text: #D4D4C8;
+  --footer-accent: #D98C3C;
+}
+
+/* ============================= */
+/* RETRO */
+/* ============================= */
+
+[data-theme="retro"] {
+  --bg: #EDEDED;              /* мягкий светлый фон */
+  --surface: #F5F5F5;         /* чуть плотнее для карт / карточек */
+  --text: #1F1F1F;            /* контрастный текст */
+
+  --primary: #FF6EC7;         /* яркий розово-фиолетовый акцент */
+  --primary-text: #1F1F1F;
+
+  --border: #D1D1D1;
+  --muted: #A0A0A0;
+  --accent: #00FFF7;          /* неоновый cyan для интерактива */
+
+  --button: #FF9B51;          /* оранжевый кнопки */
+  --button-text: #1F1F1F;
+  --button-border: #FF6EC7;
+
+  --input: #FFFFFF;
+  --input-text: #1F1F1F;
+  --input-placeholder: #A0A0A0;
+
+  --banner-white: #FFFFFF;
+  --banner-light: #F0F0F0;
+  --banner-medium: #D9D9D9;
+  --banner-dark: #1F1F1F;
+
+  --banner-1: #FF6EC7;        /* iPhone vibe / яркий акцент */
+  --banner-2: #00FFF7;        /* MacBook / cyan tech vibe */
+  --banner-3: #00A6FF;   /* неоновый PlayStation */
+  --banner-4: #F9FAFB;   /* почти белый futuristic */
+
+  --success: #22C55E;
+
+  --status-created-bg: #FFF4D6;
+  --status-created-text: #92400E;
+
+  --status-paid-bg: #D0E8FF;
+  --status-paid-text: #1E3A8A;
+
+  --status-shipped-bg: #EDE9FE;
+  --status-shipped-text: #5B21B6;
+
+  --status-delivered-bg: #D1FAE5;
+  --status-delivered-text: #065F46;
+
+  --status-cancelled-bg: #FFE2E2;
+  --status-cancelled-text: #991B1B;
+
+  --footer-bg: #1F1F1F;
+  --footer-text: #EDEDED;
+  --footer-accent: #FF6EC7;
+}
+/* ============================= */
+/* LAYER UTILITIES */
+/* ============================= */
 
 html, body, div, span, applet, object, iframe,
 h1, h2, h3, h4, h5, h6, p, blockquote, pre,
@@ -24,19 +387,20 @@ article, aside, canvas, details, embed,
 figure, figcaption, footer, header, hgroup, 
 menu, nav, output, ruby, section, summary,
 time, mark, audio, video {
-	margin: 0;
-	padding: 0;
-	border: 0;
-	font-size: 100%;
-	font: inherit;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  font-size: 100%;
+  font: inherit;
+  vertical-align: baseline;
 }
-/* HTML5 display-role reset for older browsers */
 article, aside, details, figcaption, figure, 
 footer, header, hgroup, menu, nav, section {
 	display: block;
 }
 body {
 	line-height: 1;
+  background-color: var(--bg);
 }
 ol, ul {
 	list-style: none;
@@ -54,65 +418,16 @@ table {
 	border-spacing: 0;
 }
 
- /* базовая тема (light) */
-@theme inline {
-  --color-bg: var(--bg-color);
-  --color-text: var(--text-color);
-  --color-search-bg: var(--search-bg);
-  --color-card-bg: var(--card-bg);
-  --color-product-bg: var(--product-bg);
-  --color-product-button-bg: var(--product-button-bg);
-  --color-product-button-text: var(--product-button-text);
-  --color-unactive-text: var(--unactive-text);
-  --color-favorite: var(--color-favorite);
-  --color-1banner-bg: var(--1banner-bg);
-  --color-2banner-bg: var(--2banner-bg);
-  --color-3banner-bg: var(--3banner-bg);
-  --color-4banner-bg: var(--4banner-bg);
-  --color-iphone-bg: var(--iphone-bg);
-  --color-white: var(--white);
-  --color-black: var(--black);
-
-  --animate-get-out: get-out 0.4s ease-in-out;
-  --breakpoint-md: 850px;
-}
-
- 
-:root {
-  --white: #ffffff;
-  --black: #000000;
-  --bg-color: #ffffff; /* белый фон */
-  --card-bg: #EDEDED;
-  --text-color: #000000; /* черный цвет */
-  --product-bg: #f6f6f6; /* светло-серый фон для продуктов */
-  --product-button-bg: #000000;
-  --product-button-text: #ffffff;
-  --unactive-text: #8b8b8b;
-  --color-favorite: #ff0000;/* красный цвет для избранного */
-  --1banner-bg: #EDEDED;/* светло-серый фон для баннера */
-  --2banner-bg: #353535;/* более темный серый фон для второго баннера */
-  --3banner-bg: #EDEDED;/* светло-серый фон для третьего баннера */
-  --4banner-bg: #ffffff;/* более темный серый фон для четвертого баннера */
-  --search-bg: #f1f1f1; /* светло-серый фон для строки поиска */
-  --iphone-bg: #FF8B45; /* оранжевый фон для iPhone */ 
-  --accent-1: #6EE7B7; /* светящийся зелёный */
-  --accent-2: #60A5FA; /* голубой */
-  --bg-glass: rgba(10,11,13,0.6);
-
-
-}
-
-.dark {
-  --bg-color: #121212; /* темный фон */
-  --text-color: #ffffff; /* белый цвет */
-  --product-bg: #1e1e1e; /* темно-серый фон для продуктов */
-  --product-button-bg: #ffffff;
-  --product-button-text: #000000;
-  --unactive-text: #5a5a5a;
-}
-
 
 @layer utilities {
+  .font-admin-sans {
+    font-family: "Fira Sans", "Segoe UI", sans-serif;
+  }
+
+  .font-admin-code {
+    font-family: "Fira Code", "SFMono-Regular", monospace;
+  }
+
   .center {
     justify-content: center;
     align-items: center;
@@ -121,6 +436,43 @@ table {
   .no-scrollbar::-webkit-scrollbar {
     display: none;
   }
-}
 
- 
+  .btn {
+    padding: 0.5rem 1rem;
+    width: full;
+    background-color: transparent;
+    border: 1px solid var(--border);
+    color: var(--text);
+    border-radius: 0.25rem;
+    transition: transform 0.15s ease;
+    cursor: pointer;
+    outline: none;
+  }
+
+  .btn:hover {
+    transform: scale(0.95);
+  }
+
+  .inputStyle {
+    padding: 0.75rem;
+    width: 100%;
+    background-color: var(--input);
+    border: 1px solid var(--ring);
+    border-radius: 0.75rem;
+    color: var(--input-text);
+    outline: none;
+  }
+
+  .inputStyle::placeholder {
+    color: var(--input-placeholder);
+  }
+
+  .inputStyle:focus {
+    box-shadow: 0 0 0 2px var(--ring);
+  }
+
+  /* Hover variants for semantic colors */
+  .hover-text-footer-accent:hover {
+    color: var(--footer-accent);
+  }
+}

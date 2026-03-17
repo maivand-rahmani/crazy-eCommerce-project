@@ -1,40 +1,48 @@
 "use client";
-import { useSession } from 'next-auth/react'
+import { useSession } from "next-auth/react";
 import React, { useState, useEffect } from "react";
 import { Star } from "lucide-react";
-import { LikeDisLike } from "@/features/react-to-comment/ui/likeComponent";
+import { CommentReaction } from "@/entities/rating";
 import { Edit01, Delete, DotsVertical } from "@untitledui/icons";
-import { Dropdown } from "@/shared/ui/dropdown/dropdown";
-import Fetch from "@/shared/lib/fetch";
-import Rating from "@/entities/rating/ui/Rating";
+import { Dropdown } from "@/shared";
+import { Fetch } from "@/shared/lib";
+import Rating from "@/entities/rating";
 import { toast } from "react-hot-toast";
+import { useTranslations } from "next-intl";
 
-const DropdownIcon = ({ setEditing, editing, comment, handleDelete }) => (
-  <Dropdown.Root>
-    <Dropdown.DotsButton>
-      <DotsVertical />
-    </Dropdown.DotsButton>
-    <Dropdown.Popover className={"bg-white"}>
-      <Dropdown.Menu>
-        <Dropdown.Section>
-          <Dropdown.Item
-            icon={Edit01}
-            onClick={() => {
-              setEditing(!editing);
-            }}
-          >
-            Edit
-          </Dropdown.Item>
-          <Dropdown.Item icon={Delete} onClick={() => handleDelete(comment.id)}>
-            Delete
-          </Dropdown.Item>
-        </Dropdown.Section>
-      </Dropdown.Menu>
-    </Dropdown.Popover>
-  </Dropdown.Root>
-);
+const DropdownIcon = ({ setEditing, editing, comment, handleDelete }) => {
+  const t = useTranslations("comments");
+  return (
+    <Dropdown.Root>
+      <Dropdown.DotsButton>
+        <DotsVertical />
+      </Dropdown.DotsButton>
+      <Dropdown.Popover className={"bg-white"}>
+        <Dropdown.Menu>
+          <Dropdown.Section>
+            <Dropdown.Item
+              icon={Edit01}
+              onClick={() => {
+                setEditing(!editing);
+              }}
+            >
+              {t("edit")}
+            </Dropdown.Item>
+            <Dropdown.Item
+              icon={Delete}
+              onClick={() => handleDelete(comment.id)}
+            >
+              {t("delete")}
+            </Dropdown.Item>
+          </Dropdown.Section>
+        </Dropdown.Menu>
+      </Dropdown.Popover>
+    </Dropdown.Root>
+  );
+};
 
 const CommentComponent = ({ comment, user, handleDelete, handleEdit }) => {
+  const t = useTranslations("comments");
   const [commentText, editCommentText] = useState(comment?.comment);
 
   const [editing, setEditing] = useState(false);
@@ -42,16 +50,14 @@ const CommentComponent = ({ comment, user, handleDelete, handleEdit }) => {
 
   const { data: session } = useSession();
   const currentUser = session?.user;
-   
-  
 
   const deleteComment = async (commentId) => {
-    const data = await Fetch(`/api/products/comments`, "DELETE", null, {
+    const data = await Fetch(`/api/products/comments`, "DELETE" , {
       id: commentId,
     });
     if (data?.status === 201) {
       handleDelete(commentId);
-      toast.success("comment succsesfully deleted");
+      toast.success(t("success.deleted"));
       return true;
     } else {
       return false;
@@ -59,7 +65,7 @@ const CommentComponent = ({ comment, user, handleDelete, handleEdit }) => {
   };
 
   const editComment = async (commentId) => {
-    const data = await Fetch(`/api/products/comments`, "PUT", null, {
+    const data = await Fetch(`/api/products/comments`, "PUT" , {
       id: commentId,
       comment: commentText,
       rating: rating,
@@ -76,10 +82,10 @@ const CommentComponent = ({ comment, user, handleDelete, handleEdit }) => {
     e.preventDefault();
     const res = await editComment(comment.id);
     if (res) {
-      toast.success("comment succsesfully edited");
+      toast.success(t("success.edited"));
       setEditing((i) => !i);
     } else {
-      toast.error("something gone wrong");
+      toast.error(t("errors.somethingWrong"));
     }
   };
 
@@ -111,7 +117,7 @@ const CommentComponent = ({ comment, user, handleDelete, handleEdit }) => {
         </div>
         <form className="pl-4" onSubmit={handleSubmit}>
           <div className="w-full gap-5 grid grid-cols-[50px_1fr_100px]">
-            <span className="p-1 self-start rounded center flex bg-blue-500 text-white">
+            <span className="p-1 self-start rounded center flex bg-primary text-primary-text">
               {rating}
               <Star width={15} height={15} />
             </span>
@@ -126,10 +132,10 @@ const CommentComponent = ({ comment, user, handleDelete, handleEdit }) => {
 
             {editing && (
               <button
-                className="p-2 self-start bg-blue-500 rounded text-white"
+                className="p-2 self-start bg-primary rounded text-primary-text"
                 aria-label="edited comment submitting"
               >
-                Submit
+                {t("submit")}
               </button>
             )}
           </div>
@@ -139,7 +145,7 @@ const CommentComponent = ({ comment, user, handleDelete, handleEdit }) => {
             </div>
           )}
         </form>
-        <LikeDisLike
+        <CommentReaction
           commentId={comment.id}
           dislikes={comment.dislikes}
           userReaction={comment.userReaction}

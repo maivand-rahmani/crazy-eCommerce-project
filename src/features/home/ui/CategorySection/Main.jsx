@@ -2,32 +2,41 @@ export const dynamic = "force-dynamic";
 
 import React from "react";
 import CategoryCard from "./CategoryCard";
-import {getTranslations} from "next-intl/server"
+import { getTranslations } from "next-intl/server";
 import Link from "next/link";
-import Fetch from "@/shared/lib/fetch";
+import { Fetch } from "@/shared/lib";
 
- 
 const CategorySection = async () => {
-    const t = await getTranslations('categories')
-   let categories;
+  const t = await getTranslations("categories");
+  let categories;
 
   try {
     categories = await Fetch(`/api/categories`);
   } catch (error) {
-    console.log(error)
+    console.error("Failed to fetch categories:", error);
   }
-  
+
   return (
-    <div className="py-16 bg-[#FAFAFA] flex flex-col gap-12 px-4 md:px-40">
+    <div className="py-16 bg-banner-light flex text-text flex-col gap-12 px-4 md:px-40">
       <div>
-        <h1 className="font-bold text-xl/8 "><Link href={"/catalog"}>{t("title")}</Link></h1>
+        <h1 className="font-bold text-xl/8 ">
+          <Link href={"/catalog"}>{t("title")}</Link>
+        </h1>
       </div>
       <div className="grid grid-cols-2 gap-4 md:flex">
-        {!categories?.error && categories.map((Category) => (
-          Category.parent_id === null && (
-            <CategoryCard Category={Category} kidsList={categories.filter(element => element.parent_id === Category.id)} key={Category.id} />
-          )
-        ))}
+        {!categories?.error &&
+          categories.map(
+            (Category) =>
+              Category.parent_id === null && (
+                <CategoryCard
+                  Category={Category}
+                  kidsList={categories.filter(
+                    (element) => element.parent_id === Category.id,
+                  )}
+                  key={Category.id}
+                />
+              ),
+          )}
       </div>
     </div>
   );

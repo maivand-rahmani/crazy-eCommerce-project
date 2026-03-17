@@ -2,10 +2,11 @@ import { NextResponse } from "next/server";
 import prisma from "../../../../prisma/client";
 import { toSafeJson } from "../../../../prisma/funcs";
 import { getToken } from "next-auth/jwt";
+import { getAuthSecret } from "@/shared/lib/auth";
 
 export async function GET(req) {
   const searchParams = req.nextUrl.searchParams;
-  const user = await getToken({ req, secret: process.env.NEXTAUTH_SECRET });
+  const user = await getToken({ req, secret: getAuthSecret() });
   const userId = user?.sub;
 
   const Params = {
@@ -51,7 +52,7 @@ export async function GET(req) {
 
       return NextResponse.json({
         data: toSafeJson(productsWithFav),
-        otherInfo: { wishlist_id: wishlist.id },
+        otherInfo: { wishlist_id: wishlist?.id },
       });
     }
 

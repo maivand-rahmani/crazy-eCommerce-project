@@ -14,6 +14,10 @@ const twMerge = extendTailwindMerge({
  */
 export const cx = twMerge;
 
+export function cn(...classes: Array<string | false | null | undefined>) {
+    return twMerge(classes.filter(Boolean).join(" "));
+}
+
 /**
  * This function does nothing besides helping us to be able to
  * sort the classes inside style objects which is not supported

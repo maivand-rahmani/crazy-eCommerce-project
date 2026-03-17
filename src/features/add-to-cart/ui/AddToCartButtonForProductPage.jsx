@@ -1,61 +1,60 @@
 "use client";
+
 import React, { useEffect, useState } from "react";
 import { useSession } from "next-auth/react";
-import { handleCartQuantityChange } from "../model/handleCartQuantityChangeOnClient";
-import { ShoppingCart, PlusSquare, MinusSquare, Trash2 } from "lucide-react";
+import { ShoppingCart } from "lucide-react";
 import { toast } from "react-hot-toast";
-import Fetch from "@/shared/lib/fetch";
+import { useTranslations } from "next-intl";
+
+import { Fetch } from "@/shared/lib";
+import { handleCartQuantityChange } from "../index";
 import Counter from "./counter.jsx";
 
-export const AddToCartButtonForProductPage = ({ variantId, cart_id }) => {
+export const AddToCartButtonForProductPage = ({ variantId }) => {
+  const t = useTranslations("cart");
+  const tCommon = useTranslations("common");
   const { data: session } = useSession();
   const isSignedIn = !!session?.user?.id;
-
-  // current item states
   const [loading, setLoading] = useState(false);
   const [added, setAdded] = useState(false);
   const [counter, setCounter] = useState(0);
 
   useEffect(() => {
-    if (!isSignedIn) return; 
+    if (!isSignedIn) return;
 
     const checkItem = async () => {
       setLoading(true);
       try {
-        const res = await Fetch(
-          `/api/cart/check?cartId=${cart_id}&variantId=${variantId}`,
-        );
+        const res = await Fetch(`/api/cart/check?variantId=${variantId}`);
 
-        if (!res) throw new Error("Request failed");
-
-        console.log(res);
-        if (res.item) setAdded(res.item);
-        if (res.item) setCounter(res.item.quantity);
-      } catch (error) {
-        if (!navigator.onLine) {
-          toast.error("Unstable internet connection detected.", {
-            duration: 2000,
-          });
+        if (res?.item) {
+          setAdded(res.item);
+          setCounter(res.item.quantity);
         } else {
-          toast.error("The request is taking longer than expected.", {
-            duration: 2000,
-          });
-          console.log(error);
+          setAdded(false);
+          setCounter(0);
         }
+      } catch (error) {
+        toast.error("Could not load cart state.");
       } finally {
         setLoading(false);
       }
     };
 
     checkItem();
-  }, [isSignedIn, variantId, cart_id]); // Added isSignedIn to dependencies
+  }, [isSignedIn, variantId]);
 
   function callCartHandler(method) {
-    if (!isSignedIn) return toast("Authorization required.", { icon: "🔐" });
+    if (!isSignedIn) {
+      toast(tCommon("error") + ": Authorization required.", {
+        icon: "🔐",
+      });
+      return;
+    }
+
     handleCartQuantityChange({
       setLoading,
       setCounter,
-      cart_id,
       variantId,
       method,
       setAdded,
@@ -66,36 +65,36 @@ export const AddToCartButtonForProductPage = ({ variantId, cart_id }) => {
     <div
       className={`${
         counter >= 1
-          ? " bg-transparent border-2 text-black  "
-          : "text-white bg-gray-700 hover:bg-green-700"
-      } group relative flex gap-2 p-1 rounded duration-300 transition-all`}
+          ? "border-2 border-border bg-transparent text-text"
+          : "bg-primary text-button-text hover:bg-success"
+      } group relative flex gap-2 rounded p-1 transition-all duration-300`}
     >
-      {!counter && (
+      {!counter ? (
         <button
+          type="button"
           disabled={loading}
-          className="flex center w-full h-full"
+          className="flex h-full w-full items-center justify-center"
           onClick={() => callCartHandler("add")}
         >
-          <div className=" absolute flex center group-hover:invisible ">
-            {loading ? "Loading..." : null}
-            {!loading ? "Add to cart" : null}
+          <div className="absolute flex items-center justify-center group-hover:invisible">
+            {loading ? tCommon("loading") : t("addToCart")}
           </div>
-          <div className=" flex relative center group-hover:w-full ">
+          <div className="relative flex items-center justify-center group-hover:w-full">
             <ShoppingCart
-              className="absolute duration-2000 transition-all translate-x-15 group-hover:scale-125 group-hover:translate-x-0 flex center"
+              className="absolute flex translate-x-15 items-center justify-center transition-all duration-300 group-hover:translate-x-0 group-hover:scale-110"
               width={20}
               height={20}
             />
           </div>
         </button>
-      )}
+      ) : null}
 
-      {added && counter >= 1 && (
+      {added && counter >= 1 ? (
         <Counter
           handleClick={callCartHandler}
-          state={{ loading: loading, quantity: counter }}
+          state={{ loading, quantity: counter, deleteButton: true }}
         />
-      )}
+      ) : null}
     </div>
   );
 };

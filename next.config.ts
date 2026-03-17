@@ -14,6 +14,11 @@ const nextConfig: NextConfig = {
         hostname: "194.156.118.210",
         pathname: "/uploads/images/**",
       },
+      {
+        protocol: "https",
+        hostname: "burst.shopifycdn.com",
+        pathname: "/**",
+      },
     ],
   },
   eslint: {
@@ -21,6 +26,6 @@ const nextConfig: NextConfig = {
   },
 };
 
-const withNextIntl = createNextIntlPlugin("./src/shared/i18n/request.ts");
+const withNextIntl = createNextIntlPlugin("./src/shared/i18n/model/request.ts");
 
 export default withNextIntl(nextConfig);

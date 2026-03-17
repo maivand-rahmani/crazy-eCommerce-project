@@ -1,7 +1,10 @@
 "use client";
-import { useState , useEffect } from "react";
+import { useState, useEffect } from "react";
+import { useTranslations } from "next-intl";
+import { centsToCurrencyValue } from "@/entities/product";
 
 export default function ProductFilters({ setProducts, products }) {
+  const t = useTranslations("filter");
   const [originalProducts] = useState(products);
 
   const [selectedFilters, setSelectedFilters] = useState({
@@ -14,13 +17,13 @@ export default function ProductFilters({ setProducts, products }) {
 
   const filterOptions = {
     Brand: Array.from(
-      new Set(products.map((p) => p.specs?.Brand).filter(Boolean))
+      new Set(products.map((p) => p.specs?.Brand).filter(Boolean)),
     ),
     Storage: Array.from(
-      new Set(products.map((p) => p.variant_options?.Storage).filter(Boolean))
+      new Set(products.map((p) => p.variant_options?.Storage).filter(Boolean)),
     ),
     Color: Array.from(
-      new Set(products.map((p) => p.variant_options?.Color).filter(Boolean))
+      new Set(products.map((p) => p.variant_options?.Color).filter(Boolean)),
     ),
   };
 
@@ -78,7 +81,7 @@ export default function ProductFilters({ setProducts, products }) {
         selectedFilters.Color.includes(card.variant_options?.Color);
 
       /* ---------- PRICE ---------- */
-      const price = card.price_cents / 100;
+      const price = centsToCurrencyValue(card.price_cents);
       const priceMatch = price >= min && price <= max;
 
       return brandMatch && storageMatch && colorMatch && priceMatch;
@@ -91,25 +94,24 @@ export default function ProductFilters({ setProducts, products }) {
     applyFilters();
   }, [selectedFilters]);
 
-
   return (
-    <div className="p-6 rounded-xl space-y-6 border bg-bg border-card-bg text-text">
+    <div className="p-6 rounded-xl space-y-6 border border-border bg-surface text-text">
       <div>
-        <h4 className="text-lg font-semibold mb-3">Price Range</h4>
+        <h4 className="text-lg font-semibold mb-3">{t("priceRange")}</h4>
         <div className="flex gap-3">
           <input
             type="number"
-            placeholder="Min"
+            placeholder={t("min")}
             value={selectedFilters.minPrice}
             onChange={(e) => handleChange("minPrice", e.target.value)}
-            className="border rounded-md px-3 py-2 w-full"
+            className="border border-border rounded-md px-3 py-2 w-full bg-input text-input-text"
           />
           <input
             type="number"
-            placeholder="Max"
+            placeholder={t("max")}
             value={selectedFilters.maxPrice}
             onChange={(e) => handleChange("maxPrice", e.target.value)}
-            className="border rounded-md px-3 py-2 w-full"
+            className="border border-border rounded-md px-3 py-2 w-full bg-input text-input-text"
           />
         </div>
       </div>
@@ -123,13 +125,13 @@ export default function ProductFilters({ setProducts, products }) {
                 onClick={() => handleChange(key, opt)}
                 className="px-4 py-2 rounded-full border transition-all duration-200 text-sm"
                 style={{
-                  borderColor: "var(--card-bg)",
+                  borderColor: "var(--border)",
                   backgroundColor: selectedFilters[key].includes(opt)
-                    ? "var(--color-text)"
-                    : "var(--color-bg)",
+                    ? "var(--text)"
+                    : "var(--bg)",
                   color: selectedFilters[key].includes(opt)
-                    ? "var(--color-bg)"
-                    : "var(--color-text)",
+                    ? "var(--bg)"
+                    : "var(--text)",
                 }}
               >
                 {opt}
@@ -139,17 +141,11 @@ export default function ProductFilters({ setProducts, products }) {
         </div>
       ))}
       <div className="flex gap-2">
-        {/* <button
-          onClick={applyFilters}
-          className="w-full bg-product-button-bg text-product-button-text mt-6 px-5 py-3 rounded-lg font-semibold shadow transition-all duration-200"
-        >
-          Apply Filters
-        </button> */}
         <button
           onClick={resetFilters}
-          className="w-full bg-gray-300 text-black mt-6 px-5 py-3 rounded-lg font-semibold shadow"
+          className="w-full bg-muted text-text mt-6 px-5 py-3 rounded-lg font-semibold shadow"
         >
-          Reset
+          {t("reset")}
         </button>
       </div>
     </div>

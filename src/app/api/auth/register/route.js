@@ -1,25 +1,54 @@
-import prisma from "../../../../../prisma/client";
+import { hash } from "bcrypt";
 import { NextResponse } from "next/server";
+
+import prisma from "../../../../../prisma/client";
+import { sanitizeUser } from "@/shared/lib/auth";
+import { validateRegistrationPayload } from "@/shared/lib";
 
 export async function POST(req) {
   try {
-    const { email, password, firstname, lastname } = await req.json();
+    const payload = validateRegistrationPayload(await req.json());
 
-    if (!email || !password || !firstname || !lastname) {
-      return NextResponse.json({ error: "Missing fields" }, { status: 400 });
+    const existingUser = await prisma.user.findUnique({
+      where: { email: payload.email },
+      select: { id: true },
+    });
+
+    if (existingUser) {
+      return NextResponse.json(
+        { error: "An account with this email already exists." },
+        { status: 409 },
+      );
     }
 
-    const user = await prisma.User.create({
+    const hashedPassword = await hash(payload.password, 10);
+
+    const user = await prisma.user.create({
       data: {
-        email,
-        password,
-        name: `${firstname} ${lastname}`,
+        email: payload.email,
+        password: hashedPassword,
+        name: `${payload.firstname} ${payload.lastname}`,
         role: "user",
+        addresses: [],
       },
     });
 
-    return NextResponse.json({ user });
+    return NextResponse.json(
+      {
+        user: sanitizeUser(user),
+        status: 201,
+      },
+      { status: 201 },
+    );
   } catch (error) {
-    return NextResponse.json({ error: error.message }, { status: 500 });
+    const message =
+      error instanceof Error
+        ? error.message
+        : "Registration could not be completed.";
+
+    const status =
+      message === "An account with this email already exists." ? 409 : 400;
+
+    return NextResponse.json({ error: message }, { status });
   }
 }

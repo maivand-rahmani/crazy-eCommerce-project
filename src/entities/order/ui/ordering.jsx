@@ -3,17 +3,17 @@
 import React, { useEffect, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Check, CreditCard, Package, Truck } from "lucide-react";
-import { useRouter } from "next/navigation";
+import { useTranslations } from "next-intl";
 
 const OrderingLoader = ({ success }) => {
-  const router = useRouter();
+  const t = useTranslations("orderModal");
   const [currentStep, setCurrentStep] = useState(0);
   const [finished, setFinished] = useState(false);
 
   const steps = [
-    { icon: CreditCard, label: "Processing Payment" },
-    { icon: Package, label: "Preparing Order" },
-    { icon: Truck, label: "Ready to Ship" },
+    { icon: CreditCard, label: t("processing") },
+    { icon: Package, label: t("preparing") },
+    { icon: Truck, label: t("readyToShip") },
   ];
 
   // Step progression
@@ -27,15 +27,14 @@ const OrderingLoader = ({ success }) => {
         setCurrentStep(3);
         setFinished(true);
       }, 1800),
-      setTimeout(() => router.push("/"), 2800),
     ];
 
     return () => timers.forEach(clearTimeout);
-  }, [success, router]);
+  }, [success]);
 
   return (
     <div className="flex items-center justify-center z-50">
-      <div className="bg-white rounded-2xl p-8 max-w-md w-full mx-4 shadow-2xl">
+      <div className="bg-surface rounded-2xl p-8 max-w-md w-full mx-4 shadow-2xl border border-border">
         {/* MAIN ICON */}
         <div className="flex justify-center mb-8">
           <div className="relative w-20 h-20 flex items-center justify-center">
@@ -43,7 +42,7 @@ const OrderingLoader = ({ success }) => {
               {!finished ? (
                 <motion.div
                   key="loader"
-                  className="w-20 h-20 border-4 border-blue-200 rounded-full absolute"
+                  className="w-20 h-20 border-4 border-muted rounded-full absolute"
                   animate={{ rotate: 360 }}
                   transition={{ duration: 2, repeat: Infinity, ease: "linear" }}
                 />
@@ -52,9 +51,9 @@ const OrderingLoader = ({ success }) => {
                   key="success"
                   initial={{ scale: 0 }}
                   animate={{ scale: 1 }}
-                  className="w-20 h-20 bg-green-500 rounded-full flex items-center justify-center"
+                  className="w-20 h-20 bg-accent rounded-full flex items-center justify-center"
                 >
-                  <Check className="w-10 h-10 text-white" />
+                  <Check className="w-10 h-10 text-button-text" />
                 </motion.div>
               )}
             </AnimatePresence>
@@ -63,13 +62,13 @@ const OrderingLoader = ({ success }) => {
 
         {/* TITLE */}
         <div className="text-center mb-8">
-          <h2 className="text-2xl font-bold text-gray-800 mb-2">
-            {finished ? "Order Successful 🎉" : "Creating Your Order"}
+          <h2 className="text-2xl font-bold text-text mb-2">
+            {finished ? `${t("success")} 🎉` : t("creating")}
           </h2>
-          <p className="text-gray-600 text-sm">
+          <p className="text-unactive-text text-sm">
             {finished
-              ? "Redirecting to your orders..."
-              : "Please wait while we process your order"}
+              ? t("redirecting")
+              : t("pleaseWait")}
           </p>
         </div>
 
@@ -90,9 +89,9 @@ const OrderingLoader = ({ success }) => {
               >
                 <motion.div
                   className={`w-10 h-10 rounded-full flex items-center justify-center border-2
-                  ${isDone ? "bg-green-500 border-green-500" : ""}
-                  ${isActive ? "border-blue-600" : ""}
-                  ${!isDone && !isActive ? "border-gray-200" : ""}
+                  ${isDone ? "bg-accent border-accent" : ""}
+                  ${isActive ? "border-primary" : ""}
+                  ${!isDone && !isActive ? "border-border" : ""}
                   `}
                   animate={
                     isActive
@@ -102,11 +101,11 @@ const OrderingLoader = ({ success }) => {
                   transition={{ duration: 1, repeat: Infinity }}
                 >
                   {isDone ? (
-                    <Check className="w-5 h-5 text-white" />
+                    <Check className="w-5 h-5 text-button-text" />
                   ) : (
                     <Icon
                       className={`w-5 h-5 ${
-                        isActive ? "text-blue-600" : "text-gray-400"
+                        isActive ? "text-primary" : "text-unactive-text"
                       }`}
                     />
                   )}
@@ -115,10 +114,10 @@ const OrderingLoader = ({ success }) => {
                 <p
                   className={`text-sm font-medium ${
                     isDone
-                      ? "text-green-600"
+                      ? "text-accent"
                       : isActive
-                      ? "text-gray-800"
-                      : "text-gray-400"
+                      ? "text-text"
+                      : "text-unactive-text"
                   }`}
                 >
                   {step.label}

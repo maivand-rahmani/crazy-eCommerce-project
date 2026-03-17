@@ -1,13 +1,32 @@
 "use client";
 
 import { Settings2Icon, X } from "lucide-react";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import ProductsFilter from "./ProductsFilter";
 import ProductsLists from "./ProductsLists";
+import { useTranslations } from "next-intl";
 
-const ProductsContainer = ({ data }) => {
-  const [products, setProducts] = useState(data.data);
+const ProductsContainer = ({ data, loading: externalLoading }) => {
+  const t = useTranslations("filter");
+  const [products, setProducts] = useState(data?.data || []);
   const [open, setOpen] = useState(false);
+  const [internalLoading, setInternalLoading] = useState(false);
+  const [isInitialLoad, setIsInitialLoad] = useState(true);
+
+  // Auto-detect loading state: show skeleton when data is not yet available
+  useEffect(() => {
+    if (data === undefined || data === null) {
+      setInternalLoading(true);
+    }
+    // Mark initial load complete after first data arrives
+    if (data && isInitialLoad) {
+      setIsInitialLoad(false);
+      setInternalLoading(false);
+    }
+  }, [data, isInitialLoad]);
+
+  // Use external loading prop if provided, otherwise use internal state
+  const loading = externalLoading ?? internalLoading;
 
   return (
     <div className="flex flex-col md:flex-row p-5 md:p-20 gap-10 relative">
@@ -16,10 +35,10 @@ const ProductsContainer = ({ data }) => {
       <div className="md:hidden top-20 z-20">
         <button
           onClick={() => setOpen(true)}
-          className="w-full flex items-center justify-center gap-3 p-4 rounded-2xl border bg-white shadow-md active:scale-[0.98] transition"
+          className="w-full flex items-center justify-center gap-3 p-4 rounded-2xl border border-border bg-surface shadow-md active:scale-[0.98] transition"
         >
           <Settings2Icon size={20} />
-          <span className="font-medium">Filters</span>
+          <span className="font-medium">{t("filters")}</span>
         </button>
       </div>
 
@@ -38,14 +57,14 @@ const ProductsContainer = ({ data }) => {
           />
 
           {/* Bottom sheet */}
-          <div className="fixed bottom-0 left-0 right-0 bg-white z-50 rounded-t-3xl p-5 max-h-[85vh] overflow-y-auto animate-slide-up">
+          <div className="fixed bottom-0 left-0 right-0 bg-surface z-50 rounded-t-3xl p-5 max-h-[85vh] overflow-y-auto animate-slide-up border-t border-border">
             
             {/* Header */}
             <div className="flex justify-between items-center mb-4">
-              <h3 className="text-lg font-semibold">Filters</h3>
+              <h3 className="text-lg font-semibold text-text">{t("filters")}</h3>
               <button
                 onClick={() => setOpen(false)}
-                className="p-2 rounded-full hover:bg-gray-100 transition"
+                className="p-2 rounded-full hover:bg-surface transition"
               >
                 <X />
               </button>
@@ -57,9 +76,9 @@ const ProductsContainer = ({ data }) => {
             {/* Apply button */}
             <button
               onClick={() => setOpen(false)}
-              className="mt-6 mb-20 w-full bg-black text-white py-3 rounded-xl font-medium hover:opacity-90 transition"
+              className="mt-6 mb-20 w-full bg-button text-button-text py-3 rounded-xl font-medium hover:opacity-90 transition"
             >
-              Apply filters
+              {t("filters")}
             </button>
           </div>
         </>
@@ -67,7 +86,7 @@ const ProductsContainer = ({ data }) => {
 
       {/* Products list */}
       <div className="flex-1">
-        <ProductsLists data={products} info={data?.otherInfo}/>
+        <ProductsLists data={products} info={data?.otherInfo} loading={loading} />
       </div>
     </div>
   );

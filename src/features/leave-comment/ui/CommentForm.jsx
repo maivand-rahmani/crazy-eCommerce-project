@@ -2,18 +2,20 @@
 import React, { useState } from "react";
 import { CommentAction } from "../model/FormAction";
 import styled from "styled-components";
-import Rating from "@/entities/rating/ui/Rating";
+import Rating from "@/entities/rating";
 import { toast } from "react-hot-toast";
+import { useTranslations } from "next-intl";
 
 export const CommentForm = ({ product_id, onAddComment }) => {
+  const t = useTranslations("comments");
   const [rating, setRating] = useState(0); // здесь хранится выбранная звезда
   const [comment, setComment] = useState("");
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    if (!rating) return toast.error("Please add a rating");
-    if (!comment) return toast.error("Please add a comment");
+    if (!rating) return toast.error(t("errors.rating"));
+    if (!comment) return toast.error(t("errors.comment"));
 
     const formData = new FormData(e.target);
     formData.set("rating", rating);
@@ -22,30 +24,30 @@ export const CommentForm = ({ product_id, onAddComment }) => {
 
     if (res?.newComment) {
       onAddComment(res.newComment);
-      toast.success("comment successfully added");
+      toast.success(t("success.added"));
       setComment(""); // очистка
       setRating(0);
     } else {
-      toast.error("Something gone wrong");
+      toast.error(t("errors.somethingWrong"));
     }
   };
 
   return (
     <div>
       <form
-        className="rounded-3xl shadow-xl p-4 flex flex-col gap-4"
+        className="rounded-3xl shadow-lg p-4 flex flex-col gap-4"
         onSubmit={handleSubmit}
       >
         <div className="flex items-center gap-3">
-          <h1>Rate the product:</h1>
+          <h1>{t("rateProduct")}</h1>
           <Rating value={rating} onChange={setRating} />
         </div>
 
         <textarea
           onChange={(e) => setComment(e.target.value)}
-          placeholder="Add a comment..."
+          placeholder={t("placeholder")}
           value={comment}
-          className="p-3 w-full min-h-[100px] rounded border border-gray-300 focus:outline-none"
+          className="p-3 w-full min-h-[100px] rounded border border-border focus:outline-none"
           required
         />
 
@@ -55,10 +57,10 @@ export const CommentForm = ({ product_id, onAddComment }) => {
         <input type="hidden" name="productId" value={product_id} />
 
         <button
-          className="bg-blue-500 text-white px-10 py-2 w-full btn rounded-3xl shadow-xl"
+          className="bg-primary text-primary-text px-10 py-2 w-full btn rounded-3xl shadow-xl"
           type="submit"
         >
-          Submit
+          {t("submit")}
         </button>
       </form>
     </div>

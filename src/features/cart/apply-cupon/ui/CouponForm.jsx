@@ -1,71 +1,91 @@
 "use client";
-import Fetch from "@/shared/lib/fetch";
+
 import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 import toast from "react-hot-toast";
+import { useTranslations } from "next-intl";
 
-const CouponForm = ({ total, setAmount = () => {}, setCoupon = () => {} }) => {
-  const [submited, setSubmited] = useState(false);
+import { formatPriceFromCents } from "@/entities/product";
+import { Fetch } from "@/shared/lib";
+
+const CouponForm = ({ setCoupon = () => {} }) => {
+  const t = useTranslations("coupon");
   const {
     register,
     handleSubmit,
     setError,
-    getValues,
-    formState: { errors },
-  } = useForm({ mode: "onChange" });
+    formState: { errors, isSubmitting },
+  } = useForm({ mode: "onBlur" });
+  const [appliedCode, setAppliedCode] = useState("");
 
-  async function onSubmitingCuponForm() {
-    let coupon = getValues("coupon");
-    setSubmited(true);
+  async function onSubmitCouponForm(values) {
     try {
-      const data = await Fetch(`/api/cart/coupon?coupon=${coupon}`, "GET");
-      if (data.status === 200) {
-        setCoupon(data);
-        let discount =
-          data.type === "amount"
-            ? data?.value
-            : ((total / 100) * data?.value).toFixed(2);
-        setAmount(discount);
-        toast.success(`Promo code applied you save ${discount}`, {
-          duration: 2000,
-          icon: "🎉",
-        });
-      } else {
-        setError("coupon", { message: "the coupon is invalid!" });
-        setSubmited(false);
+      const coupon = values.coupon?.trim();
+      const data = await Fetch(
+        `/api/cart/coupon?coupon=${encodeURIComponent(coupon)}`,
+        "GET",
+      );
+
+      if (data?.error || data?.status !== 200) {
+        setError("coupon", { message: data?.error || t("invalid") });
+        setCoupon(null);
+        return;
       }
+
+      setAppliedCode(coupon.toUpperCase());
+      setCoupon(data);
+
+      toast.success(
+        `${t("applied")} ${formatPriceFromCents(data.summary.discountCents, {
+          minimumFractionDigits: 2,
+          maximumFractionDigits: 2,
+        })}$`,
+      );
     } catch (error) {
-      console.log("error while applying coupon", error);
-      setSubmited(false);
+      const message = error instanceof Error ? error.message : t("invalid");
+      setError("coupon", { message });
+      setCoupon(null);
     }
   }
 
   return (
     <div>
-      <label className="block text-unactive-text mt-5" htmlFor="cupon">
-        Discount code / Promo code
+      <label className="mt-5 block text-unactive-text" htmlFor="coupon">
+        {t("label")}
       </label>
       <form
-        className={`flex border rounded focus-visible:outline-none ${submited ? " bg-green-700" : ""}`}
-        onSubmit={handleSubmit(onSubmitingCuponForm)}
+        className="mt-2 flex overflow-hidden rounded-xl border border-border"
+        onSubmit={handleSubmit(onSubmitCouponForm)}
       >
         <input
-          className="w-full p-3"
-          disabled={submited}
-          placeholder="Code"
-          name="coupon"
+          id="coupon"
+          className="w-full bg-input p-3 text-input-text"
+          disabled={isSubmitting}
+          placeholder={t("placeholder")}
+          autoComplete="off"
+          spellCheck={false}
           {...register("coupon", {
-            minLength: { value: 5, message: "Minimum 5 letters" },
+            required: t("invalid"),
+            minLength: { value: 3, message: t("invalid") },
+            maxLength: { value: 32, message: t("invalid") },
           })}
         />
         <button
-          disabled={submited}
-          className="p-2 bg-black text-white text-center font-extrabold font-mono rounded-r"
+          type="submit"
+          disabled={isSubmitting}
+          className="bg-button px-4 text-center font-extrabold text-button-text transition hover:opacity-90 disabled:cursor-not-allowed disabled:opacity-60"
         >
-          check
+          {isSubmitting ? "..." : t("button")}
         </button>
       </form>
-      {errors.coupon && <p className="text-red-500">{errors.coupon.message}</p>}
+      {appliedCode ? (
+        <p className="mt-2 text-xs text-success">
+          {t("activeCode")}: {appliedCode}
+        </p>
+      ) : null}
+      {errors.coupon ? (
+        <p className="mt-2 text-sm text-danger">{errors.coupon.message}</p>
+      ) : null}
     </div>
   );
 };

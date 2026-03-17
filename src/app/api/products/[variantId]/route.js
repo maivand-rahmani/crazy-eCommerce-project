@@ -2,10 +2,11 @@ import { NextResponse } from "next/server";
 import prisma from "../../../../../prisma/client";
 import { toSafeJson } from "../../../../../prisma/funcs";
 import { getToken } from "next-auth/jwt";
+import { getAuthSecret } from "@/shared/lib/auth";
 
 export async function GET(req, { params }) {
   const { variantId } = await params;
-  const user = await getToken({ req, secret: process.env.NEXTAUTH_SECRET });
+  const user = await getToken({ req, secret: getAuthSecret() });
 
   if (!variantId) {
     return NextResponse.json({ error: "Variant ID required", status: 400 });
@@ -19,20 +20,30 @@ export async function GET(req, { params }) {
         product_id: true,
         variant_name: true,
         price_cents: true,
+        discount_percent: true,
         stock_quantity: true,
         variant_options: { select: { key: true, value: true } },
-        products: {
+        product_images: {
+          select: { url: true },
+          orderBy: { position: "asc" },
+          take: 1,
+        },
+          products: {
           select: {
             id: true,
             name: true,
             description: true,
-            product_variants: {
+            created_at: true,
+            product_images: {
+              select: { url: true },
+              orderBy: { position: "asc" },
+              take: 1,
+            },
+            categories: {
               select: {
                 id: true,
-                variant_name: true,
-                variant_options: { select: { key: true, value: true } },
-              },
-            },
+              }
+            }
           },
         },
       },
