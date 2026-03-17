@@ -47,18 +47,20 @@ const Slider = ({ productId, variantId }) => {
                     : "opacity-40"
                 }
               >
-                <img
-                  loading="lazy"
-                  placeholder="blur"
-                  blurDataURL="data:image/gif;base64,R0lGODlhAQABAIAAAP///wAAACH5BAEAAAAALAAAAAABAAEAAAICRAEAOw=="
-                  className="select-none snap-center object-contain p-2"
-                  alt={image.url}
-                  onClick={() => setActiveIndex(index)}
-                  src={image.url}
-                  width={100}
-                  height={150}
-                  key={image.url}
-                />
+                <Suspense fallback={<Miniloader />}>  
+                  <Image
+                    loading="lazy"
+                    placeholder="blur"
+                    blurDataURL="data:image/gif;base64,R0lGODlhAQABAIAAAP///wAAACH5BAEAAAAALAAAAAABAAEAAAICRAEAOw=="
+                    className="select-none snap-center object-contain p-2"
+                    alt={image.url}
+                    onClick={() => setActiveIndex(index)}
+                    src={image.url}
+                    width={100}
+                    height={150}
+                    key={image.url}
+                  />
+                </Suspense>
               </div>
             ))}
         </div>
