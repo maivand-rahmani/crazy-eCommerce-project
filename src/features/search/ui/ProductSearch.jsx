@@ -4,6 +4,7 @@ import React, { useState, useEffect, useRef } from "react";
 import { Search, X, Star, ArrowRight } from "lucide-react";
 import { useRouter } from "@/shared/i18n/model/routing";
 import { formatPriceFromCents } from "@/entities/product";
+import Image from "next/image";
 
 export function ProductSearch({
   placeholder = "Search products...",
@@ -145,7 +146,7 @@ export function ProductSearch({
                   className="w-full flex items-center gap-3 p-3 hover:bg-gray-50 transition-colors text-left"
                 >
                   {product.image_url ? (
-                    <img
+                    <Image
                       src={product.image_url}
                       alt={product.product_name}
                       className="w-12 h-12 object-cover rounded-lg"

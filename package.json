@@ -18,6 +18,8 @@
     "@tiptap/react": "^3.10.7",
     "@tiptap/starter-kit": "^3.10.7",
     "@untitledui/icons": "^0.0.19",
+    "@vercel/analytics": "^2.0.1",
+    "@vercel/speed-insights": "^2.0.0",
     "bcrypt": "^6.0.0",
     "cookies-next": "^6.1.1",
     "framer-motion": "^12.23.24",

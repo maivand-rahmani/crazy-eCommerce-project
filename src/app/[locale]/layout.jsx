@@ -1,4 +1,6 @@
 import { NextIntlClientProvider } from "next-intl";
+import { Analytics } from "@vercel/analytics/next"
+import { SpeedInsights } from "@vercel/speed-insights/next"
 import { getMessages } from "next-intl/server";
 import "@/shared/styles/globals.css";
 import { Toaster } from "react-hot-toast";
@@ -13,6 +15,8 @@ export default async function LocaleLayout({ children, params }) {
     <html lang={locale} data-theme="dark">
       <body className="mx-auto min-h-screen max-w-[1440px] bg-bg text-text">
         <NextIntlClientProvider locale={locale} messages={messages}>
+          <Analytics />
+          <SpeedInsights />
           <AuthProvider>
             <AppShell>{children}</AppShell>
             <Toaster position="top-center" reverseOrder={true} />
