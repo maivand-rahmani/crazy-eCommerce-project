@@ -5,6 +5,7 @@ import React, { Suspense, useRef, useState, useEffect } from "react";
 import { ArrowBigLeft, ArrowBigRight } from "lucide-react";
 import { Fetch } from "@/shared/lib";
 
+
 const Slider = ({ productId, variantId }) => {
   let [clicked, setClicked] = useState(false);
   let [images, setImages] = useState();

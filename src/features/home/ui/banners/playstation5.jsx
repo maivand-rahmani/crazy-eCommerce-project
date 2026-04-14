@@ -1,4 +1,3 @@
-import Image from "next/image";
 import React from "react";
 import {getTranslations} from "next-intl/server"
 
@@ -6,13 +5,12 @@ const Playstation5 = async () => {
   const t = await getTranslations("promotions.playstation")
   return (
     <div className="p-3 w-full h-full bg-banner-3 flex center flex-col md:flex-row">
-      <Image
+      <img
         width={200}
         height={200}
         alt="playstation5"
-        priority
         src={
-          "http://194.156.118.210/uploads/images/image.webp"
+          "/bannersImages/image.webp"
         }
       />
       <div className="text-center md:text-left">
