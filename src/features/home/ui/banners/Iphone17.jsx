@@ -25,15 +25,14 @@ const Iphone = async () => {
       </div>
 
       <div>
-        <Image
+        <img
           alt="Iphone17promax"
           width={500}
           height={500}
-          priority
           src={
-            "http://194.156.118.210/uploads/images/iPhone_17_Pro_Max_Cosmic_Orange_Position_1%201.png"
+            "/bannersImages/iPhone_17_Pro_Max_Cosmic_Orange_Position_1201.webp"
           }
-        ></Image>
+        ></img>
       </div>
     </div>
   );

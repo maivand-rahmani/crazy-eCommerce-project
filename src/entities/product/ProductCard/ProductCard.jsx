@@ -13,6 +13,7 @@ import {
 import { useRouter } from "@/shared/i18n";
 import { useTranslations } from "next-intl";
 
+
 const ProductCard = ({ data, otherInfo, contextLabel }) => {
   const t = useTranslations("product");
   const router = useRouter();
@@ -102,7 +103,7 @@ const ProductCard = ({ data, otherInfo, contextLabel }) => {
             <p className="text-xs text-muted">{stockLabel || t("details")}</p>
           </div>
 
-          <div className="flex min-w-0 flex-col items-stretch gap-3 sm:flex-row sm:items-center">
+          <div className="flex min-w-0 flex-col items-stretch gap-3 sm:items-center">
             <QuickAddToCart
               variantId={data.variant_id}
               productName={`${productName}${variantName ? ` - ${variantName}` : ""}`}
