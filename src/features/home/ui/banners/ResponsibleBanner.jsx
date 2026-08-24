@@ -3,12 +3,13 @@ import Image from 'next/image'
 import React from 'react'
 import Link from 'next/link'
 import { useTranslations } from "next-intl";
+import { getProductImageUrl } from "@/shared/lib/images/productImage"
 
 const ResponsibleBanner = ({ img , name , des , link = undefined , bgColor , className }) => {
   const t = useTranslations("banner");
   return (
     <div style={{ backgroundColor: bgColor}} className={`${className} p-8 md:flex text-text center flex-col w-full min-w-90 h-140 md:h-160`}>
-        <Image  alt={name} src={img} width={360} height={360} />
+        <Image  alt={name} src={getProductImageUrl(img)} width={360} height={360} />
         <div className='flex flex-col gap-4' >
             <div className='text-3xl font-extralight'>{name}</div>
             <div className='text-unactive-text line-clamp-3'>{des}</div>

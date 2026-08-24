@@ -8,25 +8,25 @@ const bannersInfo = [
     bg: "var(--banner-white)",
     key: "ipad",
     link: "ipad",
-    img: "http://194.156.118.210/uploads/images/image%2064.png",
+    img: "image 64.png",
   },
   {
     bg: "var(--banner-light)",
     key: "samsung",
     link: "Galaxy",
-    img: "http://194.156.118.210/uploads/images/image%2041.png",
+    img: "image 41.png",
   },
   {
     bg: "var(--banner-medium)",
     key: "macbookpro",
     link: "Macbook",
-    img: "http://194.156.118.210/uploads/images/Macbook%201.png",
+    img: "Macbook 1.png",
   },
   {
     bg: "var(--banner-dark)",
     key: "applewatch",
     link: "Apple watch",
-    img: "http://194.156.118.210/uploads/images/312d013f4012ee11f7fa28b1b3c9b9ea%201.png",
+    img: "Iphone 14 pro 1.png",
   },
 ];
 
