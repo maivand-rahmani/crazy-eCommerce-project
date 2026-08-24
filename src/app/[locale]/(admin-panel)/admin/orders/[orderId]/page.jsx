@@ -11,6 +11,7 @@ import {
 } from "@/features/admin-orders";
 import { Badge, Card, CardContent, CardDescription, CardHeader, CardTitle, EmptyState, SectionTitle } from "@/shared";
 import { formatCurrency, formatDateTime } from "@/shared/lib";
+import { getProductImageUrl } from "@/shared/lib/images";
 
 export const metadata = {
   title: "Order Detail | Admin",
@@ -72,7 +73,7 @@ export default async function OrderDetailPage({ params }) {
                     <div className="relative h-20 w-20 overflow-hidden rounded-2xl border border-border bg-[var(--admin-panel-muted)]">
                       <Image
                         fill
-                        src={item.product_variants.products?.product_images?.[0]?.url || "/icons/product-placeholder.svg"}
+                        src={getProductImageUrl(item.product_variants.products?.product_images?.[0]?.url)}
                         alt={item.product_variants.products?.name || "Product image"}
                         className="object-cover"
                       />

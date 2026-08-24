@@ -5,6 +5,7 @@ import { Search, X, Star, ArrowRight } from "lucide-react";
 import { useRouter } from "@/shared/i18n/model/routing";
 import { formatPriceFromCents } from "@/entities/product";
 import Image from "next/image";
+import { getProductImageUrl } from "@/shared/lib/images";
 
 export function ProductSearch({
   placeholder = "Search products...",
@@ -145,17 +146,13 @@ export function ProductSearch({
                   onClick={() => handleResultClick(product)}
                   className="w-full flex items-center gap-3 p-3 hover:bg-gray-50 transition-colors text-left"
                 >
-                  {product.image_url ? (
-                    <Image
-                      src={product.image_url}
-                      alt={product.product_name}
-                      className="w-12 h-12 object-cover rounded-lg"
-                    />
-                  ) : (
-                    <div className="w-12 h-12 bg-gray-100 rounded-lg flex items-center justify-center">
-                      <Search size={20} className="text-gray-400" />
-                    </div>
-                  )}
+                  <Image
+                    src={getProductImageUrl(product.image_url)}
+                    alt={product.product_name}
+                    width={48}
+                    height={48}
+                    className="w-12 h-12 object-cover rounded-lg"
+                  />
                   <div className="flex-1 min-w-0">
                     <p className="font-medium text-gray-800 truncate">
                       {product.product_name}

@@ -2,6 +2,7 @@
 
 import { useEffect } from "react";
 import { useRecentlyViewed } from "../model";
+import { getProductImageUrl } from "@/shared/lib/images";
 
 /**
  * Component to track when a product is viewed
@@ -20,11 +21,11 @@ const ProductViewTracker = ({ product }) => {
         product_id: product.products?.id || product.product_id,
         product_name: product.products?.name || product.product_name,
         variant_name: product.variant_name,
-        image_url:
+        image_url: getProductImageUrl(
           product.image_url ||
-          product.product_images?.[0]?.url ||
-          product.products?.product_images?.[0]?.url ||
-          null,
+            product.product_images?.[0]?.url ||
+            product.products?.product_images?.[0]?.url,
+        ),
         price_cents: product.price_cents,
         discount_percent: product.discount_percent,
         stock_quantity: product.stock_quantity,

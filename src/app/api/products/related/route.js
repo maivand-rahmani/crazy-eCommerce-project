@@ -1,6 +1,7 @@
 import prisma from "../../../../../prisma/client";
 import { NextResponse } from "next/server"; 
 import { toSafeJson } from "../../../../../prisma/funcs";
+import { getProductImageUrl } from "@/shared/lib/images";
 
 export async function GET(req) {
   const searchParams = req.nextUrl.searchParams;
@@ -73,7 +74,7 @@ export async function GET(req) {
       variant_name: card.variant_name,
       price_cents: card.price_cents,
       discount_percent: card.discount_percent,
-      image_url: card.image_url,
+      image_url: getProductImageUrl(card.image_url),
       variant_options: card.variant_options,
       specs: card.specs,
       stock_quantity: card.stock_quantity,
@@ -96,8 +97,13 @@ export async function GET(req) {
         take: limit,
         orderBy: { updated_at: 'desc' },
       });
-      
-      return NextResponse.json(toSafeJson(fallback), { 
+
+      const fallbackWithImage = fallback.map((card) => ({
+        ...card,
+        image_url: getProductImageUrl(card.image_url),
+      }));
+
+      return NextResponse.json(toSafeJson(fallbackWithImage), {
         status: 200,
         headers: { "Content-Type": "application/json", "Access-Control-Allow-Origin": "*" }
       });

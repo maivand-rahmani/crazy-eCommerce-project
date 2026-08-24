@@ -3,6 +3,7 @@ import prisma from "../../../../prisma/client";
 import { toSafeJson } from "../../../../prisma/funcs";
 import { getToken } from "next-auth/jwt";
 import { getAuthSecret } from "@/shared/lib/auth";
+import { getProductImageUrl } from "@/shared/lib/images";
 
 export async function GET(req) {
   const searchParams = req.nextUrl.searchParams;
@@ -34,6 +35,12 @@ export async function GET(req) {
       orderBy: { created_at: "desc" },
       take: Params.limit ? Number(Params.limit) : undefined,
     });
+
+    const productsWithImage = products.map((product) => ({
+      ...product,
+      image_url: getProductImageUrl(product.image_url),
+    }));
+
     if (userId) {
       let wishlistVariantIds = [];
 
@@ -45,7 +52,7 @@ export async function GET(req) {
       wishlistVariantIds =
         wishlist?.wishlist_items.map((item) => item.variant_id) || [];
 
-      const productsWithFav = products.map((product) => ({
+      const productsWithFav = productsWithImage.map((product) => ({
         ...product,
         isFavorite: wishlistVariantIds.includes(product.variant_id),
       }));
@@ -56,7 +63,7 @@ export async function GET(req) {
       });
     }
 
-    return NextResponse.json({ data: toSafeJson(products) });
+    return NextResponse.json({ data: toSafeJson(productsWithImage) });
   } catch (error) {
     console.error("API error:", error);
     return NextResponse.json(

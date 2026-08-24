@@ -9,6 +9,7 @@ import {
   formatPriceFromCents,
   getProductPriceInfo,
 } from "@/entities/product";
+import { getProductImageUrl } from "@/shared/lib/images";
 
 const SmallProductCard = ({
   productData,
@@ -41,7 +42,7 @@ const SmallProductCard = ({
       {accessibility?.image && (
         <div className="flex w-24 shrink-0 items-center justify-center rounded-2xl bg-background/70 p-2 md:w-28">
           <Image
-            src={productData?.image_url || "/placeholder.png"}
+            src={getProductImageUrl(productData?.image_url)}
             alt={productData?.variant_name}
             width={90}
             height={90}
