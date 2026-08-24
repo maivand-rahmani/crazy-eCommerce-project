@@ -12,6 +12,7 @@ import {
 } from "@/entities/product";
 import { useRouter } from "@/shared/i18n";
 import { useTranslations } from "next-intl";
+import { getProductImageUrl } from "@/shared/lib/images";
 
 
 const ProductCard = ({ data, otherInfo, contextLabel }) => {
@@ -66,7 +67,7 @@ const ProductCard = ({ data, otherInfo, contextLabel }) => {
         )}
 
         <Image
-          src={data.image_url || "/placeholder.png"}
+          src={getProductImageUrl(data.image_url)}
           alt={variantName || productName}
           fill
           sizes="(max-width: 768px) 70vw, (max-width: 1280px) 33vw, 25vw"

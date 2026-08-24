@@ -3,6 +3,7 @@ import prisma from "../../../../../prisma/client";
 import { toSafeJson } from "../../../../../prisma/funcs";
 import { getToken } from "next-auth/jwt";
 import { getAuthSecret } from "@/shared/lib/auth";
+import { getProductImageUrl } from "@/shared/lib/images";
 
 export async function GET(req, { params }) {
   const { variantId } = await params;
@@ -53,6 +54,27 @@ export async function GET(req, { params }) {
       return NextResponse.json({ error: "Variant not found", status: 404 });
     }
 
+    const serializedVariant = {
+      ...variant,
+      product_images: variant.product_images?.map((img) => ({
+        ...img,
+        url: getProductImageUrl(img.url),
+      })),
+      products: variant.products
+        ? {
+            ...variant.products,
+            product_images: variant.products.product_images?.map((img) => ({
+              ...img,
+              url: getProductImageUrl(img.url),
+            })),
+          }
+        : variant.products,
+      image_url: getProductImageUrl(
+        variant.product_images?.[0]?.url ||
+          variant.products?.product_images?.[0]?.url,
+      ),
+    };
+
     if (user) {
       if (user.id) {
         const wishlist = await prisma.wishlist.findUnique({
@@ -70,7 +92,7 @@ export async function GET(req, { params }) {
 
         return NextResponse.json(
           toSafeJson({
-            variant,
+            variant: serializedVariant,
             meta: {
               isFavorite: wishlisted,
               wishlist_id: wishlist?.id ?? null,
@@ -81,8 +103,7 @@ export async function GET(req, { params }) {
       }
     }
 
-    const serialized = toSafeJson(variant);
-    return NextResponse.json(serialized);
+    return NextResponse.json(toSafeJson(serializedVariant));
   } catch (error) {
     console.error("API error:", error);
     return NextResponse.json({ error: "Failed to fetch variant", status: 500 });

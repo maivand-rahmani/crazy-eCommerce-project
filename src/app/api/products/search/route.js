@@ -3,6 +3,7 @@ import prisma from '../../../../../prisma/client';
 import { toSafeJson } from '../../../../../prisma/funcs';
 import { getToken } from "next-auth/jwt";
 import { getAuthSecret } from '@/shared/lib/auth';
+import { getProductImageUrl } from '@/shared/lib/images';
 
 export async function GET(req) {
   try {
@@ -136,7 +137,7 @@ export async function GET(req) {
         price_cents: minPriceVariant?.price_cents || 0,
         discount_percent: minPriceVariant?.discount_percent || 0,
         stock_quantity: totalStock,
-        image_url: product.product_images[0]?.url || null,
+        image_url: getProductImageUrl(product.product_images[0]?.url),
         variant_name: minPriceVariant?.variant_name || null,
         created_at: product.created_at,
         avg_rating: avgRating,

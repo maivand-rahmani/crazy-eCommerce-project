@@ -5,6 +5,7 @@ import React from "react";
 import { HardDriveUpload, ImagePlus, Trash2 } from "lucide-react";
 
 import { Button, Card, CardContent } from "@/shared";
+import { getProductImageUrl } from "@/shared/lib/images";
 
 const ImageFieldManager = ({
   title,
@@ -75,7 +76,12 @@ const ImageFieldManager = ({
             return (
               <Card key={image.id} className="overflow-hidden rounded-[24px]">
                 <div className="relative aspect-[4/3] bg-[var(--admin-panel-muted)]">
-                  <Image fill src={image.url} alt="Product image" className="object-cover" />
+                  <Image
+                    fill
+                    src={getProductImageUrl(image.url)}
+                    alt="Product image"
+                    className="object-cover"
+                  />
                 </div>
                 <CardContent className="flex items-center justify-between gap-3 p-4">
                   <div>

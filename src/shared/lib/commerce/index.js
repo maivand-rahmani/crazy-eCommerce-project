@@ -2,6 +2,7 @@ import { Prisma } from "@prisma/client";
 import prisma from "../../../../prisma/client";
 import { toSafeJson } from "../../../../prisma/funcs";
 import { getProductPriceInfo } from "@/entities/product";
+import { getProductImageUrl } from "../images/productImage";
 
 const ORDER_STATUS = {
   created: "created",
@@ -188,10 +189,11 @@ function buildCartLine(item, cartId) {
   const variant = item.product_variants;
   const product = variant?.products;
   const priceInfo = getProductPriceInfo(variant);
-  const imageUrl =
+  const rawImageUrl =
     variant?.product_images?.[0]?.url ||
     product?.product_images?.[0]?.url ||
-    "/icons/product-placeholder.svg";
+    "";
+  const imageUrl = getProductImageUrl(rawImageUrl);
 
   return {
     id: Number(item.id),

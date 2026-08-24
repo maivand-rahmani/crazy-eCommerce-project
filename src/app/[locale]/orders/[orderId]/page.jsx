@@ -9,6 +9,7 @@ import {
 } from "@/entities/product";
 import Image from "next/image";
 import { useTranslations } from "next-intl";
+import { getProductImageUrl } from "@/shared/lib/images";
 
 const RETURN_ELIGIBLE_STATUSES = ["paid", "shipped", "delivered"];
 const CANCELLATION_ELIGIBLE_STATUSES = ["created", "paid"];
@@ -280,9 +281,9 @@ const OrderDetailPage = () => {
                       <Image
                         width={100}
                         height={100}
-                        src={
-                          item.product_variants.products.product_images[0].url
-                        }
+                        src={getProductImageUrl(
+                          item.product_variants.products.product_images[0].url,
+                        )}
                         alt={item.product_variants.products.name}
                         className="w-full h-full"
                       />

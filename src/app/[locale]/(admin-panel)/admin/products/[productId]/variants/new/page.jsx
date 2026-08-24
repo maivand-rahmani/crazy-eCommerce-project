@@ -23,7 +23,11 @@ export default async function NewVariantPage({ params }) {
         title={`New variant for ${product.name}`}
         description="Set price, stock, selling options, and dedicated imagery for this purchasable SKU."
       />
-      <VariantEditorForm mode="create" productId={product.id} createAction={createVariantAction} />
+      <VariantEditorForm
+        mode="create"
+        productId={product.id}
+        createAction={createVariantAction}
+      />
     </div>
   );
 }

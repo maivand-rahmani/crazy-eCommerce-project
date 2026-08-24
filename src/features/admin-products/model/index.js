@@ -14,6 +14,7 @@ import {
   normalizeText,
   parsePage,
   safeJsonParse,
+  getProductImageUrl,
 } from "@/shared/lib";
 
 import { ensureAdminAction } from "@/features/admin-common";
@@ -67,13 +68,14 @@ async function syncProductCard({ tx, variantId }) {
   if (!variant) return;
 
   const product = variant.products;
-  const imageUrl =
+  const rawImageUrl =
     variant.product_images[0]?.url ||
     (await tx.product_images.findFirst({
       where: { product_id: product.id, variant_id: null },
       orderBy: [{ position: "asc" }, { id: "asc" }],
     }))?.url ||
-    "/icons/product-placeholder.svg";
+    "";
+  const imageUrl = getProductImageUrl(rawImageUrl);
 
   await tx.product_cards.upsert({
     where: { variant_id: variant.id },
@@ -280,7 +282,7 @@ export async function getAdminProducts(searchParams = {}) {
         status: product.status,
         categoryName: product.categories?.name || "Uncategorized",
         categoryId: product.category_id ? Number(product.category_id) : null,
-        imageUrl: product.product_images[0]?.url || "/icons/product-placeholder.svg",
+        imageUrl: getProductImageUrl(product.product_images[0]?.url),
         variantsCount: product.product_variants.length,
         totalStock,
         minPrice,
