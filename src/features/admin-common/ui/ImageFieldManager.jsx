@@ -39,7 +39,7 @@ const ImageFieldManager = ({
         <div>
           <h3 className="text-sm font-semibold text-text">{title}</h3>
           <p className="mt-1 text-sm leading-6 text-unactive-text">
-            Images upload directly to the local server filesystem and stay attached to this record until you replace or archive them.
+            Images upload directly to cloud storage and stay attached to this record until you replace or archive them.
           </p>
         </div>
         <label className="inline-flex cursor-pointer items-center gap-2 rounded-2xl border border-dashed border-border bg-surface px-4 py-3 text-sm text-text transition duration-200 hover:border-primary/50 hover:bg-[var(--admin-panel-muted)]">
@@ -58,7 +58,7 @@ const ImageFieldManager = ({
       <div className="grid gap-3 rounded-[24px] border border-border/60 bg-[var(--admin-panel-muted)]/62 p-4 md:grid-cols-3">
         <div className="rounded-[18px] bg-white/55 px-4 py-3 dark:bg-white/[0.03]">
           <p className="text-xs uppercase tracking-[0.18em] text-unactive-text">Storage</p>
-          <p className="mt-1 text-sm font-medium text-text">Local server disk</p>
+          <p className="mt-1 text-sm font-medium text-text">Cloud storage</p>
         </div>
         <div className="rounded-[18px] bg-white/55 px-4 py-3 dark:bg-white/[0.03]">
           <p className="text-xs uppercase tracking-[0.18em] text-unactive-text">Formats</p>
