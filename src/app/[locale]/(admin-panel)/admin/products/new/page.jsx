@@ -12,11 +12,9 @@ export default async function NewProductPage() {
   const { categories } = await getAdminProductFilters();
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-8 lg:space-y-10">
       <SectionTitle
-        eyebrow="Catalog creation"
         title="New product"
-        description="Start with the core record, then add purchasable variants from the product detail view."
       />
       <ProductEditorForm mode="create" categories={categories} createAction={createProductAction} />
     </div>

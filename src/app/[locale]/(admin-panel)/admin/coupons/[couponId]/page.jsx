@@ -26,19 +26,16 @@ export default async function CouponDetailPage({ params }) {
   return (
     <div className="space-y-8 lg:space-y-10">
       <SectionTitle
-        eyebrow="Promotion detail"
         title={coupon.coupon_code}
-        description={`Used ${coupon.times_used || 0} times${coupon.expires_at ? `, expires ${formatDateTime(coupon.expires_at)}` : " with no expiration set yet"}.`}
       />
 
       <div className="grid gap-6 xl:grid-cols-[1.25fr_0.85fr] 2xl:gap-7">
         <CouponEditorForm mode="edit" coupon={coupon} updateAction={updateCouponAction} />
 
-        <div className="space-y-6">
+        <div className="space-y-8 lg:space-y-10">
           <Card>
             <CardHeader>
               <CardTitle>Extend expiration</CardTitle>
-              <CardDescription>Update the coupon lifetime without touching the rest of the rule set.</CardDescription>
             </CardHeader>
             <CardContent>
               <form action={extendCouponExpirationAction} className="space-y-3">
@@ -56,7 +53,6 @@ export default async function CouponDetailPage({ params }) {
           <Card>
             <CardHeader>
               <CardTitle>Delete coupon</CardTitle>
-              <CardDescription>Soft delete preserves order history and reporting references.</CardDescription>
             </CardHeader>
             <CardContent>
               <form action={softDeleteCouponAction}>

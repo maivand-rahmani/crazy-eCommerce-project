@@ -29,9 +29,7 @@ export default async function ProductsPage({ searchParams }) {
   return (
     <div className="space-y-8 lg:space-y-10">
       <SectionTitle
-        eyebrow="Catalog controls"
         title="Products"
-        description="Manage product records, monitor stock posture, and jump directly into variant-level editing."
         action={<Link href="/admin/products/new" className="inline-flex h-10 items-center justify-center rounded-xl bg-primary px-4 text-sm font-medium text-primary-text transition duration-200 hover:bg-primary/90">Create product</Link>}
       />
 
@@ -46,10 +44,7 @@ export default async function ProductsPage({ searchParams }) {
       ) : (
         <Card>
           <CardHeader>
-            <CardTitle>Product table</CardTitle>
-            <CardDescription>
-              Showing {productsResult.pagination.total} catalog records across status, category, and stock filters.
-            </CardDescription>
+            <CardTitle>Products ({productsResult.pagination.total})</CardTitle>
           </CardHeader>
           <CardContent className="space-y-6">
             <Table>

@@ -28,9 +28,7 @@ export default async function UserDetailPage({ params }) {
   return (
     <div className="space-y-8 lg:space-y-10">
       <SectionTitle
-        eyebrow="Customer profile"
         title={user.name || user.email}
-        description="Review addresses, order activity, account role, and access controls for this user."
       />
 
       <div className="grid gap-6 xl:grid-cols-[1.2fr_0.95fr] 2xl:gap-7">
@@ -69,7 +67,6 @@ export default async function UserDetailPage({ params }) {
           <Card>
             <CardHeader>
               <CardTitle>Addresses</CardTitle>
-              <CardDescription>Stored in the current JSON address book field.</CardDescription>
             </CardHeader>
             <CardContent className="space-y-3">
               {user.addresses?.length > 0 ? (
@@ -92,7 +89,6 @@ export default async function UserDetailPage({ params }) {
           <Card>
             <CardHeader>
               <CardTitle>Order history</CardTitle>
-              <CardDescription>Recent purchases tied to this account.</CardDescription>
             </CardHeader>
             <CardContent className="space-y-3">
               {user.orders.length > 0 ? (

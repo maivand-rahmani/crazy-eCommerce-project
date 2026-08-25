@@ -20,13 +20,9 @@ export default async function Page() {
 
   return (
     <div className="space-y-8 lg:space-y-10">
-      <SectionTitle
-        eyebrow="Operations overview"
-        title="Admin dashboard"
-        description="Track order flow, revenue momentum, and catalog pressure points from a single production-ready control plane."
-      />
+      <SectionTitle title="Dashboard" />
 
-      <div className="grid gap-5 xl:grid-cols-4 2xl:gap-6">
+      <div className="grid gap-6 xl:grid-cols-4 2xl:gap-8">
         <StatCard
           icon={ShoppingCart}
           label="Total orders"
@@ -54,13 +50,10 @@ export default async function Page() {
         />
       </div>
 
-      <div className="grid gap-6 xl:grid-cols-[1.5fr_0.98fr] 2xl:gap-7">
+      <div className="grid gap-8 xl:grid-cols-[1.5fr_0.98fr] 2xl:gap-9">
         <Card>
           <CardHeader>
             <CardTitle>Sales over time</CardTitle>
-            <CardDescription>
-              Daily paid and fulfilled order totals over the last {30} days.
-            </CardDescription>
           </CardHeader>
           <CardContent className="pt-2">
             <AdminSalesChart data={dashboard.salesSeries} />
@@ -71,7 +64,6 @@ export default async function Page() {
           <CardHeader className="flex flex-row items-end justify-between gap-4">
             <div>
               <CardTitle>Low stock products</CardTitle>
-              <CardDescription>Prioritize purchasing or merchandising recovery.</CardDescription>
             </div>
             <Link href="/admin/products" className="text-sm font-medium text-primary hover:underline">
               Open inventory
@@ -109,7 +101,6 @@ export default async function Page() {
         <CardHeader className="flex flex-row items-end justify-between gap-4">
           <div>
             <CardTitle>Latest orders</CardTitle>
-            <CardDescription>Monitor the newest transactions and update statuses fast.</CardDescription>
           </div>
           <Link href="/admin/orders" className="text-sm font-medium text-primary hover:underline">
             View all orders

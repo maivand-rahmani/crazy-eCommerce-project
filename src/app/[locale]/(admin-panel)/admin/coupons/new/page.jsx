@@ -10,11 +10,9 @@ export const metadata = {
 
 export default function NewCouponPage() {
   return (
-    <div className="space-y-6">
+    <div className="space-y-8 lg:space-y-10">
       <SectionTitle
-        eyebrow="Promotion design"
         title="New coupon"
-        description="Create fixed amount or percentage discounts with operational controls." 
       />
       <CouponEditorForm mode="create" createAction={createCouponAction} />
     </div>

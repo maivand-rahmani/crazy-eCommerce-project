@@ -17,11 +17,9 @@ export default async function NewVariantPage({ params }) {
   }
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-8 lg:space-y-10">
       <SectionTitle
-        eyebrow="SKU creation"
         title={`New variant for ${product.name}`}
-        description="Set price, stock, selling options, and dedicated imagery for this purchasable SKU."
       />
       <VariantEditorForm
         mode="create"

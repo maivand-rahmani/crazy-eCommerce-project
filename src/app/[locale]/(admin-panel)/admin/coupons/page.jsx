@@ -19,9 +19,7 @@ export default async function CouponsPage({ searchParams }) {
   return (
     <div className="space-y-8 lg:space-y-10">
       <SectionTitle
-        eyebrow="Promotions"
         title="Coupons"
-        description="Create discounts, extend expirations, and retire promotions without losing reporting context."
         action={<Link href="/admin/coupons/new" className="inline-flex h-10 items-center justify-center rounded-xl bg-primary px-4 text-sm font-medium text-primary-text transition duration-200 hover:bg-primary/90">Create coupon</Link>}
       />
 
@@ -46,10 +44,7 @@ export default async function CouponsPage({ searchParams }) {
       ) : (
         <Card>
           <CardHeader>
-            <CardTitle>Coupon registry</CardTitle>
-            <CardDescription>
-              Showing {couponsResult.pagination.total} active or historical coupon records.
-            </CardDescription>
+            <CardTitle>Coupons ({couponsResult.pagination.total})</CardTitle>
           </CardHeader>
           <CardContent className="space-y-6">
             <Table>

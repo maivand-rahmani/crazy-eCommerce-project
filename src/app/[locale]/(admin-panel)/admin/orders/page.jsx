@@ -19,11 +19,7 @@ export default async function OrdersPage({ searchParams }) {
 
   return (
     <div className="space-y-8 lg:space-y-10">
-      <SectionTitle
-        eyebrow="Fulfillment control"
-        title="Orders"
-        description="Search live orders, monitor return activity, and drill down into line-item detail."
-      />
+      <SectionTitle title="Orders" />
 
       <form className="space-y-4">
         <Card>
@@ -68,10 +64,7 @@ export default async function OrdersPage({ searchParams }) {
       ) : (
         <Card>
           <CardHeader>
-            <CardTitle>Orders table</CardTitle>
-            <CardDescription>
-              Showing {ordersResult.pagination.total} total orders across the selected filters.
-            </CardDescription>
+            <CardTitle>Orders ({ordersResult.pagination.total})</CardTitle>
           </CardHeader>
           <CardContent className="space-y-6">
             <Table>
