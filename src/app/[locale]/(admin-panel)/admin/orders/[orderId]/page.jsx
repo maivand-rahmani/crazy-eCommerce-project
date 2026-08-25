@@ -29,9 +29,7 @@ export default async function OrderDetailPage({ params }) {
   return (
     <div className="space-y-8 lg:space-y-10">
       <SectionTitle
-        eyebrow="Order intelligence"
         title={`Order ${order.id.slice(0, 8)}`}
-        description="Review customer, shipping, and line-item data before updating fulfillment or return state."
       />
 
       <div className="grid gap-6 xl:grid-cols-[1.4fr_0.95fr] 2xl:gap-7">
@@ -39,9 +37,6 @@ export default async function OrderDetailPage({ params }) {
           <Card>
             <CardHeader>
               <CardTitle>Order summary</CardTitle>
-              <CardDescription>
-                Created {formatDateTime(order.created_at)} and updated {formatDateTime(order.updated_at)}.
-              </CardDescription>
             </CardHeader>
             <CardContent className="grid gap-4 md:grid-cols-2">
               <div className="rounded-[24px] border border-border/70 bg-[var(--admin-panel-muted)]/72 p-5 shadow-[0_18px_38px_-30px_rgba(15,23,42,0.35)]">
@@ -64,7 +59,6 @@ export default async function OrderDetailPage({ params }) {
           <Card>
             <CardHeader>
               <CardTitle>Order items</CardTitle>
-              <CardDescription>Line items included in the order.</CardDescription>
             </CardHeader>
             <CardContent className="space-y-4">
               {order.order_items.map((item) => (

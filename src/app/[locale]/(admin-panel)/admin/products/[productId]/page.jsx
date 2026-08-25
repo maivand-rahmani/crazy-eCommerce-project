@@ -37,9 +37,7 @@ export default async function ProductDetailPage({ params }) {
   return (
     <div className="space-y-8 lg:space-y-10">
       <SectionTitle
-        eyebrow="Product record"
         title={product.name}
-        description="Maintain product metadata, then manage variants from the table below."
         action={<Link href={`/admin/products/${product.id}/variants/new`} className="inline-flex h-10 items-center justify-center gap-2 rounded-xl bg-primary px-4 text-sm font-medium text-primary-text transition duration-200 hover:bg-primary/90"><Plus className="h-4 w-4" />Add variant</Link>}
       />
 
@@ -54,7 +52,6 @@ export default async function ProductDetailPage({ params }) {
         <Card>
           <CardHeader>
             <CardTitle>Stock overview</CardTitle>
-            <CardDescription>Live inventory posture across every active variant.</CardDescription>
           </CardHeader>
           <CardContent className="space-y-5">
             <div className="rounded-[24px] border border-border/70 bg-[var(--admin-panel-muted)]/72 p-5 shadow-[0_18px_38px_-30px_rgba(15,23,42,0.35)]">
@@ -104,7 +101,6 @@ export default async function ProductDetailPage({ params }) {
       <Card>
         <CardHeader>
           <CardTitle>Variants</CardTitle>
-          <CardDescription>Open a variant to edit price, stock, images, and per-SKU specs.</CardDescription>
         </CardHeader>
         <CardContent className="space-y-6">
           {product.product_variants.length > 0 ? (

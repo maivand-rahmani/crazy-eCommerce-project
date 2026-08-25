@@ -18,11 +18,7 @@ export default async function UsersPage({ searchParams }) {
 
   return (
     <div className="space-y-8 lg:space-y-10">
-      <SectionTitle
-        eyebrow="Identity operations"
-        title="Users"
-        description="Search by email, inspect order history, and control account state without leaving the admin workspace."
-      />
+      <SectionTitle title="Users" />
 
       <form className="space-y-4">
         <Card>
@@ -57,10 +53,7 @@ export default async function UsersPage({ searchParams }) {
       ) : (
         <Card>
           <CardHeader>
-            <CardTitle>Users table</CardTitle>
-            <CardDescription>
-              Showing {usersResult.pagination.total} customer and admin accounts.
-            </CardDescription>
+            <CardTitle>Users ({usersResult.pagination.total})</CardTitle>
           </CardHeader>
           <CardContent className="space-y-6">
             <Table>

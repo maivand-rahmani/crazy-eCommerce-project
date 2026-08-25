@@ -102,8 +102,8 @@
   --admin-danger: #b91c1c;
   --admin-success: #0f766e;
   --admin-shell-max: 1600px;
-  --admin-shell-gap: 24px;
-  --admin-content-gap: 28px;
+  --admin-shell-gap: 32px;
+  --admin-content-gap: 36px;
   --admin-card-radius: 28px;
   --admin-card-radius-lg: 34px;
   --admin-card-padding: 28px;

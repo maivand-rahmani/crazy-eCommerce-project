@@ -17,11 +17,9 @@ export default async function VariantDetailPage({ params }) {
   }
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-8 lg:space-y-10">
       <SectionTitle
-        eyebrow="SKU detail"
         title={variant.variant_name || "Variant editor"}
-        description={`Manage inventory, media, and spec payload for ${variant.products?.name || "this product"}.`}
       />
       <VariantEditorForm
         mode="edit"
