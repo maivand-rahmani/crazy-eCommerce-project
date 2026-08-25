@@ -5,14 +5,21 @@ const s3PublicUrl = new URL(
   process.env.NEXT_PUBLIC_S3_PUBLIC_URL ||
     "https://s3.ru1.storage.beget.cloud/5427be431039-dev",
 );
-const s3ProductPrefix = process.env.NEXT_PUBLIC_S3_PRODUCT_PREFIX || "products";
+const s3Pathname = s3PublicUrl.pathname.replace(/\/$/, "");
+const s3Protocol = s3PublicUrl.protocol === "http:" ? "http" : "https";
 
 const nextConfig: NextConfig = {
   compiler: {
     styledComponents: true,
   },
-  
-   
+
+  experimental: {
+    serverActions: {
+      // Allow multipart requests with several images (up to 5MB per file).
+      bodySizeLimit: "25mb",
+    },
+  },
+
   images: {
     remotePatterns: [
       {
@@ -21,10 +28,10 @@ const nextConfig: NextConfig = {
         pathname: "/**",
       },
       {
-        protocol: "https",
-        hostname: "s3.ru1.storage.beget.cloud",
-        pathname: "/**"
-      }
+        protocol: s3Protocol,
+        hostname: s3PublicUrl.hostname,
+        pathname: `${s3Pathname}/**`,
+      },
     ],
   },
   eslint: {
