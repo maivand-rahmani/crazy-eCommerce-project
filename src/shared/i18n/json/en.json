@@ -15,7 +15,6 @@
       "account": "Account"
     }
   },
-
   "hero": {
     "tagline": "Pro.Beyond.",
     "title": "IPhone 17",
@@ -23,7 +22,6 @@
     "subtitle": "Created to change everything for the better. For everyone.",
     "cta": "Shop Now"
   },
-
   "promotions": {
     "playstation": {
       "title": "PlayStation 5 Pro",
@@ -41,7 +39,6 @@
       "cta": "Shop Now"
     }
   },
-
   "categories": {
     "title": "Browse By Category",
     "list": {
@@ -107,7 +104,6 @@
     },
     "mapPlaceholder": "[ Google Map Placeholder ]"
   },
-
   "footer": {
     "logo": "Cyber",
     "tagline": "Dive into the future. Explore, innovate, connect.",
@@ -123,7 +119,6 @@
     },
     "copyright": "© 2025 Cyber. All rights reserved."
   },
-
   "home": {
     "featuredProducts": "Featured Products",
     "BrowseByCategory": "Browse By Category",
@@ -132,7 +127,6 @@
     "productsShowcase": "Product Showcase",
     "recentlyViewedEmpty": "Open a few product pages and they will appear here."
   },
-
   "cart": {
     "title": "Your shopping cart",
     "addToCart": "Add to cart",
@@ -146,7 +140,6 @@
     },
     "items": "items"
   },
-
   "orderSummary": {
     "title": "Order summary",
     "subtotal": "Subtotal",
@@ -155,7 +148,6 @@
     "checkout": "Checkout",
     "order": "Order"
   },
-
   "coupon": {
     "label": "Discount code / Promo code",
     "placeholder": "Code",
@@ -164,7 +156,6 @@
     "invalid": "the coupon is invalid!",
     "activeCode": "Active code"
   },
-
   "auth": {
     "login": {
       "title": "Login to your account",
@@ -199,7 +190,6 @@
     },
     "orContinueWith": "Or continue with"
   },
-
   "wishlist": {
     "title": "WishList",
     "empty": {
@@ -208,7 +198,6 @@
       "cta": "To catalog"
     }
   },
-
   "orders": {
     "title": "My Orders",
     "status": {
@@ -295,7 +284,6 @@
       }
     }
   },
-
   "product": {
     "notFound": "Product not found",
     "buyNow": "Buy Now",
@@ -322,7 +310,6 @@
     },
     "details": "Details"
   },
-
   "comments": {
     "loginRequired": "You must be logged in to post a comment.",
     "count": "comments",
@@ -342,14 +329,12 @@
       "somethingWrong": "Something gone wrong"
     }
   },
-
   "rating": {
     "noRatings": "No ratings yet.",
     "basedOn": "Based on",
     "reviews": "reviews",
     "median": "median"
   },
-
   "payment": {
     "title": "Payment Details",
     "summary": "Order Summary",
@@ -383,7 +368,6 @@
       "cvvPattern": "CVV must be 3 or 4 digits"
     }
   },
-
   "address": {
     "add": "Add Address",
     "update": "Update Address",
@@ -422,7 +406,6 @@
     "addFirst": "Add your first address",
     "default": "Default"
   },
-
   "orderModal": {
     "steps": {
       "addresses": "Addresses",
@@ -437,7 +420,6 @@
     "redirecting": "Redirecting to your orders...",
     "pleaseWait": "Please wait while we process your order"
   },
-
   "common": {
     "loading": "Loading...",
     "order": "Order",
@@ -452,20 +434,17 @@
     "noImage": "No Image",
     "notAvailable": "N/A"
   },
-
   "errors": {
     "network": "Network error. Please check your connection and try again.",
     "server": "Server error. Please try again later.",
     "validation": "Validation error. Please check your input and try again.",
     "unknown": "An unknown error occurred. Please try again.",
-    "somethingWrong": "Something gone wrong. Please try again." ,
+    "somethingWrong": "Something gone wrong. Please try again.",
     "isDefault": "Only one address can be set as default. Please unset the current default address before setting a new one."
   },
-
   "notFound": {
     "title": "404 - Page Not Found"
   },
-
   "account": {
     "profile": "profile",
     "orders": "orders",
@@ -483,7 +462,6 @@
     "addFirst": "Add your first address",
     "noAddresses": "No addresses added yet"
   },
-
   "filter": {
     "priceRange": "Price Range",
     "min": "Min",
@@ -491,29 +469,24 @@
     "reset": "Reset",
     "filters": "Filters"
   },
-
   "oauth": {
     "continueWithGoogle": "Continue with Google",
     "continueWithGithub": "Continue with GitHub"
   },
-
   "userInfo": {
     "title": "User Info",
     "name": "Name",
     "email": "Email",
     "logout": "Logout"
   },
-
   "contactLabels": {
     "address": "Address",
     "email": "Email",
     "phone": "Phone"
   },
-
   "productDetails": {
     "relatedProducts": "Related Products"
   },
-
   "search": {
     "title": "Search Products",
     "resultsFor": "Results for \"{query}\"",
@@ -537,11 +510,9 @@
     "showingResults": "Showing {count} of {total} results",
     "retry": "Try Again"
   },
-
   "banner": {
     "shopNow": "Shop now"
   },
-
   "homeBanners": {
     "airpods": {
       "title": "AirPods Pro",
@@ -565,7 +536,6 @@
       "description": "Apple Watch is a smartwatch developed and marketed by Apple. It has fitness tracking, health-oriented capabilities, and wireless telecommunication, and integrates with watchOS and other Apple products and services."
     }
   },
-
   "settings": {
     "title": "Settings",
     "subtitle": "Manage your profile, addresses, preferences and security.",
@@ -589,7 +559,15 @@
       "saveError": "Failed to save profile",
       "loadError": "Failed to load profile",
       "memberSince": "Member since",
-      "lastUpdated": "Last updated"
+      "lastUpdated": "Last updated",
+      "uploadAvatar": "Avatar",
+      "upload": "Upload",
+      "uploading": "Uploading…",
+      "uploadSuccess": "Avatar uploaded",
+      "uploadError": "Failed to upload avatar",
+      "avatarTooLarge": "Avatar must be 5MB or smaller",
+      "avatarInvalidType": "Only JPG, PNG, and WebP images are supported",
+      "avatarPreview": "Avatar preview"
     },
     "addresses": {
       "title": "My Addresses",

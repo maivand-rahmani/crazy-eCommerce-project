@@ -1,1 +1,1 @@
-export { deleteS3Image, uploadS3Image } from "./s3Uploads";
+export { deleteS3Image, uploadS3Image, uploadAvatarImage, deleteAvatarImage } from "./s3Uploads";

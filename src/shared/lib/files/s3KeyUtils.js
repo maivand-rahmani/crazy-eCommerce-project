@@ -1,4 +1,5 @@
 const DEFAULT_PRODUCT_PREFIX = "products";
+const DEFAULT_AVATAR_PREFIX = "users/icons";
 
 const ALLOWED_IMAGE_EXTENSIONS = {
   "image/jpeg": ".jpg",
@@ -24,6 +25,19 @@ export function normalizeEndpoint(endpoint) {
  */
 export function getProductPrefix(env = process.env) {
   return `${env.NEXT_PUBLIC_S3_PRODUCT_PREFIX || DEFAULT_PRODUCT_PREFIX}`.replace(
+    /^\/+|\/+$/g,
+    "",
+  );
+}
+
+/**
+ * Returns the configured avatar image prefix (env-driven, no leading/trailing
+ * slashes). Falls back to "users/icons".
+ * @param {NodeJS.ProcessEnv} [env]
+ * @returns {string}
+ */
+export function getAvatarPrefix(env = process.env) {
+  return `${env.NEXT_PUBLIC_S3_AVATAR_PREFIX || DEFAULT_AVATAR_PREFIX}`.replace(
     /^\/+|\/+$/g,
     "",
   );

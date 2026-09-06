@@ -6,6 +6,7 @@ import crypto from "node:crypto";
 import {
   buildS3Key,
   extractS3Key,
+  getAvatarPrefix,
   getImageExtension,
   getProductPrefix,
   normalizeEndpoint,
@@ -108,6 +109,78 @@ export async function deleteS3Image(storedValue) {
   const key = extractS3Key(storedValue, {
     publicUrl: process.env.NEXT_PUBLIC_S3_PUBLIC_URL,
     prefix: getProductPrefix(),
+  });
+
+  if (!key) return;
+
+  const { bucket } = getRequiredEnv();
+  const client = getS3Client();
+
+  await client.send(
+    new DeleteObjectCommand({
+      Bucket: bucket,
+      Key: key,
+    }),
+  );
+}
+
+/**
+ * Uploads a user avatar File to the configured S3 bucket and returns the
+ * object key (e.g. `users/icons/<userId>/<uuid>.jpg`). The key is built from
+ * the configured NEXT_PUBLIC_S3_AVATAR_PREFIX plus the provided user segment,
+ * so the prefix is never hardcoded here. Same JPG/PNG/WebP validation as
+ * product images.
+ *
+ * @param {File} file - Web File with a supported image MIME type.
+ * @param {*} userId - User id used as a key segment.
+ * @returns {Promise<string>} The stored S3 object key.
+ */
+export async function uploadAvatarImage(file, userId) {
+  if (!file || typeof file.arrayBuffer !== "function") {
+    throw new Error("Invalid image file.");
+  }
+
+  const extension = getImageExtension(file.type);
+  if (!extension) {
+    throw new Error("Only JPG, PNG, and WebP images are supported.");
+  }
+
+  const { bucket } = getRequiredEnv();
+  const client = getS3Client();
+
+  const body = Buffer.from(await file.arrayBuffer());
+  const key = buildS3Key({
+    prefix: getAvatarPrefix(),
+    segments: [userId],
+    fileName: `${crypto.randomUUID()}${extension}`,
+  });
+
+  await client.send(
+    new PutObjectCommand({
+      Bucket: bucket,
+      Key: key,
+      Body: body,
+      ContentType: file.type,
+      ContentLength: body.length,
+    }),
+  );
+
+  return key;
+}
+
+/**
+ * Deletes a user avatar S3 object by its stored key or public URL. Only keys
+ * under the configured avatar prefix of the configured bucket are ever
+ * deleted; legacy local `/uploads` paths and foreign absolute URLs are
+ * skipped (best-effort cleanup).
+ *
+ * @param {string} storedValue - Stored key or public URL.
+ * @returns {Promise<void>}
+ */
+export async function deleteAvatarImage(storedValue) {
+  const key = extractS3Key(storedValue, {
+    publicUrl: process.env.NEXT_PUBLIC_S3_PUBLIC_URL,
+    prefix: getAvatarPrefix(),
   });
 
   if (!key) return;
