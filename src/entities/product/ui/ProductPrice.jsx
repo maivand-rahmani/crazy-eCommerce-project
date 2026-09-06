@@ -1,7 +1,8 @@
 import React from "react";
 import { getProductPriceInfo } from "../lib/productMeta";
+import { formatMoney } from "@/shared/lib/currency";
 
-const defaultFormatPrice = (priceCents) => `${priceCents / 100}`;
+const defaultFormatPrice = (priceCents) => formatMoney(priceCents, "en");
 
 const ProductPrice = ({
   priceCents,
