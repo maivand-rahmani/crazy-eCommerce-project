@@ -4,59 +4,36 @@ import { useEffect, useState } from "react";
 import Image from "next/image";
 import { useSession } from "next-auth/react";
 import { useTranslations } from "next-intl";
-import { Fetch } from "@/shared/lib/fetch";
 import { Miniloader } from "@/shared";
 import { BadgeCheck, Pencil } from "lucide-react";
 import toast from "react-hot-toast";
+import { useUserProfile } from "../hooks/useUserProfile";
 
 export default function AccountSection() {
   const t = useTranslations("settings.account");
-  const { data: session, update } = useSession();
-  const [profile, setProfile] = useState(null);
-  const [loading, setLoading] = useState(true);
+  const { data: session } = useSession();
+  const { profile, loading, saveProfile } = useUserProfile();
   const [editing, setEditing] = useState(false);
   const [saving, setSaving] = useState(false);
   const [name, setName] = useState("");
   const [image, setImage] = useState("");
 
   useEffect(() => {
-    const load = async () => {
-      try {
-        const res = await Fetch("/api/user/profile", "GET");
-        if (res?.data) {
-          setProfile(res.data);
-          setName(res.data.name || "");
-          setImage(res.data.image || "");
-        }
-      } catch (error) {
-        console.error("Failed to load profile:", error);
-        toast.error(t("loadError"));
-      } finally {
-        setLoading(false);
-      }
-    };
-    load();
-  }, []);
+    if (profile) {
+      setName(profile.name || "");
+      setImage(profile.image || "");
+    }
+  }, [profile]);
 
   const handleSave = async () => {
     setSaving(true);
     try {
-      const res = await Fetch("/api/user/profile", "PATCH", {
-        name: name.trim(),
-        image: image.trim(),
-      });
-      if (res?.data) {
-        setProfile((p) => ({ ...p, ...res.data }));
-        setEditing(false);
-        // Refresh the NextAuth session so header/avatar update everywhere.
-        await update({ name: res.data.name, image: res.data.image });
-        toast.success(t("saveSuccess"));
-      } else {
-        toast.error(res?.error || t("saveError"));
-      }
+      await saveProfile({ name, image });
+      setEditing(false);
+      toast.success(t("saveSuccess"));
     } catch (error) {
       console.error("Failed to save profile:", error);
-      toast.error(t("saveError"));
+      toast.error(error?.message === "saveError" ? t("saveError") : String(error?.message || t("saveError")));
     } finally {
       setSaving(false);
     }

@@ -11,6 +11,7 @@ import toast from "react-hot-toast";
 export default function AddressesSection() {
   const t = useTranslations("settings.addresses");
   const tAddr = useTranslations("address");
+  const tCommon = useTranslations("common");
   const [addresses, setAddresses] = useState([]);
   const [loading, setLoading] = useState(true);
   const [modal, setModal] = useState(null); // null | "add" | address object for edit
@@ -69,11 +70,11 @@ export default function AddressesSection() {
         toast.success(tAddr("updated"));
         await load();
       } else {
-        toast.error(tAddr("errors.somethingWentWrong"));
+        toast.error(tAddr("errors.isDefault"));
       }
     } catch (error) {
       console.error("Failed to set default address:", error);
-      toast.error(tAddr("errors.somethingWentWrong"));
+      toast.error(tCommon("error"));
     } finally {
       setBusyId(null);
     }
