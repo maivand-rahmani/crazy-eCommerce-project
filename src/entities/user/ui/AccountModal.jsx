@@ -30,14 +30,15 @@ export const UserInfoModal = () => {
     return (
       <button
         onClick={() => router.push("/auth")}
-        className="overflow-hidden rounded-full border border-border/60 bg-background/80 p-1.5 shadow-sm transition-all duration-200 hover:border-border hover:bg-card hover:shadow-md"
+        aria-label={t("title")}
+        className="flex h-10 w-10 items-center justify-center overflow-hidden rounded-full border border-border/60 bg-background/70 shadow-sm transition-all duration-200 hover:-translate-y-0.5 hover:border-border hover:bg-card hover:shadow-md"
       >
         <img
           src="/icons/profile-circle-svgrepo-com.svg"
           alt="profile"
-          width={25}
-          height={25}
-          className="rounded-full opacity-90"
+          width={26}
+          height={26}
+          className="h-full w-full rounded-full object-cover opacity-90"
         />
       </button>
     );
@@ -45,13 +46,13 @@ export const UserInfoModal = () => {
 
   return (
     <Dropdown.Root>
-      <Dropdown.DotsButton className="overflow-hidden rounded-full border border-border/60 bg-background/80 p-1.5 shadow-sm transition-all duration-200 hover:border-border hover:bg-card hover:shadow-md">
+      <Dropdown.DotsButton className="flex h-10 w-10 items-center justify-center overflow-hidden rounded-full border border-border/60 bg-background/70 shadow-sm transition-all duration-200 hover:-translate-y-0.5 hover:border-border hover:bg-card hover:shadow-md">
         <Image
           src={user.image || "/icons/profile-circle-svgrepo-com.svg"}
           alt="profile"
-          width={25}
-          height={25}
-          className="rounded-full object-cover"
+          width={26}
+          height={26}
+          className="h-full w-full rounded-full object-cover"
         />
       </Dropdown.DotsButton>
 

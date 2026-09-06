@@ -26,14 +26,14 @@ const WishlistButton = () => {
   return (
     <Link
       href="/wishlist"
-      className={`relative flex h-12 w-12 items-center justify-center rounded-2xl border border-border/60 shadow-sm transition-all duration-200 hover:-translate-y-0.5 hover:border-border hover:bg-card hover:text-text hover:shadow-md ${
-        isActive ? "bg-button text-button-text" : "bg-card/70 text-muted"
+      className={`relative flex h-10 w-10 items-center justify-center rounded-full border border-border/60 shadow-sm transition-all duration-200 hover:-translate-y-0.5 hover:border-border hover:bg-card hover:text-text hover:shadow-md ${
+        isActive ? "bg-button text-button-text" : "bg-background/70 text-muted"
       }`}
     >
       {wishlist.length > 0 && (
-        <div className="absolute right-3 top-3 h-2 w-2 rounded-full bg-button"></div>
+        <div className="absolute right-2 top-2 h-2 w-2 rounded-full bg-button"></div>
       )}
-      <Heart className="h-5 w-5" />
+      <Heart className="h-4.5 w-4.5" />
     </Link>
   );
 };
