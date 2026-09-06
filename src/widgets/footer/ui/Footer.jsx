@@ -1,6 +1,6 @@
 "use client";
 import React, { useEffect, useState } from "react";
-import { Facebook, Instagram, Twitter } from "lucide-react";
+import { Facebook, Instagram, Twitter, Mail, Phone, MapPin } from "lucide-react";
 import { Link } from "@/shared/i18n";
 import { useTranslations } from "next-intl";
 import { DEFAULT_SETTINGS } from "@/features/admin-settings/model/defaults";
@@ -16,11 +16,13 @@ const Footer = () => {
   }, []);
   const storeName = settings?.storeName ?? DEFAULT_SETTINGS["store.name"] ?? t("logo");
   const tagline = settings?.storeTagline ?? DEFAULT_SETTINGS["store.tagline"] ?? t("tagline");
+  const contactEmail = settings?.contactEmail ?? DEFAULT_SETTINGS["contact.email"];
+  const contactPhone = settings?.contactPhone ?? DEFAULT_SETTINGS["contact.phone"];
+  const contactAddress = settings?.contactAddress ?? DEFAULT_SETTINGS["contact.address"];
 
   const navLinks = [
     { label: t("nav.home"), href: "/" },
     { label: t("nav.products"), href: "/catalog" },
-    { label: t("nav.contacts"), href: "/contact" },
     { label: t("nav.about"), href: "/about" },
   ];
 
@@ -34,7 +36,7 @@ const Footer = () => {
     <footer className="relative mt-24 overflow-hidden border-t border-border/60 bg-background text-text">
       <div className="absolute inset-x-0 top-0 h-px bg-linear-to-r from-transparent via-border to-transparent" />
       <div className="mx-auto max-w-7xl px-6 py-14 lg:px-8">
-        <div className="grid gap-10 lg:grid-cols-[minmax(0,1.4fr)_minmax(220px,0.9fr)_minmax(220px,0.9fr)]">
+        <div className="grid gap-10 lg:grid-cols-[minmax(0,1.3fr)_minmax(150px,0.7fr)_minmax(230px,1fr)_minmax(180px,0.7fr)]">
           <div className="space-y-5">
             <Link
               href="/"
@@ -62,6 +64,50 @@ const Footer = () => {
                 </Link>
               ))}
             </nav>
+          </div>
+
+          <div className="space-y-4">
+            <h2 className="text-sm font-semibold uppercase tracking-[0.24em] text-muted">
+              {t("contact.title")}
+            </h2>
+            <ul className="grid gap-2.5 text-sm">
+              {contactEmail ? (
+                <li>
+                  <a
+                    href={`mailto:${contactEmail}`}
+                    className="inline-flex items-center gap-2 text-muted transition-colors duration-200 hover:text-text"
+                  >
+                    <Mail className="h-4 w-4 shrink-0" />
+                    {contactEmail}
+                  </a>
+                </li>
+              ) : null}
+              {contactPhone ? (
+                <li>
+                  <a
+                    href={`tel:${contactPhone}`}
+                    className="inline-flex items-center gap-2 text-muted transition-colors duration-200 hover:text-text"
+                  >
+                    <Phone className="h-4 w-4 shrink-0" />
+                    {contactPhone}
+                  </a>
+                </li>
+              ) : null}
+              {contactAddress ? (
+                <li>
+                  <span className="inline-flex items-center gap-2 text-muted">
+                    <MapPin className="h-4 w-4 shrink-0" />
+                    {contactAddress}
+                  </span>
+                </li>
+              ) : null}
+            </ul>
+            <Link
+              href="/contact"
+              className="w-fit text-sm font-medium text-primary transition-colors duration-200 hover:text-text"
+            >
+              {t("nav.contacts")}
+            </Link>
           </div>
 
           <div className="space-y-4">
