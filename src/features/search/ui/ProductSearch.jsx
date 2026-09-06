@@ -3,7 +3,8 @@
 import React, { useState, useEffect, useRef } from "react";
 import { Search, X, Star, ArrowRight } from "lucide-react";
 import { useRouter } from "@/shared/i18n/model/routing";
-import { formatPriceFromCents } from "@/entities/product";
+import { useLocale } from "next-intl";
+import { formatMoney } from "@/shared/lib/currency/currency";
 import Image from "next/image";
 import { getProductImageUrl } from "@/shared/lib/images";
 
@@ -20,6 +21,7 @@ export function ProductSearch({
   const [error, setError] = useState(null);
   const inputRef = useRef(null);
   const router = useRouter();
+  const locale = useLocale();
 
   // Debounced search
   useEffect(() => {
@@ -170,8 +172,7 @@ export function ProductSearch({
                         </div>
                       )}
                       <span className="text-lg font-bold text-blue-600">
-                        $
-                        {formatPriceFromCents(product.price_cents || 0, {
+                        {formatMoney(product.price_cents || 0, locale, {
                           minimumFractionDigits: 2,
                           maximumFractionDigits: 2,
                         })}

@@ -5,6 +5,7 @@ import { getMessages } from "next-intl/server";
 import "@/shared/styles/globals.css";
 import { Toaster } from "react-hot-toast";
 import AuthProvider from "@/shared/ui/layout/Provider/AuthProvider";
+import { ThemeProvider } from "@/shared/ui/theme";
 import { AppShell } from "@/widgets/app-shell";
 
 export default async function LocaleLayout({ children, params }) {
@@ -18,7 +19,9 @@ export default async function LocaleLayout({ children, params }) {
           <Analytics />
           <SpeedInsights />
           <AuthProvider>
-            <AppShell>{children}</AppShell>
+            <ThemeProvider>
+              <AppShell>{children}</AppShell>
+            </ThemeProvider>
             <Toaster position="top-center" reverseOrder={true} />
           </AuthProvider>
         </NextIntlClientProvider>

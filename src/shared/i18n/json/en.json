@@ -610,8 +610,13 @@
       "currencyTitle": "Currency",
       "currencyDescription": "Store prices are shown in {currency}. Multi-currency comes with admin settings.",
       "themeTitle": "Theme",
-      "themeDescription": "Dark / light appearance. Available once the theme system lands.",
-      "themeComingSoon": "Coming soon"
+      "themeDescription": "Appearance applied instantly across the whole store and saved on this device.",
+      "themeOptions": {
+        "light": "Light",
+        "dark": "Dark",
+        "vintage": "Vintage",
+        "retro": "Retro"
+      }
     },
     "security": {
       "passwordTitle": "Change Password",

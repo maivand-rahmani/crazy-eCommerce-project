@@ -3,13 +3,14 @@
 import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 import toast from "react-hot-toast";
-import { useTranslations } from "next-intl";
+import { useLocale, useTranslations } from "next-intl";
 
-import { formatPriceFromCents } from "@/entities/product";
+import { formatMoney } from "@/shared/lib/currency/currency";
 import { Fetch } from "@/shared/lib";
 
 const CouponForm = ({ setCoupon = () => {} }) => {
   const t = useTranslations("coupon");
+  const locale = useLocale();
   const {
     register,
     handleSubmit,
@@ -36,10 +37,10 @@ const CouponForm = ({ setCoupon = () => {} }) => {
       setCoupon(data);
 
       toast.success(
-        `${t("applied")} ${formatPriceFromCents(data.summary.discountCents, {
+        `${t("applied")} ${formatMoney(data.summary.discountCents, locale, {
           minimumFractionDigits: 2,
           maximumFractionDigits: 2,
-        })}$`,
+        })}`,
       );
     } catch (error) {
       const message = error instanceof Error ? error.message : t("invalid");

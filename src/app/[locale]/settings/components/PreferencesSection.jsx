@@ -1,8 +1,10 @@
 "use client";
 
-import { useTranslations } from "next-intl";
+import { useLocale, useTranslations } from "next-intl";
 import { LangSwitcher } from "@/shared/i18n";
-import { Globe, Banknote, Palette } from "lucide-react";
+import { useTheme, THEMES } from "@/shared/ui/theme";
+import { getCurrencyLabel } from "@/shared/lib/currency/currency";
+import { Globe, Banknote, Palette, Check } from "lucide-react";
 
 function Row({ icon: Icon, title, description, control }) {
   return (
@@ -19,8 +21,44 @@ function Row({ icon: Icon, title, description, control }) {
   );
 }
 
+function ThemeControl() {
+  const t = useTranslations("settings.preferences");
+  const { theme, setTheme } = useTheme();
+
+  return (
+    <div
+      role="radiogroup"
+      aria-label={t("themeTitle")}
+      className="flex flex-wrap gap-2"
+    >
+      {THEMES.map((name) => {
+        const selected = theme === name;
+        return (
+          <button
+            key={name}
+            type="button"
+            role="radio"
+            aria-checked={selected}
+            onClick={() => setTheme(name)}
+            className={`flex items-center gap-1.5 rounded-xl border px-4 py-2 text-sm font-medium transition ${
+              selected
+                ? "border-primary bg-primary/10 text-text"
+                : "border-border/60 text-unactive-text hover:bg-surface hover:text-text"
+            }`}
+          >
+            {selected && <Check className="h-3.5 w-3.5" />}
+            {t(`themeOptions.${name}`)}
+          </button>
+        );
+      })}
+    </div>
+  );
+}
+
 export default function PreferencesSection() {
   const t = useTranslations("settings.preferences");
+  const locale = useLocale();
+  const currencyLabel = getCurrencyLabel(locale);
 
   return (
     <div className="rounded-2xl border border-border/60 bg-card p-6">
@@ -36,10 +74,10 @@ export default function PreferencesSection() {
       <Row
         icon={Banknote}
         title={t("currencyTitle")}
-        description={t("currencyDescription", { currency: "USD ($)" })}
+        description={t("currencyDescription", { currency: currencyLabel })}
         control={
-          <span className="rounded-xl border border-border/60 px-4 py-2 text-sm font-medium text-unactive-text">
-            USD ($)
+          <span className="rounded-xl border border-border/60 px-4 py-2 text-sm font-medium text-text">
+            {currencyLabel}
           </span>
         }
       />
@@ -47,21 +85,8 @@ export default function PreferencesSection() {
         icon={Palette}
         title={t("themeTitle")}
         description={t("themeDescription")}
-        control={
-          <span
-            title="TODO (Phase 2): wire to theme system when it lands"
-            className="cursor-not-allowed rounded-xl border border-border/60 px-4 py-2 text-sm font-medium text-unactive-text opacity-60"
-          >
-            {t("themeComingSoon")}
-          </span>
-        }
+        control={<ThemeControl />}
       />
-      {/*
-        TODO (Phase 2 — admin settings):
-        - Currency becomes editable once admin-controlled store settings land
-          (currently hardcoded "USD ($)" suffix in ProductCard).
-        - Theme toggle wires up once a theme system (e.g. next-themes) exists.
-      */}
     </div>
   );
 }

@@ -2,9 +2,9 @@
 
 import React from "react";
 import { useForm } from "react-hook-form";
-import { useTranslations } from "next-intl";
+import { useLocale, useTranslations } from "next-intl";
 
-import { formatPriceFromCents } from "@/entities/product";
+import { formatMoney } from "@/shared/lib/currency/currency";
 
 const PaymentMockForm = ({
   setStep,
@@ -14,6 +14,7 @@ const PaymentMockForm = ({
   summary = null,
 }) => {
   const t = useTranslations("payment");
+  const locale = useLocale();
   const {
     register,
     handleSubmit,
@@ -72,33 +73,33 @@ const PaymentMockForm = ({
           <div className="flex justify-between">
             <span className="text-unactive-text">{t("subtotal")}:</span>
             <span className="font-medium text-text">
-              ${formatPriceFromCents(orderSummary.subtotalCents, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
+              {formatMoney(orderSummary.subtotalCents, locale, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
             </span>
           </div>
           {orderSummary.discountCents > 0 ? (
             <div className="flex justify-between">
               <span className="text-unactive-text">{t("discount")}:</span>
               <span className="font-medium text-accent">
-                -${formatPriceFromCents(orderSummary.discountCents, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
+                -{formatMoney(orderSummary.discountCents, locale, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
               </span>
             </div>
           ) : null}
           <div className="flex justify-between">
             <span className="text-unactive-text">Shipping:</span>
             <span className="font-medium text-text">
-              ${formatPriceFromCents(orderSummary.shippingCents, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
+              {formatMoney(orderSummary.shippingCents, locale, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
             </span>
           </div>
           <div className="flex justify-between">
             <span className="text-unactive-text">Tax:</span>
             <span className="font-medium text-text">
-              ${formatPriceFromCents(orderSummary.taxCents, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
+              {formatMoney(orderSummary.taxCents, locale, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
             </span>
           </div>
           <div className="flex justify-between border-t border-border pt-2">
             <span className="font-semibold text-text">{t("total")}:</span>
             <span className="text-lg font-bold text-text">
-              ${formatPriceFromCents(orderSummary.totalCents, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
+              {formatMoney(orderSummary.totalCents, locale, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
             </span>
           </div>
           {couponInfo?.code ? (

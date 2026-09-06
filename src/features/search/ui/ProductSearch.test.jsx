@@ -5,6 +5,10 @@ import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import ProductSearch from "./ProductSearch";
 
 const pushMock = vi.fn();
+vi.mock("next-intl", () => ({
+  useLocale: () => "en",
+}));
+
 vi.mock("@/shared/i18n/model/routing", () => ({
   useRouter: () => ({ push: pushMock }),
 }));

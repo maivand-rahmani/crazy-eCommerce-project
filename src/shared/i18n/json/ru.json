@@ -612,8 +612,13 @@
       "currencyTitle": "Валюта",
       "currencyDescription": "Цены показаны в {currency}. Мультивалютность появится с админ-настройками.",
       "themeTitle": "Тема",
-      "themeDescription": "Тёмное / светлое оформление. Будет доступно после появления системы тем.",
-      "themeComingSoon": "Скоро"
+      "themeDescription": "Оформление применяется мгновенно ко всему магазину и сохраняется на этом устройстве.",
+      "themeOptions": {
+        "light": "Светлая",
+        "dark": "Тёмная",
+        "vintage": "Винтаж",
+        "retro": "Ретро"
+      }
     },
     "security": {
       "passwordTitle": "Смена пароля",

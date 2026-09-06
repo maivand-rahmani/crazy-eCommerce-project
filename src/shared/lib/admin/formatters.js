@@ -1,4 +1,5 @@
 import { LOW_STOCK_THRESHOLD } from "./constants";
+import { getCurrencyConfig } from "../currency/currency";
 
 export function parsePage(value, fallback = 1) {
   const page = Number.parseInt(value || `${fallback}`, 10);
@@ -17,11 +18,12 @@ export function buildPagination({ total, page, pageSize }) {
   };
 }
 
-export function formatCurrency(cents) {
+export function formatCurrency(cents, locale) {
+  const config = getCurrencyConfig(locale);
   const value = Number(cents || 0) / 100;
-  return new Intl.NumberFormat("en-US", {
+  return new Intl.NumberFormat(config.intlLocale, {
     style: "currency",
-    currency: "USD",
+    currency: config.code,
     maximumFractionDigits: 2,
   }).format(value);
 }

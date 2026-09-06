@@ -7,6 +7,7 @@ vi.mock("@/shared/lib/fetch", () => ({
 
 vi.mock("next-intl", () => ({
   useTranslations: () => (key) => key,
+  useLocale: () => "en",
 }));
 
 vi.mock("@/shared/i18n/model/routing", () => ({

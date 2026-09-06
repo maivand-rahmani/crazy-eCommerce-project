@@ -3,12 +3,10 @@ import React, { useState, useEffect, use } from "react";
 import { useParams } from "next/navigation";
 import { Link, useRouter } from "@/shared/i18n";
 import { Fetch } from "@/shared/lib";
-import {
-  formatPriceFromCents,
-  getLineItemTotalCents,
-} from "@/entities/product";
+import { getLineItemTotalCents } from "@/entities/product";
+import { formatMoney } from "@/shared/lib/currency/currency";
 import Image from "next/image";
-import { useTranslations } from "next-intl";
+import { useLocale, useTranslations } from "next-intl";
 import { getProductImageUrl } from "@/shared/lib/images";
 
 const RETURN_ELIGIBLE_STATUSES = ["paid", "shipped", "delivered"];
@@ -18,6 +16,7 @@ const OrderDetailPage = () => {
   const t = useTranslations("orders.detail");
   const tStatus = useTranslations("orders.status");
   const tCommon = useTranslations("common");
+  const locale = useLocale();
   const params = useParams();
   const router = useRouter();
   const [order, setOrder] = useState(null);
@@ -51,7 +50,7 @@ const OrderDetailPage = () => {
   }, [params.orderId]);
 
   const formatPrice = (cents) =>
-    formatPriceFromCents(cents, {
+    formatMoney(cents, locale, {
       minimumFractionDigits: 2,
       maximumFractionDigits: 2,
     });
@@ -256,7 +255,7 @@ const OrderDetailPage = () => {
                   {order.coupons.discount_percent &&
                     ` (${order.coupons.discount_percent}% ${t("discountPercent")}`}
                   {order.coupons.discount_amount &&
-                    ` ($${formatPrice(order.coupons.discount_amount)} ${t("discountAmount")}`}
+                    ` (${formatPrice(order.coupons.discount_amount)} ${t("discountAmount")}`}
                 </p>
               </div>
             )}
@@ -323,11 +322,10 @@ const OrderDetailPage = () => {
                       {t("quantity")}: {item.quantity}
                     </p>
                     <p className="font-medium">
-                      ${formatPrice(item.unit_price_cents)}
+                      {formatPrice(item.unit_price_cents)}
                     </p>
                     <p className="text-sm text-gray-600">
-                      {t("total")}: $
-                      {formatPrice(
+                      {t("total")}: {formatPrice(
                         getLineItemTotalCents(
                           item.unit_price_cents,
                           item.quantity,
@@ -349,20 +347,19 @@ const OrderDetailPage = () => {
             <div className="space-y-2">
               <div className="flex justify-between">
                 <span className="text-gray-600">{t("subtotal")}:</span>
-                <span>${formatPrice(order.total_cents)}</span>
+                <span>{formatPrice(order.total_cents)}</span>
               </div>
               {order.coupons && (
                 <div className="flex justify-between text-green-600">
                   <span>{t("discount")}:</span>
                   <span>
-                    -$
-                    {formatPrice(discount)}
+                    -{formatPrice(discount)}
                   </span>
                 </div>
               )}
               <div className="flex justify-between font-semibold text-lg pt-2 border-t">
                 <span>{t("total")}:</span>
-                <span>${formatPrice(finalPrice)}</span>
+                <span>{formatPrice(finalPrice)}</span>
               </div>
             </div>
           </div>

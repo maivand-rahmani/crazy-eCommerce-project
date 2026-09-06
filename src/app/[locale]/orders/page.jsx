@@ -1,14 +1,15 @@
 "use client";
 import React, { useState, useMemo } from "react";
-import { useTranslations } from "next-intl";
+import { useLocale, useTranslations } from "next-intl";
 import { Fetch } from "@/shared/lib/fetch";
 import { Link } from "@/shared/i18n/model/routing";
-import { formatPriceFromCents } from "@/entities/product";
+import { formatMoney } from "@/shared/lib/currency/currency";
 
 const OrdersPage = () => {
   const t = useTranslations("orders");
   const tStatus = useTranslations("orders.status");
   const tSort = useTranslations("orders.sort");
+  const locale = useLocale();
   const [orders, setOrders] = useState([]);
   const [loading, setLoading] = useState(true);
   const [statusFilter, setStatusFilter] = useState("all");
@@ -65,7 +66,7 @@ const OrdersPage = () => {
   };
 
   const formatPrice = (cents) =>
-    formatPriceFromCents(cents, {
+    formatMoney(cents, locale, {
       minimumFractionDigits: 2,
       maximumFractionDigits: 2,
     });
@@ -227,7 +228,7 @@ const OrdersPage = () => {
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap">
                     <span className="text-sm text-text font-medium">
-                      ${formatPrice(order.total_cents)}
+                      {formatPrice(order.total_cents)}
                     </span>
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap">

@@ -1,15 +1,16 @@
 "use client";
 import React, { useState } from "react";
+import { useLocale } from "next-intl";
 import Counter from "../../../features/add-to-cart/ui/counter";
 import DeleteButton from "../../../features/add-to-cart/ui/deleteButton";
 import { handleCartQuantityChange } from "../../../features/add-to-cart/model/handleCartQuantityChangeOnClient";
 import Image from "next/image";
 import {
   ProductPrice,
-  formatPriceFromCents,
   getProductPriceInfo,
 } from "@/entities/product";
 import { getProductImageUrl } from "@/shared/lib/images";
+import { formatMoney } from "@/shared/lib/currency/currency";
 
 const SmallProductCard = ({
   productData,
@@ -18,6 +19,7 @@ const SmallProductCard = ({
 }) => {
   let [quantity, setQuantity] = useState(productData?.quantity);
   let [loading, setLoading] = useState(false);
+  const locale = useLocale();
   const {
     currentPriceCents: unitPriceCents,
     originalPriceCents,
@@ -68,9 +70,8 @@ const SmallProductCard = ({
               discountPercent={discountPercent}
               originalPriceClassName="mr-2 text-muted/60 line-through"
               currentPriceClassName="text-text font-semibold"
-              currencySuffix="$"
               formatPrice={(priceCents) =>
-                formatPriceFromCents(priceCents, {
+                formatMoney(priceCents, locale, {
                   minimumFractionDigits: 0,
                   maximumFractionDigits: 0,
                 })

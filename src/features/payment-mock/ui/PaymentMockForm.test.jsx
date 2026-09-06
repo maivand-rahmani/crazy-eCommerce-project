@@ -5,6 +5,7 @@ import { beforeEach, describe, expect, it, vi } from "vitest";
 
 vi.mock("next-intl", () => ({
   useTranslations: () => (key) => key,
+  useLocale: () => "en",
 }));
 
 vi.mock("@/entities/product", () => ({
@@ -42,9 +43,9 @@ describe("PaymentMockForm", () => {
     );
 
     expect(screen.getByText("subtotal:")).toBeInTheDocument();
-    expect(screen.getByText("$12,000.00")).toBeInTheDocument();
+    expect(screen.getByText("$120.00")).toBeInTheDocument();
     expect(screen.getByText("discount:")).toBeInTheDocument();
-    expect(screen.getByText("-$2,000.00")).toBeInTheDocument();
+    expect(screen.getByText("-$20.00")).toBeInTheDocument();
     expect(screen.getByText("Coupon: SAVE20")).toBeInTheDocument();
 
     await user.clear(screen.getByLabelText("cardholderName"));

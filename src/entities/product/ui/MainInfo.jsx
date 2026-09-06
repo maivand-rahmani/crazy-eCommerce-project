@@ -6,10 +6,12 @@ import { Truck, Store, BadgeCheck, ShoppingCart } from "lucide-react";
 import { AddToWishListCom } from "@/features/add-to-wishlist/ui/AddToWishListCom.jsx";
 import { AddToCartButtonForProductPage } from "@/features/add-to-cart/ui/AddToCartButtonForProductPage.jsx";
 import { ProductPrice, isProductInStock } from "@/entities/product";
-import { useTranslations } from "next-intl";
+import { useLocale, useTranslations } from "next-intl";
+import { formatMoney } from "@/shared/lib/currency/currency";
 
 const MainInfo = ({ product, otherInfo }) => {
   const t = useTranslations("product");
+  const locale = useLocale();
   const variants = product?.products?.product_variants || [];
   const currentVariant = product;
   const isInStock = isProductInStock(product);
@@ -117,7 +119,7 @@ const MainInfo = ({ product, otherInfo }) => {
         containerClassName="mb-6"
         originalPriceClassName="mr-2 text-xl font-semibold text-muted line-through"
         currentPriceClassName="text-2xl font-semibold text-accent"
-        currencyPrefix="$"
+        formatPrice={(cents) => formatMoney(cents, locale)}
       />
 
       {/* COLOR */}

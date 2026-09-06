@@ -610,8 +610,13 @@
       "currencyTitle": "ارز",
       "currencyDescription": "قیمتها به {currency} نمایش داده میشوند. چندارزی با تنظیمات ادمین میآید.",
       "themeTitle": "پوسته",
-      "themeDescription": "حالت تیره / روشن. پس از آماده شدن سیستم پوسته فعال میشود.",
-      "themeComingSoon": "بهزودی"
+      "themeDescription": "ظاهر بلافاصله در کل فروشگاه اعمال میشود و در همین دستگاه ذخیره میماند.",
+      "themeOptions": {
+        "light": "روشن",
+        "dark": "تیره",
+        "vintage": "وینتیج",
+        "retro": "رترو"
+      }
     },
     "security": {
       "passwordTitle": "تغییر رمز عبور",
