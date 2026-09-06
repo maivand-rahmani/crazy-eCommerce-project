@@ -1,37 +1,23 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { signOut, useSession } from "next-auth/react";
 import { useTranslations } from "next-intl";
 import { Fetch } from "@/shared/lib/fetch";
 import { Miniloader } from "@/shared";
 import { KeyRound, MonitorSmartphone, LogOut, Trash2 } from "lucide-react";
 import toast from "react-hot-toast";
+import { useUserProfile } from "../hooks/useUserProfile";
 
 export default function SecuritySection() {
   const t = useTranslations("settings.security");
   const { data: session } = useSession();
-  const [profile, setProfile] = useState(null);
-  const [loading, setLoading] = useState(true);
+  const { profile, loading, reload } = useUserProfile();
   const [currentPassword, setCurrentPassword] = useState("");
   const [newPassword, setNewPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [changing, setChanging] = useState(false);
   const [revoking, setRevoking] = useState(false);
-
-  useEffect(() => {
-    const load = async () => {
-      try {
-        const res = await Fetch("/api/user/profile", "GET");
-        if (res?.data) setProfile(res.data);
-      } catch (error) {
-        console.error("Failed to load security info:", error);
-      } finally {
-        setLoading(false);
-      }
-    };
-    load();
-  }, []);
 
   const handleChangePassword = async (e) => {
     e.preventDefault();
@@ -67,8 +53,7 @@ export default function SecuritySection() {
       const res = await Fetch("/api/user/sessions", "DELETE");
       if (res?.status === 200) {
         toast.success(t("sessionsRevoked", { count: res.data?.revoked ?? 0 }));
-        const refreshed = await Fetch("/api/user/profile", "GET");
-        if (refreshed?.data) setProfile(refreshed.data);
+        await reload();
       } else {
         toast.error(res?.error || t("sessionsError"));
       }

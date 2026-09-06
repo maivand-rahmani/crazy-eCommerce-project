@@ -35,10 +35,16 @@ export default function SettingsShell() {
       </div>
 
       {/* Mobile tabs */}
-      <div className="mb-6 flex gap-2 overflow-x-auto md:hidden">
+      <div
+        role="tablist"
+        aria-label={t("title")}
+        className="mb-6 flex gap-2 overflow-x-auto pb-1 md:hidden"
+      >
         {TABS.map(({ id, icon: Icon }) => (
           <button
             key={id}
+            role="tab"
+            aria-selected={active === id}
             onClick={() => setActive(id)}
             className={`flex shrink-0 items-center gap-2 rounded-xl border px-4 py-2.5 text-sm font-medium transition ${
               active === id
@@ -62,10 +68,14 @@ export default function SettingsShell() {
       <div className="flex flex-col gap-6 md:flex-row">
         {/* Desktop sidebar */}
         <aside className="hidden w-64 shrink-0 md:block">
-          <nav className="rounded-2xl border border-border/60 bg-card p-2">
+          <nav
+            aria-label={t("title")}
+            className="sticky top-4 rounded-2xl border border-border/60 bg-card p-2"
+          >
             {TABS.map(({ id, icon: Icon }) => (
               <button
                 key={id}
+                aria-current={active === id ? "page" : undefined}
                 onClick={() => setActive(id)}
                 className={`mb-1 flex w-full items-center gap-3 rounded-xl px-4 py-3 text-sm font-medium transition ${
                   active === id
@@ -89,7 +99,7 @@ export default function SettingsShell() {
         </aside>
 
         {/* Content */}
-        <div className="min-w-0 flex-1">
+        <div role="tabpanel" className="min-w-0 flex-1">
           {active === "account" && <AccountSection />}
           {active === "addresses" && <AddressesSection />}
           {active === "preferences" && <PreferencesSection />}
