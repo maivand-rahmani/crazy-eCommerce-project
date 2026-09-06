@@ -5,4 +5,5 @@ export { Miniloader, PageLoader } from "./ui/Loading";
 export { default as DragScrollContainer } from "./ui/ScrollContainer/ScrollContainer";
 export { Slider } from "./ui/slider";
 export { default as NavLink } from "./ui/navlink/NavLink";
+export { AdminQuickLink } from "./ui/admin-quick-link";
 export * from "./ui/kit";

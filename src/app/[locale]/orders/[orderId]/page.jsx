@@ -7,6 +7,7 @@ import { getLineItemTotalCents } from "@/entities/product";
 import { formatMoney } from "@/shared/lib/currency/currency";
 import Image from "next/image";
 import { useLocale, useTranslations } from "next-intl";
+import { AdminQuickLink } from "@/shared";
 import { getProductImageUrl } from "@/shared/lib/images";
 
 const RETURN_ELIGIBLE_STATUSES = ["paid", "shipped", "delivered"];
@@ -202,7 +203,10 @@ const OrderDetailPage = () => {
         >
           ← {t("backToOrders")}
         </button>
-        <h1 className="text-3xl text-text font-bold">{t("title")}</h1>
+        <div className="flex items-center gap-3">
+          <h1 className="text-3xl text-text font-bold">{t("title")}</h1>
+          <AdminQuickLink href={`/admin/orders/${params.orderId}`} />
+        </div>
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">

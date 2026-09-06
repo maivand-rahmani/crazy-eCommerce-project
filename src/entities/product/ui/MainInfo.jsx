@@ -6,10 +6,11 @@ import { Truck, Store, BadgeCheck, ShoppingCart } from "lucide-react";
 import { AddToWishListCom } from "@/features/add-to-wishlist/ui/AddToWishListCom.jsx";
 import { AddToCartButtonForProductPage } from "@/features/add-to-cart/ui/AddToCartButtonForProductPage.jsx";
 import { ProductPrice, isProductInStock } from "@/entities/product";
+import { AdminQuickLink } from "@/shared";
 import { useLocale, useTranslations } from "next-intl";
 import { formatMoney } from "@/shared/lib/currency/currency";
 
-const MainInfo = ({ product, otherInfo }) => {
+const MainInfo = ({ product, otherInfo, productId }) => {
   const t = useTranslations("product");
   const locale = useLocale();
   const variants = product?.products?.product_variants || [];
@@ -108,9 +109,18 @@ const MainInfo = ({ product, otherInfo }) => {
 
   return (
     <div className="h-full w-full">
-      <h1 className="text-4xl font-bold mb-4 text-text">
-        {product?.products?.name} | {currentVariant?.variant_name}
-      </h1>
+      <div className="mb-4 flex items-start justify-between gap-3">
+        <h1 className="text-4xl font-bold text-text">
+          {product?.products?.name} | {currentVariant?.variant_name}
+        </h1>
+        <AdminQuickLink
+          href={
+            productId || product?.products?.id
+              ? `/admin/products/${productId ?? product?.products?.id}`
+              : null
+          }
+        />
+      </div>
       <ProductPrice
         priceCents={currentVariant?.price_cents}
         discountPercent={
