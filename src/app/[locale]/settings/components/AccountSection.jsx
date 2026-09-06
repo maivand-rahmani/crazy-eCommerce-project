@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import Image from "next/image";
 import { useSession } from "next-auth/react";
 import { useTranslations } from "next-intl";
@@ -9,14 +9,26 @@ import { BadgeCheck, Pencil } from "lucide-react";
 import toast from "react-hot-toast";
 import { useUserProfile } from "../hooks/useUserProfile";
 
+const MAX_AVATAR_BYTES = 5 * 1024 * 1024;
+const ALLOWED_MIME = new Set([
+  "image/jpeg",
+  "image/jpg",
+  "image/png",
+  "image/webp",
+]);
+
 export default function AccountSection() {
   const t = useTranslations("settings.account");
-  const { data: session } = useSession();
-  const { profile, loading, saveProfile } = useUserProfile();
+  const { data: session, update: updateSession } = useSession();
+  const { profile, loading, reload, saveProfile } = useUserProfile();
   const [editing, setEditing] = useState(false);
   const [saving, setSaving] = useState(false);
   const [name, setName] = useState("");
   const [image, setImage] = useState("");
+  const [avatarFile, setAvatarFile] = useState(null);
+  const [avatarPreview, setAvatarPreview] = useState("");
+  const [uploading, setUploading] = useState(false);
+  const fileInputRef = useRef(null);
 
   useEffect(() => {
     if (profile) {
@@ -25,11 +37,69 @@ export default function AccountSection() {
     }
   }, [profile]);
 
+  // Revoke object URLs on unmount / replacement.
+  useEffect(() => {
+    return () => {
+      if (avatarPreview.startsWith("blob:")) {
+        URL.revokeObjectURL(avatarPreview);
+      }
+    };
+  }, [avatarPreview]);
+
+  const handleFileSelect = (e) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+    if (!ALLOWED_MIME.has(file.type)) {
+      toast.error(t("avatarInvalidType"));
+      return;
+    }
+    if (file.size > MAX_AVATAR_BYTES) {
+      toast.error(t("avatarTooLarge"));
+      return;
+    }
+    if (avatarPreview.startsWith("blob:")) URL.revokeObjectURL(avatarPreview);
+    setAvatarFile(file);
+    setAvatarPreview(URL.createObjectURL(file));
+  };
+
+  const handleAvatarUpload = async () => {
+    if (!avatarFile) return;
+    setUploading(true);
+    try {
+      const formData = new FormData();
+      formData.append("avatar", avatarFile);
+      const res = await fetch("/api/user/avatar", {
+        method: "POST",
+        body: formData,
+      });
+      const json = await res.json().catch(() => ({}));
+      if (!res.ok) {
+        throw new Error(json?.error || t("uploadError"));
+      }
+      const url = json?.url || json?.data?.image || "";
+      if (url) setImage(url);
+      setAvatarFile(null);
+      if (avatarPreview.startsWith("blob:")) URL.revokeObjectURL(avatarPreview);
+      setAvatarPreview("");
+      await reload();
+      await updateSession();
+      toast.success(t("uploadSuccess"));
+    } catch (error) {
+      console.error("Failed to upload avatar:", error);
+      toast.error(String(error?.message || t("uploadError")));
+    } finally {
+      setUploading(false);
+      if (fileInputRef.current) fileInputRef.current.value = "";
+    }
+  };
+
   const handleSave = async () => {
     setSaving(true);
     try {
       await saveProfile({ name, image });
       setEditing(false);
+      setAvatarFile(null);
+      setAvatarPreview("");
       toast.success(t("saveSuccess"));
     } catch (error) {
       console.error("Failed to save profile:", error);
@@ -37,6 +107,15 @@ export default function AccountSection() {
     } finally {
       setSaving(false);
     }
+  };
+
+  const handleCancel = () => {
+    setEditing(false);
+    setName(profile.name || "");
+    setImage(profile.image || "");
+    setAvatarFile(null);
+    if (avatarPreview.startsWith("blob:")) URL.revokeObjectURL(avatarPreview);
+    setAvatarPreview("");
   };
 
   if (loading) {
@@ -54,6 +133,9 @@ export default function AccountSection() {
       </div>
     );
   }
+
+  const previewSrc =
+    avatarPreview || image || "/icons/profile-circle-svgrepo-com.svg";
 
   return (
     <div className="rounded-2xl border border-border/60 bg-card p-6">
@@ -109,32 +191,54 @@ export default function AccountSection() {
               placeholder={t("displayNamePlaceholder")}
             />
           </label>
-          <label className="flex flex-col gap-2">
+
+          <div className="flex flex-col gap-2">
             <span className="text-sm font-medium text-text">
-              {t("avatarUrl")}
+              {t("uploadAvatar")}
             </span>
-            <input
-              value={image}
-              onChange={(e) => setImage(e.target.value)}
-              className="inputStyle"
-              type="url"
-              placeholder="https://…"
-            />
-          </label>
+            <div className="flex items-center gap-4">
+              <Image
+                src={previewSrc}
+                alt={t("avatarPreview")}
+                width={64}
+                height={64}
+                className="rounded-full border border-border/60 object-cover"
+              />
+              <div className="flex flex-1 flex-col gap-2">
+                <input
+                  ref={fileInputRef}
+                  type="file"
+                  accept="image/jpeg,image/png,image/webp"
+                  onChange={handleFileSelect}
+                  className="text-sm text-unactive-text file:mr-3 file:rounded-xl file:border file:border-border/60 file:bg-surface file:px-3 file:py-2 file:text-sm file:font-medium file:text-text"
+                />
+                {avatarFile && (
+                  <button
+                    type="button"
+                    onClick={handleAvatarUpload}
+                    disabled={uploading}
+                    className="w-fit rounded-xl bg-primary px-4 py-2 text-sm font-medium text-primary-text transition hover:opacity-80 disabled:cursor-not-allowed disabled:opacity-50"
+                  >
+                    {uploading ? t("uploading") : t("upload")}
+                  </button>
+                )}
+              </div>
+            </div>
+            {image && !avatarPreview && (
+              <p className="break-all text-xs text-unactive-text">{image}</p>
+            )}
+          </div>
+
           <div className="flex gap-3">
             <button
-              onClick={() => {
-                setEditing(false);
-                setName(profile.name || "");
-                setImage(profile.image || "");
-              }}
+              onClick={handleCancel}
               className="flex-1 rounded-xl border border-border p-3 text-center text-text transition hover:bg-surface"
             >
               {t("cancel")}
             </button>
             <button
               onClick={handleSave}
-              disabled={saving || !name.trim()}
+              disabled={saving || uploading || !name.trim()}
               className="flex-1 rounded-xl bg-primary p-3 text-center font-medium text-primary-text transition hover:opacity-80 disabled:cursor-not-allowed disabled:opacity-50"
             >
               {saving ? t("saving") : t("save")}
