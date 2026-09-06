@@ -19,10 +19,10 @@ export default async function Page() {
   const dashboard = await getAdminDashboardData();
 
   return (
-    <div className="space-y-8 lg:space-y-10">
+    <div className="flex flex-col gap-[var(--admin-gap)]">
       <SectionTitle title="Dashboard" />
 
-      <div className="grid gap-6 xl:grid-cols-4 2xl:gap-8">
+      <div className="grid gap-[var(--admin-gap)] xl:grid-cols-4">
         <StatCard
           icon={ShoppingCart}
           label="Total orders"
@@ -50,7 +50,7 @@ export default async function Page() {
         />
       </div>
 
-      <div className="grid gap-8 xl:grid-cols-[1.5fr_0.98fr] 2xl:gap-9">
+      <div className="grid gap-[var(--admin-gap)] xl:grid-cols-[1.5fr_0.98fr]">
         <Card>
           <CardHeader>
             <CardTitle>Sales over time</CardTitle>
@@ -73,7 +73,7 @@ export default async function Page() {
             {dashboard.lowStockVariants.map((variant) => {
               const stockInfo = getStockSummary(variant.stockQuantity);
               return (
-                <div key={variant.id} className="rounded-[24px] border border-border/65 bg-[var(--admin-panel-muted)]/72 px-5 py-4 shadow-[0_18px_38px_-30px_rgba(15,23,42,0.35)] transition duration-200 hover:-translate-y-0.5 hover:shadow-[0_24px_48px_-30px_rgba(15,23,42,0.42)]">
+                <div key={variant.id} className="rounded-[20px] border border-border/65 bg-[var(--admin-panel-muted)]/72 px-5 py-4 shadow-[var(--admin-shadow)] transition duration-200">
                   <div className="flex items-start justify-between gap-4">
                     <div>
                       <p className="font-medium text-text">{variant.productName}</p>

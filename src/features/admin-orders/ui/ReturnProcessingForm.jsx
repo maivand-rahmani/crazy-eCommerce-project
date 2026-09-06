@@ -26,7 +26,7 @@ const ReturnProcessingForm = ({ orderId, currentStatus, currentReason, action })
   };
 
   return (
-    <form onSubmit={handleSubmit} className="space-y-4 rounded-[24px] border border-border/60 bg-white/32 p-4 shadow-[0_18px_38px_-30px_rgba(15,23,42,0.28)] dark:bg-white/[0.02]">
+    <form onSubmit={handleSubmit} className="space-y-4 rounded-[20px] border border-border/65 bg-white/32 p-4 shadow-[var(--admin-shadow)] dark:bg-white/[0.02]">
       <input type="hidden" name="orderId" value={orderId} />
       <label className="flex flex-col gap-2">
         <span className="text-xs uppercase tracking-[0.18em] text-unactive-text">Return workflow</span>

@@ -18,7 +18,7 @@ export default async function OrdersPage({ searchParams }) {
   const ordersResult = await getAdminOrders(resolvedSearchParams);
 
   return (
-    <div className="space-y-8 lg:space-y-10">
+    <div className="flex flex-col gap-[var(--admin-gap)]">
       <SectionTitle title="Orders" />
 
       <form className="space-y-4">
@@ -66,7 +66,7 @@ export default async function OrdersPage({ searchParams }) {
           <CardHeader>
             <CardTitle>Orders ({ordersResult.pagination.total})</CardTitle>
           </CardHeader>
-          <CardContent className="space-y-6">
+          <CardContent className="flex flex-col gap-[var(--admin-gap)]">
             <Table>
               <TableHeader>
                 <tr>

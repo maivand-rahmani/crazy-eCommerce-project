@@ -3,7 +3,7 @@ import prisma from "../../../../prisma/client";
 import { toSafeJson } from "../../../../prisma/funcs";
 import { getProductPriceInfo } from "@/entities/product";
 import { getProductImageUrl } from "../images/productImage";
-import { STORE_CURRENCY_CODE } from "../currency/currency";
+import { DEFAULT_SETTINGS } from "@/features/admin-settings/model/defaults";
 
 const ORDER_STATUS = {
   created: "created",
@@ -17,8 +17,23 @@ const RETURN_STATUS = {
   none: "none",
 };
 
-const SANDBOX_SHIPPING_CENTS = 0;
-const SANDBOX_TAX_RATE = 0;
+async function getCommerceSettings() {
+  try {
+    const { getSettings } = await import("@/features/admin-settings/model/settings");
+    const settings = await getSettings();
+    return {
+      shippingCents: Number(settings["commerce.shippingCents"] ?? DEFAULT_SETTINGS["commerce.shippingCents"]),
+      taxRate: Number(settings["commerce.taxRate"] ?? DEFAULT_SETTINGS["commerce.taxRate"]),
+      currencyCode: String(settings["currency.code"] ?? DEFAULT_SETTINGS["currency.code"]),
+    };
+  } catch {
+    return {
+      shippingCents: Number(DEFAULT_SETTINGS["commerce.shippingCents"]),
+      taxRate: Number(DEFAULT_SETTINGS["commerce.taxRate"]),
+      currencyCode: String(DEFAULT_SETTINGS["currency.code"]),
+    };
+  }
+}
 
 function isPrismaErrorCode(error, code) {
   return error instanceof Error && "code" in error && error.code === code;
@@ -45,8 +60,8 @@ function decimalToCents(amount) {
   return Math.max(0, Math.round(Number(amount || 0) * 100));
 }
 
-function getTaxAmountCents(subtotalCents) {
-  return decimalToCents(centsToDecimal(subtotalCents) * SANDBOX_TAX_RATE);
+function getTaxAmountCents(subtotalCents, taxRate) {
+  return decimalToCents(centsToDecimal(subtotalCents) * taxRate);
 }
 
 function getCouponMetadata(coupon) {
@@ -219,6 +234,7 @@ function buildCartLine(item, cartId) {
 }
 
 export async function getCartSummaryForUser(userId) {
+  const { shippingCents, taxRate } = await getCommerceSettings();
   return prisma.$transaction(async (tx) => {
     const cart = await getOpenCartWithItems(tx, userId);
 
@@ -229,7 +245,7 @@ export async function getCartSummaryForUser(userId) {
           cartId: null,
           itemsCount: 0,
           subtotalCents: 0,
-          shippingCents: SANDBOX_SHIPPING_CENTS,
+          shippingCents,
           taxCents: 0,
           totalCents: 0,
         },
@@ -241,7 +257,7 @@ export async function getCartSummaryForUser(userId) {
       (sum, item) => sum + item.quantity * getProductPriceInfo(item).currentPriceCents,
       0,
     );
-    const taxCents = getTaxAmountCents(subtotalCents);
+    const taxCents = getTaxAmountCents(subtotalCents, taxRate);
 
     return {
       items,
@@ -249,9 +265,9 @@ export async function getCartSummaryForUser(userId) {
         cartId: Number(cart.id),
         itemsCount: items.reduce((sum, item) => sum + item.quantity, 0),
         subtotalCents,
-        shippingCents: SANDBOX_SHIPPING_CENTS,
+        shippingCents,
         taxCents,
-        totalCents: subtotalCents + SANDBOX_SHIPPING_CENTS + taxCents,
+        totalCents: subtotalCents + shippingCents + taxCents,
       },
     };
   });
@@ -301,6 +317,8 @@ export async function placeSandboxOrder({ userId, address, couponCode, orderRequ
     throw new Error("Shipping address is required.");
   }
 
+  const { shippingCents, taxRate } = await getCommerceSettings();
+
   try {
     return await prisma.$transaction(
       async (tx) => {
@@ -322,7 +340,7 @@ export async function placeSandboxOrder({ userId, address, couponCode, orderRequ
             summary: {
               subtotalCents: existingOrder.total_cents,
               discountCents: 0,
-              shippingCents: SANDBOX_SHIPPING_CENTS,
+              shippingCents,
               taxCents: 0,
               totalCents: existingOrder.total_cents,
             },
@@ -371,9 +389,9 @@ export async function placeSandboxOrder({ userId, address, couponCode, orderRequ
           subtotalCents,
         });
         const discountCents = computeCouponDiscountCents(coupon, subtotalCents);
-        const taxCents = getTaxAmountCents(subtotalCents - discountCents);
+        const taxCents = getTaxAmountCents(subtotalCents - discountCents, taxRate);
         const totalCents =
-          subtotalCents - discountCents + SANDBOX_SHIPPING_CENTS + taxCents;
+          subtotalCents - discountCents + shippingCents + taxCents;
 
         for (const item of lineItems) {
           const updated = await tx.product_variants.updateMany({
@@ -448,7 +466,7 @@ export async function placeSandboxOrder({ userId, address, couponCode, orderRequ
           summary: {
             subtotalCents,
             discountCents,
-            shippingCents: SANDBOX_SHIPPING_CENTS,
+            shippingCents,
             taxCents,
             totalCents,
           },
@@ -470,11 +488,12 @@ export async function placeSandboxOrder({ userId, address, couponCode, orderRequ
   }
 }
 
-export function getSandboxCommerceConfig() {
+export async function getSandboxCommerceConfig() {
+  const { shippingCents, taxRate, currencyCode } = await getCommerceSettings();
   return {
-    currencyCode: STORE_CURRENCY_CODE,
-    shippingCents: SANDBOX_SHIPPING_CENTS,
-    taxRate: SANDBOX_TAX_RATE,
+    currencyCode,
+    shippingCents,
+    taxRate,
     paymentMode: "mock",
     orderStatus: ORDER_STATUS.paid,
   };

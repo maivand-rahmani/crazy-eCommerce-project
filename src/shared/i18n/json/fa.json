@@ -621,5 +621,88 @@
       "deleteAccount": "حذف حساب",
       "comingSoon": "بهزودی"
     }
+  },
+  "adminSettings": {
+    "title": "تنظیمات ادمین",
+    "description": "پیکربندی فروشگاه، بومی‌سازی، تجارت، کاتالوگ، رسانه، سئو و گزینه‌های پیشرفته.",
+    "tabs": {
+      "general": "عمومی",
+      "localization": "بومی‌سازی",
+      "commerce": "تجارت",
+      "catalog": "کاتالوگ",
+      "media": "رسانه",
+      "seo": "سئو",
+      "advanced": "پیشرفته"
+    },
+    "fields": {
+      "store.name": {
+        "label": "نام فروشگاه",
+        "description": "نام عمومی"
+      },
+      "store.tagline": {
+        "label": "شعار",
+        "description": "شعار کوتاه"
+      },
+      "contact.email": {
+        "label": "ایمیل تماس",
+        "description": "ایمیل پشتیبانی"
+      },
+      "contact.phone": {
+        "label": "تلفن",
+        "description": "تلفن پشتیبانی"
+      },
+      "contact.address": {
+        "label": "آدرس",
+        "description": "آدرس فیزیکی"
+      },
+      "currency.code": {
+        "label": "کد ارز",
+        "description": "کد ISO"
+      },
+      "commerce.shippingCents": {
+        "label": "هزینه ارسال (سنت)",
+        "description": "هزینه ارسال"
+      },
+      "commerce.taxRate": {
+        "label": "نرخ مالیات",
+        "description": "نرخ اعشاری"
+      },
+      "catalog.pageSize": {
+        "label": "اندازه کاتالوگ",
+        "description": "تعداد محصول در صفحه"
+      },
+      "media.s3PublicUrl": {
+        "label": "آدرس S3",
+        "description": "آدرس عمومی S3"
+      },
+      "media.s3Bucket": {
+        "label": "باکت S3",
+        "description": "نام باکت"
+      },
+      "seo.defaultTitle": {
+        "label": "عنوان سئو",
+        "description": "عنوان پیش‌فرض"
+      },
+      "seo.defaultDescription": {
+        "label": "توضیح سئو",
+        "description": "توضیح پیش‌فرض"
+      },
+      "admin.pageSize": {
+        "label": "اندازه ادمین",
+        "description": "اندازه صفحه ادمین"
+      },
+      "admin.lowStockThreshold": {
+        "label": "آستانه کمبود",
+        "description": "تعداد کم"
+      },
+      "admin.salesWindowDays": {
+        "label": "بازه فروش (روز)",
+        "description": "روزهای تحلیل"
+      }
+    },
+    "save": "ذخیره",
+    "saving": "در حال ذخیره…",
+    "saveSuccess": "تنظیم ذخیره شد",
+    "saveError": "خطا در ذخیره"
   }
 }

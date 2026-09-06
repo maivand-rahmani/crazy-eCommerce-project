@@ -366,4 +366,25 @@ enum order_return_status {
 enum user_role {
   user
   admin
+  super_admin
+}
+
+model AppSetting {
+  key       String   @id
+  value     Json
+  updatedAt DateTime @updatedAt
+  updatedBy String?
+}
+
+model SettingsAuditLog {
+  id        BigInt   @id @default(autoincrement())
+  key       String
+  oldValue  Json?
+  newValue  Json?
+  changedBy String?
+  createdAt DateTime @default(now())
+
+  @@index([key], map: "idx_settings_audit_key")
+  @@index([changedBy], map: "idx_settings_audit_changed_by")
+  @@index([createdAt], map: "idx_settings_audit_created_at")
 }

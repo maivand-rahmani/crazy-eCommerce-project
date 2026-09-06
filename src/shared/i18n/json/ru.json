@@ -621,5 +621,88 @@
       "deleteAccount": "Удалить аккаунт",
       "comingSoon": "скоро"
     }
+  },
+  "adminSettings": {
+    "title": "Настройки Админа",
+    "description": "Настройка магазина, локализации, коммерции, каталога, медиа, SEO и продвинутых опций.",
+    "tabs": {
+      "general": "Общие",
+      "localization": "Локализация",
+      "commerce": "Коммерция",
+      "catalog": "Каталог",
+      "media": "Медиа",
+      "seo": "SEO",
+      "advanced": "Продвинутые"
+    },
+    "fields": {
+      "store.name": {
+        "label": "Название магазина",
+        "description": "Публичное имя"
+      },
+      "store.tagline": {
+        "label": "Слоган",
+        "description": "Краткий слоган"
+      },
+      "contact.email": {
+        "label": "Email контакта",
+        "description": "Email поддержки"
+      },
+      "contact.phone": {
+        "label": "Телефон",
+        "description": "Телефон поддержки"
+      },
+      "contact.address": {
+        "label": "Адрес",
+        "description": "Физический адрес"
+      },
+      "currency.code": {
+        "label": "Код валюты",
+        "description": "Код ISO, например USD"
+      },
+      "commerce.shippingCents": {
+        "label": "Доставка (центы)",
+        "description": "Стоимость доставки в центах"
+      },
+      "commerce.taxRate": {
+        "label": "Налог",
+        "description": "Ставка налога, например 0.08"
+      },
+      "catalog.pageSize": {
+        "label": "Размер каталога",
+        "description": "Товаров на странице"
+      },
+      "media.s3PublicUrl": {
+        "label": "S3 URL",
+        "description": "Публичный URL S3"
+      },
+      "media.s3Bucket": {
+        "label": "S3 Bucket",
+        "description": "Имя бакета"
+      },
+      "seo.defaultTitle": {
+        "label": "SEO заголовок",
+        "description": "Заголовок по умолчанию"
+      },
+      "seo.defaultDescription": {
+        "label": "SEO описание",
+        "description": "Описание по умолчанию"
+      },
+      "admin.pageSize": {
+        "label": "Размер админки",
+        "description": "Размер страницы админки"
+      },
+      "admin.lowStockThreshold": {
+        "label": "Порог низкого запаса",
+        "description": "Количество считающееся низким"
+      },
+      "admin.salesWindowDays": {
+        "label": "Окно продаж (дни)",
+        "description": "Дни для аналитики"
+      }
+    },
+    "save": "Сохранить",
+    "saving": "Сохранение…",
+    "saveSuccess": "Настройка сохранена",
+    "saveError": "Ошибка сохранения"
   }
 }

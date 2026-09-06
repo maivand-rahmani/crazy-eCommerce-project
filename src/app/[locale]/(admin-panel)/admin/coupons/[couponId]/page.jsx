@@ -24,15 +24,15 @@ export default async function CouponDetailPage({ params }) {
   }
 
   return (
-    <div className="space-y-8 lg:space-y-10">
+    <div className="flex flex-col gap-[var(--admin-gap)]">
       <SectionTitle
         title={coupon.coupon_code}
       />
 
-      <div className="grid gap-6 xl:grid-cols-[1.25fr_0.85fr] 2xl:gap-7">
+      <div className="grid gap-[var(--admin-gap)] xl:grid-cols-[1.25fr_0.85fr]">
         <CouponEditorForm mode="edit" coupon={coupon} updateAction={updateCouponAction} />
 
-        <div className="space-y-8 lg:space-y-10">
+        <div className="flex flex-col gap-[var(--admin-gap)]">
           <Card>
             <CardHeader>
               <CardTitle>Extend expiration</CardTitle>

@@ -1,5 +1,5 @@
-import { LOW_STOCK_THRESHOLD } from "./constants";
 import { getCurrencyConfig } from "../currency/currency";
+import { DEFAULT_SETTINGS } from "@/features/admin-settings/model/defaults";
 
 export function parsePage(value, fallback = 1) {
   const page = Number.parseInt(value || `${fallback}`, 10);
@@ -51,7 +51,7 @@ export function formatDateTime(value) {
   });
 }
 
-export function getStockTone(quantity, threshold = LOW_STOCK_THRESHOLD) {
+export function getStockTone(quantity, threshold = DEFAULT_SETTINGS["admin.lowStockThreshold"]) {
   if (quantity <= 0) return "danger";
   if (quantity <= threshold) return "warning";
   return "success";

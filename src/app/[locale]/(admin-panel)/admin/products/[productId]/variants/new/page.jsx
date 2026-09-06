@@ -17,7 +17,7 @@ export default async function NewVariantPage({ params }) {
   }
 
   return (
-    <div className="space-y-8 lg:space-y-10">
+    <div className="flex flex-col gap-[var(--admin-gap)]">
       <SectionTitle
         title={`New variant for ${product.name}`}
       />

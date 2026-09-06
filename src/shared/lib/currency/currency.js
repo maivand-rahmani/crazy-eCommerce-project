@@ -8,13 +8,15 @@
  * must extend THIS mapping — never add ad-hoc "$"/"USD" literals in components.
  */
 
+import { DEFAULT_SETTINGS } from "@/features/admin-settings/model/defaults";
+
 export const DEFAULT_LOCALE = "en";
-export const STORE_CURRENCY_CODE = "USD";
+export const STORE_CURRENCY_CODE = DEFAULT_SETTINGS["currency.code"];
 
 export const CURRENCY_BY_LOCALE = {
-  en: { code: "USD", symbol: "$", intlLocale: "en-US" },
-  ru: { code: "USD", symbol: "$", intlLocale: "ru-RU" },
-  fa: { code: "USD", symbol: "$", intlLocale: "fa-IR" },
+  en: { code: DEFAULT_SETTINGS["currency.code"], symbol: "$", intlLocale: "en-US" },
+  ru: { code: DEFAULT_SETTINGS["currency.code"], symbol: "$", intlLocale: "ru-RU" },
+  fa: { code: DEFAULT_SETTINGS["currency.code"], symbol: "$", intlLocale: "fa-IR" },
 };
 
 export function getCurrencyConfig(locale) {

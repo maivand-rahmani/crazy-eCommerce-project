@@ -26,7 +26,7 @@ const KeyValueRowsEditor = ({ label, value, onChange, keyPlaceholder, valuePlace
   };
 
   return (
-    <div className="space-y-4 rounded-[26px] border border-border/65 bg-white/34 p-5 shadow-[0_18px_38px_-30px_rgba(15,23,42,0.28)] dark:bg-white/[0.02]">
+    <div className="space-y-4 rounded-[26px] border border-border/65 bg-white/34 p-5 shadow-[var(--admin-shadow)] dark:bg-white/[0.02]">
       <div className="flex items-center justify-between gap-3">
         <div>
           <h3 className="text-sm font-semibold text-text">{label}</h3>
@@ -41,7 +41,7 @@ const KeyValueRowsEditor = ({ label, value, onChange, keyPlaceholder, valuePlace
       </div>
       <div className="space-y-4">
         {rows.map((row) => (
-          <div key={row.id} className="grid gap-3 rounded-[22px] border border-border/60 bg-[var(--admin-panel-muted)]/64 p-4 md:grid-cols-[1fr_1fr_auto] md:items-end">
+          <div key={row.id} className="grid gap-3 rounded-[22px] border border-border/65 bg-[var(--admin-panel-muted)]/64 p-4 md:grid-cols-[1fr_1fr_auto] md:items-end">
             <label className="flex flex-col gap-2">
               <span className="text-xs font-medium uppercase tracking-[0.16em] text-unactive-text">Label</span>
               <Input

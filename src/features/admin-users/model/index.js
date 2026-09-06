@@ -3,20 +3,22 @@
 import prisma from "../../../../prisma/client";
 import { toSafeJson } from "../../../../prisma/funcs";
 
-import {
-  ADMIN_PAGE_SIZE,
-  buildPagination,
-  normalizeText,
-  parsePage,
-} from "@/shared/lib";
+import { buildPagination, normalizeText, parsePage } from "@/shared/lib";
+import { DEFAULT_SETTINGS } from "@/features/admin-settings/model/defaults";
 
-import { ensureAdminAction } from "@/features/admin-common";
+import { ensureAdminAction, ensureSuperAdminAction } from "@/features/admin-common";
 import { revalidateLocalizedPaths } from "@/shared/lib/admin/revalidate";
 
 export async function getAdminUsers(searchParams = {}) {
-  await ensureAdminAction();
+  await ensureSuperAdminAction();
 
   const page = parsePage(searchParams.page);
+  let pageSize = DEFAULT_SETTINGS["admin.pageSize"];
+  try {
+    const { getSettings } = await import("@/features/admin-settings/model/settings");
+    const s = await getSettings();
+    pageSize = Number(s["admin.pageSize"] ?? pageSize);
+  } catch {}
   const query = normalizeText(searchParams.query);
   const role = normalizeText(searchParams.role);
   const blocked = normalizeText(searchParams.blocked);
@@ -43,8 +45,8 @@ export async function getAdminUsers(searchParams = {}) {
     prisma.user.findMany({
       where,
       orderBy: [{ updatedAt: "desc" }, { createdAt: "desc" }],
-      skip: (page - 1) * ADMIN_PAGE_SIZE,
-      take: ADMIN_PAGE_SIZE,
+      skip: (page - 1) * pageSize,
+      take: pageSize,
       include: {
         orders: {
           orderBy: { created_at: "desc" },
@@ -73,12 +75,12 @@ export async function getAdminUsers(searchParams = {}) {
       role,
       blocked,
     },
-    pagination: buildPagination({ total, page, pageSize: ADMIN_PAGE_SIZE }),
+    pagination: buildPagination({ total, page, pageSize }),
   };
 }
 
 export async function getAdminUserDetail(userId) {
-  await ensureAdminAction();
+  await ensureSuperAdminAction();
 
   const user = await prisma.user.findUnique({
     where: { id: userId },
@@ -112,7 +114,7 @@ export async function getAdminUserDetail(userId) {
 }
 
 export async function updateUserRoleAction(formData) {
-  await ensureAdminAction();
+  await ensureSuperAdminAction();
 
   const userId = normalizeText(formData.get("userId"));
   const role = normalizeText(formData.get("role"));
@@ -130,7 +132,7 @@ export async function updateUserRoleAction(formData) {
 }
 
 export async function updateUserBlockAction(formData) {
-  await ensureAdminAction();
+  await ensureSuperAdminAction();
 
   const userId = normalizeText(formData.get("userId"));
   const isBlocked = formData.get("isBlocked") === "true";
@@ -148,7 +150,7 @@ export async function updateUserBlockAction(formData) {
 }
 
 export async function softDeleteUserAction(formData) {
-  await ensureAdminAction();
+  await ensureSuperAdminAction();
 
   const userId = normalizeText(formData.get("userId"));
 

@@ -42,8 +42,22 @@ function isAdminPath(pathname) {
   return pathname === `/${ADMIN_BASE_SEGMENT}` || pathname.startsWith(`/${ADMIN_BASE_SEGMENT}/`);
 }
 
+const SUPER_ONLY_ADMIN_PATHS = ["/admin/users", "/admin/settings"];
+
+function isSuperOnlyAdminPath(pathname) {
+  return SUPER_ONLY_ADMIN_PATHS.some((p) => pathname === p || pathname.startsWith(`${p}/`));
+}
+
 function isDesktopOnlyBypass(pathname) {
   return pathname === "/admin/desktop-only";
+}
+
+function isAdminRole(role) {
+  return role === "admin" || role === "super_admin";
+}
+
+function isSuperAdminRole(role) {
+  return role === "super_admin";
 }
 
 export default async function middleware(req) {
@@ -63,8 +77,12 @@ export default async function middleware(req) {
       return NextResponse.redirect(loginUrl);
     }
 
-    if (token.deletedAt || token.isBlocked || token.role !== "admin") {
+    if (token.deletedAt || token.isBlocked || !isAdminRole(token.role)) {
       return NextResponse.redirect(new URL(localizePath(locale, "/"), req.url));
+    }
+
+    if (isSuperOnlyAdminPath(pathname) && !isSuperAdminRole(token.role)) {
+      return new NextResponse("Forbidden", { status: 403 });
     }
 
     if (isMobileDevice && !isDesktopOnlyBypass(pathname)) {

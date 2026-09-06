@@ -12,7 +12,7 @@ export default async function NewProductPage() {
   const { categories } = await getAdminProductFilters();
 
   return (
-    <div className="space-y-8 lg:space-y-10">
+    <div className="flex flex-col gap-[var(--admin-gap)]">
       <SectionTitle
         title="New product"
       />

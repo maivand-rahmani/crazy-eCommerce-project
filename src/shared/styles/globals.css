@@ -102,15 +102,17 @@
   --admin-danger: #b91c1c;
   --admin-success: #0f766e;
   --admin-shell-max: 1600px;
-  --admin-shell-gap: 32px;
-  --admin-content-gap: 36px;
-  --admin-card-radius: 28px;
-  --admin-card-radius-lg: 34px;
-  --admin-card-padding: 28px;
-  --admin-section-padding: 32px;
+  --admin-gap: 24px;
+  --admin-card-radius: 20px;
+  --admin-card-padding: 24px;
   --admin-blur: 22px;
-  --admin-shadow-soft: 0 24px 70px -42px rgba(15, 23, 42, 0.36);
-  --admin-shadow-strong: 0 36px 90px -48px rgba(15, 23, 42, 0.55);
+  --admin-shadow: 0 8px 24px -12px rgba(15, 23, 42, 0.12);
+}
+
+@media (max-width: 768px) {
+  :root {
+    --admin-gap: 16px;
+  }
 }
 
 /* ============================= */
@@ -170,7 +172,6 @@
   --footer-bg: #1C1C1C;
   --footer-text: #030201;
   --footer-accent: #C6A75E;
-  --admin-bg: #F8FAFC;
   --admin-panel: #FFFFFF;
   --admin-panel-muted: #EEF4FF;
   --admin-panel-border: #D9E2F3;
@@ -179,13 +180,6 @@
   --admin-warning: #D97706;
   --admin-danger: #BE123C;
   --admin-success: #0F766E;
-  --admin-shell-surface: rgba(255, 255, 255, 0.82);
-  --admin-shell-border: rgba(217, 226, 243, 0.88);
-  --admin-hero-surface: rgba(255, 255, 255, 0.72);
-  --admin-hero-border: rgba(191, 219, 254, 0.65);
-  --admin-nav-surface: rgba(18, 28, 45, 0.9);
-  --admin-nav-border: rgba(255, 255, 255, 0.08);
-  --admin-nav-muted: rgba(255, 255, 255, 0.06);
 }
 
 /* ============================= */
@@ -242,7 +236,6 @@
   --footer-bg: #0B0D12;
   --footer-text: #9CA3AF;
   --footer-accent: #3B82F6;
-  --admin-bg: #09111F;
   --admin-panel: #0F172A;
   --admin-panel-muted: #13203A;
   --admin-panel-border: #22314C;
@@ -251,13 +244,6 @@
   --admin-warning: #F59E0B;
   --admin-danger: #FB7185;
   --admin-success: #34D399;
-  --admin-shell-surface: rgba(15, 23, 42, 0.74);
-  --admin-shell-border: rgba(71, 85, 105, 0.38);
-  --admin-hero-surface: rgba(15, 23, 42, 0.66);
-  --admin-hero-border: rgba(96, 165, 250, 0.18);
-  --admin-nav-surface: rgba(6, 11, 23, 0.88);
-  --admin-nav-border: rgba(255, 255, 255, 0.06);
-  --admin-nav-muted: rgba(255, 255, 255, 0.05);
 }
 /* ============================= */
 /* VINTAGE */

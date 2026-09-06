@@ -34,7 +34,7 @@ const ImageFieldManager = ({
   };
 
   return (
-    <div className="space-y-5 rounded-[28px] border border-border/65 bg-white/34 p-5 shadow-[0_18px_38px_-30px_rgba(15,23,42,0.28)] dark:bg-white/[0.02]">
+    <div className="space-y-5 rounded-[20px] border border-border/65 bg-white/34 p-5 shadow-[var(--admin-shadow)] dark:bg-white/[0.02]">
       <div className="flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
         <div>
           <h3 className="text-sm font-semibold text-text">{title}</h3>
@@ -55,7 +55,7 @@ const ImageFieldManager = ({
           />
         </label>
       </div>
-      <div className="grid gap-3 rounded-[24px] border border-border/60 bg-[var(--admin-panel-muted)]/62 p-4 md:grid-cols-3">
+      <div className="grid gap-3 rounded-[20px] border border-border/65 bg-[var(--admin-panel-muted)]/62 p-4 md:grid-cols-3">
         <div className="rounded-[18px] bg-white/55 px-4 py-3 dark:bg-white/[0.03]">
           <p className="text-xs uppercase tracking-[0.18em] text-unactive-text">Storage</p>
           <p className="mt-1 text-sm font-medium text-text">Cloud storage</p>
@@ -74,7 +74,7 @@ const ImageFieldManager = ({
           {existingImages.map((image) => {
             const retained = retainedImageIds.includes(image.id);
             return (
-              <Card key={image.id} className="overflow-hidden rounded-[24px]">
+              <Card key={image.id} className="overflow-hidden rounded-[20px]">
                 <div className="relative aspect-[4/3] bg-[var(--admin-panel-muted)]">
                   <Image
                     fill
@@ -105,12 +105,12 @@ const ImageFieldManager = ({
           })}
         </div>
       ) : (
-        <p className="rounded-[22px] border border-dashed border-border px-4 py-6 text-sm text-unactive-text">
+        <p className="rounded-[20px] border border-dashed border-border px-4 py-6 text-sm text-unactive-text">
           No uploaded images yet.
         </p>
       )}
       {newFiles.length > 0 ? (
-        <div className="space-y-3 rounded-[24px] border border-border bg-surface/70 p-4">
+        <div className="space-y-3 rounded-[20px] border border-border/65 bg-surface/70 p-4">
           <div className="flex items-center gap-2 text-sm font-medium text-text">
             <HardDriveUpload className="h-4 w-4 text-primary" />
             New files ready to upload

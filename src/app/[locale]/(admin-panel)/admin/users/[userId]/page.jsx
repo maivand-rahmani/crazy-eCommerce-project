@@ -1,6 +1,7 @@
 import React from "react";
 
 import { getUserStateVariant } from "@/entities/user";
+import { isAdmin } from "@/shared/lib/auth/roles";
 import {
   getAdminUserDetail,
   softDeleteUserAction,
@@ -26,28 +27,28 @@ export default async function UserDetailPage({ params }) {
   }
 
   return (
-    <div className="space-y-8 lg:space-y-10">
+    <div className="flex flex-col gap-[var(--admin-gap)]">
       <SectionTitle
         title={user.name || user.email}
       />
 
-      <div className="grid gap-6 xl:grid-cols-[1.2fr_0.95fr] 2xl:gap-7">
-        <div className="space-y-6">
+      <div className="grid gap-[var(--admin-gap)] xl:grid-cols-[1.2fr_0.95fr]">
+        <div className="flex flex-col gap-[var(--admin-gap)]">
           <Card>
             <CardHeader>
               <CardTitle>Profile info</CardTitle>
             </CardHeader>
             <CardContent className="grid gap-4 md:grid-cols-2">
-              <div className="rounded-[24px] border border-border/70 bg-[var(--admin-panel-muted)]/72 p-5 shadow-[0_18px_38px_-30px_rgba(15,23,42,0.35)]">
+              <div className="rounded-[20px] border border-border/65 bg-[var(--admin-panel-muted)]/72 p-5 shadow-[var(--admin-shadow)]">
                 <p className="text-sm font-medium text-text">Account state</p>
                 <div className="mt-3 flex flex-wrap gap-2">
-                  <Badge variant={user.role === "admin" ? "default" : "secondary"}>{user.role}</Badge>
+                  <Badge variant={isAdmin(user) ? "default" : "secondary"}>{user.role}</Badge>
                   <Badge variant={getUserStateVariant(user)}>
                     {user.deletedAt ? "Deleted" : user.isBlocked ? "Blocked" : "Active"}
                   </Badge>
                 </div>
               </div>
-              <div className="rounded-[24px] border border-border/70 bg-[var(--admin-panel-muted)]/72 p-5 text-sm text-unactive-text shadow-[0_18px_38px_-30px_rgba(15,23,42,0.35)]">
+              <div className="rounded-[20px] border border-border/65 bg-[var(--admin-panel-muted)]/72 p-5 text-sm text-unactive-text shadow-[var(--admin-shadow)]">
                 <p>
                   <span className="font-medium text-text">Email:</span> {user.email}
                 </p>
@@ -71,7 +72,7 @@ export default async function UserDetailPage({ params }) {
             <CardContent className="space-y-3">
               {user.addresses?.length > 0 ? (
                 user.addresses.map((address) => (
-                  <div key={address.id} className="rounded-[24px] border border-border/65 bg-white/36 p-5 text-sm text-unactive-text shadow-[0_18px_38px_-30px_rgba(15,23,42,0.32)] dark:bg-white/[0.02]">
+                  <div key={address.id} className="rounded-[20px] border border-border/65 bg-white/36 p-5 text-sm text-unactive-text shadow-[var(--admin-shadow)] dark:bg-white/[0.02]">
                     <p className="font-medium text-text">{address.street}</p>
                     <p>
                       {address.city}, {address.state} {address.zip}
@@ -93,7 +94,7 @@ export default async function UserDetailPage({ params }) {
             <CardContent className="space-y-3">
               {user.orders.length > 0 ? (
                 user.orders.map((order) => (
-                  <div key={order.id} className="rounded-[24px] border border-border/65 bg-white/36 p-5 shadow-[0_18px_38px_-30px_rgba(15,23,42,0.32)] dark:bg-white/[0.02]">
+                  <div key={order.id} className="rounded-[20px] border border-border/65 bg-white/36 p-5 shadow-[var(--admin-shadow)] dark:bg-white/[0.02]">
                     <div className="flex items-start justify-between gap-4">
                       <div>
                         <p className="font-admin-code text-sm text-primary">{order.id.slice(0, 10)}</p>
@@ -113,7 +114,7 @@ export default async function UserDetailPage({ params }) {
           </Card>
         </div>
 
-        <div className="space-y-6">
+        <div className="flex flex-col gap-[var(--admin-gap)]">
           <Card>
             <CardHeader>
               <CardTitle>Role management</CardTitle>

@@ -27,7 +27,7 @@ export default async function ProductsPage({ searchParams }) {
   ]);
 
   return (
-    <div className="space-y-8 lg:space-y-10">
+    <div className="flex flex-col gap-[var(--admin-gap)]">
       <SectionTitle
         title="Products"
         action={<Link href="/admin/products/new" className="inline-flex h-10 items-center justify-center rounded-xl bg-primary px-4 text-sm font-medium text-primary-text transition duration-200 hover:bg-primary/90">Create product</Link>}
@@ -46,7 +46,7 @@ export default async function ProductsPage({ searchParams }) {
           <CardHeader>
             <CardTitle>Products ({productsResult.pagination.total})</CardTitle>
           </CardHeader>
-          <CardContent className="space-y-6">
+          <CardContent className="flex flex-col gap-[var(--admin-gap)]">
             <Table>
               <TableHeader>
                 <tr>

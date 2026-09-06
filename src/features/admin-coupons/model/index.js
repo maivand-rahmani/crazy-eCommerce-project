@@ -4,13 +4,13 @@ import prisma from "../../../../prisma/client";
 import { toSafeJson } from "../../../../prisma/funcs";
 
 import {
-  ADMIN_PAGE_SIZE,
   buildPagination,
   normalizeOptionalDate,
   normalizeOptionalNumber,
   normalizeText,
   parsePage,
 } from "@/shared/lib";
+import { DEFAULT_SETTINGS } from "@/features/admin-settings/model/defaults";
 
 import { ensureAdminAction } from "@/features/admin-common";
 import { revalidateLocalizedPaths } from "@/shared/lib/admin/revalidate";
@@ -20,6 +20,12 @@ export async function getAdminCoupons(searchParams = {}) {
 
   const page = parsePage(searchParams.page);
   const query = normalizeText(searchParams.query);
+  let pageSize = DEFAULT_SETTINGS["admin.pageSize"];
+  try {
+    const { getSettings } = await import("@/features/admin-settings/model/settings");
+    const s = await getSettings();
+    pageSize = Number(s["admin.pageSize"] ?? pageSize);
+  } catch {}
 
   const where = {
     deleted_at: null,
@@ -38,15 +44,15 @@ export async function getAdminCoupons(searchParams = {}) {
     prisma.coupons.findMany({
       where,
       orderBy: [{ updated_at: "desc" }, { id: "desc" }],
-      skip: (page - 1) * ADMIN_PAGE_SIZE,
-      take: ADMIN_PAGE_SIZE,
+      skip: (page - 1) * pageSize,
+      take: pageSize,
     }),
   ]);
 
   return {
     coupons: toSafeJson(coupons),
     filters: { query },
-    pagination: buildPagination({ total, page, pageSize: ADMIN_PAGE_SIZE }),
+    pagination: buildPagination({ total, page, pageSize }),
   };
 }
 

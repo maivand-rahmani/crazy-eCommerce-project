@@ -78,8 +78,8 @@ const VariantEditorForm = ({ mode, productId, variant, createAction, updateActio
             Manage purchasable options, pricing, stock, variant specs, and media.
           </CardDescription>
         </CardHeader>
-        <CardContent className="space-y-6">
-          <div className="grid gap-5 rounded-[26px] border border-border/60 bg-white/30 p-5 shadow-[0_18px_38px_-30px_rgba(15,23,42,0.28)] dark:bg-white/[0.02] lg:grid-cols-2">
+        <CardContent className="flex flex-col gap-[var(--admin-gap)]">
+          <div className="grid gap-5 rounded-[26px] border border-border/65 bg-white/30 p-5 shadow-[var(--admin-shadow)] dark:bg-white/[0.02] lg:grid-cols-2">
             <label className="flex flex-col gap-2">
               <span className="text-sm font-medium text-text">Variant name</span>
               <Input name="variantName" required defaultValue={variant?.variant_name || ""} />
@@ -106,7 +106,7 @@ const VariantEditorForm = ({ mode, productId, variant, createAction, updateActio
                 defaultValue={variant?.stock_quantity || 0}
               />
             </label>
-            <div className="rounded-[22px] border border-border/60 bg-[var(--admin-panel-muted)]/64 p-4 lg:col-span-2">
+            <div className="rounded-[22px] border border-border/65 bg-[var(--admin-panel-muted)]/64 p-4 lg:col-span-2">
               <p className="text-xs uppercase tracking-[0.18em] text-unactive-text">SKU note</p>
               <p className="mt-2 text-sm leading-6 text-text">
                 Each variant stores its own stock, pricing, specs, and gallery, so merchandising can stay clean even with many options.

@@ -45,7 +45,7 @@ export const Card = ({ className, ...props }) => {
   return (
     <div
       className={cn(
-        "rounded-[var(--admin-card-radius)] border border-[color:var(--admin-panel-border,var(--border))] bg-[color:var(--admin-panel)]/92 text-text shadow-[var(--admin-shadow-soft)] backdrop-blur-[var(--admin-blur)]",
+        "rounded-[20px] border border-border/65 bg-card text-text shadow-[var(--admin-shadow)]",
         className,
       )}
       {...props}
@@ -143,7 +143,7 @@ export const Badge = ({ className, variant = "default", ...props }) => {
 
 export const Table = ({ className, ...props }) => {
   return (
-    <div className="overflow-hidden rounded-[24px] border border-border/60 bg-white/40 shadow-[inset_0_1px_0_rgba(255,255,255,0.22)] dark:bg-white/[0.02]">
+    <div className="overflow-hidden rounded-[20px] border border-border/65 bg-card shadow-[var(--admin-shadow)]">
       <div className="w-full overflow-x-auto">
       <table className={cn("w-full border-collapse text-sm", className)} {...props} />
       </div>
@@ -163,7 +163,7 @@ export const TableRow = ({ className, ...props }) => {
   return (
     <tr
       className={cn(
-        "transition duration-200 hover:bg-[color:var(--admin-panel-muted)]/72",
+        "h-14 transition duration-200 hover:bg-[color:var(--admin-panel-muted)]/50",
         className,
       )}
       {...props}
@@ -191,7 +191,7 @@ export const EmptyState = ({ title, description, action, className }) => {
   return (
     <Card className={cn("border-dashed", className)}>
       <CardContent className="flex min-h-[260px] flex-col items-center justify-center gap-4 text-center">
-        <div className="flex h-16 w-16 items-center justify-center rounded-[24px] bg-[var(--admin-panel-muted)] text-primary shadow-[var(--admin-shadow-soft)]">
+        <div className="flex h-16 w-16 items-center justify-center rounded-[20px] bg-[var(--admin-panel-muted)] text-primary shadow-[var(--admin-shadow)]">
           <span className="font-admin-code text-lg">::</span>
         </div>
         <div className="space-y-2">
@@ -206,14 +206,14 @@ export const EmptyState = ({ title, description, action, className }) => {
 
 export const SectionTitle = ({ eyebrow, title, description, action }) => {
   return (
-    <div className="flex flex-col gap-6 lg:flex-row lg:items-end lg:justify-between">
-      <div className="space-y-3">
+    <div className="flex flex-col gap-[var(--admin-gap)] lg:flex-row lg:items-end lg:justify-between">
+      <div className="flex flex-col gap-2">
         {eyebrow ? (
           <span className="inline-flex items-center rounded-full border border-primary/18 bg-primary/8 px-3 py-1 font-admin-code text-[11px] font-semibold uppercase tracking-[0.28em] text-primary">
             {eyebrow}
           </span>
         ) : null}
-        <div className="space-y-2">
+        <div className="flex flex-col gap-1.5">
           <h1 className="font-admin-sans text-3xl font-semibold tracking-[-0.05em] text-text lg:text-[2.35rem]">
             {title}
           </h1>
@@ -248,7 +248,7 @@ export const StatCard = ({ icon: Icon, label, value, caption, tone = "default" }
             </div>
           </div>
           {Icon ? (
-            <div className="flex h-14 w-14 items-center justify-center rounded-[22px] border border-white/40 bg-white/65 text-primary shadow-[var(--admin-shadow-soft)] dark:border-white/8 dark:bg-white/[0.04]">
+            <div className="flex h-14 w-14 items-center justify-center rounded-[20px] border border-border/65 bg-card text-primary shadow-[var(--admin-shadow)]">
               <Icon className="h-5 w-5" />
             </div>
           ) : null}

@@ -3,13 +3,8 @@
 import prisma from "../../../../prisma/client";
 import { toSafeJson } from "../../../../prisma/funcs";
 
-import {
-  ADMIN_PAGE_SIZE,
-  buildPagination,
-  normalizeOptionalDate,
-  normalizeText,
-  parsePage,
-} from "@/shared/lib";
+import { buildPagination, normalizeOptionalDate, normalizeText, parsePage } from "@/shared/lib";
+import { DEFAULT_SETTINGS } from "@/features/admin-settings/model/defaults";
 
 import { ensureAdminAction } from "@/features/admin-common";
 import { revalidateLocalizedPaths } from "@/shared/lib/admin/revalidate";
@@ -18,6 +13,12 @@ export async function getAdminOrders(searchParams = {}) {
   await ensureAdminAction();
 
   const page = parsePage(searchParams.page);
+  let pageSize = DEFAULT_SETTINGS["admin.pageSize"];
+  try {
+    const { getSettings } = await import("@/features/admin-settings/model/settings");
+    const s = await getSettings();
+    pageSize = Number(s["admin.pageSize"] ?? pageSize);
+  } catch {}
   const query = normalizeText(searchParams.query);
   const status = normalizeText(searchParams.status);
   const userQuery = normalizeText(searchParams.user);
@@ -59,8 +60,8 @@ export async function getAdminOrders(searchParams = {}) {
     prisma.orders.findMany({
       where,
       orderBy: [{ created_at: "desc" }, { id: "desc" }],
-      skip: (page - 1) * ADMIN_PAGE_SIZE,
-      take: ADMIN_PAGE_SIZE,
+      skip: (page - 1) * pageSize,
+      take: pageSize,
       include: {
         user: {
           select: {
@@ -102,7 +103,7 @@ export async function getAdminOrders(searchParams = {}) {
       dateFrom: searchParams.dateFrom || "",
       dateTo: searchParams.dateTo || "",
     },
-    pagination: buildPagination({ total, page, pageSize: ADMIN_PAGE_SIZE }),
+    pagination: buildPagination({ total, page, pageSize }),
   };
 }
 
