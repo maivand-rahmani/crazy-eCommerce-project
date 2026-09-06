@@ -623,86 +623,79 @@
     }
   },
   "adminSettings": {
-    "title": "Настройки Админа",
-    "description": "Настройка магазина, локализации, коммерции, каталога, медиа, SEO и продвинутых опций.",
+    "title": "Настройки",
+    "description": "Название магазина, контакты, коммерция и параметры панели. Изменять может только супер-админ.",
     "tabs": {
-      "general": "Общие",
-      "localization": "Локализация",
+      "general": "Основные",
       "commerce": "Коммерция",
-      "catalog": "Каталог",
-      "media": "Медиа",
-      "seo": "SEO",
-      "advanced": "Продвинутые"
+      "advanced": "Панель"
     },
     "fields": {
-      "store.name": {
-        "label": "Название магазина",
-        "description": "Публичное имя"
+      "store": {
+        "name": {
+          "label": "Название магазина",
+          "description": "Показывается в шапке, подвале и заголовках страниц."
+        },
+        "tagline": {
+          "label": "Слоган",
+          "description": "Короткая фраза под названием магазина."
+        }
       },
-      "store.tagline": {
-        "label": "Слоган",
-        "description": "Краткий слоган"
+      "contact": {
+        "email": {
+          "label": "Email поддержки",
+          "description": "Почта на странице контактов."
+        },
+        "phone": {
+          "label": "Телефон",
+          "description": "Номер на странице контактов."
+        },
+        "address": {
+          "label": "Адрес",
+          "description": "Физический адрес на странице контактов."
+        }
       },
-      "contact.email": {
-        "label": "Email контакта",
-        "description": "Email поддержки"
+      "currency": {
+        "code": {
+          "label": "Код валюты",
+          "description": "ISO-код для всех цен, например USD."
+        }
       },
-      "contact.phone": {
-        "label": "Телефон",
-        "description": "Телефон поддержки"
+      "commerce": {
+        "shippingCents": {
+          "label": "Доставка (в центах)",
+          "description": "Фиксированная стоимость доставки в центах. 0 — бесплатно."
+        },
+        "taxRate": {
+          "label": "Налоговая ставка",
+          "description": "Доля налога на заказы, например 0.08 = 8%."
+        }
       },
-      "contact.address": {
-        "label": "Адрес",
-        "description": "Физический адрес"
-      },
-      "currency.code": {
-        "label": "Код валюты",
-        "description": "Код ISO, например USD"
-      },
-      "commerce.shippingCents": {
-        "label": "Доставка (центы)",
-        "description": "Стоимость доставки в центах"
-      },
-      "commerce.taxRate": {
-        "label": "Налог",
-        "description": "Ставка налога, например 0.08"
-      },
-      "catalog.pageSize": {
-        "label": "Размер каталога",
-        "description": "Товаров на странице"
-      },
-      "media.s3PublicUrl": {
-        "label": "S3 URL",
-        "description": "Публичный URL S3"
-      },
-      "media.s3Bucket": {
-        "label": "S3 Bucket",
-        "description": "Имя бакета"
-      },
-      "seo.defaultTitle": {
-        "label": "SEO заголовок",
-        "description": "Заголовок по умолчанию"
-      },
-      "seo.defaultDescription": {
-        "label": "SEO описание",
-        "description": "Описание по умолчанию"
-      },
-      "admin.pageSize": {
-        "label": "Размер админки",
-        "description": "Размер страницы админки"
-      },
-      "admin.lowStockThreshold": {
-        "label": "Порог низкого запаса",
-        "description": "Количество считающееся низким"
-      },
-      "admin.salesWindowDays": {
-        "label": "Окно продаж (дни)",
-        "description": "Дни для аналитики"
+      "admin": {
+        "pageSize": {
+          "label": "Строк на страницу",
+          "description": "Размер страниц в списках админки."
+        },
+        "lowStockThreshold": {
+          "label": "Порог низкого остатка",
+          "description": "Остатки не выше этого числа помечаются как низкие."
+        },
+        "salesWindowDays": {
+          "label": "Окно продаж (дней)",
+          "description": "Период графика продаж на дашборде."
+        }
       }
     },
-    "save": "Сохранить",
+    "save": "Сохранить изменения",
     "saving": "Сохранение…",
-    "saveSuccess": "Настройка сохранена",
-    "saveError": "Ошибка сохранения"
+    "saveSuccess": "Настройки сохранены",
+    "saveError": "Не удалось сохранить настройки",
+    "sections": {
+      "store": "Магазин",
+      "contact": "Контакты",
+      "currency": "Валюта",
+      "commerce": "Доставка и налоги",
+      "admin": "Поведение панели"
+    }
   }
 }

@@ -1,41 +1,38 @@
 "use server";
 
+import { ensureSuperAdminAction } from "@/features/admin-common";
+
+import { DEFAULT_SETTINGS } from "./defaults";
 import { updateSetting } from "./settings";
-import { normalizeText } from "@/shared/lib/admin/formatters";
 
-export async function updateAdminSettingAction(formData) {
-  const key = normalizeText(formData.get("key"));
-  const rawValue = formData.get("value");
+/** Setting keys whose values must be stored as numbers. */
+const NUMERIC_KEYS = new Set([
+  "commerce.shippingCents",
+  "commerce.taxRate",
+  "admin.pageSize",
+  "admin.lowStockThreshold",
+  "admin.salesWindowDays",
+]);
 
-  if (!key) {
-    throw new Error("Setting key is required");
-  }
+/**
+ * Saves one section of settings in a single guarded action. Keys outside
+ * DEFAULT_SETTINGS are ignored; values are trimmed, numeric keys coerced.
+ */
+export async function updateAdminSettingsAction(formData) {
+  await ensureSuperAdminAction();
 
-  // Parse value as JSON if possible, otherwise keep as string
-  let value;
-  const trimmed = typeof rawValue === "string" ? rawValue.trim() : rawValue;
-  if (trimmed === "") {
-    value = "";
-  } else {
-    try {
-      value = JSON.parse(trimmed);
-    } catch {
-      // Try to coerce numbers
-      const num = Number(trimmed);
-      if (!Number.isNaN(num) && trimmed !== "" && String(num) === trimmed) {
-        value = num;
-      } else {
-        value = trimmed;
-      }
+  let count = 0;
+  for (const [key, raw] of formData.entries()) {
+    if (!Object.prototype.hasOwnProperty.call(DEFAULT_SETTINGS, key)) {
+      continue;
     }
+
+    const text = typeof raw === "string" ? raw.trim() : "";
+    const value = NUMERIC_KEYS.has(key) ? Number(text) || 0 : text;
+
+    await updateSetting(key, value);
+    count += 1;
   }
 
-  // For numeric settings, ensure number type
-  const numericKeys = ["commerce.shippingCents", "commerce.taxRate", "catalog.pageSize", "admin.lowStockThreshold", "admin.salesWindowDays", "admin.pageSize"];
-  if (numericKeys.includes(key) && typeof value === "string" && value !== "") {
-    const n = Number(value);
-    if (!Number.isNaN(n)) value = n;
-  }
-
-  await updateSetting(key, value);
+  return { ok: true, count };
 }

@@ -624,85 +624,78 @@
   },
   "adminSettings": {
     "title": "Admin Settings",
-    "description": "Configure store, localization, commerce, catalog, media, SEO and advanced options. Only super_admin can edit.",
+    "description": "Manage store info, commerce rules and panel behavior. Only super admin can edit.",
     "tabs": {
       "general": "General",
-      "localization": "Localization",
       "commerce": "Commerce",
-      "catalog": "Catalog",
-      "media": "Media",
-      "seo": "SEO",
       "advanced": "Advanced"
     },
     "fields": {
-      "store.name": {
-        "label": "Store Name",
-        "description": "Public store name shown in header and footer"
+      "store": {
+        "name": {
+          "label": "Store name",
+          "description": "Shown in the header, footer and page titles."
+        },
+        "tagline": {
+          "label": "Tagline",
+          "description": "Short phrase under the store name."
+        }
       },
-      "store.tagline": {
-        "label": "Store Tagline",
-        "description": "Short tagline for footer"
+      "contact": {
+        "email": {
+          "label": "Support email",
+          "description": "Contact email shown on the Contact page."
+        },
+        "phone": {
+          "label": "Support phone",
+          "description": "Phone number shown on the Contact page."
+        },
+        "address": {
+          "label": "Store address",
+          "description": "Physical address shown on the Contact page."
+        }
       },
-      "contact.email": {
-        "label": "Contact Email",
-        "description": "Support email"
+      "currency": {
+        "code": {
+          "label": "Currency code",
+          "description": "ISO code used for all prices, e.g. USD."
+        }
       },
-      "contact.phone": {
-        "label": "Contact Phone",
-        "description": "Support phone"
+      "commerce": {
+        "shippingCents": {
+          "label": "Shipping cost (cents)",
+          "description": "Flat shipping price in cents. Set 0 for free shipping."
+        },
+        "taxRate": {
+          "label": "Tax rate",
+          "description": "Decimal rate applied to orders, e.g. 0.08 = 8%."
+        }
       },
-      "contact.address": {
-        "label": "Contact Address",
-        "description": "Physical address"
-      },
-      "currency.code": {
-        "label": "Currency Code",
-        "description": "ISO currency code, e.g. USD"
-      },
-      "commerce.shippingCents": {
-        "label": "Shipping (cents)",
-        "description": "Shipping cost in cents"
-      },
-      "commerce.taxRate": {
-        "label": "Tax Rate",
-        "description": "Tax rate decimal, e.g. 0.08 for 8%"
-      },
-      "catalog.pageSize": {
-        "label": "Catalog Page Size",
-        "description": "Products per page"
-      },
-      "media.s3PublicUrl": {
-        "label": "S3 Public URL",
-        "description": "Public S3 base URL"
-      },
-      "media.s3Bucket": {
-        "label": "S3 Bucket",
-        "description": "S3 bucket name"
-      },
-      "seo.defaultTitle": {
-        "label": "SEO Title",
-        "description": "Default SEO title"
-      },
-      "seo.defaultDescription": {
-        "label": "SEO Description",
-        "description": "Default SEO description"
-      },
-      "admin.pageSize": {
-        "label": "Admin Page Size",
-        "description": "Admin listings page size"
-      },
-      "admin.lowStockThreshold": {
-        "label": "Low Stock Threshold",
-        "description": "Quantity considered low stock"
-      },
-      "admin.salesWindowDays": {
-        "label": "Sales Window (days)",
-        "description": "Days for sales analytics"
+      "admin": {
+        "pageSize": {
+          "label": "Rows per page",
+          "description": "Pagination size for admin lists."
+        },
+        "lowStockThreshold": {
+          "label": "Low-stock threshold",
+          "description": "Variants at or below this quantity are flagged as low stock."
+        },
+        "salesWindowDays": {
+          "label": "Sales window (days)",
+          "description": "Time range used by the dashboard sales chart."
+        }
       }
     },
-    "save": "Save",
+    "save": "Save changes",
     "saving": "Saving…",
-    "saveSuccess": "Setting saved",
-    "saveError": "Failed to save setting"
+    "saveSuccess": "Settings saved",
+    "saveError": "Failed to save settings",
+    "sections": {
+      "store": "Store identity",
+      "contact": "Contact information",
+      "currency": "Currency",
+      "commerce": "Shipping & taxes",
+      "admin": "Panel behavior"
+    }
   }
 }
