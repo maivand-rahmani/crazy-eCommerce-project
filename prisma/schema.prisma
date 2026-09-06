@@ -57,6 +57,7 @@ model User {
   orders            orders[]
   reviews           reviews[]
   reviews_reactions reviews_reactions[]
+  review_reports    review_reports[]
   wishlist          wishlist?
 
   @@index([role], map: "idx_users_role")
@@ -257,13 +258,28 @@ model reviews {
   product_id        BigInt
   rating            Int                 @db.SmallInt
   comment           String?
+  isHidden          Boolean             @default(false)
   created_at        DateTime            @default(now()) @db.Timestamptz(6)
   user              User                @relation(fields: [user_id], references: [id], onDelete: Cascade, onUpdate: NoAction)
   product           products            @relation(fields: [product_id], references: [id], onDelete: Cascade)
   reviews_reactions reviews_reactions[]
+  review_reports    review_reports[]
 
   @@unique([user_id, product_id])
   @@index([product_id], map: "idx_reviews_product")
+}
+
+model review_reports {
+  id         BigInt   @id @default(autoincrement())
+  review_id  Int
+  user_id    String
+  reason     String
+  created_at DateTime @default(now()) @db.Timestamptz(6)
+  reviews    reviews  @relation(fields: [review_id], references: [id], onDelete: Cascade, onUpdate: NoAction)
+  user       User     @relation(fields: [user_id], references: [id], onDelete: Cascade, onUpdate: NoAction)
+
+  @@unique([review_id, user_id])
+  @@index([created_at], map: "idx_review_reports_created_at")
 }
 
 model reviews_reactions {
