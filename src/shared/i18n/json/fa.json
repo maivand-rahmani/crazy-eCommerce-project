@@ -624,85 +624,78 @@
   },
   "adminSettings": {
     "title": "تنظیمات ادمین",
-    "description": "پیکربندی فروشگاه، بومی‌سازی، تجارت، کاتالوگ، رسانه، سئو و گزینه‌های پیشرفته.",
+    "description": "نام فروشگاه، اطلاعات تماس، تجارت و تنظیمات پنل. فقط سوپر ادمین می‌تواند ویرایش کند.",
     "tabs": {
       "general": "عمومی",
-      "localization": "بومی‌سازی",
       "commerce": "تجارت",
-      "catalog": "کاتالوگ",
-      "media": "رسانه",
-      "seo": "سئو",
       "advanced": "پیشرفته"
     },
     "fields": {
-      "store.name": {
-        "label": "نام فروشگاه",
-        "description": "نام عمومی"
+      "store": {
+        "name": {
+          "label": "نام فروشگاه",
+          "description": "در هدر، فوتر و عنوان صفحات نمایش داده می‌شود."
+        },
+        "tagline": {
+          "label": "شعار",
+          "description": "جمله‌ی کوتاه زیر نام فروشگاه."
+        }
       },
-      "store.tagline": {
-        "label": "شعار",
-        "description": "شعار کوتاه"
+      "contact": {
+        "email": {
+          "label": "ایمیل پشتیبانی",
+          "description": "ایمیل نمایش‌داده‌شده در صفحه‌ی تماس."
+        },
+        "phone": {
+          "label": "تلفن",
+          "description": "شماره‌ی تماس در صفحه‌ی تماس."
+        },
+        "address": {
+          "label": "آدرس فروشگاه",
+          "description": "آدرس فیزیکی در صفحه‌ی تماس."
+        }
       },
-      "contact.email": {
-        "label": "ایمیل تماس",
-        "description": "ایمیل پشتیبانی"
+      "currency": {
+        "code": {
+          "label": "کد ارز",
+          "description": "کد ISO برای همه‌ی قیمت‌ها، مثلاً USD."
+        }
       },
-      "contact.phone": {
-        "label": "تلفن",
-        "description": "تلفن پشتیبانی"
+      "commerce": {
+        "shippingCents": {
+          "label": "هزینه ارسال (سنت)",
+          "description": "مبلغ ثابت ارسال به سنت. صفر یعنی ارسال رایگان."
+        },
+        "taxRate": {
+          "label": "نرخ مالیات",
+          "description": "نرخ اعمال‌شده روی سفارش، مثلاً 0.08 = 8٪."
+        }
       },
-      "contact.address": {
-        "label": "آدرس",
-        "description": "آدرس فیزیکی"
-      },
-      "currency.code": {
-        "label": "کد ارز",
-        "description": "کد ISO"
-      },
-      "commerce.shippingCents": {
-        "label": "هزینه ارسال (سنت)",
-        "description": "هزینه ارسال"
-      },
-      "commerce.taxRate": {
-        "label": "نرخ مالیات",
-        "description": "نرخ اعشاری"
-      },
-      "catalog.pageSize": {
-        "label": "اندازه کاتالوگ",
-        "description": "تعداد محصول در صفحه"
-      },
-      "media.s3PublicUrl": {
-        "label": "آدرس S3",
-        "description": "آدرس عمومی S3"
-      },
-      "media.s3Bucket": {
-        "label": "باکت S3",
-        "description": "نام باکت"
-      },
-      "seo.defaultTitle": {
-        "label": "عنوان سئو",
-        "description": "عنوان پیش‌فرض"
-      },
-      "seo.defaultDescription": {
-        "label": "توضیح سئو",
-        "description": "توضیح پیش‌فرض"
-      },
-      "admin.pageSize": {
-        "label": "اندازه ادمین",
-        "description": "اندازه صفحه ادمین"
-      },
-      "admin.lowStockThreshold": {
-        "label": "آستانه کمبود",
-        "description": "تعداد کم"
-      },
-      "admin.salesWindowDays": {
-        "label": "بازه فروش (روز)",
-        "description": "روزهای تحلیل"
+      "admin": {
+        "pageSize": {
+          "label": "تعداد سطر در صفحه",
+          "description": "اندازه‌ی صفحه در فهرست‌های پنل."
+        },
+        "lowStockThreshold": {
+          "label": "آستانه‌ی موجودی کم",
+          "description": "تنها تا این تعداد «موجودی کم» محسوب می‌شوند."
+        },
+        "salesWindowDays": {
+          "label": "بازه‌ی فروش (روز)",
+          "description": "بازه‌ی نمودار فروش داشبورد."
+        }
       }
     },
-    "save": "ذخیره",
+    "save": "ذخیره تغییرات",
     "saving": "در حال ذخیره…",
-    "saveSuccess": "تنظیم ذخیره شد",
-    "saveError": "خطا در ذخیره"
+    "saveSuccess": "تنظیمات ذخیره شد",
+    "saveError": "ذخیره‌ی تنظیمات ناموفق بود",
+    "sections": {
+      "store": "هویت فروشگاه",
+      "contact": "اطلاعات تماس",
+      "currency": "ارز",
+      "commerce": "ارسال و مالیات",
+      "admin": "رفتار پنل"
+    }
   }
 }

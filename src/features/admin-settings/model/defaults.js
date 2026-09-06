@@ -1,3 +1,9 @@
+/**
+ * Admin settings defaults — the ONLY editable settings source of truth.
+ * Keys listed here are what /admin/settings exposes, what the seed writes,
+ * and what updateAdminSettingsAction accepts. Settings that are env-backed
+ * (S3 credentials, DB URLs) must never appear here.
+ */
 export const DEFAULT_SETTINGS = {
   "store.name": "Cyber",
   "store.tagline": "Dive into the future. Explore, innovate, connect.",
@@ -7,12 +13,7 @@ export const DEFAULT_SETTINGS = {
   "currency.code": "USD",
   "commerce.shippingCents": 0,
   "commerce.taxRate": 0,
-  "catalog.pageSize": 10,
+  "admin.pageSize": 10,
   "admin.lowStockThreshold": 8,
   "admin.salesWindowDays": 30,
-  "admin.pageSize": 10,
-  "media.s3PublicUrl": "https://s3.ru1.storage.beget.cloud/5427be431039-dev",
-  "media.s3Bucket": "5427be431039-dev",
-  "seo.defaultTitle": "Cyber Store",
-  "seo.defaultDescription": "Premium technology store",
 };
