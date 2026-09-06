@@ -566,5 +566,79 @@
       "title": "Apple Watch",
       "description": "Apple Watch — это смарт-часы, разработанные и продаваемые Apple. Они имеют функции отслеживания фитнеса, возможности для здоровья и беспроводную связь, а также интегрируются с watchOS и другими продуктами и сервисами Apple."
     }
+  },
+
+  "settings": {
+    "title": "Настройки",
+    "subtitle": "Управляйте профилем, адресами, предпочтениями и безопасностью.",
+    "tabs": {
+      "account": "Аккаунт",
+      "addresses": "Адреса",
+      "preferences": "Предпочтения",
+      "security": "Безопасность",
+      "orders": "Мои заказы"
+    },
+    "account": {
+      "verified": "Подтверждён",
+      "edit": "Изменить",
+      "displayName": "Имя",
+      "displayNamePlaceholder": "Ваше имя",
+      "avatarUrl": "URL аватара",
+      "cancel": "Отмена",
+      "save": "Сохранить",
+      "saving": "Сохранение…",
+      "saveSuccess": "Профиль обновлён",
+      "saveError": "Не удалось сохранить профиль",
+      "loadError": "Не удалось загрузить профиль",
+      "memberSince": "Участник с",
+      "lastUpdated": "Последнее обновление"
+    },
+    "addresses": {
+      "title": "Мои адреса",
+      "description": "Управляйте адресами доставки для оформления заказов.",
+      "addNew": "Добавить",
+      "addFirst": "Добавьте первый адрес",
+      "empty": "Адресов пока нет",
+      "loadError": "Не удалось загрузить адреса",
+      "setDefault": "Сделать основным",
+      "edit": "Изменить",
+      "delete": "Удалить"
+    },
+    "preferences": {
+      "title": "Предпочтения",
+      "description": "Язык, валюта и оформление.",
+      "languageTitle": "Язык",
+      "languageDescription": "Язык интерфейса всего магазина.",
+      "currencyTitle": "Валюта",
+      "currencyDescription": "Цены показаны в {currency}. Мультивалютность появится с админ-настройками.",
+      "themeTitle": "Тема",
+      "themeDescription": "Тёмное / светлое оформление. Будет доступно после появления системы тем.",
+      "themeComingSoon": "Скоро"
+    },
+    "security": {
+      "passwordTitle": "Смена пароля",
+      "currentPassword": "Текущий пароль",
+      "newPassword": "Новый пароль",
+      "confirmPassword": "Подтвердите новый пароль",
+      "changePassword": "Сменить пароль",
+      "changing": "Смена…",
+      "passwordMismatch": "Новые пароли не совпадают",
+      "passwordChanged": "Пароль успешно изменён",
+      "passwordError": "Не удалось сменить пароль",
+      "oauthNote": "Вы вошли через OAuth (Google/GitHub), поэтому пароля для смены здесь нет.",
+      "sessionsTitle": "Активные сессии",
+      "sessionsDescription": "Вы вошли как {email}.",
+      "activeSessions": "Активных сессий: {count}",
+      "sessionRow": "Начата {date}",
+      "revokeOthers": "Выйти из других сессий",
+      "revoking": "Завершение…",
+      "sessionsRevoked": "Завершено сессий: {count}",
+      "sessionsError": "Не удалось завершить сессии",
+      "signOut": "Выйти",
+      "dangerTitle": "Опасная зона",
+      "dangerDescription": "Навсегда удалить аккаунт и все его данные. Это необратимо.",
+      "deleteAccount": "Удалить аккаунт",
+      "comingSoon": "скоро"
+    }
   }
 }

@@ -564,5 +564,79 @@
       "title": "Apple Watch",
       "description": "Apple Watch is a smartwatch developed and marketed by Apple. It has fitness tracking, health-oriented capabilities, and wireless telecommunication, and integrates with watchOS and other Apple products and services."
     }
+  },
+
+  "settings": {
+    "title": "Settings",
+    "subtitle": "Manage your profile, addresses, preferences and security.",
+    "tabs": {
+      "account": "Account",
+      "addresses": "Addresses",
+      "preferences": "Preferences",
+      "security": "Security",
+      "orders": "My Orders"
+    },
+    "account": {
+      "verified": "Verified",
+      "edit": "Edit",
+      "displayName": "Display Name",
+      "displayNamePlaceholder": "Your name",
+      "avatarUrl": "Avatar URL",
+      "cancel": "Cancel",
+      "save": "Save changes",
+      "saving": "Saving…",
+      "saveSuccess": "Profile updated",
+      "saveError": "Failed to save profile",
+      "loadError": "Failed to load profile",
+      "memberSince": "Member since",
+      "lastUpdated": "Last updated"
+    },
+    "addresses": {
+      "title": "My Addresses",
+      "description": "Manage shipping addresses used at checkout.",
+      "addNew": "Add New",
+      "addFirst": "Add your first address",
+      "empty": "No addresses added yet",
+      "loadError": "Failed to load addresses",
+      "setDefault": "Set as default",
+      "edit": "Edit",
+      "delete": "Delete"
+    },
+    "preferences": {
+      "title": "Preferences",
+      "description": "Language, currency and appearance.",
+      "languageTitle": "Language",
+      "languageDescription": "Interface language for the whole store.",
+      "currencyTitle": "Currency",
+      "currencyDescription": "Store prices are shown in {currency}. Multi-currency comes with admin settings.",
+      "themeTitle": "Theme",
+      "themeDescription": "Dark / light appearance. Available once the theme system lands.",
+      "themeComingSoon": "Coming soon"
+    },
+    "security": {
+      "passwordTitle": "Change Password",
+      "currentPassword": "Current password",
+      "newPassword": "New password",
+      "confirmPassword": "Confirm new password",
+      "changePassword": "Change password",
+      "changing": "Changing…",
+      "passwordMismatch": "New passwords do not match",
+      "passwordChanged": "Password changed successfully",
+      "passwordError": "Failed to change password",
+      "oauthNote": "You signed in with an OAuth provider (Google/GitHub), so there is no password to change here.",
+      "sessionsTitle": "Active Sessions",
+      "sessionsDescription": "Signed in as {email}.",
+      "activeSessions": "{count} active session(s) on record",
+      "sessionRow": "Started {date}",
+      "revokeOthers": "Sign out other sessions",
+      "revoking": "Revoking…",
+      "sessionsRevoked": "Revoked {count} other session(s)",
+      "sessionsError": "Failed to revoke sessions",
+      "signOut": "Sign out",
+      "dangerTitle": "Danger Zone",
+      "dangerDescription": "Permanently delete your account and all its data. This cannot be undone.",
+      "deleteAccount": "Delete account",
+      "comingSoon": "coming soon"
+    }
   }
 }

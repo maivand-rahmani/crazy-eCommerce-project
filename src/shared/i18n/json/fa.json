@@ -564,5 +564,79 @@
       "title": "اپل واچ",
       "description": "اپل واچ یک ساعت هوشمند توسعه‌یافته و عرضه شده توسط اپل است. دارای ردیابی تناسب اندام، قابلیت‌های سلامت‌محور و ارتباط بی‌سیم است و با watchOS و سایر محصولات و خدمات اپل یکپارچه می‌شود."
     }
+  },
+
+  "settings": {
+    "title": "تنظیمات",
+    "subtitle": "پروفایل، آدرسها، ترجیحات و امنیت خود را مدیریت کنید.",
+    "tabs": {
+      "account": "حساب",
+      "addresses": "آدرسها",
+      "preferences": "ترجیحات",
+      "security": "امنیت",
+      "orders": "سفارشات من"
+    },
+    "account": {
+      "verified": "تأییدشده",
+      "edit": "ویرایش",
+      "displayName": "نام نمایشی",
+      "displayNamePlaceholder": "نام شما",
+      "avatarUrl": "آدرس آواتار",
+      "cancel": "انصراف",
+      "save": "ذخیره تغییرات",
+      "saving": "در حال ذخیره…",
+      "saveSuccess": "پروفایل بهروزرسانی شد",
+      "saveError": "ذخیره پروفایل ناموفق بود",
+      "loadError": "بارگذاری پروفایل ناموفق بود",
+      "memberSince": "عضو از",
+      "lastUpdated": "آخرین بهروزرسانی"
+    },
+    "addresses": {
+      "title": "آدرسهای من",
+      "description": "آدرسهای ارسال مورد استفاده در تسویه را مدیریت کنید.",
+      "addNew": "افزودن",
+      "addFirst": "اولین آدرس خود را اضافه کنید",
+      "empty": "هنوز آدرسی اضافه نشده",
+      "loadError": "بارگذاری آدرسها ناموفق بود",
+      "setDefault": "پیشفرض شود",
+      "edit": "ویرایش",
+      "delete": "حذف"
+    },
+    "preferences": {
+      "title": "ترجیحات",
+      "description": "زبان، ارز و ظاهر.",
+      "languageTitle": "زبان",
+      "languageDescription": "زبان رابط کل فروشگاه.",
+      "currencyTitle": "ارز",
+      "currencyDescription": "قیمتها به {currency} نمایش داده میشوند. چندارزی با تنظیمات ادمین میآید.",
+      "themeTitle": "پوسته",
+      "themeDescription": "حالت تیره / روشن. پس از آماده شدن سیستم پوسته فعال میشود.",
+      "themeComingSoon": "بهزودی"
+    },
+    "security": {
+      "passwordTitle": "تغییر رمز عبور",
+      "currentPassword": "رمز فعلی",
+      "newPassword": "رمز جدید",
+      "confirmPassword": "تکرار رمز جدید",
+      "changePassword": "تغییر رمز",
+      "changing": "در حال تغییر…",
+      "passwordMismatch": "رمزهای جدید مطابقت ندارند",
+      "passwordChanged": "رمز با موفقیت تغییر کرد",
+      "passwordError": "تغییر رمز ناموفق بود",
+      "oauthNote": "شما با OAuth (گوگل/گیت‌هاب) وارد شدهاید، پس رمزی برای تغییر وجود ندارد.",
+      "sessionsTitle": "نشستهای فعال",
+      "sessionsDescription": "واردشده بهعنوان {email}.",
+      "activeSessions": "{count} نشست فعال ثبت شده",
+      "sessionRow": "شروع {date}",
+      "revokeOthers": "خروج از نشستهای دیگر",
+      "revoking": "در حال بستن…",
+      "sessionsRevoked": "{count} نشست دیگر بسته شد",
+      "sessionsError": "بستن نشستها ناموفق بود",
+      "signOut": "خروج",
+      "dangerTitle": "ناحیه خطر",
+      "dangerDescription": "حساب و تمام دادههای آن برای همیشه حذف شود. این عمل بازگشتناپذیر است.",
+      "deleteAccount": "حذف حساب",
+      "comingSoon": "بهزودی"
+    }
   }
 }
