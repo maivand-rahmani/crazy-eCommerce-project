@@ -1,14 +1,20 @@
 "use client";
 
 import React, { useMemo, useState } from "react";
-import { useTranslations } from "next-intl";
+import { useLocale, useTranslations } from "next-intl";
 
 import CouponForm from "@/features/cart/apply-cupon/ui/CouponForm";
 import OrderModal from "@/entities/order/ui/modal/OrderModal";
-import { formatPriceFromCents } from "@/entities/product";
+import { formatMoney } from "@/shared/lib/currency/currency";
 
 const OrderSummary = ({ cart, checkout, items, onOrderCreated = null }) => {
   const t = useTranslations("orderSummary");
+  const locale = useLocale();
+  const money = (cents) =>
+    formatMoney(cents, locale, {
+      minimumFractionDigits: 2,
+      maximumFractionDigits: 2,
+    });
   const [couponPreview, setCouponPreview] = useState(null);
   const [orderModal, setOrderModal] = useState(false);
 
@@ -50,25 +56,25 @@ const OrderSummary = ({ cart, checkout, items, onOrderCreated = null }) => {
         <div className="mt-6 space-y-3 text-sm text-text">
           <div className="flex items-center justify-between">
             <span>{t("subtotal")}</span>
-            <span>{formatPriceFromCents(summary.subtotalCents, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}$</span>
+            <span>{money(summary.subtotalCents)}</span>
           </div>
           {summary.discountCents > 0 ? (
             <div className="flex items-center justify-between text-success">
               <span>{t("discount")}</span>
-              <span>-{formatPriceFromCents(summary.discountCents, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}$</span>
+              <span>-{money(summary.discountCents)}</span>
             </div>
           ) : null}
           <div className="flex items-center justify-between text-unactive-text">
             <span>Shipping</span>
-            <span>{formatPriceFromCents(summary.shippingCents, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}$</span>
+            <span>{money(summary.shippingCents)}</span>
           </div>
           <div className="flex items-center justify-between text-unactive-text">
             <span>Tax</span>
-            <span>{formatPriceFromCents(summary.taxCents, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}$</span>
+            <span>{money(summary.taxCents)}</span>
           </div>
           <div className="flex items-center justify-between border-t border-border pt-3 text-base font-bold">
             <span>{t("total")}</span>
-            <span>{formatPriceFromCents(summary.totalCents, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}$</span>
+            <span>{money(summary.totalCents)}</span>
           </div>
         </div>
 

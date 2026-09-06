@@ -3,6 +3,10 @@ import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { describe, expect, it, vi } from "vitest";
 
+vi.mock("next-intl", () => ({
+  useLocale: () => "en",
+}));
+
 vi.mock("@/entities/product", () => ({
   formatPriceFromCents: vi.fn((value) => `${value / 100}`),
   getLineItemTotalCents: vi.fn((priceCents, quantity) => priceCents * quantity),
@@ -71,7 +75,7 @@ describe("Counter", () => {
       }),
     );
 
-    expect(screen.getByText("=14.97$")).toBeInTheDocument();
+    expect(screen.getByText("=$14.97")).toBeInTheDocument();
 
     const buttons = screen.getAllByRole("button");
     await user.click(buttons[2]);

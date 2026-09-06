@@ -13,6 +13,7 @@ vi.mock("next-auth/react", () => ({
 
 vi.mock("next-intl", () => ({
   useTranslations: () => (key) => key,
+  useLocale: () => "en",
 }));
 
 vi.mock(
@@ -46,7 +47,7 @@ describe("OrderSummary", () => {
 
     expect(screen.getByText("subtotal")).toBeInTheDocument();
     expect(screen.getByText("total")).toBeInTheDocument();
-    expect(screen.getAllByText("15,000.00$").length).toBeGreaterThanOrEqual(2);
+    expect(screen.getAllByText("$150.00").length).toBeGreaterThanOrEqual(2);
     expect(screen.getByText("order")).toBeInTheDocument();
   });
 });

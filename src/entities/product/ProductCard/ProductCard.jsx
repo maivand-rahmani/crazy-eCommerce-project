@@ -11,12 +11,14 @@ import {
   getProductStockQuantity,
 } from "@/entities/product";
 import { useRouter } from "@/shared/i18n";
-import { useTranslations } from "next-intl";
+import { useLocale, useTranslations } from "next-intl";
 import { getProductImageUrl } from "@/shared/lib/images";
+import { formatMoney } from "@/shared/lib/currency/currency";
 
 
 const ProductCard = ({ data, otherInfo, contextLabel }) => {
   const t = useTranslations("product");
+  const locale = useLocale();
   const router = useRouter();
 
   if (!data) return <div>{t("notFound")}</div>;
@@ -99,7 +101,7 @@ const ProductCard = ({ data, otherInfo, contextLabel }) => {
               containerClassName="flex flex-wrap items-center gap-2"
               originalPriceClassName="text-sm text-muted line-through"
               currentPriceClassName={`text-2xl font-bold ${hasDiscount ? "text-red-500" : "text-text"}`}
-              currencySuffix=" $"
+              formatPrice={(cents) => formatMoney(cents, locale)}
             />
             <p className="text-xs text-muted">{stockLabel || t("details")}</p>
           </div>

@@ -11,11 +11,9 @@ import {
   YAxis,
 } from "recharts";
 
-const currencyFormatter = new Intl.NumberFormat("en-US", {
-  style: "currency",
-  currency: "USD",
-  maximumFractionDigits: 0,
-});
+import { formatCurrency } from "@/shared/lib/admin/formatters";
+
+const formatChartCurrency = (value) => formatCurrency(Math.round(Number(value || 0) * 100));
 
 const AdminSalesChart = ({ data }) => {
   return (
@@ -39,7 +37,7 @@ const AdminSalesChart = ({ data }) => {
             tickLine={false}
             axisLine={false}
             tick={{ fill: "var(--muted)", fontSize: 12 }}
-            tickFormatter={(value) => currencyFormatter.format(value)}
+            tickFormatter={(value) => formatChartCurrency(value)}
           />
           <Tooltip
             cursor={{ stroke: "rgba(30, 64, 175, 0.2)", strokeWidth: 1 }}
@@ -50,7 +48,7 @@ const AdminSalesChart = ({ data }) => {
               boxShadow: "0 20px 40px -28px rgba(15, 23, 42, 0.55)",
             }}
             formatter={(value, key) => {
-              if (key === "sales") return currencyFormatter.format(value);
+              if (key === "sales") return formatChartCurrency(value);
               return value;
             }}
           />

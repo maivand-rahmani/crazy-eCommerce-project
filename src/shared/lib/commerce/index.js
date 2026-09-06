@@ -3,6 +3,7 @@ import prisma from "../../../../prisma/client";
 import { toSafeJson } from "../../../../prisma/funcs";
 import { getProductPriceInfo } from "@/entities/product";
 import { getProductImageUrl } from "../images/productImage";
+import { STORE_CURRENCY_CODE } from "../currency/currency";
 
 const ORDER_STATUS = {
   created: "created",
@@ -471,6 +472,7 @@ export async function placeSandboxOrder({ userId, address, couponCode, orderRequ
 
 export function getSandboxCommerceConfig() {
   return {
+    currencyCode: STORE_CURRENCY_CODE,
     shippingCents: SANDBOX_SHIPPING_CENTS,
     taxRate: SANDBOX_TAX_RATE,
     paymentMode: "mock",

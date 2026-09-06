@@ -1,26 +1,31 @@
+"use client";
+
 import React from "react";
+import { useLocale } from "next-intl";
 import { PlusSquare, MinusSquare } from "lucide-react";
 import deleteButton from "./deleteButton";
 import { Trash02 } from "@untitledui/icons";
 import {
-  formatPriceFromCents,
   getLineItemTotalCents,
 } from "@/entities/product";
+import { formatMoney } from "@/shared/lib/currency/currency";
 
 const Counter = ({ handleClick, state, className }) => {
+  const locale = useLocale();
   const minQuantity = 1;
   const maxQuantity = 99;
   const isAtMin = state?.quantity <= minQuantity;
   const isAtMax = state?.quantity >= maxQuantity;
   const totalPriceLabel =
     typeof state?.priceCents === "number"
-      ? `${formatPriceFromCents(
+      ? formatMoney(
           getLineItemTotalCents(state?.priceCents, state?.quantity),
+          locale,
           {
             minimumFractionDigits: state?.priceFractionDigits ?? 0,
             maximumFractionDigits: state?.priceFractionDigits ?? 0,
           },
-        )}$`
+        )
       : null;
 
   return (
