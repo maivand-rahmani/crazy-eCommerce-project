@@ -1,0 +1,18 @@
+export const DEFAULT_SETTINGS = {
+  "store.name": "Cyber",
+  "store.tagline": "Dive into the future. Explore, innovate, connect.",
+  "contact.email": "support@cyberstore.com",
+  "contact.phone": "+1 (555) 123-4567",
+  "contact.address": "123 Cyber Avenue, Tech City",
+  "currency.code": "USD",
+  "commerce.shippingCents": 0,
+  "commerce.taxRate": 0,
+  "catalog.pageSize": 10,
+  "admin.lowStockThreshold": 8,
+  "admin.salesWindowDays": 30,
+  "admin.pageSize": 10,
+  "media.s3PublicUrl": "https://s3.ru1.storage.beget.cloud/5427be431039-dev",
+  "media.s3Bucket": "5427be431039-dev",
+  "seo.defaultTitle": "Cyber Store",
+  "seo.defaultDescription": "Premium technology store",
+};

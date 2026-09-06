@@ -1,21 +1,26 @@
-"use client";
-import { useTranslations } from "next-intl";
+import { getTranslations } from "next-intl/server";
+import { getSettings } from "@/features/admin-settings/model/settings";
 
-export default function ContactPage() {
-  const t = useTranslations("contact");
-  const tLabels = useTranslations("contactLabels");
+export default async function ContactPage({ params }) {
+  const { locale } = await params;
+  const t = await getTranslations({ locale, namespace: "contact" });
+  const tLabels = await getTranslations({ locale, namespace: "contactLabels" });
+  let settings = {};
+  try {
+    settings = await getSettings();
+  } catch {}
+
+  const contactAddress = settings["contact.address"] ?? t("info.address");
+  const contactEmail = settings["contact.email"] ?? t("info.email");
+  const contactPhone = settings["contact.phone"] ?? t("info.phone");
 
   return (
     <main className="bg-bg text-text">
-      {/* Hero */}
       <section className="w-full bg-surface py-24 text-center">
         <h1 className="text-4xl md:text-5xl font-bold mb-4">{t("title")}</h1>
         <p className="text-unactive-text max-w-2xl mx-auto">{t("subtitle")}</p>
       </section>
-
-      {/* Form + Info */}
       <section className="max-w-6xl mx-auto py-20 px-6 md:px-10 grid md:grid-cols-2 gap-12">
-        {/* Form */}
         <div>
           <h2 className="text-2xl font-semibold mb-6">{t("form.title")}</h2>
           <form className="space-y-5">
@@ -56,20 +61,18 @@ export default function ContactPage() {
             </button>
           </form>
         </div>
-
-        {/* Info */}
         <div className="space-y-8">
           <div>
             <h2 className="text-2xl font-semibold mb-4">{t("info.title")}</h2>
             <ul className="space-y-3 text-text">
               <li>
-                <strong>{tLabels("address")}:</strong> {t("info.address")}
+                <strong>{tLabels("address")}:</strong> {contactAddress}
               </li>
               <li>
-                <strong>{tLabels("email")}:</strong> {t("info.email")}
+                <strong>{tLabels("email")}:</strong> {contactEmail}
               </li>
               <li>
-                <strong>{tLabels("phone")}:</strong> {t("info.phone")}
+                <strong>{tLabels("phone")}:</strong> {contactPhone}
               </li>
             </ul>
           </div>

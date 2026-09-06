@@ -52,9 +52,9 @@ export const AdminPanelSkeleton = ({ rows = 5 }) => {
 
 export const AdminDetailSkeleton = () => {
   return (
-    <div className="grid gap-6 xl:grid-cols-[1.35fr_0.95fr]">
+    <div className="grid gap-[var(--admin-gap)] xl:grid-cols-[1.35fr_0.95fr]">
       <AdminPanelSkeleton rows={4} />
-      <div className="space-y-6">
+      <div className="flex flex-col gap-[var(--admin-gap)]">
         <AdminPanelSkeleton rows={2} />
         <AdminPanelSkeleton rows={2} />
       </div>

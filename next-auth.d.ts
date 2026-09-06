@@ -5,7 +5,7 @@ declare module "next-auth" {
   interface Session {
     user: {
       id: string;
-      role?: "admin" | "user";
+      role?: "admin" | "user" | "super_admin";
       isBlocked?: boolean;
       deletedAt?: string | null;
       name?: string | null;
@@ -18,7 +18,7 @@ declare module "next-auth" {
 declare module "next-auth/jwt" {
   interface JWT {
     id?: string;
-    role?: "admin" | "user";
+    role?: "admin" | "user" | "super_admin";
     isBlocked?: boolean;
     deletedAt?: string | null;
   }

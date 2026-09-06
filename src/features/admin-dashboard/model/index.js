@@ -3,17 +3,22 @@
 import prisma from "../../../../prisma/client";
 import { toSafeJson } from "../../../../prisma/funcs";
 
-import {
-  LOW_STOCK_THRESHOLD,
-  SALES_WINDOW_DAYS,
-  formatCurrency,
-  formatDate,
-} from "@/shared/lib";
+import { formatCurrency, formatDate } from "@/shared/lib";
+import { DEFAULT_SETTINGS } from "@/features/admin-settings/model/defaults";
 import { ensureAdminAction } from "@/features/admin-common";
 import { revalidateLocalizedPaths } from "@/shared/lib/admin/revalidate";
 
 export async function getAdminDashboardData() {
   await ensureAdminAction();
+
+  let lowStockThreshold = DEFAULT_SETTINGS["admin.lowStockThreshold"];
+  let salesWindowDays = DEFAULT_SETTINGS["admin.salesWindowDays"];
+  try {
+    const { getSettings } = await import("@/features/admin-settings/model/settings");
+    const settings = await getSettings();
+    lowStockThreshold = Number(settings["admin.lowStockThreshold"] ?? lowStockThreshold);
+    salesWindowDays = Number(settings["admin.salesWindowDays"] ?? salesWindowDays);
+  } catch {}
 
   const [
     totalOrders,
@@ -30,7 +35,7 @@ export async function getAdminDashboardData() {
     prisma.product_variants.count({
       where: {
         deleted_at: null,
-        stock_quantity: { lte: LOW_STOCK_THRESHOLD },
+        stock_quantity: { lte: lowStockThreshold },
         status: "active",
       },
     }),
@@ -50,7 +55,7 @@ export async function getAdminDashboardData() {
     prisma.product_variants.findMany({
       where: {
         deleted_at: null,
-        stock_quantity: { lte: LOW_STOCK_THRESHOLD },
+        stock_quantity: { lte: lowStockThreshold },
         status: "active",
       },
       orderBy: [{ stock_quantity: "asc" }, { updated_at: "desc" }],
@@ -71,7 +76,7 @@ export async function getAdminDashboardData() {
           in: ["paid", "shipped", "delivered"],
         },
         created_at: {
-          gte: new Date(Date.now() - SALES_WINDOW_DAYS * 24 * 60 * 60 * 1000),
+          gte: new Date(Date.now() - salesWindowDays * 24 * 60 * 60 * 1000),
         },
       },
       orderBy: { created_at: "asc" },

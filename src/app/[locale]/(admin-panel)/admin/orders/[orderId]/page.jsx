@@ -27,26 +27,26 @@ export default async function OrderDetailPage({ params }) {
   }
 
   return (
-    <div className="space-y-8 lg:space-y-10">
+    <div className="flex flex-col gap-[var(--admin-gap)]">
       <SectionTitle
         title={`Order ${order.id.slice(0, 8)}`}
       />
 
-      <div className="grid gap-6 xl:grid-cols-[1.4fr_0.95fr] 2xl:gap-7">
-        <div className="space-y-6 lg:space-y-7">
+      <div className="grid gap-[var(--admin-gap)] xl:grid-cols-[1.4fr_0.95fr]">
+        <div className="flex flex-col gap-[var(--admin-gap)]">
           <Card>
             <CardHeader>
               <CardTitle>Order summary</CardTitle>
             </CardHeader>
             <CardContent className="grid gap-4 md:grid-cols-2">
-              <div className="rounded-[24px] border border-border/70 bg-[var(--admin-panel-muted)]/72 p-5 shadow-[0_18px_38px_-30px_rgba(15,23,42,0.35)]">
+              <div className="rounded-[20px] border border-border/65 bg-[var(--admin-panel-muted)]/72 p-5 shadow-[var(--admin-shadow)]">
                 <p className="text-sm font-medium text-text">Status</p>
                 <div className="mt-3 flex flex-wrap gap-2">
                   <Badge variant={getOrderStatusVariant(order.status)}>{order.status}</Badge>
                   <Badge variant={getReturnStatusVariant(order.return_status)}>{order.return_status}</Badge>
                 </div>
               </div>
-              <div className="rounded-[24px] border border-border/70 bg-[var(--admin-panel-muted)]/72 p-5 shadow-[0_18px_38px_-30px_rgba(15,23,42,0.35)]">
+              <div className="rounded-[20px] border border-border/65 bg-[var(--admin-panel-muted)]/72 p-5 shadow-[var(--admin-shadow)]">
                 <p className="text-sm font-medium text-text">Financials</p>
                 <p className="mt-3 text-2xl font-semibold text-text">{formatCurrency(order.total_cents)}</p>
                 {order.coupons ? (
@@ -62,7 +62,7 @@ export default async function OrderDetailPage({ params }) {
             </CardHeader>
             <CardContent className="space-y-4">
               {order.order_items.map((item) => (
-                <div key={item.id} className="flex flex-col gap-5 rounded-[24px] border border-border/65 bg-white/36 p-5 shadow-[0_18px_38px_-30px_rgba(15,23,42,0.32)] md:flex-row md:items-center md:justify-between dark:bg-white/[0.02]">
+                <div key={item.id} className="flex flex-col gap-5 rounded-[20px] border border-border/65 bg-white/36 p-5 shadow-[var(--admin-shadow)] md:flex-row md:items-center md:justify-between dark:bg-white/[0.02]">
                   <div className="flex items-center gap-4">
                     <div className="relative h-20 w-20 overflow-hidden rounded-2xl border border-border bg-[var(--admin-panel-muted)]">
                       <Image
@@ -90,13 +90,13 @@ export default async function OrderDetailPage({ params }) {
           </Card>
         </div>
 
-        <div className="space-y-6 lg:space-y-7">
+        <div className="flex flex-col gap-[var(--admin-gap)]">
           <Card>
             <CardHeader>
               <CardTitle>Customer</CardTitle>
             </CardHeader>
             <CardContent className="space-y-3 text-sm text-unactive-text">
-              <div className="rounded-[22px] border border-border/65 bg-[var(--admin-panel-muted)]/68 p-4 shadow-[0_18px_38px_-32px_rgba(15,23,42,0.32)]">
+              <div className="rounded-[20px] border border-border/65 bg-[var(--admin-panel-muted)]/68 p-4 shadow-[0_18px_38px_-32px_rgba(15,23,42,0.32)]">
                 <p>
                   <span className="font-medium text-text">Name:</span> {order.user?.name || "-"}
                 </p>
@@ -116,7 +116,7 @@ export default async function OrderDetailPage({ params }) {
             </CardHeader>
             <CardContent className="space-y-2 text-sm text-unactive-text">
               {typeof order.address === "object" && order.address ? (
-                <div className="rounded-[22px] border border-border/65 bg-[var(--admin-panel-muted)]/68 p-4 shadow-[0_18px_38px_-32px_rgba(15,23,42,0.32)]">
+                <div className="rounded-[20px] border border-border/65 bg-[var(--admin-panel-muted)]/68 p-4 shadow-[0_18px_38px_-32px_rgba(15,23,42,0.32)]">
                   <p>{order.address.street}</p>
                   <p className="mt-2">
                     {order.address.city}, {order.address.state} {order.address.zip}

@@ -4,8 +4,6 @@ import prisma from "../../../../prisma/client";
 import { toSafeJson } from "../../../../prisma/funcs";
 
 import {
-  ADMIN_PAGE_SIZE,
-  LOW_STOCK_THRESHOLD,
   buildPagination,
   groupPairs,
   isAllowedImageFile,
@@ -16,6 +14,7 @@ import {
   safeJsonParse,
   getProductImageUrl,
 } from "@/shared/lib";
+import { DEFAULT_SETTINGS } from "@/features/admin-settings/model/defaults";
 
 import { ensureAdminAction } from "@/features/admin-common";
 import { deleteS3Image, uploadS3Image } from "@/shared/lib/files";
@@ -203,6 +202,14 @@ export async function getAdminProducts(searchParams = {}) {
   await ensureAdminAction();
 
   const page = parsePage(searchParams.page);
+  let pageSize = DEFAULT_SETTINGS["admin.pageSize"];
+  let lowStockThreshold = DEFAULT_SETTINGS["admin.lowStockThreshold"];
+  try {
+    const { getSettings } = await import("@/features/admin-settings/model/settings");
+    const s = await getSettings();
+    pageSize = Number(s["admin.pageSize"] ?? pageSize);
+    lowStockThreshold = Number(s["admin.lowStockThreshold"] ?? lowStockThreshold);
+  } catch {}
   const query = normalizeText(searchParams.query);
   const status = normalizeText(searchParams.status);
   const category = normalizeOptionalNumber(searchParams.category);
@@ -234,7 +241,7 @@ export async function getAdminProducts(searchParams = {}) {
                   deleted_at: null,
                   stock_quantity: {
                     gt: 0,
-                    lte: LOW_STOCK_THRESHOLD,
+                    lte: lowStockThreshold,
                   },
                 },
               },
@@ -261,8 +268,8 @@ export async function getAdminProducts(searchParams = {}) {
     prisma.products.findMany({
       where,
       orderBy: [{ updated_at: "desc" }, { id: "desc" }],
-      skip: (page - 1) * ADMIN_PAGE_SIZE,
-      take: ADMIN_PAGE_SIZE,
+      skip: (page - 1) * pageSize,
+      take: pageSize,
       include: {
         categories: true,
         product_images: {
@@ -313,7 +320,7 @@ export async function getAdminProducts(searchParams = {}) {
       category: category ? `${category}` : "",
       stock,
     },
-    pagination: buildPagination({ total, page, pageSize: ADMIN_PAGE_SIZE }),
+    pagination: buildPagination({ total, page, pageSize }),
   };
 }
 

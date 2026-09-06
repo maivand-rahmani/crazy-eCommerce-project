@@ -31,6 +31,10 @@ export async function getAuthUserFromRequest(req) {
 
 export function isAdminUser(user) {
   return Boolean(
-    user && !user.deletedAt && !user.isBlocked && user.role === "admin",
+    user && !user.deletedAt && !user.isBlocked && (user.role === "admin" || user.role === "super_admin"),
   );
+}
+
+export function isSuperAdminUser(user) {
+  return Boolean(user && !user.deletedAt && !user.isBlocked && user.role === "super_admin");
 }

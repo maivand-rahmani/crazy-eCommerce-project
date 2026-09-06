@@ -17,8 +17,9 @@ describe("Footer widget", () => {
   it("renders navigation links and copyright", () => {
     render(createElement(Footer));
 
-    expect(screen.getAllByText("logo")).toHaveLength(2);
-    expect(screen.getByText("tagline")).toBeInTheDocument();
+    // Store name now comes from settings (DEFAULT_SETTINGS["store.name"] = "Cyber") with fallback to translation
+    expect(screen.getAllByText("Cyber")).toHaveLength(2);
+    expect(screen.getByText("Dive into the future. Explore, innovate, connect.")).toBeInTheDocument();
     expect(screen.getByText("nav.title")).toBeInTheDocument();
     expect(screen.getByText("nav.home")).toBeInTheDocument();
     expect(screen.getByText("nav.products")).toBeInTheDocument();

@@ -2,6 +2,7 @@ import React from "react";
 
 import { getUserStateVariant } from "@/entities/user";
 import { FilterSubmitButton, Pagination } from "@/features/admin-common";
+import { isAdmin } from "@/shared/lib/auth/roles";
 import { getAdminUsers } from "@/features/admin-users";
 import { Badge, Card, CardContent, CardDescription, CardHeader, CardTitle, EmptyState, Input, SectionTitle, Select, Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/shared";
 import { formatDateTime } from "@/shared/lib";
@@ -17,7 +18,7 @@ export default async function UsersPage({ searchParams }) {
   const usersResult = await getAdminUsers(resolvedSearchParams);
 
   return (
-    <div className="space-y-8 lg:space-y-10">
+    <div className="flex flex-col gap-[var(--admin-gap)]">
       <SectionTitle title="Users" />
 
       <form className="space-y-4">
@@ -33,6 +34,7 @@ export default async function UsersPage({ searchParams }) {
                 <option value="">Any role</option>
                 <option value="user">User</option>
                 <option value="admin">Admin</option>
+                <option value="super_admin">Super Admin</option>
               </Select>
             </label>
             <label className="flex flex-col gap-2">
@@ -55,7 +57,7 @@ export default async function UsersPage({ searchParams }) {
           <CardHeader>
             <CardTitle>Users ({usersResult.pagination.total})</CardTitle>
           </CardHeader>
-          <CardContent className="space-y-6">
+          <CardContent className="flex flex-col gap-[var(--admin-gap)]">
             <Table>
               <TableHeader>
                 <tr>
@@ -78,7 +80,7 @@ export default async function UsersPage({ searchParams }) {
                       </div>
                     </TableCell>
                     <TableCell>
-                      <Badge variant={user.role === "admin" ? "default" : "secondary"}>{user.role}</Badge>
+                      <Badge variant={isAdmin(user) ? "default" : "secondary"}>{user.role}</Badge>
                     </TableCell>
                     <TableCell>
                       <Badge variant={getUserStateVariant(user)}>

@@ -35,13 +35,13 @@ export default async function ProductDetailPage({ params }) {
   }
 
   return (
-    <div className="space-y-8 lg:space-y-10">
+    <div className="flex flex-col gap-[var(--admin-gap)]">
       <SectionTitle
         title={product.name}
         action={<Link href={`/admin/products/${product.id}/variants/new`} className="inline-flex h-10 items-center justify-center gap-2 rounded-xl bg-primary px-4 text-sm font-medium text-primary-text transition duration-200 hover:bg-primary/90"><Plus className="h-4 w-4" />Add variant</Link>}
       />
 
-      <div className="grid gap-6 xl:grid-cols-[1.35fr_0.9fr] 2xl:gap-7">
+      <div className="grid gap-[var(--admin-gap)] xl:grid-cols-[1.35fr_0.9fr]">
         <ProductEditorForm
           mode="edit"
           categories={categories}
@@ -54,7 +54,7 @@ export default async function ProductDetailPage({ params }) {
             <CardTitle>Stock overview</CardTitle>
           </CardHeader>
           <CardContent className="space-y-5">
-            <div className="rounded-[24px] border border-border/70 bg-[var(--admin-panel-muted)]/72 p-5 shadow-[0_18px_38px_-30px_rgba(15,23,42,0.35)]">
+            <div className="rounded-[20px] border border-border/65 bg-[var(--admin-panel-muted)]/72 p-5 shadow-[var(--admin-shadow)]">
               <div className="flex items-center justify-between gap-3">
                 <p className="text-sm font-medium text-text">Category</p>
                 <Badge variant="secondary">{product.categories?.name || "Uncategorized"}</Badge>
@@ -73,7 +73,7 @@ export default async function ProductDetailPage({ params }) {
                 product.product_variants.map((variant) => {
                   const stockInfo = getStockSummary(variant.stock_quantity);
                   return (
-                    <div key={variant.id} className="rounded-[24px] border border-border/65 bg-white/36 p-5 shadow-[0_18px_38px_-30px_rgba(15,23,42,0.32)] dark:bg-white/[0.02]">
+                    <div key={variant.id} className="rounded-[20px] border border-border/65 bg-white/36 p-5 shadow-[var(--admin-shadow)] dark:bg-white/[0.02]">
                       <div className="flex items-start justify-between gap-4">
                         <div>
                           <p className="font-medium text-text">{variant.variant_name || "Default variant"}</p>
@@ -102,7 +102,7 @@ export default async function ProductDetailPage({ params }) {
         <CardHeader>
           <CardTitle>Variants</CardTitle>
         </CardHeader>
-        <CardContent className="space-y-6">
+        <CardContent className="flex flex-col gap-[var(--admin-gap)]">
           {product.product_variants.length > 0 ? (
             <Table>
               <TableHeader>

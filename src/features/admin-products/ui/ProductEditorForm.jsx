@@ -77,9 +77,9 @@ const ProductEditorForm = ({
           <CardTitle>{title}</CardTitle>
           <CardDescription>{description}</CardDescription>
         </CardHeader>
-        <CardContent className="space-y-6">
+        <CardContent className="flex flex-col gap-[var(--admin-gap)]">
           <div className="grid gap-7 lg:grid-cols-[1.35fr_0.85fr]">
-            <div className="space-y-5 rounded-[26px] border border-border/60 bg-white/30 p-5 shadow-[0_18px_38px_-30px_rgba(15,23,42,0.28)] dark:bg-white/[0.02]">
+            <div className="space-y-5 rounded-[26px] border border-border/65 bg-white/30 p-5 shadow-[var(--admin-shadow)] dark:bg-white/[0.02]">
               <label className="flex flex-col gap-2">
                 <span className="text-sm font-medium text-text">Product name</span>
                 <Input name="name" required defaultValue={product?.name || ""} />
@@ -89,7 +89,7 @@ const ProductEditorForm = ({
                 <Textarea name="description" defaultValue={product?.description || ""} />
               </label>
             </div>
-            <div className="space-y-5 rounded-[26px] border border-border/60 bg-white/30 p-5 shadow-[0_18px_38px_-30px_rgba(15,23,42,0.28)] dark:bg-white/[0.02]">
+            <div className="space-y-5 rounded-[26px] border border-border/65 bg-white/30 p-5 shadow-[var(--admin-shadow)] dark:bg-white/[0.02]">
               <label className="flex flex-col gap-2">
                 <span className="text-sm font-medium text-text">Category</span>
                 <Select name="categoryId" defaultValue={product?.category_id ? `${product.category_id}` : ""}>
@@ -109,7 +109,7 @@ const ProductEditorForm = ({
                   <option value="archived">Archived</option>
                 </Select>
               </label>
-              <div className="rounded-[22px] border border-border/60 bg-[var(--admin-panel-muted)]/64 p-4">
+              <div className="rounded-[22px] border border-border/65 bg-[var(--admin-panel-muted)]/64 p-4">
                 <p className="text-xs uppercase tracking-[0.18em] text-unactive-text">Workflow</p>
                 <p className="mt-2 text-sm leading-6 text-text">
                   Save the base product first, then attach sellable variants, pricing, stock, and variant-specific media.

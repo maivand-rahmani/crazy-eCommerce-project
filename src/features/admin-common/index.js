@@ -1,8 +1,11 @@
 export {
   ensureAdminAction,
+  ensureSuperAdminAction,
   getAdminSessionUser,
   requireAdminPage,
   requireAdminSession,
+  requireSuperAdminPage,
+  requireSuperAdminSession,
 } from "./model/guard";
 export { default as FilterSubmitButton } from "./ui/FilterSubmitButton";
 export { default as ImageFieldManager } from "./ui/ImageFieldManager";

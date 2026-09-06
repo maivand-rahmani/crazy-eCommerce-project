@@ -1,4 +1,4 @@
-import { LOW_STOCK_THRESHOLD } from "@/shared/lib";
+import { DEFAULT_SETTINGS } from "@/features/admin-settings/model/defaults";
 
 export const PRODUCT_STATUS_OPTIONS = ["draft", "active", "archived"];
 export const VARIANT_STATUS_OPTIONS = ["draft", "active", "archived"];
@@ -16,12 +16,12 @@ export function getProductStatusVariant(status) {
   }
 }
 
-export function getStockSummary(stock) {
+export function getStockSummary(stock, threshold = DEFAULT_SETTINGS["admin.lowStockThreshold"]) {
   if (stock <= 0) {
     return { label: "Out of stock", variant: "danger" };
   }
 
-  if (stock <= LOW_STOCK_THRESHOLD) {
+  if (stock <= threshold) {
     return { label: "Low stock", variant: "warning" };
   }
 

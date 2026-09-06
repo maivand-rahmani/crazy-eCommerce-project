@@ -1,11 +1,21 @@
 "use client";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Facebook, Instagram, Twitter } from "lucide-react";
 import { Link } from "@/shared/i18n";
 import { useTranslations } from "next-intl";
+import { DEFAULT_SETTINGS } from "@/features/admin-settings/model/defaults";
 
 const Footer = () => {
   const t = useTranslations("footer");
+  const [settings, setSettings] = useState(null);
+  useEffect(() => {
+    fetch("/api/settings/public")
+      .then((r) => r.json())
+      .then((data) => setSettings(data))
+      .catch(() => {});
+  }, []);
+  const storeName = settings?.storeName ?? DEFAULT_SETTINGS["store.name"] ?? t("logo");
+  const tagline = settings?.storeTagline ?? DEFAULT_SETTINGS["store.tagline"] ?? t("tagline");
 
   const navLinks = [
     { label: t("nav.home"), href: "/" },
@@ -28,12 +38,12 @@ const Footer = () => {
           <div className="space-y-5">
             <Link
               href="/"
-              className="inline-flex items-center rounded-full border border-border/60 bg-card/70 px-5 py-3 text-sm font-semibold uppercase tracking-[0.28em] text-text shadow-sm transition-all duration-200 hover:-translate-y-0.5 hover:border-border hover:bg-card"
+              className="inline-flex items-center rounded-full border border-border/65 bg-card/70 px-5 py-3 text-sm font-semibold uppercase tracking-[0.28em] text-text shadow-sm transition-all duration-200 hover:-translate-y-0.5 hover:border-border hover:bg-card"
             >
-              {t("logo")}
+              {storeName}
             </Link>
             <p className="max-w-md text-sm leading-7 text-muted">
-              {t("tagline")}
+              {tagline}
             </p>
           </div>
 
@@ -77,10 +87,10 @@ const Footer = () => {
           </div>
         </div>
 
-        <div className="mt-12 flex flex-col gap-4 border-t border-border/60 pt-6 text-sm text-muted md:flex-row md:items-center md:justify-between">
+        <div className="mt-12 flex flex-col gap-4 border-t border-border/65 pt-6 text-sm text-muted md:flex-row md:items-center md:justify-between">
           <p>{t("copyright")}</p>
           <p className="text-xs uppercase tracking-[0.22em] text-muted/80">
-            {t("logo")}
+            {storeName}
           </p>
         </div>
       </div>

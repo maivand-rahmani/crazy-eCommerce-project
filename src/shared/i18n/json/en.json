@@ -621,5 +621,88 @@
       "deleteAccount": "Delete account",
       "comingSoon": "coming soon"
     }
+  },
+  "adminSettings": {
+    "title": "Admin Settings",
+    "description": "Configure store, localization, commerce, catalog, media, SEO and advanced options. Only super_admin can edit.",
+    "tabs": {
+      "general": "General",
+      "localization": "Localization",
+      "commerce": "Commerce",
+      "catalog": "Catalog",
+      "media": "Media",
+      "seo": "SEO",
+      "advanced": "Advanced"
+    },
+    "fields": {
+      "store.name": {
+        "label": "Store Name",
+        "description": "Public store name shown in header and footer"
+      },
+      "store.tagline": {
+        "label": "Store Tagline",
+        "description": "Short tagline for footer"
+      },
+      "contact.email": {
+        "label": "Contact Email",
+        "description": "Support email"
+      },
+      "contact.phone": {
+        "label": "Contact Phone",
+        "description": "Support phone"
+      },
+      "contact.address": {
+        "label": "Contact Address",
+        "description": "Physical address"
+      },
+      "currency.code": {
+        "label": "Currency Code",
+        "description": "ISO currency code, e.g. USD"
+      },
+      "commerce.shippingCents": {
+        "label": "Shipping (cents)",
+        "description": "Shipping cost in cents"
+      },
+      "commerce.taxRate": {
+        "label": "Tax Rate",
+        "description": "Tax rate decimal, e.g. 0.08 for 8%"
+      },
+      "catalog.pageSize": {
+        "label": "Catalog Page Size",
+        "description": "Products per page"
+      },
+      "media.s3PublicUrl": {
+        "label": "S3 Public URL",
+        "description": "Public S3 base URL"
+      },
+      "media.s3Bucket": {
+        "label": "S3 Bucket",
+        "description": "S3 bucket name"
+      },
+      "seo.defaultTitle": {
+        "label": "SEO Title",
+        "description": "Default SEO title"
+      },
+      "seo.defaultDescription": {
+        "label": "SEO Description",
+        "description": "Default SEO description"
+      },
+      "admin.pageSize": {
+        "label": "Admin Page Size",
+        "description": "Admin listings page size"
+      },
+      "admin.lowStockThreshold": {
+        "label": "Low Stock Threshold",
+        "description": "Quantity considered low stock"
+      },
+      "admin.salesWindowDays": {
+        "label": "Sales Window (days)",
+        "description": "Days for sales analytics"
+      }
+    },
+    "save": "Save",
+    "saving": "Saving…",
+    "saveSuccess": "Setting saved",
+    "saveError": "Failed to save setting"
   }
 }
