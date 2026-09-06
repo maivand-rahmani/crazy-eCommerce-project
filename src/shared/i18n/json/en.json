@@ -5,14 +5,20 @@
     "nav": {
       "Home": "Home",
       "About": "About",
-      "Contact us": "Contact us",
-      "Blog": "Blog",
       "Catalog": "Catalog"
     },
     "actions": {
       "wishlist": "Wishlist",
       "cart": "Cart",
       "account": "Account"
+    },
+    "language": {
+      "label": "Language",
+      "options": {
+        "en": "English",
+        "ru": "Russian",
+        "fa": "Persian"
+      }
     }
   },
   "hero": {
@@ -55,30 +61,118 @@
     }
   },
   "about": {
-    "title": "About Cyber",
-    "subtitle": "We bring the latest technology to your hands with simplicity, precision, and trust.",
-    "mission": {
-      "title": "Our Mission",
-      "p1": "At Cyber, our mission is to make premium technology accessible to everyone.",
-      "p2": "We believe in providing authentic products and a seamless shopping experience for every customer."
+    "hero": {
+      "title": "The project behind the store",
+      "subtitle": "Cyber is not a startup and not a template from a marketplace. It is a hand-built e-commerce platform written to prove that the whole stack — from database schema to checkout flow — can be done properly."
     },
-    "whyChooseUs": {
-      "title": "Why Choose Us",
-      "subtitle": "We don't just sell gadgets — we deliver trust, quality, and a futuristic experience.",
-      "cards": {
-        "authentic": {
-          "title": "Authentic Products",
-          "desc": "Every product is 100% original, verified, and covered by official warranty."
+    "what": {
+      "title": "What is {store}?",
+      "p1": "Honest answer: {store} is a personal project and a portfolio piece. Every feature here exists because it was designed, implemented, debugged and shipped by one developer — not copied from a tutorial.",
+      "p2": "The store is fully functional: products with variants, real cart and order lifecycle, reviews with reactions, coupons, admin panel with roles and audit trail. It runs on the same code path in demo and in production.",
+      "factsTitle": "At a glance",
+      "fact1": "Personal portfolio project, built from scratch",
+      "fact2": "Full commerce loop: catalog → cart → checkout → orders",
+      "fact3": "Admin panel with roles, moderation and settings audit log",
+      "fact4": "Three locales with right-to-left support"
+    },
+    "stack": {
+      "title": "Tech stack",
+      "subtitle": "The tools actually used in production, each doing a job it is good at.",
+      "items": {
+        "nextjs": {
+          "name": "Next.js 15",
+          "desc": "App Router with [locale] segment, server components for catalog and admin surfaces, streaming with Suspense boundaries."
         },
-        "fast": {
-          "title": "Fast Delivery",
-          "desc": "Experience lightning-fast shipping — get your device as soon as possible."
+        "typescript": {
+          "name": "TypeScript",
+          "desc": "Typed where it matters — shared logic, validation and tests — while UI keeps the speed of plain JSX modules."
         },
-        "support": {
-          "title": "Customer Support",
-          "desc": "Our team is here 24/7 to help you with any questions or assistance you need."
+        "database": {
+          "name": "PostgreSQL + Prisma",
+          "desc": "Real relational schema: products, variants, stock, carts, orders, coupons, reviews — with foreign keys and cascade rules."
+        },
+        "auth": {
+          "name": "NextAuth",
+          "desc": "JWT sessions with roles (user / admin / super_admin), credential and OAuth providers, server-side guards on every route."
+        },
+        "i18n": {
+          "name": "next-intl",
+          "desc": "English, Russian and Persian translations for the whole UI, including RTL layout support for Persian."
+        },
+        "styling": {
+          "name": "Tailwind CSS",
+          "desc": "Design tokens as theme variables, four switchable themes, component classes shared across the app."
+        },
+        "media": {
+          "name": "S3 media",
+          "desc": "Product and avatar images uploaded to S3-compatible storage, normalized to public CDN URLs."
+        },
+        "hosting": {
+          "name": "Vercel",
+          "desc": "Continuous deployment from the main branch, preview builds for every pull request."
+        },
+        "devops": {
+          "name": "Docker",
+          "desc": "Local PostgreSQL in a container, reproducible dev environment for the database and migrations."
         }
       }
+    },
+    "arch": {
+      "title": "Architecture notes",
+      "subtitle": "The project follows Feature-Sliced Design: entities, features, widgets and pages, each slice owning its own model and UI.",
+      "items": {
+        "fsd": {
+          "title": "FSD layers",
+          "desc": "Cross-imports only downward: pages compose widgets and features, features use entities, shared code lives in the shared layer."
+        },
+        "actions": {
+          "title": "Server-first data",
+          "desc": "Prices, discounts and totals are always recalculated on the server; the client never decides how much an order costs."
+        },
+        "admin": {
+          "title": "Guarded admin",
+          "desc": "Role checks run on the server for every admin page and action, and settings changes are written to an audit log with author and before/after values."
+        }
+      }
+    },
+    "features": {
+      "title": "What works here",
+      "subtitle": "Real features of the running store — no mockups, no screenshots of other people's code.",
+      "items": {
+        "catalog": {
+          "title": "Catalog with variants",
+          "desc": "Categories, product variants by color/storage/RAM, specs, search and related products."
+        },
+        "reviews": {
+          "title": "Reviews & reactions",
+          "desc": "One review per product per user, star rating, likes and dislikes, reporting and admin moderation."
+        },
+        "wishlist": {
+          "title": "Wishlist",
+          "desc": "Per-user saved products with instant sync from product cards and the header counter."
+        },
+        "coupons": {
+          "title": "Coupons",
+          "desc": "Percentage and fixed-amount coupons with validity windows, usage limits and one-time rules."
+        },
+        "orders": {
+          "title": "Orders",
+          "desc": "Sandbox checkout creating real orders: line items, totals, status lifecycle, returns and cancellation."
+        },
+        "wallet": {
+          "title": "Admin settings",
+          "desc": "Store name, contacts and commerce rules editable in the admin panel, versioned in the audit log."
+        }
+      }
+    },
+    "dev": {
+      "eyebrow": "Developer",
+      "name": "Maivand Rahmani",
+      "role": "Full-stack developer",
+      "bio": "Designed and built {store} alone — schema, server logic, UI and deployment. The source is public: read it, run it, judge the work by the code.",
+      "repoCta": "View source on GitHub",
+      "githubCta": "GitHub profile",
+      "contactCta": "Contact"
     }
   },
   "contact": {
@@ -117,7 +211,13 @@
     "social": {
       "title": "Follow us"
     },
-    "copyright": "© 2025 Cyber. All rights reserved."
+    "copyright": "© 2025 Cyber. All rights reserved.",
+    "contact": {
+      "title": "Contact",
+      "email": "Email",
+      "phone": "Phone",
+      "address": "Address"
+    }
   },
   "home": {
     "featuredProducts": "Featured Products",
@@ -327,7 +427,17 @@
       "rating": "Please add a rating",
       "comment": "Please add a comment",
       "somethingWrong": "Something gone wrong"
-    }
+    },
+    "report": {
+      "button": "Report review",
+      "tooltip": "Report this review",
+      "reported": "Reported",
+      "reportedTooltip": "You reported this review",
+      "prompt": "Why are you reporting this review? (optional)",
+      "success": "Review reported. Thank you.",
+      "error": "Could not report the review."
+    },
+    "hiddenBadge": "Hidden"
   },
   "rating": {
     "noRatings": "No ratings yet.",

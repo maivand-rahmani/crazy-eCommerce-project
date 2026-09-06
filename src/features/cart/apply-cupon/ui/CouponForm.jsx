@@ -7,6 +7,7 @@ import { useLocale, useTranslations } from "next-intl";
 
 import { formatMoney } from "@/shared/lib/currency/currency";
 import { Fetch } from "@/shared/lib";
+import { AdminQuickLink } from "@/shared";
 
 const CouponForm = ({ setCoupon = () => {} }) => {
   const t = useTranslations("coupon");
@@ -18,6 +19,7 @@ const CouponForm = ({ setCoupon = () => {} }) => {
     formState: { errors, isSubmitting },
   } = useForm({ mode: "onBlur" });
   const [appliedCode, setAppliedCode] = useState("");
+  const [appliedCouponId, setAppliedCouponId] = useState(null);
 
   async function onSubmitCouponForm(values) {
     try {
@@ -30,10 +32,12 @@ const CouponForm = ({ setCoupon = () => {} }) => {
       if (data?.error || data?.status !== 200) {
         setError("coupon", { message: data?.error || t("invalid") });
         setCoupon(null);
+        setAppliedCouponId(null);
         return;
       }
 
       setAppliedCode(coupon.toUpperCase());
+      setAppliedCouponId(data?.coupon?.id ?? null);
       setCoupon(data);
 
       toast.success(
@@ -80,9 +84,17 @@ const CouponForm = ({ setCoupon = () => {} }) => {
         </button>
       </form>
       {appliedCode ? (
-        <p className="mt-2 text-xs text-success">
-          {t("activeCode")}: {appliedCode}
-        </p>
+        <div className="mt-2 flex items-center gap-2">
+          <p className="text-xs text-success">
+            {t("activeCode")}: {appliedCode}
+          </p>
+          {appliedCouponId != null ? (
+            <AdminQuickLink
+              href={`/admin/coupons/${appliedCouponId}`}
+              label="Edit coupon in admin"
+            />
+          ) : null}
+        </div>
       ) : null}
       {errors.coupon ? (
         <p className="mt-2 text-sm text-danger">{errors.coupon.message}</p>

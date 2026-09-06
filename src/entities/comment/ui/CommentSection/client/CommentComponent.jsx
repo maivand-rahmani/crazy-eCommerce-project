@@ -1,11 +1,12 @@
 "use client";
 import { useSession } from "next-auth/react";
 import React, { useState, useEffect } from "react";
-import { Star } from "lucide-react";
+import { Flag, Star } from "lucide-react";
 import { CommentReaction } from "@/entities/rating";
 import { Edit01, Delete, DotsVertical } from "@untitledui/icons";
 import { Dropdown } from "@/shared";
 import { Fetch } from "@/shared/lib";
+import { isAdmin } from "@/shared/lib/auth/roles";
 import Rating from "@/entities/rating";
 import { toast } from "react-hot-toast";
 import { useTranslations } from "next-intl";
@@ -50,6 +51,36 @@ const CommentComponent = ({ comment, user, handleDelete, handleEdit }) => {
 
   const { data: session } = useSession();
   const currentUser = session?.user;
+  const [reported, setReported] = useState(Boolean(comment?.reportedByMe));
+  const [reporting, setReporting] = useState(false);
+
+  const isOwnReview = user?.id === currentUser?.id;
+
+  const handleReport = async () => {
+    if (reported || reporting || !currentUser || isOwnReview) return;
+
+    setReporting(true);
+    try {
+      const reason = window.prompt(t("report.prompt"));
+      if (reason === null) return;
+
+      const data = await Fetch("/api/products/comments/report", "POST", {
+        reviewId: comment.id,
+        reason: reason.slice(0, 500),
+      });
+
+      if (data?.status === 201) {
+        setReported(true);
+        toast.success(t("report.success"));
+      } else {
+        toast.error(data?.error || t("report.error"));
+      }
+    } catch (error) {
+      toast.error(t("report.error"));
+    } finally {
+      setReporting(false);
+    }
+  };
 
   const deleteComment = async (commentId) => {
     const data = await Fetch(`/api/products/comments`, "DELETE" , {
@@ -105,15 +136,39 @@ const CommentComponent = ({ comment, user, handleDelete, handleEdit }) => {
             <span className="text-unactive-text">
               {new Date(comment.created_at).toLocaleDateString()}
             </span>
+            {comment.isHidden && isAdmin(currentUser) ? (
+              <span className="rounded-full bg-amber-500/15 px-2 py-0.5 text-xs font-medium text-amber-700 dark:text-amber-300">
+                {t("hiddenBadge")}
+              </span>
+            ) : null}
           </div>
-          {user?.id === currentUser?.id && (
+          <div className="flex items-center gap-1">
+            {currentUser && !isOwnReview ? (
+              <button
+                type="button"
+                onClick={handleReport}
+                disabled={reporting}
+                title={reported ? t("report.reportedTooltip") : t("report.tooltip")}
+                aria-label={reported ? t("report.reported") : t("report.button")}
+                aria-pressed={reported}
+                className={`flex h-8 w-8 items-center justify-center rounded-full border border-border/60 transition-all duration-200 hover:-translate-y-0.5 hover:shadow-md disabled:opacity-50 ${
+                  reported
+                    ? "bg-danger/10 text-danger"
+                    : "bg-card/70 text-muted hover:bg-card hover:text-text"
+                }`}
+              >
+                <Flag className="h-3.5 w-3.5" fill={reported ? "currentColor" : "none"} />
+              </button>
+            ) : null}
+            {isOwnReview && (
             <DropdownIcon
               setEditing={setEditing}
               comment={comment}
               editing={editing}
               handleDelete={deleteComment}
             />
-          )}
+            )}
+          </div>
         </div>
         <form className="pl-4" onSubmit={handleSubmit}>
           <div className="w-full gap-5 grid grid-cols-[50px_1fr_100px]">

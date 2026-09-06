@@ -5,6 +5,7 @@ import { Link } from "@/shared/i18n";
 import { useTranslations } from "next-intl";
 import { UserInfoModal } from "@/entities/user";
 import ProductSearch from "@/features/search/ui/ProductSearch";
+import { LangSwitcher } from "@/shared/i18n";
 import {
   ShoppingCartButton,
   WishlistButton,
@@ -17,8 +18,20 @@ const routes = [
   { name: "Home", path: "/" },
   { name: "Catalog", path: "/catalog" },
   { name: "About", path: "/about" },
-  { name: "Contact us", path: "/contact" },
 ];
+
+const iconButtonFallback = (label) => (
+  <div
+    className="flex h-10 w-10 items-center justify-center rounded-full border border-border/60 bg-background/70 text-muted"
+    aria-label={label}
+  >
+    {label === "Wishlist" ? (
+      <Heart className="h-4.5 w-4.5" />
+    ) : (
+      <ShoppingCart className="h-4.5 w-4.5" />
+    )}
+  </div>
+);
 
 export const DesktopHeader = () => {
   const t = useTranslations();
@@ -53,28 +66,31 @@ export const DesktopHeader = () => {
                 </NavLink>
               </li>
             ))}
+            <li>
+              <Suspense fallback={iconButtonFallback("Wishlist")}>
+                <WishlistButton />
+              </Suspense>
+            </li>
+            <li>
+              <Suspense fallback={iconButtonFallback("Cart")}>
+                <ShoppingCartButton />
+              </Suspense>
+            </li>
           </ul>
         </nav>
 
         <div className="ml-auto flex shrink-0 items-center gap-2 rounded-full border border-border/60 bg-card/75 p-2 shadow-sm backdrop-blur-sm">
-          <Suspense
-            fallback={
-              <div className="flex h-10 w-10 items-center justify-center rounded-full border border-border/60 bg-background/70 text-muted">
-                <Heart className="h-4.5 w-4.5" />
-              </div>
-            }
-          >
-            <WishlistButton />
-          </Suspense>
-          <Suspense
-            fallback={
-              <div className="flex h-10 w-10 items-center justify-center rounded-full border border-border/60 bg-background/70 text-muted">
-                <ShoppingCart className="h-4.5 w-4.5" />
-              </div>
-            }
-          >
-            <ShoppingCartButton />
-          </Suspense>
+          {/* Below xl the nav pill (with its wishlist/cart icons) is hidden,
+              so keep compact icon links here to preserve access. */}
+          <div className="flex items-center gap-2 xl:hidden">
+            <Suspense fallback={iconButtonFallback("Wishlist")}>
+              <WishlistButton />
+            </Suspense>
+            <Suspense fallback={iconButtonFallback("Cart")}>
+              <ShoppingCartButton />
+            </Suspense>
+          </div>
+          <LangSwitcher />
           <ThemeSwitcher />
           <UserInfoModal />
         </div>

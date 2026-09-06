@@ -1,14 +1,23 @@
 import { NextResponse } from "next/server";
 import prisma from "../../../../../prisma/client";
 import { toSafeJson } from "../../../../../prisma/funcs";
-import { getToken } from "next-auth/jwt";
+import {
+  getAuthUserFromRequest,
+  isAdminUser,
+} from "@/shared/lib/auth";
 
 export async function GET(req) {
   try {
     const searchParams = req.nextUrl.searchParams;
+    const user = await getAuthUserFromRequest(req);
+    const isAdmin = isAdminUser(user);
 
     const comments = await prisma.reviews.findMany({
-      where: { product_id: Number(searchParams.get("id")) },
+      where: {
+        product_id: Number(searchParams.get("id")),
+        // Hidden reviews are only visible to admins.
+        ...(isAdmin ? {} : { isHidden: false }),
+      },
       include: {
         reviews_reactions: true,
         user: {
@@ -20,10 +29,25 @@ export async function GET(req) {
             role: true
           },
         },
+        ...(user
+          ? {
+              review_reports: {
+                where: { user_id: user.id },
+                select: { id: true },
+              },
+            }
+          : {}),
       },
     });
 
-    return NextResponse.json(toSafeJson(comments));
+    const safeComments = comments.map(({ review_reports, ...rest }) => ({
+      ...rest,
+      reportedByMe: Array.isArray(review_reports)
+        ? review_reports.length > 0
+        : false,
+    }));
+
+    return NextResponse.json(toSafeJson(safeComments));
   } catch (error) {
     console.error("API error:", error);
     return NextResponse.json(
@@ -35,7 +59,7 @@ export async function GET(req) {
 
 export async function POST(req) {
   try {
-    const user = await getToken({ req, secret: process.env.NEXTAUTH_SECRET });
+    const user = await getAuthUserFromRequest(req);
     if (!user) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
@@ -63,7 +87,7 @@ export async function POST(req) {
 
 export async function PUT(req) {
   try {
-    const user = await getToken({ req, secret: process.env.NEXTAUTH_SECRET });
+    const user = await getAuthUserFromRequest(req);
     if (!user) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
@@ -74,7 +98,25 @@ export async function PUT(req) {
       where: { id: Number(data?.id) },
     });
 
-    if (!existingComment || existingComment.user_id !== user.id) {
+    if (!existingComment) {
+      return NextResponse.json({ error: "Not found" }, { status: 404 });
+    }
+
+    // Admins may soft-hide/un-hide reviews without touching content.
+    if (typeof data?.isHidden === "boolean") {
+      if (!isAdminUser(user)) {
+        return NextResponse.json({ error: "Forbidden" }, { status: 403 });
+      }
+
+      const toggled = await prisma.reviews.update({
+        where: { id: Number(data?.id) },
+        data: { isHidden: data.isHidden },
+      });
+
+      return NextResponse.json({ comment: toSafeJson(toggled), status: 201 });
+    }
+
+    if (existingComment.user_id !== user.id) {
       return NextResponse.json({ error: "Forbidden" }, { status: 403 });
     }
 
@@ -100,7 +142,7 @@ export async function PUT(req) {
 
 export async function DELETE(req) {
   try {
-    const user = await getToken({ req, secret: process.env.NEXTAUTH_SECRET });
+    const user = await getAuthUserFromRequest(req);
     if (!user) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
@@ -111,11 +153,16 @@ export async function DELETE(req) {
       where: { id: Number(data?.id) },
     });
 
-    if (!existingComment || existingComment.user_id !== user.id) {
+    if (!existingComment) {
+      return NextResponse.json({ error: "Not found" }, { status: 404 });
+    }
+
+    // Owner or admin may delete (reactions/reports cascade).
+    if (existingComment.user_id !== user.id && !isAdminUser(user)) {
       return NextResponse.json({ error: "Forbidden" }, { status: 403 });
     }
 
-    const comment = await prisma.reviews.delete({
+    await prisma.reviews.delete({
       where: {
         id: Number(data?.id),
       },

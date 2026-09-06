@@ -75,7 +75,7 @@ const page = async ({ params }) => {
             <div className="w-full h-64 bg-surface animate-pulse"></div>
           }
         >
-          <MainInfo product={data} otherInfo={userId ? metaData : null} />
+          <MainInfo product={data} otherInfo={userId ? metaData : null} productId={productId} />
         </Suspense>
       </div>
       <Suspense >
