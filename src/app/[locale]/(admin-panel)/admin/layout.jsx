@@ -4,7 +4,7 @@ import { requireAdminPage } from "@/features/admin-common";
 import { AdminShell } from "@/widgets/(admin)/admin-shell";
 
 export const metadata = {
-  title: "Admin Panel | Cyber",
+  title: "Admin Panel",
   description: "Internal administration surface for managing products, orders, users, and coupons.",
   robots: "noindex, nofollow",
 };

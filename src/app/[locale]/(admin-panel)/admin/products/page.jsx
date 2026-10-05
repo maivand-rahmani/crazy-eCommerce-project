@@ -14,7 +14,7 @@ import {
 } from "@/features/admin-products";
 
 export const metadata = {
-  title: "Admin Products | Cyber",
+  title: "Admin Products",
   description: "Search, filter, create, and manage products and inventory in the admin panel.",
   robots: "noindex, nofollow",
 };

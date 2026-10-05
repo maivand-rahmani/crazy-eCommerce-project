@@ -1,6 +1,6 @@
 {
   "header": {
-    "logo": "cyber",
+    "logo": "CrazyCart",
     "search_placeholder": "Search",
     "nav": {
       "Home": "Home",
@@ -63,7 +63,7 @@
   "about": {
     "hero": {
       "title": "The project behind the store",
-      "subtitle": "Cyber is not a startup and not a template from a marketplace. It is a hand-built e-commerce platform written to prove that the whole stack — from database schema to checkout flow — can be done properly."
+      "subtitle": "CrazyCart is not a startup and not a template from a marketplace. It is a hand-built e-commerce platform written to prove that the whole stack — from database schema to checkout flow — can be done properly."
     },
     "what": {
       "title": "What is {store}?",
@@ -177,7 +177,7 @@
   },
   "contact": {
     "title": "Contact Us",
-    "subtitle": "Get in touch with Cyber. We're here to help with product info, orders, or support.",
+    "subtitle": "Get in touch with CrazyCart. We're here to help with product info, orders, or support.",
     "form": {
       "title": "Send us a message",
       "name": "Name",
@@ -199,7 +199,7 @@
     "mapPlaceholder": "[ Google Map Placeholder ]"
   },
   "footer": {
-    "logo": "Cyber",
+    "logo": "CrazyCart",
     "tagline": "Dive into the future. Explore, innovate, connect.",
     "nav": {
       "title": "Navigation",
@@ -211,7 +211,7 @@
     "social": {
       "title": "Follow us"
     },
-    "copyright": "© 2025 Cyber. All rights reserved.",
+    "copyright": "© 2025 CrazyCart. All rights reserved.",
     "contact": {
       "title": "Contact",
       "email": "Email",

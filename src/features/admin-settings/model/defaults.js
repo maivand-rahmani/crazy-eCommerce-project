@@ -5,7 +5,7 @@
  * (S3 credentials, DB URLs) must never appear here.
  */
 export const DEFAULT_SETTINGS = {
-  "store.name": "Cyber",
+  "store.name": "CrazyCart",
   "store.tagline": "Dive into the future. Explore, innovate, connect.",
   "contact.email": "support@cyberstore.com",
   "contact.phone": "+1 (555) 123-4567",

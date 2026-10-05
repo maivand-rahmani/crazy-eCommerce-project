@@ -25,9 +25,9 @@ import { getSettings } from "@/features/admin-settings/model/settings";
 import { Link } from "@/shared/i18n";
 
 export const metadata = {
-  title: "About the project | Cyber",
+  title: "About the project",
   description:
-    "Cyber is a personal portfolio e-commerce project — Next.js 15, PostgreSQL, Prisma, NextAuth and next-intl, built end to end.",
+    "CrazyCart is a personal portfolio e-commerce project — Next.js 15, PostgreSQL, Prisma, NextAuth and next-intl, built end to end.",
 };
 
 const REPO_URL = "https://github.com/maivand-rahmani/crazy-eCommerce-project";
@@ -68,7 +68,7 @@ export default async function AboutPage({ params }) {
   try {
     settings = await getSettings();
   } catch {}
-  const storeName = settings["store.name"] || "Cyber";
+  const storeName = settings["store.name"] || "CrazyCart";
 
   return (
     <main className="bg-bg text-text">
@@ -85,7 +85,7 @@ export default async function AboutPage({ params }) {
         </p>
       </section>
 
-      {/* What is Cyber */}
+      {/* What is CrazyCart */}
       <section className="mx-auto grid max-w-6xl items-center gap-10 px-6 py-20 md:grid-cols-2 md:px-10">
         <div>
           <h2 className="mb-6 text-3xl font-semibold">

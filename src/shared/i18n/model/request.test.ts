@@ -13,7 +13,7 @@ describe("i18n request config", () => {
     });
 
     expect(result.locale).toBe("ru");
-    expect(result.messages?.header.logo).toBe("кибер");
+    expect(result.messages?.header.logo).toBe("CrazyCart");
   });
 
   it("falls back to english for unsupported locales", async () => {
@@ -22,7 +22,7 @@ describe("i18n request config", () => {
     });
 
     expect(result.locale).toBe("en");
-    expect(result.messages?.header.logo).toBe("cyber");
+    expect(result.messages?.header.logo).toBe("CrazyCart");
   });
 
   it("falls back to english when locale is missing", async () => {
@@ -31,6 +31,6 @@ describe("i18n request config", () => {
     });
 
     expect(result.locale).toBe("en");
-    expect(result.messages?.header.logo).toBe("cyber");
+    expect(result.messages?.header.logo).toBe("CrazyCart");
   });
 });

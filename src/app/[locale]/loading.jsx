@@ -1,4 +1,5 @@
 import React from "react";
+import { CrazyCartMark } from "@/shared/ui/brand";
 
 /**
  * Skeleton screen for the main home page.
@@ -30,6 +31,10 @@ const ProductCardSkeleton = () => (
 const HomeLoadingSkeleton = () => {
   return (
     <div className="mx-auto max-w-360" role="status" aria-label="Loading page">
+      {/* Branded loading screen — lightweight 2D mark (never WebGL here) */}
+      <div className="flex justify-center pb-2 pt-10">
+        <CrazyCartMark className="h-12 w-auto animate-pulse" decorative />
+      </div>
       {/* ── Banner Grid ─────────────────────────────── */}
       <div className="flex flex-col md:grid md:grid-cols-4">
         {/* Hero banner — full width */}

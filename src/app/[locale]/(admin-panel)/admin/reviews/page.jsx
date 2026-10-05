@@ -29,7 +29,7 @@ import { formatDateTime } from "@/shared/lib";
 import { Link } from "@/shared/i18n";
 
 export const metadata = {
-  title: "Admin Reviews | Cyber",
+  title: "Admin Reviews",
   robots: "noindex, nofollow",
 };
 
