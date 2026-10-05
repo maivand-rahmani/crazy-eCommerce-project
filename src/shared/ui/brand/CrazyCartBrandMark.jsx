@@ -32,11 +32,11 @@ function prefersReducedMotion() {
  * CrazyCart brand mark — symbol only.
  *
  * mode:
- *  - "2d" (default): inline SVG mark (lightweight; use in header, footer,
- *    metadata-adjacent spots, small layouts)
- *  - "3d": interactive WebGL mark, lazy-loaded (ssr: false). Falls back to
- *    the 2D mark while loading, when WebGL is unavailable, or when the user
- *    prefers reduced motion.
+ *  - "2d" (default): inline SVG mark (lightweight; admin surfaces, small print,
+ *    any spot that should never run WebGL)
+ *  - "3d": small interactive WebGL mark, lazy-loaded (ssr: false) — used in the
+ *    header + footer lockups. Falls back to the 2D mark while loading, when
+ *    WebGL is unavailable, or when the user prefers reduced motion.
  */
 export const CrazyCartBrandMark = ({
   mode = "2d",
@@ -49,6 +49,8 @@ export const CrazyCartBrandMark = ({
   motion = "subtle",
   theme = "auto",
   quality = "high",
+  zoom = 1,
+  floor = true,
   reducedMotion,
   ariaLabel,
 }) => {
@@ -85,6 +87,8 @@ export const CrazyCartBrandMark = ({
         motion={motion}
         theme={theme}
         quality={quality}
+        zoom={zoom}
+        floor={floor}
         reducedMotion={reducedMotion}
         className={className}
         ariaLabel={ariaLabel}

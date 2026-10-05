@@ -44,7 +44,7 @@ export const DesktopHeader = () => {
           aria-label="CrazyCart — home"
           className="flex shrink-0 items-center rounded-full border border-border/60 bg-card/80 px-4 py-2.5 shadow-sm transition-all duration-200 hover:-translate-y-0.5 hover:border-border hover:bg-card hover:shadow-md"
         >
-          <CrazyCartLogo markClassName="h-7 w-auto" wordmarkClassName="h-[13px] w-auto" />
+          <CrazyCartLogo markMode="3d" markSize={44} markQuality="high" wordmarkClassName="h-[13px] w-auto" />
         </Link>
 
         <div className="hidden min-w-0 flex-1 lg:flex">

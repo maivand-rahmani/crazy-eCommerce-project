@@ -44,7 +44,7 @@ const Footer = () => {
               aria-label="CrazyCart — home"
               className="inline-flex items-center rounded-full border border-border/65 bg-card/70 px-5 py-3 shadow-sm transition-all duration-200 hover:-translate-y-0.5 hover:border-border hover:bg-card"
             >
-              <CrazyCartLogo markClassName="h-6 w-auto" wordmarkClassName="h-[11px] w-auto" />
+              <CrazyCartLogo markMode="3d" markSize={38} markQuality="high" wordmarkClassName="h-[11px] w-auto" />
             </Link>
             <p className="max-w-md text-sm leading-7 text-muted">
               {tagline}

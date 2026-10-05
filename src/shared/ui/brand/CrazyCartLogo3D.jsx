@@ -63,6 +63,8 @@ const CrazyCartLogo3D = ({
   motion = "subtle",
   theme = "auto",
   quality = "high",
+  zoom = 1,
+  floor = true,
   reducedMotion = false,
   className,
   ariaLabel = "CrazyCart 3D logo",
@@ -161,6 +163,7 @@ const CrazyCartLogo3D = ({
     const glowGeo = new THREE.PlaneGeometry(1.75, 1.75);
     const glowPlane = new THREE.Mesh(glowGeo, glowMat);
     glowPlane.position.set(0.02, -0.78, -0.25);
+    glowPlane.visible = floor;
     scene.add(glowPlane);
 
     const { parts, dispose: disposeGeos } = buildCrazyCartGeometry({
@@ -171,7 +174,7 @@ const CrazyCartLogo3D = ({
     const root = new THREE.Group();
     const spin = new THREE.Group();
     root.add(spin);
-    root.scale.setScalar(1.9);
+    root.scale.setScalar(1.9 * zoom);
     scene.add(root);
 
     const barGroups = [];
@@ -317,7 +320,7 @@ const CrazyCartLogo3D = ({
       if (canvas.parentNode === wrap) wrap.removeChild(canvas);
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [quality, motion, reducedMotion]);
+  }, [quality, motion, reducedMotion, zoom, floor]);
 
   const px = typeof size === "number" ? size : SIZE_PX[size] || SIZE_PX.md;
 
