@@ -45,33 +45,34 @@ React components live in `src/shared/ui/brand/`:
 | `CrazyCartAppIcon` | rounded-square icon component (4 variants) |
 | `CrazyCartBrandMark` | symbol with `mode="2d" \| "3d"` switch |
 | `CrazyCartLogo3D` | the interactive three.js mark (import directly — lazy chunk) |
+| `CrazyCartLoader` | animated loader mark (SVG + CSS) for the loading screen |
 
 `geometry.js` holds the approved mark geometry (single source of truth for the 2D
 paths **and** the 3D shapes); `wordmark.js` holds the outlined wordmark/tagline.
 
 ## Where 2D vs 3D branding is used
 
-**3D (WebGL) — selective, hero moments only:**
+**3D (WebGL) — the small "living" marks:**
 
-- the homepage brand showcase (`BrandShowcase`) — the one interactive WebGL surface
-- future: a dedicated branded loading screen, about/brand section, large empty
-  states, login brand panel, special promo sections — *on request, one at a time*
+- header + footer lockups (`CrazyCartLogo markMode="3d"`) — small, tightly
+  framed interactive marks (lazy-loaded, low quality preset)
+- future brand spots — *on request, one at a time*
 
 **2D (SVG) — everything else:**
 
-- header + footer lockups, mobile navigation, admin surfaces
+- mobile navigation, admin surfaces
 - metadata/icons: favicon, app icons, link previews
-- loading skeletons, empty states, documents, OG/social images
+- loading screen (animated mark — `CrazyCartLoader`), empty states, documents,
+  OG/social images
 
 Rules of thumb:
 
-1. Never put a WebGL canvas in the header, footer, navigation, or more than one
-   section per page.
+1. Keep 3D surfaces small and few (header + footer) — no large standalone 3D
+   banners or sections.
 2. The 3D mark always has a static 2D SVG fallback — for no-WebGL devices, when
    `prefers-reduced-motion: reduce` is set, and while the three.js chunk loads.
 3. The wordmark is never extruded "everywhere": text stays as crisp 2D outlines
-   (or real text) next to the 3D symbol. A shallow 3D wordmark is reserved for
-   special hero scenes if ever needed.
+   (or real text) next to the 3D symbol.
 
 ## 3D specifics (approved behavior)
 
@@ -84,6 +85,8 @@ Rules of thumb:
   (≤ ±8°). Hover: lift + highlight intensity + a 150–250 ms speed-bar fan-out.
   Click/tap: <600 ms compress → bars back → forward → spring return.
 - Controlled studio lighting (procedural lightformers — no network fetches).
+- Sizing: small marks use a tighter camera framing (`zoom`) and skip the floor
+  glow (`floor={false}`).
 - Perf: lazy-loaded chunk (`ssr: false`), animation paused outside the viewport,
   capped DPR, reduced quality on low-power presets, a single shared render loop,
   resource disposal on unmount, static SVG fallback.

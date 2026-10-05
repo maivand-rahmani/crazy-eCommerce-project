@@ -2,6 +2,7 @@ export { CrazyCartMark } from "./CrazyCartMark";
 export { CrazyCartWordmark, CrazyCartTagline } from "./CrazyCartWordmark";
 export { CrazyCartLogo } from "./CrazyCartLogo";
 export { CrazyCartAppIcon } from "./CrazyCartAppIcon";
+export { CrazyCartLoader } from "./CrazyCartLoader";
 export { CrazyCartBrandMark } from "./CrazyCartBrandMark";
 export { BRAND } from "./geometry";
 // NOTE: CrazyCartLogo3D is intentionally NOT re-exported here — import it
