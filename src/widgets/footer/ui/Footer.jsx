@@ -4,6 +4,7 @@ import { Facebook, Instagram, Twitter, Mail, Phone, MapPin } from "lucide-react"
 import { Link } from "@/shared/i18n";
 import { useTranslations } from "next-intl";
 import { DEFAULT_SETTINGS } from "@/features/admin-settings/model/defaults";
+import { CyberMark } from "@/shared/ui/brand";
 
 const Footer = () => {
   const t = useTranslations("footer");
@@ -40,8 +41,9 @@ const Footer = () => {
           <div className="space-y-5">
             <Link
               href="/"
-              className="inline-flex items-center rounded-full border border-border/65 bg-card/70 px-5 py-3 text-sm font-semibold uppercase tracking-[0.28em] text-text shadow-sm transition-all duration-200 hover:-translate-y-0.5 hover:border-border hover:bg-card"
+              className="inline-flex items-center gap-2.5 rounded-full border border-border/65 bg-card/70 px-5 py-3 text-sm font-semibold uppercase tracking-[0.28em] text-text shadow-sm transition-all duration-200 hover:-translate-y-0.5 hover:border-border hover:bg-card"
             >
+              <CyberMark className="h-5 w-auto" />
               {storeName}
             </Link>
             <p className="max-w-md text-sm leading-7 text-muted">

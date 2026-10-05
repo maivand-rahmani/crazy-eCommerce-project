@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-labelledby="tp1 dp1">
+  <title id="tp1">Cyber logo mark</title>
+  <desc id="dp1">Cyber brand icon</desc>
+  <defs><linearGradient id="p1" x1="6%" y1="8%" x2="94%" y2="92%"><stop offset="0" stop-color="#3B82F6"/><stop offset="1" stop-color="#22D3EE"/></linearGradient></defs>
+  <path d="M 32 7 L 10.35 19.5 L 10.35 44.5 L 32 57 L 53.65 44.5 L 53.65 19.5 Z" fill="none" stroke="url(#p1)" stroke-width="6.5" stroke-linejoin="miter"/><path d="M 24 21 L 35 32 L 24 43 L 30.5 43 L 41.5 32 L 30.5 21 Z" fill="url(#p1)"/>
+</svg>

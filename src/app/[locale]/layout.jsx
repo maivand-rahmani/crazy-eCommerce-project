@@ -8,6 +8,16 @@ import AuthProvider from "@/shared/ui/layout/Provider/AuthProvider";
 import { ThemeProvider } from "@/shared/ui/theme";
 import { AppShell } from "@/widgets/app-shell";
 
+export const metadata = {
+  icons: {
+    icon: [
+      { url: "/brand/cyber-icon.svg", type: "image/svg+xml" },
+      { url: "/brand/cyber-icon-32.png", sizes: "32x32", type: "image/png" },
+    ],
+    apple: [{ url: "/brand/cyber-icon-180.png", sizes: "180x180", type: "image/png" }],
+  },
+};
+
 export default async function LocaleLayout({ children, params }) {
   const { locale } = await params;
   const messages = await getMessages({ locale });

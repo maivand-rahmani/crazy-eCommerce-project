@@ -9,9 +9,9 @@ import { LangSwitcher } from "@/shared/i18n";
 import {
   ShoppingCartButton,
   WishlistButton,
-  Cyber,
   ThemeSwitcher,
 } from "../index";
+import { CyberLogo } from "@/shared/ui/brand";
 import { NavLink } from "@/shared";
 
 const routes = [
@@ -41,9 +41,10 @@ export const DesktopHeader = () => {
       <header className="mx-auto flex max-w-7xl items-center gap-4 px-5 py-4 text-text lg:gap-6 lg:px-8">
         <Link
           href="/"
+          aria-label="Cyber — home"
           className="flex shrink-0 items-center rounded-full border border-border/60 bg-card/80 px-4 py-3 shadow-sm transition-all duration-200 hover:-translate-y-0.5 hover:border-border hover:bg-card hover:shadow-md"
         >
-          <Cyber />
+          <CyberLogo className="h-6 w-auto text-text" />
         </Link>
 
         <div className="hidden min-w-0 flex-1 lg:flex">
