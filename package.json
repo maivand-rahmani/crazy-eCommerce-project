@@ -41,7 +41,8 @@
     "recharts": "^3.8.0",
     "styled-components": "^6.1.19",
     "superjson": "^2.2.2",
-    "tailwind-merge": "^3.4.0"
+    "tailwind-merge": "^3.4.0",
+    "three": "^0.169.0"
   },
   "devDependencies": {
     "@eslint/eslintrc": "^3",

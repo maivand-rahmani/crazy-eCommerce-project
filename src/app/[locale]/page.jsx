@@ -1,7 +1,7 @@
 export const dynamic = "force-dynamic";
 
 export const metadata = {
-  title: "Shop Premium Products Online | Fast Shipping & Best Deals",
+  title: "Shop Premium Products Online | CrazyCart",
   description:
     "Discover top-quality products with fast shipping. Browse categories, find exclusive deals, and shop safely on our trusted e-commerce platform.",
   keywords: [
@@ -33,6 +33,7 @@ import { Miniloader, ProductsRenderSkeleton } from "@/shared";
 import { Main, CategorySection } from "@/features/home";
 import { DragScrollContainer } from "@/shared/ui/ScrollContainer";
 import { HomeProductShowcaseSection } from "@/widgets/home-product-showcase";
+import { BrandShowcase } from "@/widgets/home-brand-showcase";
 
 const Page = async () => {
   return (
@@ -40,6 +41,7 @@ const Page = async () => {
       <Suspense fallback={<Miniloader />}>
         <Main />
       </Suspense>
+      <BrandShowcase />
       <Suspense fallback={<Miniloader />}>
         <CategorySection />
       </Suspense>

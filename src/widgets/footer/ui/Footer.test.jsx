@@ -3,8 +3,8 @@ import { render, screen } from "@testing-library/react";
 import { describe, it, vi } from "vitest";
 
 vi.mock("@/shared/i18n", () => ({
-  Link: ({ href, className, children }) =>
-    createElement("a", { href, className }, children),
+  Link: ({ href, className, children, ...rest }) =>
+    createElement("a", { href, className, ...rest }, children),
 }));
 
 vi.mock("next-intl", () => ({
@@ -17,8 +17,10 @@ describe("Footer widget", () => {
   it("renders navigation links, contact column and copyright", () => {
     render(createElement(Footer));
 
-    // Store name now comes from settings (DEFAULT_SETTINGS["store.name"] = "Cyber") with fallback to translation
-    expect(screen.getAllByText("Cyber")).toHaveLength(2);
+    // Store name comes from settings (DEFAULT_SETTINGS["store.name"] = "CrazyCart") with fallback to translation
+    expect(screen.getAllByText("CrazyCart")).toHaveLength(1);
+    // Brand pill links home and carries the CrazyCart logo lockup
+    expect(screen.getByRole("link", { name: "CrazyCart — home" })).toBeInTheDocument();
     expect(screen.getByText("Dive into the future. Explore, innovate, connect.")).toBeInTheDocument();
     expect(screen.getByText("nav.title")).toBeInTheDocument();
     expect(screen.getByText("nav.home")).toBeInTheDocument();

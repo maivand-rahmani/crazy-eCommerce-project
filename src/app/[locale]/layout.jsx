@@ -8,6 +8,22 @@ import AuthProvider from "@/shared/ui/layout/Provider/AuthProvider";
 import { ThemeProvider } from "@/shared/ui/theme";
 import { AppShell } from "@/widgets/app-shell";
 
+export const metadata = {
+  title: {
+    default: "CrazyCart — Shop Crazy. Live Happy.",
+    template: "%s | CrazyCart",
+  },
+  description:
+    "CrazyCart — a modern storefront demo built with Next.js 15, PostgreSQL, Prisma and NextAuth.",
+  icons: {
+    icon: [
+      { url: "/brand/crazycart-icon.svg", type: "image/svg+xml" },
+      { url: "/brand/crazycart-icon-32.png", sizes: "32x32", type: "image/png" },
+    ],
+    apple: [{ url: "/brand/crazycart-icon-180.png", sizes: "180x180", type: "image/png" }],
+  },
+};
+
 export default async function LocaleLayout({ children, params }) {
   const { locale } = await params;
   const messages = await getMessages({ locale });

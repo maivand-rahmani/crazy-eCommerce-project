@@ -9,7 +9,7 @@ import { formatDateTime } from "@/shared/lib";
 import { Link } from "@/shared/i18n";
 
 export const metadata = {
-  title: "Admin Users | Cyber",
+  title: "Admin Users",
   robots: "noindex, nofollow",
 };
 

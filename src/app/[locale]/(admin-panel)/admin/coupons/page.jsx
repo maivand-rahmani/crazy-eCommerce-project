@@ -8,7 +8,7 @@ import { formatDateTime } from "@/shared/lib";
 import { Link } from "@/shared/i18n";
 
 export const metadata = {
-  title: "Admin Coupons | Cyber",
+  title: "Admin Coupons",
   robots: "noindex, nofollow",
 };
 

@@ -9,7 +9,7 @@ import { Link } from "@/shared/i18n";
 import { FilterSubmitButton } from "@/features/admin-common";
 
 export const metadata = {
-  title: "Admin Orders | Cyber",
+  title: "Admin Orders",
   robots: "noindex, nofollow",
 };
 

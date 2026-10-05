@@ -7,7 +7,7 @@ import { getSettings } from "@/features/admin-settings/model/settings";
 import AdminSettingsTabs from "@/features/admin-settings/ui/AdminSettingsTabs";
 
 export const metadata = {
-  title: "Admin Settings | Cyber",
+  title: "Admin Settings",
   robots: "noindex, nofollow",
 };
 
